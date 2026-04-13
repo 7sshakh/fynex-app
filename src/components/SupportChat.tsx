@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { ArrowLeft, Send, MessageCircle } from 'lucide-react';
 import { useUser } from '../context/UserContext';
 
@@ -52,14 +53,11 @@ export default function SupportChat({ isOpen, onClose }: SupportChatProps) {
 
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
       pollRef.current = setInterval(pollReplies, 3000);
     } else {
-      document.body.style.overflow = '';
       if (pollRef.current) clearInterval(pollRef.current);
     }
     return () => {
-      document.body.style.overflow = '';
       if (pollRef.current) clearInterval(pollRef.current);
     };
   }, [isOpen, pollReplies]);
@@ -94,49 +92,88 @@ export default function SupportChat({ isOpen, onClose }: SupportChatProps) {
 
   if (!isOpen) return null;
 
-  return (
-    <div className="fixed inset-0 z-50 bg-white flex flex-col" style={{ height: '100dvh' }}>
-      {/* Header — safe area top */}
-      <div className="flex-shrink-0 flex items-center gap-3 px-4 pt-12 pb-3 border-b border-gray-100 bg-white">
-        <button onClick={onClose} className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center active:scale-95 transition-transform">
-          <ArrowLeft className="w-5 h-5 text-gray-600" />
+  return createPortal(
+    <div
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 9999,
+        display: 'flex',
+        flexDirection: 'column',
+        backgroundColor: '#ffffff',
+        height: '100dvh',
+      }}
+    >
+      {/* Header */}
+      <div
+        style={{ backgroundColor: '#ffffff', borderBottom: '1px solid #f3f4f6', flexShrink: 0, paddingTop: '48px' }}
+        className="flex items-center gap-3 px-4 pb-3"
+      >
+        <button onClick={onClose} className="w-10 h-10 rounded-xl flex items-center justify-center active:scale-95" style={{ backgroundColor: '#f3f4f6' }}>
+          <ArrowLeft className="w-5 h-5" style={{ color: '#4b5563' }} />
         </button>
         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
           <MessageCircle className="w-5 h-5 text-white" />
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className="font-bold text-gray-900 text-sm">Fynex Support</h3>
-          <p className="text-xs text-emerald-500 font-medium">Online</p>
+          <h3 className="font-bold text-sm" style={{ color: '#111827' }}>Fynex Support</h3>
+          <p className="text-xs font-medium" style={{ color: '#10b981' }}>Online</p>
         </div>
-        <button onClick={() => window.open('https://t.me/fynex_assist', '_blank')} className="flex-shrink-0 w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center active:scale-95 transition-transform">
-          <svg className="w-5 h-5 text-blue-500" viewBox="0 0 24 24" fill="currentColor">
+        <button onClick={() => window.open('https://t.me/fynex_assist', '_blank')} className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center active:scale-95" style={{ backgroundColor: '#eff6ff' }}>
+          <svg className="w-5 h-5" style={{ color: '#3b82f6' }} viewBox="0 0 24 24" fill="currentColor">
             <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
           </svg>
         </button>
       </div>
 
-      {/* Messages — scrollable middle */}
-      <div className="flex-1 min-h-0 overflow-y-auto px-4 py-4 space-y-3 bg-gray-50" style={{ overscrollBehavior: 'contain' }}>
+      {/* Messages */}
+      <div
+        className="flex-1 min-h-0 overflow-y-auto px-4 py-4 space-y-3"
+        style={{ backgroundColor: '#f9fafb', overscrollBehavior: 'contain' }}
+      >
         {messages.map((msg) => (
           <div key={msg.id} className={`flex ${msg.isBot ? 'justify-start' : 'justify-end'}`}>
-            <div className={`max-w-[80%] px-4 py-2.5 rounded-2xl ${msg.isBot ? 'bg-white text-gray-900 rounded-tl-md shadow-sm' : 'bg-indigo-600 text-white rounded-tr-md'}`}>
+            <div
+              className="max-w-[80%] px-4 py-2.5 rounded-2xl"
+              style={msg.isBot
+                ? { backgroundColor: '#ffffff', color: '#111827', borderTopLeftRadius: '6px', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }
+                : { backgroundColor: '#4f46e5', color: '#ffffff', borderTopRightRadius: '6px' }
+              }
+            >
               <p className="text-sm leading-relaxed">{msg.text}</p>
-              <p className={`text-[10px] mt-1 ${msg.isBot ? 'text-gray-400' : 'text-white/60'}`}>{msg.time}</p>
+              <p className="text-[10px] mt-1" style={{ color: msg.isBot ? '#9ca3af' : 'rgba(255,255,255,0.6)' }}>{msg.time}</p>
             </div>
           </div>
         ))}
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input — pinned at bottom */}
-      <div className="flex-shrink-0 px-4 py-3 border-t border-gray-100 bg-white pb-safe">
+      {/* Input */}
+      <div className="flex-shrink-0 px-4 py-3 pb-safe" style={{ backgroundColor: '#ffffff', borderTop: '1px solid #f3f4f6' }}>
         <div className="flex items-center gap-2">
-          <input type="text" value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={handleKeyDown} placeholder="Xabar yozing..." className="flex-1 bg-gray-100 rounded-2xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-indigo-200" />
-          <button onClick={sendMessage} disabled={!input.trim() || sending} className={`w-11 h-11 rounded-2xl flex items-center justify-center transition-colors ${input.trim() && !sending ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-400'}`}>
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="Xabar yozing..."
+            className="flex-1 rounded-2xl px-4 py-3 text-sm outline-none"
+            style={{ backgroundColor: '#f3f4f6', color: '#111827' }}
+          />
+          <button
+            onClick={sendMessage}
+            disabled={!input.trim() || sending}
+            className="w-11 h-11 rounded-2xl flex items-center justify-center"
+            style={{ backgroundColor: input.trim() && !sending ? '#4f46e5' : '#f3f4f6', color: input.trim() && !sending ? '#ffffff' : '#9ca3af' }}
+          >
             <Send className="w-5 h-5" />
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
