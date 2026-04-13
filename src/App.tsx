@@ -6,10 +6,9 @@ import BottomNav from './components/BottomNav';
 import HomePage from './components/HomePage';
 import CoursesPage from './components/CoursesPage';
 import LeaderboardPage from './components/LeaderboardPage';
-import SettingsPage from './components/SettingsPage';
 import ProfilePage from './components/ProfilePage';
 
-type TabType = 'home' | 'courses' | 'leaderboard' | 'profile' | 'settings';
+type TabType = 'home' | 'courses' | 'leaderboard' | 'profile';
 
 function AppContent() {
   const { isAuthenticated, theme } = useUser();
@@ -52,7 +51,6 @@ function AppContent() {
     { id: 'courses', component: <CoursesPage key="courses" /> },
     { id: 'leaderboard', component: <LeaderboardPage key="leaderboard" /> },
     { id: 'profile', component: <ProfilePage key="profile" /> },
-    { id: 'settings', component: <SettingsPage key="settings" /> },
   ];
 
   const currentIndex = tabs.findIndex(t => t.id === activeTab);

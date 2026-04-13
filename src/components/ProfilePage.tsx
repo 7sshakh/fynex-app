@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 
 export default function ProfilePage() {
-  const { user, logout, togglePro, theme, toggleTheme, notificationsEnabled, toggleNotifications, offlineEnabled, toggleOffline } = useUser();
+  const { user, logout, togglePro, theme, toggleTheme, notificationsEnabled, toggleNotifications, offlineEnabled, toggleOffline, animationsEnabled, toggleAnimations } = useUser();
   const [showProModal, setShowProModal] = useState(false);
   const settingsRef = useRef<HTMLDivElement | null>(null);
 
@@ -16,9 +16,10 @@ export default function ProfilePage() {
     { icon: Bell, label: 'Bildirishnomalar', hasToggle: true, value: notificationsEnabled, onClick: toggleNotifications },
     { icon: Globe, label: 'Dark mode', hasToggle: true, value: theme === 'dark', onClick: toggleTheme },
     { icon: Download, label: 'Offline yuklab olish', hasToggle: true, value: offlineEnabled, onClick: toggleOffline },
-    { icon: Headphones, label: 'Qo\'llab quvvatlash', value: '@fynex_support', onClick: () => window.open('https://t.me/fynex_support', '_blank') },
+    { icon: Sparkles, label: 'Animatsiyalar', hasToggle: true, value: animationsEnabled, onClick: toggleAnimations },
+    { icon: Headphones, label: 'Qo\'llab quvvatlash', value: '@fynex_assist', onClick: () => window.open('https://t.me/fynex_assist', '_blank') },
     { icon: Shield, label: 'Maxfiylik siyosati', value: 'Ko\'rish', onClick: () => window.alert('Maxfiylik siyosati keyingi yangilanishda batafsil ulanadi.') },
-  ]), [notificationsEnabled, offlineEnabled, theme, toggleNotifications, toggleOffline, toggleTheme]);
+  ]), [notificationsEnabled, offlineEnabled, theme, animationsEnabled, toggleNotifications, toggleOffline, toggleTheme, toggleAnimations]);
 
   const proBenefits = [
     'Barcha kurslar ochiq',
