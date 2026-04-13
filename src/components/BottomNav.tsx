@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom';
 import { motion } from 'framer-motion';
 import { Home, BookOpen, Trophy, User } from 'lucide-react';
 
@@ -14,8 +15,16 @@ const tabs = [
 ];
 
 export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
-  return (
-    <div className="fixed bottom-0 left-0 right-0 z-50">
+  return createPortal(
+    <div
+      style={{
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 9990,
+      }}
+    >
       <div className="bg-white/80 backdrop-blur-xl border-t border-gray-200/50 px-4 py-2 nav-safe">
         <div className="flex justify-around items-center">
           {tabs.map((tab) => {
@@ -67,6 +76,7 @@ export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
           })}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

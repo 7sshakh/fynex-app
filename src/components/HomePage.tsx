@@ -1,11 +1,12 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useUser } from '../context/UserContext';
-import { Flame, Zap, Trophy, BookOpen, ChevronRight, Target, Bell, Gift } from 'lucide-react';
+import { Flame, Zap, Trophy, BookOpen, ChevronRight, Target, Bell, Gift, ArrowLeft } from 'lucide-react';
 import { dailyChallenges } from '../data/mockData';
 
 export default function HomePage() {
-  const { user } = useUser();
+  const { user, theme } = useUser();
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications] = useState<{id: string; text: string; type: 'gift'|'info'|'achievement'}[]>([
     // Add notifications here when needed, e.g.:
@@ -262,45 +263,45 @@ export default function HomePage() {
         </motion.div>
       </motion.div>
 
-      {/* Notifications Panel */}
-      <AnimatePresence>
-        {showNotifications && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm"
-            onClick={() => setShowNotifications(false)}
-          >
-            <motion.div
-              initial={{ y: -20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -20, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
-              className="mx-6 mt-24 bg-white rounded-3xl shadow-2xl p-5 max-h-[60vh] overflow-y-auto"
-            >
-              <h3 className="font-bold text-gray-900 text-lg mb-3">Bildirishnomalar</h3>
-              {notifications.length === 0 ? (
-                <div className="text-center py-8">
-                  <Bell className="w-10 h-10 text-gray-300 mx-auto mb-3" />
-                  <p className="text-gray-400 text-sm">Hozircha bildirishnomalar yo'q</p>
+      {/* Notifications Fullscreen */}
+      {showNotifications && createPortal(
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 9999, background: theme === 'dark' ? '#0a0d09' : '#f8fafc', display: 'flex', flexDirection: 'column', height: '100dvh' }}>
+          {/* Header */}
+          <div style={{ paddingTop: 48, flexShrink: 0, borderBottom: `1px solid ${theme === 'dark' ? 'rgba(195,255,46,0.1)' : '#e5e7eb'}`, background: theme === 'dark' ? 'rgba(15,18,16,0.95)' : '#ffffff', backdropFilter: 'blur(12px)' }} className="px-4 pb-3">
+            <div className="flex items-center gap-3">
+              <button onClick={() => setShowNotifications(false)} className="w-10 h-10 rounded-xl flex items-center justify-center active:scale-95" style={{ background: theme === 'dark' ? 'rgba(195,255,46,0.08)' : '#f3f4f6' }}>
+                <ArrowLeft className="w-5 h-5" style={{ color: theme === 'dark' ? '#c3ff2e' : '#4b5563' }} />
+              </button>
+              <h1 className="font-bold text-lg" style={{ color: theme === 'dark' ? '#f0f0f0' : '#111827' }}>Bildirishnomalar</h1>
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className="flex-1 overflow-y-auto px-5 py-5" style={{ overscrollBehavior: 'contain' }}>
+            {notifications.length === 0 ? (
+              <div className="flex flex-col items-center justify-center pt-32">
+                <div className="w-20 h-20 rounded-3xl flex items-center justify-center mb-5" style={{ background: theme === 'dark' ? 'rgba(195,255,46,0.06)' : '#f3f4f6' }}>
+                  <Bell className="w-9 h-9" style={{ color: theme === 'dark' ? 'rgba(195,255,46,0.3)' : '#d1d5db' }} />
                 </div>
-              ) : (
-                <div className="space-y-2">
-                  {notifications.map((n) => (
-                    <div key={n.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-2xl">
-                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${n.type === 'gift' ? 'bg-amber-100' : n.type === 'achievement' ? 'bg-emerald-100' : 'bg-blue-100'}`}>
-                        {n.type === 'gift' ? <Gift className="w-5 h-5 text-amber-600" /> : <Bell className="w-5 h-5 text-blue-600" />}
-                      </div>
-                      <p className="text-sm text-gray-700 flex-1">{n.text}</p>
+                <p className="font-semibold text-base mb-1" style={{ color: theme === 'dark' ? '#e8f5e9' : '#111827' }}>Bildirishnomalar yo'q</p>
+                <p className="text-sm text-center" style={{ color: theme === 'dark' ? '#6b7280' : '#9ca3af' }}>Yangi bildirishnomalar bu yerda ko'rinadi</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {notifications.map((n) => (
+                  <div key={n.id} className="rounded-2xl p-4 flex items-center gap-3" style={{ background: theme === 'dark' ? '#1a1f1a' : '#ffffff', border: `1px solid ${theme === 'dark' ? 'rgba(195,255,46,0.08)' : '#e5e7eb'}` }}>
+                    <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: n.type === 'gift' ? (theme === 'dark' ? 'rgba(251,191,36,0.12)' : '#fef3c7') : n.type === 'achievement' ? (theme === 'dark' ? 'rgba(16,185,129,0.12)' : '#d1fae5') : (theme === 'dark' ? 'rgba(99,102,241,0.12)' : '#e0e7ff') }}>
+                      {n.type === 'gift' ? <Gift className="w-5 h-5" style={{ color: theme === 'dark' ? '#fbbf24' : '#d97706' }} /> : n.type === 'achievement' ? <Trophy className="w-5 h-5" style={{ color: theme === 'dark' ? '#10b981' : '#059669' }} /> : <Bell className="w-5 h-5" style={{ color: theme === 'dark' ? '#818cf8' : '#4f46e5' }} />}
                     </div>
-                  ))}
-                </div>
-              )}
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                    <p className="text-sm flex-1" style={{ color: theme === 'dark' ? '#e8f5e9' : '#374151' }}>{n.text}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>,
+        document.body
+      )}
     </motion.div>
   );
 }

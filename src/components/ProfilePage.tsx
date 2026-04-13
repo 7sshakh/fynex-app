@@ -373,109 +373,131 @@ export default function ProfilePage() {
 
       {/* Account Settings Fullscreen */}
       {showAccountSettings && createPortal(
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 9999, background: theme === 'dark' ? '#0a0d09' : '#f8fafc', display: 'flex', flexDirection: 'column', height: '100dvh' }}>
+        <div className={theme === 'dark' ? 'theme-dark' : ''} style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 9999, display: 'flex', flexDirection: 'column', height: '100dvh' }}>
+          {/* Background */}
+          <div className={`absolute inset-0 ${theme === 'dark' ? 'theme-surface-dark' : 'theme-surface-light'}`} />
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            <div className={`absolute -top-1/2 -right-1/2 w-full h-full rounded-full blur-3xl ${theme === 'dark' ? 'bg-lime-300/5' : 'bg-indigo-200/30'}`} />
+          </div>
+
           {/* Header */}
-          <div style={{ paddingTop: 48, flexShrink: 0, borderBottom: `1px solid ${theme === 'dark' ? 'rgba(195,255,46,0.1)' : '#e5e7eb'}`, background: theme === 'dark' ? 'rgba(15,18,16,0.95)' : '#ffffff', backdropFilter: 'blur(12px)' }} className="px-4 pb-3">
+          <div className="relative px-4 pb-3" style={{ paddingTop: 48, flexShrink: 0 }}>
             <div className="flex items-center gap-3">
-              <button onClick={() => setShowAccountSettings(false)} className="w-10 h-10 rounded-xl flex items-center justify-center active:scale-95" style={{ background: theme === 'dark' ? 'rgba(195,255,46,0.08)' : '#f3f4f6' }}>
-                <ArrowLeft className="w-5 h-5" style={{ color: theme === 'dark' ? '#c3ff2e' : '#4b5563' }} />
+              <button onClick={() => setShowAccountSettings(false)} className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center active:scale-95">
+                <ArrowLeft className="w-5 h-5 text-gray-500" />
               </button>
-              <h1 className="font-bold text-lg" style={{ color: theme === 'dark' ? '#f0f0f0' : '#111827' }}>Akkaunt sozlamalari</h1>
+              <h1 className="font-bold text-lg text-gray-900">Akkaunt sozlamalari</h1>
             </div>
           </div>
 
           {/* Content */}
-          <div className="flex-1 overflow-y-auto px-5 py-5 space-y-5" style={{ overscrollBehavior: 'contain' }}>
+          <div className="relative flex-1 overflow-y-auto px-5 py-4 space-y-4" style={{ overscrollBehavior: 'contain' }}>
+            {/* Profile Avatar + Name Preview */}
+            <div className="flex flex-col items-center mb-2">
+              <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center mb-3 shadow-lg shadow-indigo-200/50">
+                <User className="w-9 h-9 text-white" />
+              </div>
+              <p className="font-bold text-gray-900 text-lg">{user?.name || 'Foydalanuvchi'}</p>
+              <p className="text-gray-400 text-sm">{user?.phone}</p>
+            </div>
+
             {/* Name */}
-            <div className="rounded-2xl p-4" style={{ background: theme === 'dark' ? '#1a1f1a' : '#ffffff', border: `1px solid ${theme === 'dark' ? 'rgba(195,255,46,0.08)' : '#e5e7eb'}` }}>
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
               <div className="flex items-center gap-2 mb-3">
-                <User className="w-4 h-4" style={{ color: theme === 'dark' ? '#c3ff2e' : '#6366f1' }} />
-                <span className="text-xs font-bold uppercase tracking-wider" style={{ color: theme === 'dark' ? '#c3ff2e' : '#6366f1' }}>Ism</span>
+                <div className="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center">
+                  <Pen className="w-4 h-4 text-indigo-600" />
+                </div>
+                <span className="text-sm font-semibold text-gray-900">Ismni o'zgartirish</span>
                 {nameSaved && <span className="text-xs text-emerald-500 font-medium ml-auto">✓ Saqlandi</span>}
               </div>
               <div className="flex gap-2">
-                <input value={editName} onChange={e => setEditName(e.target.value)} className="flex-1 rounded-xl px-3 py-2.5 text-sm outline-none" style={{ background: theme === 'dark' ? '#0a0d09' : '#f3f4f6', color: theme === 'dark' ? '#e8f5e9' : '#111827', border: `1px solid ${theme === 'dark' ? 'rgba(195,255,46,0.1)' : '#e5e7eb'}` }} placeholder="Ismingiz" />
-                <button onClick={saveName} className="px-4 py-2.5 rounded-xl text-sm font-medium active:scale-95" style={{ background: theme === 'dark' ? '#c3ff2e' : '#4f46e5', color: theme === 'dark' ? '#0a0d09' : '#fff' }}>Saqlash</button>
+                <input value={editName} onChange={e => setEditName(e.target.value)} className="flex-1 rounded-xl px-3 py-2.5 text-sm bg-gray-50 border border-gray-100 text-gray-900 outline-none focus:border-indigo-300" placeholder="Ismingiz" />
+                <button onClick={saveName} className="px-4 py-2.5 rounded-xl text-sm font-medium bg-indigo-600 text-white active:scale-95 shadow-sm shadow-indigo-200">Saqlash</button>
               </div>
             </div>
 
             {/* Phone */}
-            <div className="rounded-2xl p-4" style={{ background: theme === 'dark' ? '#1a1f1a' : '#ffffff', border: `1px solid ${theme === 'dark' ? 'rgba(195,255,46,0.08)' : '#e5e7eb'}` }}>
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
               <div className="flex items-center gap-2 mb-3">
-                <Phone className="w-4 h-4" style={{ color: theme === 'dark' ? '#c3ff2e' : '#6366f1' }} />
-                <span className="text-xs font-bold uppercase tracking-wider" style={{ color: theme === 'dark' ? '#c3ff2e' : '#6366f1' }}>Telefon raqam</span>
+                <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center">
+                  <Phone className="w-4 h-4 text-emerald-600" />
+                </div>
+                <span className="text-sm font-semibold text-gray-900">Telefon raqam</span>
                 {phoneSaved && <span className="text-xs text-emerald-500 font-medium ml-auto">✓ O'zgartirildi</span>}
               </div>
               {phoneStep === 'edit' ? (
                 <div className="flex gap-2">
-                  <input value={editPhone} onChange={e => setEditPhone(e.target.value)} className="flex-1 rounded-xl px-3 py-2.5 text-sm outline-none" style={{ background: theme === 'dark' ? '#0a0d09' : '#f3f4f6', color: theme === 'dark' ? '#e8f5e9' : '#111827', border: `1px solid ${theme === 'dark' ? 'rgba(195,255,46,0.1)' : '#e5e7eb'}` }} placeholder="+998 XX XXX XX XX" />
-                  <button onClick={sendPhoneCode} disabled={editPhone === user?.phone} className="px-4 py-2.5 rounded-xl text-sm font-medium active:scale-95 disabled:opacity-40" style={{ background: theme === 'dark' ? '#c3ff2e' : '#4f46e5', color: theme === 'dark' ? '#0a0d09' : '#fff' }}>Kod yuborish</button>
+                  <input value={editPhone} onChange={e => setEditPhone(e.target.value)} className="flex-1 rounded-xl px-3 py-2.5 text-sm bg-gray-50 border border-gray-100 text-gray-900 outline-none focus:border-emerald-300" placeholder="+998 XX XXX XX XX" />
+                  <button onClick={sendPhoneCode} disabled={editPhone === user?.phone} className="px-4 py-2.5 rounded-xl text-sm font-medium bg-emerald-600 text-white active:scale-95 disabled:opacity-40 shadow-sm shadow-emerald-200">Kod yuborish</button>
                 </div>
               ) : (
                 <div className="flex gap-2">
-                  <input value={phoneCode} onChange={e => setPhoneCode(e.target.value)} maxLength={6} className="flex-1 rounded-xl px-3 py-2.5 text-sm text-center tracking-[0.5em] outline-none" style={{ background: theme === 'dark' ? '#0a0d09' : '#f3f4f6', color: theme === 'dark' ? '#e8f5e9' : '#111827', border: `1px solid ${theme === 'dark' ? 'rgba(195,255,46,0.1)' : '#e5e7eb'}` }} placeholder="● ● ● ●" />
-                  <button onClick={verifyPhone} className="px-4 py-2.5 rounded-xl text-sm font-medium active:scale-95" style={{ background: theme === 'dark' ? '#c3ff2e' : '#4f46e5', color: theme === 'dark' ? '#0a0d09' : '#fff' }}>Tasdiqlash</button>
+                  <input value={phoneCode} onChange={e => setPhoneCode(e.target.value)} maxLength={6} className="flex-1 rounded-xl px-3 py-2.5 text-sm text-center tracking-[0.5em] bg-gray-50 border border-gray-100 text-gray-900 outline-none focus:border-emerald-300" placeholder="● ● ● ●" />
+                  <button onClick={verifyPhone} className="px-4 py-2.5 rounded-xl text-sm font-medium bg-emerald-600 text-white active:scale-95 shadow-sm shadow-emerald-200">Tasdiqlash</button>
                 </div>
               )}
-              <p className="text-[11px] mt-2" style={{ color: theme === 'dark' ? '#6b7280' : '#9ca3af' }}>SMS kod orqali tasdiqlanadi</p>
+              <p className="text-[11px] text-gray-400 mt-2">SMS kod orqali tasdiqlanadi</p>
             </div>
 
             {/* Email */}
-            <div className="rounded-2xl p-4" style={{ background: theme === 'dark' ? '#1a1f1a' : '#ffffff', border: `1px solid ${theme === 'dark' ? 'rgba(195,255,46,0.08)' : '#e5e7eb'}` }}>
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
               <div className="flex items-center gap-2 mb-3">
-                <Mail className="w-4 h-4" style={{ color: theme === 'dark' ? '#c3ff2e' : '#6366f1' }} />
-                <span className="text-xs font-bold uppercase tracking-wider" style={{ color: theme === 'dark' ? '#c3ff2e' : '#6366f1' }}>Elektron pochta</span>
+                <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
+                  <Mail className="w-4 h-4 text-blue-600" />
+                </div>
+                <span className="text-sm font-semibold text-gray-900">Elektron pochta</span>
                 {emailSaved && <span className="text-xs text-emerald-500 font-medium ml-auto">✓ Qo'shildi</span>}
               </div>
               {emailStep === 'edit' ? (
                 <div className="flex gap-2">
-                  <input value={editEmail} onChange={e => setEditEmail(e.target.value)} type="email" className="flex-1 rounded-xl px-3 py-2.5 text-sm outline-none" style={{ background: theme === 'dark' ? '#0a0d09' : '#f3f4f6', color: theme === 'dark' ? '#e8f5e9' : '#111827', border: `1px solid ${theme === 'dark' ? 'rgba(195,255,46,0.1)' : '#e5e7eb'}` }} placeholder="email@example.com" />
-                  <button onClick={sendEmailCode} disabled={!editEmail.includes('@')} className="px-4 py-2.5 rounded-xl text-sm font-medium active:scale-95 disabled:opacity-40" style={{ background: theme === 'dark' ? '#c3ff2e' : '#4f46e5', color: theme === 'dark' ? '#0a0d09' : '#fff' }}>Kod yuborish</button>
+                  <input value={editEmail} onChange={e => setEditEmail(e.target.value)} type="email" className="flex-1 rounded-xl px-3 py-2.5 text-sm bg-gray-50 border border-gray-100 text-gray-900 outline-none focus:border-blue-300" placeholder="email@example.com" />
+                  <button onClick={sendEmailCode} disabled={!editEmail.includes('@')} className="px-4 py-2.5 rounded-xl text-sm font-medium bg-blue-600 text-white active:scale-95 disabled:opacity-40 shadow-sm shadow-blue-200">Kod yuborish</button>
                 </div>
               ) : (
                 <div className="flex gap-2">
-                  <input value={emailCode} onChange={e => setEmailCode(e.target.value)} maxLength={6} className="flex-1 rounded-xl px-3 py-2.5 text-sm text-center tracking-[0.5em] outline-none" style={{ background: theme === 'dark' ? '#0a0d09' : '#f3f4f6', color: theme === 'dark' ? '#e8f5e9' : '#111827', border: `1px solid ${theme === 'dark' ? 'rgba(195,255,46,0.1)' : '#e5e7eb'}` }} placeholder="● ● ● ●" />
-                  <button onClick={verifyEmail} className="px-4 py-2.5 rounded-xl text-sm font-medium active:scale-95" style={{ background: theme === 'dark' ? '#c3ff2e' : '#4f46e5', color: theme === 'dark' ? '#0a0d09' : '#fff' }}>Tasdiqlash</button>
+                  <input value={emailCode} onChange={e => setEmailCode(e.target.value)} maxLength={6} className="flex-1 rounded-xl px-3 py-2.5 text-sm text-center tracking-[0.5em] bg-gray-50 border border-gray-100 text-gray-900 outline-none focus:border-blue-300" placeholder="● ● ● ●" />
+                  <button onClick={verifyEmail} className="px-4 py-2.5 rounded-xl text-sm font-medium bg-blue-600 text-white active:scale-95 shadow-sm shadow-blue-200">Tasdiqlash</button>
                 </div>
               )}
-              <p className="text-[11px] mt-2" style={{ color: theme === 'dark' ? '#6b7280' : '#9ca3af' }}>Emailga tasdiqlash kodi yuboriladi</p>
+              <p className="text-[11px] text-gray-400 mt-2">Emailga tasdiqlash kodi yuboriladi</p>
             </div>
 
-            {/* Language */}
-            <div className="rounded-2xl p-4 flex items-center justify-between" style={{ background: theme === 'dark' ? '#1a1f1a' : '#ffffff', border: `1px solid ${theme === 'dark' ? 'rgba(195,255,46,0.08)' : '#e5e7eb'}` }}>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: theme === 'dark' ? 'rgba(195,255,46,0.08)' : '#f3f4f6' }}>
-                  <Languages className="w-5 h-5" style={{ color: theme === 'dark' ? '#c3ff2e' : '#6366f1' }} />
+            {/* Extra settings */}
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+              <button className="w-full flex items-center justify-between p-4 active:bg-gray-50">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center">
+                    <Languages className="w-4 h-4 text-orange-600" />
+                  </div>
+                  <div className="text-left">
+                    <p className="text-sm font-medium text-gray-900">Interfeys tili</p>
+                    <p className="text-xs text-gray-400">O'zbek tili</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="font-medium text-sm" style={{ color: theme === 'dark' ? '#e8f5e9' : '#111827' }}>Interfeys tili</p>
-                  <p className="text-xs" style={{ color: theme === 'dark' ? '#6b7280' : '#9ca3af' }}>O'zbek tili</p>
+                <ChevronRight className="w-5 h-5 text-gray-300" />
+              </button>
+              <div className="h-px bg-gray-100 mx-4" />
+              <button className="w-full flex items-center justify-between p-4 active:bg-gray-50">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center">
+                    <Shield className="w-4 h-4 text-purple-600" />
+                  </div>
+                  <div className="text-left">
+                    <p className="text-sm font-medium text-gray-900">Maxfiylik siyosati</p>
+                    <p className="text-xs text-gray-400">Shaxsiy ma'lumotlar himoyasi</p>
+                  </div>
                 </div>
-              </div>
-              <ChevronRight className="w-5 h-5" style={{ color: theme === 'dark' ? '#6b7280' : '#9ca3af' }} />
-            </div>
-
-            {/* Privacy */}
-            <div className="rounded-2xl p-4 flex items-center justify-between" style={{ background: theme === 'dark' ? '#1a1f1a' : '#ffffff', border: `1px solid ${theme === 'dark' ? 'rgba(195,255,46,0.08)' : '#e5e7eb'}` }}>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: theme === 'dark' ? 'rgba(195,255,46,0.08)' : '#f3f4f6' }}>
-                  <Shield className="w-5 h-5" style={{ color: theme === 'dark' ? '#c3ff2e' : '#6366f1' }} />
-                </div>
-                <div>
-                  <p className="font-medium text-sm" style={{ color: theme === 'dark' ? '#e8f5e9' : '#111827' }}>Maxfiylik siyosati</p>
-                  <p className="text-xs" style={{ color: theme === 'dark' ? '#6b7280' : '#9ca3af' }}>Shaxsiy ma'lumotlar himoyasi</p>
-                </div>
-              </div>
-              <ChevronRight className="w-5 h-5" style={{ color: theme === 'dark' ? '#6b7280' : '#9ca3af' }} />
+                <ChevronRight className="w-5 h-5 text-gray-300" />
+              </button>
             </div>
 
             {/* Delete Account */}
-            <button className="w-full rounded-2xl p-4 flex items-center justify-center gap-2 active:scale-[0.98]" style={{ background: theme === 'dark' ? 'rgba(239,68,68,0.1)' : '#fef2f2', border: `1px solid ${theme === 'dark' ? 'rgba(239,68,68,0.2)' : '#fecaca'}` }} onClick={() => { if (window.confirm('Akkauntni o\'chirmoqchimisiz?')) { logout(); setShowAccountSettings(false); } }}>
-              <Trash2 className="w-4 h-4" style={{ color: '#ef4444' }} />
-              <span className="text-sm font-medium" style={{ color: '#ef4444' }}>Akkauntni o'chirish</span>
+            <button className="w-full rounded-2xl p-4 flex items-center justify-center gap-2 bg-red-50 border border-red-100 active:scale-[0.98]" onClick={() => { if (window.confirm('Akkauntni o\'chirmoqchimisiz?')) { logout(); setShowAccountSettings(false); } }}>
+              <Trash2 className="w-4 h-4 text-red-500" />
+              <span className="text-sm font-medium text-red-500">Akkauntni o'chirish</span>
             </button>
 
-            <div className="h-8" />
+            <div className="h-10" />
           </div>
         </div>,
         document.body
