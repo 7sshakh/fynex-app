@@ -309,11 +309,8 @@ export default function LeaderboardPage() {
         </AnimatePresence>
       </motion.div>
 
-      {/* Spacer for sticky bottom rank bar */}
-      <div className="h-20" />
-
-      {/* Sticky rank bar — fixed above bottom nav */}
-      <div className="fixed bottom-[60px] left-0 right-0 z-40 px-4 pb-1">
+      {/* Sticky rank bar — sticks to bottom of scrollable area */}
+      <div style={{ position: 'sticky', bottom: 0, zIndex: 40 }} className="px-4 pb-3 pt-2">
         <div className={`rounded-2xl px-4 py-3 flex items-center justify-between ${
           theme === 'dark'
             ? 'bg-gradient-to-r from-zinc-900 to-zinc-800 border border-lime-300/10 shadow-lg shadow-lime-500/5'

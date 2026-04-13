@@ -56,7 +56,10 @@ function AppContent() {
   const ActivePage = tabComponents[activeTab];
 
   return (
-    <div className={`page-shell relative ${theme === 'dark' ? 'theme-surface-dark' : 'theme-surface-light'}`}>
+    <div
+      className={`relative ${theme === 'dark' ? 'theme-surface-dark' : 'theme-surface-light'}`}
+      style={{ height: '100dvh', display: 'flex', flexDirection: 'column', overflow: 'hidden', overscrollBehavior: 'none' }}
+    >
       {/* Animated Background — absolute, never moves */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <motion.div
@@ -71,12 +74,12 @@ function AppContent() {
         />
       </div>
 
-      {/* Page Content — scrollable */}
-      <div className="relative h-full overflow-y-auto overscroll-none">
+      {/* Page Content — scrollable, takes remaining space */}
+      <div style={{ flex: 1, minHeight: 0, overflow: 'auto', overscrollBehavior: 'none', position: 'relative' }}>
         <ActivePage />
       </div>
 
-      {/* Bottom Navigation */}
+      {/* Bottom Navigation — pinned to bottom via flex */}
       <BottomNav activeTab={activeTab} onTabChange={(tab) => setActiveTab(tab as TabType)} />
     </div>
   );
