@@ -1,0 +1,9 @@
+node_modules/
+.venv/
+__pycache__/
+.env
+fynex.db
+dist/
+.vite/
+*.pyc
+.DS_Store
