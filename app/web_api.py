@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 import os
 import re
+import urllib.parse
+import urllib.request
 from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Any
@@ -216,6 +218,28 @@ class AppAnswerPayload(BaseModel):
 
 class AppScenarioPayload(BaseModel):
     user_id: int
+
+
+class ChatSendPayload(BaseModel):
+    user_name: str
+    user_phone: str
+    message: str
+
+
+_CHAT_STORE_PATH = "/tmp/fynex_chat.json"
+
+
+def _load_chat_store() -> dict:
+    try:
+        with open(_CHAT_STORE_PATH, "r") as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {"messages": {}, "replies": {}}
+
+
+def _save_chat_store(data: dict) -> None:
+    with open(_CHAT_STORE_PATH, "w") as f:
+        json.dump(data, f)
 
 
 def _admin_id() -> int | None:
@@ -1061,5 +1085,83 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
     @app.get("/api/ping")
     async def ping(_: Request) -> dict:
         return {"ok": True}
+
+    @app.post("/api/chat/send")
+    async def chat_send(payload: ChatSendPayload) -> dict:
+        bot_token = os.getenv("BOT_TOKEN", "").strip()
+        admin_id_str = os.getenv("ADMIN_ID", "").strip()
+        if not bot_token or not admin_id_str:
+            raise HTTPException(status_code=500, detail="Bot not configured")
+        text = (
+            f"\U0001f4e9 <b>Yangi xabar</b>\n\n"
+            f"\U0001f464 <b>Ism:</b> {payload.user_name}\n"
+            f"\U0001f4f1 <b>Telefon:</b> {payload.user_phone}\n\n"
+            f"\U0001f4ac {payload.message}"
+        )
+        url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+        data = urllib.parse.urlencode({"chat_id": admin_id_str, "text": text, "parse_mode": "HTML"}).encode()
+        try:
+            req = urllib.request.Request(url, data=data)
+            resp = urllib.request.urlopen(req, timeout=10)
+            result = json.loads(resp.read())
+        except Exception as exc:
+            raise HTTPException(status_code=500, detail=str(exc))
+        if result.get("ok"):
+            msg_id = str(result["result"]["message_id"])
+            store = _load_chat_store()
+            store.setdefault("messages", {})[msg_id] = {"phone": payload.user_phone, "name": payload.user_name}
+            _save_chat_store(store)
+            return {"ok": True, "message_id": msg_id}
+        raise HTTPException(status_code=500, detail="Failed to send message")
+
+    @app.post("/api/chat/webhook")
+    async def chat_webhook(request: Request) -> dict:
+        body = await request.json()
+        message = body.get("message", {})
+        reply_to = message.get("reply_to_message")
+        if not reply_to:
+            return {"ok": True}
+        reply_msg_id = str(reply_to.get("message_id", ""))
+        text = message.get("text", "")
+        if not text:
+            return {"ok": True}
+        store = _load_chat_store()
+        mapping = store.get("messages", {}).get(reply_msg_id)
+        if not mapping:
+            return {"ok": True}
+        phone = mapping["phone"]
+        replies = store.setdefault("replies", {})
+        user_replies = replies.setdefault(phone, [])
+        user_replies.append({"text": text, "time": str(message.get("date", ""))})
+        _save_chat_store(store)
+        return {"ok": True}
+
+    @app.get("/api/chat/poll")
+    async def chat_poll(phone: str = Query(...)) -> dict:
+        store = _load_chat_store()
+        replies = store.get("replies", {}).get(phone, [])
+        if replies:
+            store["replies"][phone] = []
+            _save_chat_store(store)
+        return {"ok": True, "replies": replies}
+
+    @app.post("/api/chat/setup-webhook")
+    async def setup_chat_webhook() -> dict:
+        bot_token = os.getenv("BOT_TOKEN", "").strip()
+        web_url = os.getenv("WEB_APP_URL", "").strip()
+        if not bot_token:
+            raise HTTPException(status_code=500, detail="BOT_TOKEN not set")
+        if not web_url:
+            raise HTTPException(status_code=500, detail="WEB_APP_URL not set")
+        webhook_url = f"{web_url.rstrip('/')}/api/chat/webhook"
+        url = f"https://api.telegram.org/bot{bot_token}/setWebhook"
+        data = urllib.parse.urlencode({"url": webhook_url}).encode()
+        try:
+            req = urllib.request.Request(url, data=data)
+            resp = urllib.request.urlopen(req, timeout=10)
+            result = json.loads(resp.read())
+        except Exception as exc:
+            raise HTTPException(status_code=500, detail=str(exc))
+        return result
 
     return app

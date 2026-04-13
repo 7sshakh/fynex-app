@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import { Home, BookOpen, Trophy, User } from 'lucide-react';
 
 interface BottomNavProps {
@@ -23,47 +22,34 @@ export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
             const isActive = activeTab === tab.id;
 
             return (
-              <motion.button
+              <button
                 key={tab.id}
                 onClick={() => onTabChange(tab.id)}
-                whileTap={{ scale: 0.9 }}
-                className="relative flex flex-col items-center py-2 px-4 rounded-2xl transition-colors"
+                className="relative flex flex-col items-center py-2 px-4 rounded-2xl active:scale-90 transition-transform duration-150"
               >
-                <motion.div
-                  animate={{
-                    scale: isActive ? 1.1 : 1,
-                    y: isActive ? -2 : 0,
-                  }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 20, duration: 0.2 }}
+                <div
+                  className={`transition-transform duration-200 ${isActive ? 'scale-110 -translate-y-0.5' : ''}`}
                 >
                   <Icon
-                    className={`w-6 h-6 transition-colors ${
-                      isActive
-                        ? 'text-indigo-600'
-                        : 'text-gray-400'
+                    className={`w-6 h-6 transition-colors duration-200 ${
+                      isActive ? 'text-indigo-600' : 'text-gray-400'
                     }`}
                     strokeWidth={isActive ? 2.5 : 2}
                   />
-                </motion.div>
+                </div>
 
-                <motion.span
-                  initial={{ opacity: 0, y: -5 }}
-                  animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : -5 }}
-                  transition={{ duration: 0.1 }}
-                  className={`text-xs mt-1 font-medium ${
-                    isActive ? 'text-indigo-600' : 'text-gray-400'
+                <span
+                  className={`text-xs mt-1 font-medium transition-all duration-200 ${
+                    isActive ? 'text-indigo-600 opacity-100' : 'text-gray-400 opacity-0'
                   }`}
                 >
                   {tab.label}
-                </motion.span>
+                </span>
 
                 {isActive && (
-                  <motion.div
-                    layoutId="activeIndicator"
-                    className="absolute -bottom-1 w-12 h-1 bg-indigo-600 rounded-full"
-                  />
+                  <div className="absolute -bottom-1 w-12 h-1 bg-indigo-600 rounded-full" />
                 )}
-              </motion.button>
+              </button>
             );
           })}
         </div>

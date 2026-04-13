@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence, MotionConfig } from 'framer-motion';
+import { motion, MotionConfig } from 'framer-motion';
 import { UserProvider, useUser } from './context/UserContext';
 import LoginPage from './components/LoginPage';
 import BottomNav from './components/BottomNav';
@@ -9,6 +9,13 @@ import LeaderboardPage from './components/LeaderboardPage';
 import ProfilePage from './components/ProfilePage';
 
 type TabType = 'home' | 'courses' | 'leaderboard' | 'profile';
+
+const tabComponents: Record<TabType, React.FC> = {
+  home: HomePage,
+  courses: CoursesPage,
+  leaderboard: LeaderboardPage,
+  profile: ProfilePage,
+};
 
 function AppContent() {
   const { isAuthenticated, theme, animationsEnabled } = useUser();
@@ -46,51 +53,31 @@ function AppContent() {
     return <SplashScreen />;
   }
 
-  const tabs: { id: TabType; component: React.ReactNode }[] = [
-    { id: 'home', component: <HomePage key="home" /> },
-    { id: 'courses', component: <CoursesPage key="courses" /> },
-    { id: 'leaderboard', component: <LeaderboardPage key="leaderboard" /> },
-    { id: 'profile', component: <ProfilePage key="profile" /> },
-  ];
-
-  const currentIndex = tabs.findIndex(t => t.id === activeTab);
+  const ActivePage = tabComponents[activeTab];
+  const noAnim = !animationsEnabled;
 
   return (
-    <MotionConfig reducedMotion={animationsEnabled ? 'never' : 'always'}>
+    <MotionConfig transition={noAnim ? { duration: 0 } : undefined}>
     <div className={`page-shell min-h-screen max-w-md mx-auto relative overflow-hidden ${theme === 'dark' ? 'theme-surface-dark' : 'theme-surface-light'}`}>
       {/* Animated Background */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{ repeat: Infinity, duration: 8 }}
-          className="absolute -top-1/2 -right-1/2 w-full h-full bg-gradient-to-br from-indigo-200/30 to-purple-200/30 rounded-full blur-3xl"
-        />
-        <motion.div
-          animate={{
-            scale: [1.2, 1, 1.2],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{ repeat: Infinity, duration: 10 }}
-          className="absolute -bottom-1/2 -left-1/2 w-full h-full bg-gradient-to-tr from-violet-200/30 to-pink-200/30 rounded-full blur-3xl"
-        />
-      </div>
+      {animationsEnabled && (
+        <div className="fixed inset-0 pointer-events-none overflow-hidden">
+          <motion.div
+            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+            transition={{ repeat: Infinity, duration: 8 }}
+            className="absolute -top-1/2 -right-1/2 w-full h-full bg-gradient-to-br from-indigo-200/30 to-purple-200/30 rounded-full blur-3xl"
+          />
+          <motion.div
+            animate={{ scale: [1.2, 1, 1.2], opacity: [0.3, 0.5, 0.3] }}
+            transition={{ repeat: Infinity, duration: 10 }}
+            className="absolute -bottom-1/2 -left-1/2 w-full h-full bg-gradient-to-tr from-violet-200/30 to-pink-200/30 rounded-full blur-3xl"
+          />
+        </div>
+      )}
 
       {/* Page Content */}
       <div className="relative">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, x: activeTab === tabs[currentIndex - 1]?.id ? 50 : -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: activeTab === tabs[currentIndex + 1]?.id ? 50 : -50 }}
-            transition={{ duration: 0.2, ease: 'easeInOut' }}
-          >
-            {tabs.find(t => t.id === activeTab)?.component}
-          </motion.div>
-        </AnimatePresence>
+        <ActivePage />
       </div>
 
       {/* Bottom Navigation */}
