@@ -24,11 +24,13 @@ function AppContent() {
   const [showSplash, setShowSplash] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Sync html/body background with current theme so any gap matches
+  // HACK: Set html/body bg to EXACTLY match nav bar color
+  // If viewport doesn't reach screen bottom, the gap shows body bg
+  // Making body bg = nav bg = gap becomes invisible
   useEffect(() => {
-    const bg = theme === 'dark' ? '#050605' : '#f0f2ff';
-    document.documentElement.style.background = bg;
-    document.body.style.background = bg;
+    const navBg = theme === 'dark' ? 'rgb(14, 18, 11)' : '#ffffff';
+    document.documentElement.style.background = navBg;
+    document.body.style.background = navBg;
   }, [theme]);
 
   // Reset scroll to top when switching tabs
@@ -72,18 +74,10 @@ function AppContent() {
 
   return (
     <div
-      className={`${theme === 'dark' ? 'theme-surface-dark' : 'theme-surface-light'}`}
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        overflow: 'hidden',
-      }}
+      className={`app-shell ${theme === 'dark' ? 'theme-surface-dark' : 'theme-surface-light'}`}
     >
       {/* Animated Background — absolute, never moves */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
         <motion.div
           animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
           transition={{ repeat: Infinity, duration: 8 }}
@@ -96,26 +90,12 @@ function AppContent() {
         />
       </div>
 
-      {/* Page Content — scrollable, padded at bottom for fixed nav */}
-      <div
-        ref={scrollRef}
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          overflowY: 'auto',
-          overflowX: 'hidden',
-          WebkitOverflowScrolling: 'touch',
-          overscrollBehavior: 'none',
-          paddingBottom: 'calc(72px + var(--safe-area-bottom, 0px))',
-        }}
-      >
+      {/* Page Content — scrollable, takes remaining flex space */}
+      <div ref={scrollRef} className="app-content">
         <ActivePage />
       </div>
 
-      {/* Bottom Navigation — fixed to viewport bottom */}
+      {/* Bottom Navigation — flex child at bottom, NOT fixed */}
       <BottomNav activeTab={activeTab} onTabChange={(tab) => setActiveTab(tab as TabType)} />
     </div>
   );

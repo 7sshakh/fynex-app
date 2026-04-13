@@ -15,15 +15,7 @@ const tabs = [
 
 export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
   return (
-    <div
-      style={{
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        zIndex: 9990,
-      }}
-    >
+    <div className="bottom-nav-wrap">
       <div
         className="bg-white/80 backdrop-blur-xl border-t border-gray-200/50 px-4 py-2 bottom-nav"
       >
@@ -77,6 +69,8 @@ export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
           })}
         </div>
       </div>
+      {/* Colored fill below nav — covers any remaining gap to screen edge */}
+      <div className="bottom-nav-fill" />
     </div>
   );
 }
