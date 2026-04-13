@@ -259,7 +259,7 @@ export default function CoursesPage() {
             </div>
 
             {/* Lessons List */}
-            <div className="flex-1 overflow-y-auto px-6 pt-2 pb-32">
+            <div className="flex-1 min-h-0 overflow-y-auto px-6 pt-2 pb-32" style={{ overscrollBehavior: 'contain' }}>
               <h3 className="font-bold text-gray-900 mb-3">Darslar ro'yxati</h3>
               <div className="space-y-2">
                 {selectedCourseData.lessons.map((lesson, index) => (

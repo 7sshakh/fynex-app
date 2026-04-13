@@ -56,9 +56,9 @@ function AppContent() {
   const ActivePage = tabComponents[activeTab];
 
   return (
-    <div className={`page-shell min-h-screen relative overflow-hidden ${theme === 'dark' ? 'theme-surface-dark' : 'theme-surface-light'}`}>
-      {/* Animated Background */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+    <div className={`page-shell relative ${theme === 'dark' ? 'theme-surface-dark' : 'theme-surface-light'}`}>
+      {/* Animated Background — absolute, never moves */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <motion.div
           animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
           transition={{ repeat: Infinity, duration: 8 }}
@@ -71,8 +71,8 @@ function AppContent() {
         />
       </div>
 
-      {/* Page Content */}
-      <div className="relative">
+      {/* Page Content — scrollable */}
+      <div className="relative h-full overflow-y-auto overscroll-none">
         <ActivePage />
       </div>
 

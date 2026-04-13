@@ -18,8 +18,19 @@
   padding-bottom: max(0.1rem, calc(env(safe-area-inset-bottom) * 0.45));
 }
 
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+  overscroll-behavior: none;
+}
+
 .page-shell {
-  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  overscroll-behavior: none;
 }
 
 .page-content {
