@@ -118,16 +118,7 @@ export const mockCourses: Course[] = [
   }
 ];
 
-export const mockLeaderboard: LeaderboardEntry[] = [
-  { rank: 1, user: { id: '1', name: 'Aziz Karimov', phone: '+998901234567', xp: 0, streak: 0, completedCourses: [], isPro: false, createdAt: '2024-01-15' }, xp: 0, streak: 0 },
-  { rank: 2, user: { id: '2', name: 'Nodira Saidova', phone: '+998931234567', xp: 0, streak: 0, completedCourses: [], isPro: false, createdAt: '2024-02-20' }, xp: 0, streak: 0 },
-  { rank: 3, user: { id: '3', name: 'Bekzod Rustamov', phone: '+998901234568', xp: 0, streak: 0, completedCourses: [], isPro: false, createdAt: '2024-03-10' }, xp: 0, streak: 0 },
-  { rank: 4, user: { id: '4', name: 'Dilnoza Mahmudova', phone: '+998901234569', xp: 0, streak: 0, completedCourses: [], isPro: false, createdAt: '2024-03-15' }, xp: 0, streak: 0 },
-  { rank: 5, user: { id: '5', name: 'Samir Aliyev', phone: '+998901234570', xp: 0, streak: 0, completedCourses: [], isPro: false, createdAt: '2024-04-01' }, xp: 0, streak: 0 },
-  { rank: 6, user: { id: '6', name: 'Kamola Yusupova', phone: '+998901234571', xp: 0, streak: 0, completedCourses: [], isPro: false, createdAt: '2024-04-10' }, xp: 0, streak: 0 },
-  { rank: 7, user: { id: '7', name: 'Jasur Tashkentov', phone: '+998901234572', xp: 0, streak: 0, completedCourses: [], isPro: false, createdAt: '2024-04-15' }, xp: 0, streak: 0 },
-  { rank: 8, user: { id: '8', name: 'Malika Rashidova', phone: '+998901234573', xp: 0, streak: 0, completedCourses: [], isPro: false, createdAt: '2024-04-20' }, xp: 0, streak: 0 },
-];
+export const mockLeaderboard: LeaderboardEntry[] = [];
 
 export const currentUser: User = {
   id: 'current',

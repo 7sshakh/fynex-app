@@ -309,41 +309,33 @@ export default function LeaderboardPage() {
         </AnimatePresence>
       </motion.div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6 }}
-        className="px-6 mt-6"
-      >
-        <div className={`rounded-3xl p-5 shadow-xl relative overflow-hidden ${
+      {/* Spacer for sticky bottom rank bar */}
+      <div className="h-20" />
+
+      {/* Sticky rank bar — fixed above bottom nav */}
+      <div className="fixed bottom-[60px] left-0 right-0 z-40 px-4 pb-1">
+        <div className={`rounded-2xl px-4 py-3 flex items-center justify-between ${
           theme === 'dark'
-            ? 'bg-gradient-to-br from-black via-zinc-950 to-lime-500/60 shadow-lime-500/10'
-            : 'bg-gradient-to-br from-indigo-600 to-violet-600 shadow-indigo-200/50'
+            ? 'bg-gradient-to-r from-zinc-900 to-zinc-800 border border-lime-300/10 shadow-lg shadow-lime-500/5'
+            : 'bg-gradient-to-r from-indigo-600 to-violet-600 shadow-lg shadow-indigo-200/50'
         }`}>
-          <div className={`absolute top-0 right-0 w-32 h-32 rounded-full -translate-y-1/2 translate-x-1/2 ${
-            theme === 'dark' ? 'bg-lime-300/10' : 'bg-white/10'
-          }`} />
-
-          <div className="relative flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${
-                theme === 'dark' ? 'bg-lime-300/20' : 'bg-white/20'
-              }`}>
-                <Trophy className={`w-7 h-7 ${theme === 'dark' ? 'text-lime-300' : 'text-white'}`} />
-              </div>
-              <div>
-                <p className={`${theme === 'dark' ? 'text-lime-200/80' : 'text-white/80'} text-sm`}>Sizning o'rningiz</p>
-                <p className={`${theme === 'dark' ? 'text-white' : 'text-white'} text-2xl font-bold`}>#{currentUserRank ?? '-'}</p>
-              </div>
+          <div className="flex items-center gap-3">
+            <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${
+              theme === 'dark' ? 'bg-lime-300/15' : 'bg-white/20'
+            }`}>
+              <Trophy className={`w-4 h-4 ${theme === 'dark' ? 'text-lime-300' : 'text-white'}`} />
             </div>
-
-            <div className="text-right">
-              <p className={`${theme === 'dark' ? 'text-lime-200/80' : 'text-white/80'} text-sm`}>Jami XP</p>
-              <p className={`${theme === 'dark' ? 'text-lime-300' : 'text-white'} text-xl font-bold`}>{user?.xp.toLocaleString() || 0}</p>
+            <div>
+              <p className={`text-[10px] ${theme === 'dark' ? 'text-lime-200/70' : 'text-white/70'}`}>Sizning o'rningiz</p>
+              <p className={`text-base font-bold ${theme === 'dark' ? 'text-white' : 'text-white'}`}>#{currentUserRank ?? '-'}</p>
             </div>
           </div>
+          <div className="text-right">
+            <p className={`text-[10px] ${theme === 'dark' ? 'text-lime-200/70' : 'text-white/70'}`}>Jami XP</p>
+            <p className={`text-base font-bold ${theme === 'dark' ? 'text-lime-300' : 'text-white'}`}>{user?.xp.toLocaleString() || 0}</p>
+          </div>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }

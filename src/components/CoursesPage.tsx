@@ -4,7 +4,7 @@ import { mockCourses, categories } from '../data/mockData';
 import { useUser } from '../context/UserContext';
 import { 
   Globe, Calculator, Atom, Code, Sparkles, Lock, 
-  Play, Check 
+  Play, Check, LockKeyhole 
 } from 'lucide-react';
 import LessonPlayer from './LessonPlayer';
 import { lessonSteps } from '../data/lessonContent';
@@ -276,51 +276,60 @@ export default function CoursesPage() {
             <div className="flex-1 min-h-0 overflow-y-auto px-6 pt-2 pb-32" style={{ overscrollBehavior: 'contain' }}>
               <h3 className="font-bold text-gray-900 mb-3">Darslar ro'yxati</h3>
               <div className="space-y-2">
-                {selectedCourseData.lessons.map((lesson, index) => (
-                  <motion.div
-                    key={lesson.id}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05 }}
-                    className={`flex items-center justify-between p-4 rounded-2xl border ${
-                      lesson.completed || startedLessons.includes(lesson.id)
-                        ? 'bg-emerald-50 border-emerald-200'
-                        : 'bg-white border-gray-100'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                        lesson.completed || startedLessons.includes(lesson.id) ? 'bg-emerald-500' : 'bg-gray-100'
-                      }`}>
-                        {lesson.completed || startedLessons.includes(lesson.id) ? (
-                          <Check className="w-5 h-5 text-white" />
-                        ) : (
-                          <span className="text-sm font-bold text-gray-500">{index + 1}</span>
-                        )}
+                {selectedCourseData.lessons.map((lesson, index) => {
+                  const isDone = lesson.completed || startedLessons.includes(lesson.id);
+                  const prevDone = index === 0 || selectedCourseData.lessons[index - 1].completed || startedLessons.includes(selectedCourseData.lessons[index - 1].id);
+                  const isLocked = !isDone && !prevDone;
+                  return (
+                    <motion.div
+                      key={lesson.id}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                      className={`flex items-center justify-between p-4 rounded-2xl border ${
+                        isDone
+                          ? 'bg-emerald-50 border-emerald-200'
+                          : isLocked
+                            ? 'bg-gray-50 border-gray-100 opacity-60'
+                            : 'bg-white border-gray-100'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                          isDone ? 'bg-emerald-500' : isLocked ? 'bg-gray-200' : 'bg-gray-100'
+                        }`}>
+                          {isDone ? (
+                            <Check className="w-5 h-5 text-white" />
+                          ) : isLocked ? (
+                            <LockKeyhole className="w-4 h-4 text-gray-400" />
+                          ) : (
+                            <span className="text-sm font-bold text-gray-500">{index + 1}</span>
+                          )}
+                        </div>
+                        <div>
+                          <p className={`font-medium ${isDone ? 'text-emerald-700' : isLocked ? 'text-gray-400' : 'text-gray-900'}`}>
+                            {lesson.title}
+                          </p>
+                          <p className="text-xs text-gray-400">{lesson.duration} daqiqa</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className={`font-medium ${lesson.completed || startedLessons.includes(lesson.id) ? 'text-emerald-700' : 'text-gray-900'}`}>
-                          {lesson.title}
-                        </p>
-                        <p className="text-xs text-gray-400">{lesson.duration} daqiqa</p>
-                      </div>
-                    </div>
-                    {!(lesson.completed || startedLessons.includes(lesson.id)) && (
-                      <motion.button
-                        whileTap={{ scale: 0.9 }}
-                        onClick={() => startLesson(selectedCourseData.id, lesson.id)}
-                        className="w-10 h-10 rounded-xl bg-indigo-100 flex items-center justify-center"
-                      >
-                        <Play className="w-5 h-5 text-indigo-600 ml-0.5" />
-                      </motion.button>
-                    )}
-                  </motion.div>
-                ))}
+                      {!isDone && !isLocked && (
+                        <motion.button
+                          whileTap={{ scale: 0.9 }}
+                          onClick={() => startLesson(selectedCourseData.id, lesson.id)}
+                          className="w-10 h-10 rounded-xl bg-indigo-100 flex items-center justify-center"
+                        >
+                          <Play className="w-5 h-5 text-indigo-600 ml-0.5" />
+                        </motion.button>
+                      )}
+                    </motion.div>
+                  );
+                })}
               </div>
             </div>
 
             {/* Fixed Bottom Button */}
-            <div className="absolute bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-gray-100 px-6 pt-4 pb-safe">
+            <div className="absolute bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-gray-100 px-6 pt-4" style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom, 1rem))' }}>
               <motion.button
                 whileTap={{ scale: 0.98 }}
                 onClick={startCourse}

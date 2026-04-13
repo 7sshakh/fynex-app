@@ -1,10 +1,17 @@
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useUser } from '../context/UserContext';
-import { Flame, Zap, Trophy, BookOpen, ChevronRight, Target, Gift } from 'lucide-react';
+import { Flame, Zap, Trophy, BookOpen, ChevronRight, Target, Bell, Gift } from 'lucide-react';
 import { dailyChallenges } from '../data/mockData';
 
 export default function HomePage() {
   const { user } = useUser();
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [notifications] = useState<{id: string; text: string; type: 'gift'|'info'|'achievement'}[]>([
+    // Add notifications here when needed, e.g.:
+    // { id: '1', text: '7 kunlik Pro obuna sovg\'a!', type: 'gift' },
+  ]);
+  const hasNotification = notifications.length > 0;
   const openCourses = () => {
     window.dispatchEvent(new CustomEvent('fynex:navigate', { detail: 'courses' }));
   };
@@ -49,15 +56,20 @@ export default function HomePage() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="relative"
+            onClick={() => setShowNotifications(true)}
           >
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-200">
-              <Gift className="w-6 h-6 text-white" />
+            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg ${hasNotification ? 'bg-gradient-to-br from-amber-400 to-orange-500 shadow-amber-200' : 'bg-gray-100 shadow-gray-200/50'}`}>
+              {hasNotification ? <Gift className="w-6 h-6 text-white" /> : <Bell className={`w-6 h-6 ${hasNotification ? 'text-white' : 'text-gray-500'}`} />}
             </div>
-            <motion.div
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ repeat: Infinity, duration: 2 }}
-              className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"
-            />
+            {hasNotification && (
+              <motion.div
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ repeat: Infinity, duration: 2 }}
+                className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white flex items-center justify-center"
+              >
+                <span className="text-[8px] text-white font-bold">{notifications.length}</span>
+              </motion.div>
+            )}
           </motion.div>
         </div>
       </motion.header>
@@ -249,6 +261,46 @@ export default function HomePage() {
           </div>
         </motion.div>
       </motion.div>
+
+      {/* Notifications Panel */}
+      <AnimatePresence>
+        {showNotifications && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm"
+            onClick={() => setShowNotifications(false)}
+          >
+            <motion.div
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -20, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="mx-6 mt-24 bg-white rounded-3xl shadow-2xl p-5 max-h-[60vh] overflow-y-auto"
+            >
+              <h3 className="font-bold text-gray-900 text-lg mb-3">Bildirishnomalar</h3>
+              {notifications.length === 0 ? (
+                <div className="text-center py-8">
+                  <Bell className="w-10 h-10 text-gray-300 mx-auto mb-3" />
+                  <p className="text-gray-400 text-sm">Hozircha bildirishnomalar yo'q</p>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {notifications.map((n) => (
+                    <div key={n.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-2xl">
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${n.type === 'gift' ? 'bg-amber-100' : n.type === 'achievement' ? 'bg-emerald-100' : 'bg-blue-100'}`}>
+                        {n.type === 'gift' ? <Gift className="w-5 h-5 text-amber-600" /> : <Bell className="w-5 h-5 text-blue-600" />}
+                      </div>
+                      <p className="text-sm text-gray-700 flex-1">{n.text}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }

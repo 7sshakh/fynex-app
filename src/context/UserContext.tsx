@@ -11,6 +11,9 @@ interface UserContextType {
   updateStreak: () => void;
   togglePro: () => void;
   completeCourse: (courseId: string) => void;
+  updateName: (name: string) => void;
+  updatePhone: (phone: string) => void;
+  updateEmail: (email: string) => void;
   theme: 'light' | 'dark';
   toggleTheme: () => void;
   notificationsEnabled: boolean;
@@ -107,6 +110,18 @@ export function UserProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const updateName = (name: string) => {
+    if (user) setUser({ ...user, name });
+  };
+
+  const updatePhone = (phone: string) => {
+    if (user) setUser({ ...user, phone });
+  };
+
+  const updateEmail = (email: string) => {
+    if (user) setUser({ ...user, email });
+  };
+
   const toggleTheme = () => {
     setTheme((current) => (current === 'light' ? 'dark' : 'light'));
   };
@@ -131,6 +146,9 @@ export function UserProvider({ children }: { children: ReactNode }) {
         updateStreak,
         togglePro,
         completeCourse,
+        updateName,
+        updatePhone,
+        updateEmail,
         theme,
         toggleTheme,
         notificationsEnabled,

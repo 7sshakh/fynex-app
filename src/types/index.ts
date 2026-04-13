@@ -3,6 +3,7 @@ export interface User {
   name: string;
   phone: string;
   avatar?: string;
+  email?: string;
   xp: number;
   streak: number;
   completedCourses: string[];

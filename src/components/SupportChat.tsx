@@ -8,6 +8,7 @@ interface Message {
   text: string;
   isBot: boolean;
   time: string;
+  isSupport?: boolean;
 }
 
 function getTime() {
@@ -21,7 +22,7 @@ interface SupportChatProps {
 }
 
 const STORAGE_KEY = 'fynex_chat_messages';
-const DEFAULT_MSG: Message = { id: '1', text: "Salom! Fynex AI yordamchisiga xush kelibsiz. Savolingizni yozing — AI avtomatik javob beradi. Agar kerak bo'lsa, admin ham ulanadi.", isBot: true, time: getTime() };
+const DEFAULT_MSG: Message = { id: '1', text: "Salom! Fynex qo'llab-quvvatlash xizmatiga xush kelibsiz. Ilova bilan bog'liq savollaringizni yozing — biz yordam beramiz.", isBot: true, time: getTime() };
 
 function loadMessages(): Message[] {
   try {
@@ -98,7 +99,7 @@ export default function SupportChat({ isOpen, onClose }: SupportChatProps) {
       const data = await res.json();
       if (data.ok && data.replies && data.replies.length > 0) {
         const newMsgs: Message[] = data.replies.map((r: { text: string }, i: number) => ({
-          id: `reply-${Date.now()}-${i}`, text: `👨‍💼 Admin: ${r.text}`, isBot: true, time: getTime(),
+          id: `reply-${Date.now()}-${i}`, text: r.text, isBot: true, time: getTime(), isSupport: true,
         }));
         setMessages(prev => [...prev, ...newMsgs]);
       }
@@ -138,9 +139,9 @@ export default function SupportChat({ isOpen, onClose }: SupportChatProps) {
       setMessages(prev => prev.filter(m => m.id !== typingMsg.id));
 
       if (data.ok && data.ai_response) {
-        setMessages(prev => [...prev, { id: `ai-${Date.now()}`, text: `🤖 ${data.ai_response}`, isBot: true, time: getTime() }]);
+        setMessages(prev => [...prev, { id: `ai-${Date.now()}`, text: data.ai_response, isBot: true, time: getTime() }]);
       } else if (data.escalated) {
-        setMessages(prev => [...prev, { id: `esc-${Date.now()}`, text: "Xabaringiz adminga yuborildi. Tez orada javob beradi. ⏳", isBot: true, time: getTime() }]);
+        setMessages(prev => [...prev, { id: `esc-${Date.now()}`, text: "Bu savolingizga javob bera olmayman. Savolingizni adminga yubordim — tez orada javob beradi.", isBot: true, time: getTime() }]);
       } else {
         setMessages(prev => [...prev, { id: `e-${Date.now()}`, text: "Xabar yuborilmadi. Qayta urinib ko'ring.", isBot: true, time: getTime() }]);
       }
@@ -185,7 +186,8 @@ export default function SupportChat({ isOpen, onClose }: SupportChatProps) {
       {/* Messages */}
       <div className="flex-1 min-h-0 overflow-y-auto px-4 py-4 space-y-3" style={{ backgroundColor: t.msgBg, overscrollBehavior: 'contain' }}>
         {messages.map((msg) => (
-          <div key={msg.id} className={`flex ${msg.isBot ? 'justify-start' : 'justify-end'}`}>
+          <div key={msg.id} className={`flex flex-col ${msg.isBot ? 'items-start' : 'items-end'}`}>
+            {msg.isSupport && <span className="text-[10px] font-bold uppercase tracking-wider mb-1 ml-1" style={{ color: t.accent }}>Support</span>}
             <div
               className="max-w-[80%] px-4 py-2.5 rounded-2xl"
               style={msg.isBot

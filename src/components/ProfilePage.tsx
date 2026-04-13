@@ -1,18 +1,54 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useUser } from '../context/UserContext';
 import { 
   Settings, Bell, Globe, LogOut, Crown, Check,
-  Zap, BookOpen, Flame, ChevronRight,
-  Shield, Download, Headphones, Sparkles
+  Zap, BookOpen, Flame, ChevronRight, ArrowLeft,
+  Shield, Download, Headphones, Sparkles, User, Mail, Phone, Pen, Trash2, Languages
 } from 'lucide-react';
 import SupportChat from './SupportChat';
 
 export default function ProfilePage() {
-  const { user, logout, togglePro, theme, toggleTheme, notificationsEnabled, toggleNotifications, offlineEnabled, toggleOffline } = useUser();
+  const { user, logout, togglePro, theme, toggleTheme, notificationsEnabled, toggleNotifications, offlineEnabled, toggleOffline, updateName, updatePhone, updateEmail } = useUser();
   const [showProModal, setShowProModal] = useState(false);
   const [showSupportChat, setShowSupportChat] = useState(false);
+  const [showAccountSettings, setShowAccountSettings] = useState(false);
   const settingsRef = useRef<HTMLDivElement | null>(null);
+
+  // Account settings state
+  const [editName, setEditName] = useState('');
+  const [editPhone, setEditPhone] = useState('');
+  const [editEmail, setEditEmail] = useState('');
+  const [phoneCode, setPhoneCode] = useState('');
+  const [emailCode, setEmailCode] = useState('');
+  const [phoneStep, setPhoneStep] = useState<'edit'|'verify'>('edit');
+  const [emailStep, setEmailStep] = useState<'edit'|'verify'>('edit');
+  const [nameSaved, setNameSaved] = useState(false);
+  const [phoneSaved, setPhoneSaved] = useState(false);
+  const [emailSaved, setEmailSaved] = useState(false);
+
+  const openAccountSettings = () => {
+    setEditName(user?.name || '');
+    setEditPhone(user?.phone || '');
+    setEditEmail(user?.email || '');
+    setPhoneStep('edit'); setEmailStep('edit');
+    setPhoneCode(''); setEmailCode('');
+    setNameSaved(false); setPhoneSaved(false); setEmailSaved(false);
+    setShowAccountSettings(true);
+  };
+
+  const saveName = () => {
+    if (editName.trim()) { updateName(editName.trim()); setNameSaved(true); setTimeout(() => setNameSaved(false), 2000); }
+  };
+  const sendPhoneCode = () => { setPhoneStep('verify'); };
+  const verifyPhone = () => {
+    if (phoneCode.length >= 4) { updatePhone(editPhone); setPhoneSaved(true); setPhoneStep('edit'); setTimeout(() => setPhoneSaved(false), 2000); }
+  };
+  const sendEmailCode = () => { setEmailStep('verify'); };
+  const verifyEmail = () => {
+    if (emailCode.length >= 4) { updateEmail(editEmail); setEmailSaved(true); setEmailStep('edit'); setTimeout(() => setEmailSaved(false), 2000); }
+  };
 
   const settingsItems = useMemo(() => ([
     { icon: Bell, label: 'Bildirishnomalar', hasToggle: true, value: notificationsEnabled, onClick: toggleNotifications },
@@ -95,7 +131,7 @@ export default function ProfilePage() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => settingsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+              onClick={openAccountSettings}
               className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center"
             >
               <Settings className="w-5 h-5 text-gray-500" />
@@ -263,7 +299,7 @@ export default function ProfilePage() {
               </div>
 
               {/* Content */}
-              <div className="px-6 pb-10 overflow-y-auto max-h-[85vh]">
+              <div className="px-6 pb-safe overflow-y-auto max-h-[85vh]" style={{ paddingBottom: 'max(2.5rem, env(safe-area-inset-bottom, 2.5rem))' }}>
                 {/* Header */}
                 <div className="text-center mb-6">
                   <motion.div
@@ -334,6 +370,116 @@ export default function ProfilePage() {
       </AnimatePresence>
 
       <SupportChat isOpen={showSupportChat} onClose={() => setShowSupportChat(false)} />
+
+      {/* Account Settings Fullscreen */}
+      {showAccountSettings && createPortal(
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 9999, background: theme === 'dark' ? '#0a0d09' : '#f8fafc', display: 'flex', flexDirection: 'column', height: '100dvh' }}>
+          {/* Header */}
+          <div style={{ paddingTop: 48, flexShrink: 0, borderBottom: `1px solid ${theme === 'dark' ? 'rgba(195,255,46,0.1)' : '#e5e7eb'}`, background: theme === 'dark' ? 'rgba(15,18,16,0.95)' : '#ffffff', backdropFilter: 'blur(12px)' }} className="px-4 pb-3">
+            <div className="flex items-center gap-3">
+              <button onClick={() => setShowAccountSettings(false)} className="w-10 h-10 rounded-xl flex items-center justify-center active:scale-95" style={{ background: theme === 'dark' ? 'rgba(195,255,46,0.08)' : '#f3f4f6' }}>
+                <ArrowLeft className="w-5 h-5" style={{ color: theme === 'dark' ? '#c3ff2e' : '#4b5563' }} />
+              </button>
+              <h1 className="font-bold text-lg" style={{ color: theme === 'dark' ? '#f0f0f0' : '#111827' }}>Akkaunt sozlamalari</h1>
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className="flex-1 overflow-y-auto px-5 py-5 space-y-5" style={{ overscrollBehavior: 'contain' }}>
+            {/* Name */}
+            <div className="rounded-2xl p-4" style={{ background: theme === 'dark' ? '#1a1f1a' : '#ffffff', border: `1px solid ${theme === 'dark' ? 'rgba(195,255,46,0.08)' : '#e5e7eb'}` }}>
+              <div className="flex items-center gap-2 mb-3">
+                <User className="w-4 h-4" style={{ color: theme === 'dark' ? '#c3ff2e' : '#6366f1' }} />
+                <span className="text-xs font-bold uppercase tracking-wider" style={{ color: theme === 'dark' ? '#c3ff2e' : '#6366f1' }}>Ism</span>
+                {nameSaved && <span className="text-xs text-emerald-500 font-medium ml-auto">✓ Saqlandi</span>}
+              </div>
+              <div className="flex gap-2">
+                <input value={editName} onChange={e => setEditName(e.target.value)} className="flex-1 rounded-xl px-3 py-2.5 text-sm outline-none" style={{ background: theme === 'dark' ? '#0a0d09' : '#f3f4f6', color: theme === 'dark' ? '#e8f5e9' : '#111827', border: `1px solid ${theme === 'dark' ? 'rgba(195,255,46,0.1)' : '#e5e7eb'}` }} placeholder="Ismingiz" />
+                <button onClick={saveName} className="px-4 py-2.5 rounded-xl text-sm font-medium active:scale-95" style={{ background: theme === 'dark' ? '#c3ff2e' : '#4f46e5', color: theme === 'dark' ? '#0a0d09' : '#fff' }}>Saqlash</button>
+              </div>
+            </div>
+
+            {/* Phone */}
+            <div className="rounded-2xl p-4" style={{ background: theme === 'dark' ? '#1a1f1a' : '#ffffff', border: `1px solid ${theme === 'dark' ? 'rgba(195,255,46,0.08)' : '#e5e7eb'}` }}>
+              <div className="flex items-center gap-2 mb-3">
+                <Phone className="w-4 h-4" style={{ color: theme === 'dark' ? '#c3ff2e' : '#6366f1' }} />
+                <span className="text-xs font-bold uppercase tracking-wider" style={{ color: theme === 'dark' ? '#c3ff2e' : '#6366f1' }}>Telefon raqam</span>
+                {phoneSaved && <span className="text-xs text-emerald-500 font-medium ml-auto">✓ O'zgartirildi</span>}
+              </div>
+              {phoneStep === 'edit' ? (
+                <div className="flex gap-2">
+                  <input value={editPhone} onChange={e => setEditPhone(e.target.value)} className="flex-1 rounded-xl px-3 py-2.5 text-sm outline-none" style={{ background: theme === 'dark' ? '#0a0d09' : '#f3f4f6', color: theme === 'dark' ? '#e8f5e9' : '#111827', border: `1px solid ${theme === 'dark' ? 'rgba(195,255,46,0.1)' : '#e5e7eb'}` }} placeholder="+998 XX XXX XX XX" />
+                  <button onClick={sendPhoneCode} disabled={editPhone === user?.phone} className="px-4 py-2.5 rounded-xl text-sm font-medium active:scale-95 disabled:opacity-40" style={{ background: theme === 'dark' ? '#c3ff2e' : '#4f46e5', color: theme === 'dark' ? '#0a0d09' : '#fff' }}>Kod yuborish</button>
+                </div>
+              ) : (
+                <div className="flex gap-2">
+                  <input value={phoneCode} onChange={e => setPhoneCode(e.target.value)} maxLength={6} className="flex-1 rounded-xl px-3 py-2.5 text-sm text-center tracking-[0.5em] outline-none" style={{ background: theme === 'dark' ? '#0a0d09' : '#f3f4f6', color: theme === 'dark' ? '#e8f5e9' : '#111827', border: `1px solid ${theme === 'dark' ? 'rgba(195,255,46,0.1)' : '#e5e7eb'}` }} placeholder="● ● ● ●" />
+                  <button onClick={verifyPhone} className="px-4 py-2.5 rounded-xl text-sm font-medium active:scale-95" style={{ background: theme === 'dark' ? '#c3ff2e' : '#4f46e5', color: theme === 'dark' ? '#0a0d09' : '#fff' }}>Tasdiqlash</button>
+                </div>
+              )}
+              <p className="text-[11px] mt-2" style={{ color: theme === 'dark' ? '#6b7280' : '#9ca3af' }}>SMS kod orqali tasdiqlanadi</p>
+            </div>
+
+            {/* Email */}
+            <div className="rounded-2xl p-4" style={{ background: theme === 'dark' ? '#1a1f1a' : '#ffffff', border: `1px solid ${theme === 'dark' ? 'rgba(195,255,46,0.08)' : '#e5e7eb'}` }}>
+              <div className="flex items-center gap-2 mb-3">
+                <Mail className="w-4 h-4" style={{ color: theme === 'dark' ? '#c3ff2e' : '#6366f1' }} />
+                <span className="text-xs font-bold uppercase tracking-wider" style={{ color: theme === 'dark' ? '#c3ff2e' : '#6366f1' }}>Elektron pochta</span>
+                {emailSaved && <span className="text-xs text-emerald-500 font-medium ml-auto">✓ Qo'shildi</span>}
+              </div>
+              {emailStep === 'edit' ? (
+                <div className="flex gap-2">
+                  <input value={editEmail} onChange={e => setEditEmail(e.target.value)} type="email" className="flex-1 rounded-xl px-3 py-2.5 text-sm outline-none" style={{ background: theme === 'dark' ? '#0a0d09' : '#f3f4f6', color: theme === 'dark' ? '#e8f5e9' : '#111827', border: `1px solid ${theme === 'dark' ? 'rgba(195,255,46,0.1)' : '#e5e7eb'}` }} placeholder="email@example.com" />
+                  <button onClick={sendEmailCode} disabled={!editEmail.includes('@')} className="px-4 py-2.5 rounded-xl text-sm font-medium active:scale-95 disabled:opacity-40" style={{ background: theme === 'dark' ? '#c3ff2e' : '#4f46e5', color: theme === 'dark' ? '#0a0d09' : '#fff' }}>Kod yuborish</button>
+                </div>
+              ) : (
+                <div className="flex gap-2">
+                  <input value={emailCode} onChange={e => setEmailCode(e.target.value)} maxLength={6} className="flex-1 rounded-xl px-3 py-2.5 text-sm text-center tracking-[0.5em] outline-none" style={{ background: theme === 'dark' ? '#0a0d09' : '#f3f4f6', color: theme === 'dark' ? '#e8f5e9' : '#111827', border: `1px solid ${theme === 'dark' ? 'rgba(195,255,46,0.1)' : '#e5e7eb'}` }} placeholder="● ● ● ●" />
+                  <button onClick={verifyEmail} className="px-4 py-2.5 rounded-xl text-sm font-medium active:scale-95" style={{ background: theme === 'dark' ? '#c3ff2e' : '#4f46e5', color: theme === 'dark' ? '#0a0d09' : '#fff' }}>Tasdiqlash</button>
+                </div>
+              )}
+              <p className="text-[11px] mt-2" style={{ color: theme === 'dark' ? '#6b7280' : '#9ca3af' }}>Emailga tasdiqlash kodi yuboriladi</p>
+            </div>
+
+            {/* Language */}
+            <div className="rounded-2xl p-4 flex items-center justify-between" style={{ background: theme === 'dark' ? '#1a1f1a' : '#ffffff', border: `1px solid ${theme === 'dark' ? 'rgba(195,255,46,0.08)' : '#e5e7eb'}` }}>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: theme === 'dark' ? 'rgba(195,255,46,0.08)' : '#f3f4f6' }}>
+                  <Languages className="w-5 h-5" style={{ color: theme === 'dark' ? '#c3ff2e' : '#6366f1' }} />
+                </div>
+                <div>
+                  <p className="font-medium text-sm" style={{ color: theme === 'dark' ? '#e8f5e9' : '#111827' }}>Interfeys tili</p>
+                  <p className="text-xs" style={{ color: theme === 'dark' ? '#6b7280' : '#9ca3af' }}>O'zbek tili</p>
+                </div>
+              </div>
+              <ChevronRight className="w-5 h-5" style={{ color: theme === 'dark' ? '#6b7280' : '#9ca3af' }} />
+            </div>
+
+            {/* Privacy */}
+            <div className="rounded-2xl p-4 flex items-center justify-between" style={{ background: theme === 'dark' ? '#1a1f1a' : '#ffffff', border: `1px solid ${theme === 'dark' ? 'rgba(195,255,46,0.08)' : '#e5e7eb'}` }}>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: theme === 'dark' ? 'rgba(195,255,46,0.08)' : '#f3f4f6' }}>
+                  <Shield className="w-5 h-5" style={{ color: theme === 'dark' ? '#c3ff2e' : '#6366f1' }} />
+                </div>
+                <div>
+                  <p className="font-medium text-sm" style={{ color: theme === 'dark' ? '#e8f5e9' : '#111827' }}>Maxfiylik siyosati</p>
+                  <p className="text-xs" style={{ color: theme === 'dark' ? '#6b7280' : '#9ca3af' }}>Shaxsiy ma'lumotlar himoyasi</p>
+                </div>
+              </div>
+              <ChevronRight className="w-5 h-5" style={{ color: theme === 'dark' ? '#6b7280' : '#9ca3af' }} />
+            </div>
+
+            {/* Delete Account */}
+            <button className="w-full rounded-2xl p-4 flex items-center justify-center gap-2 active:scale-[0.98]" style={{ background: theme === 'dark' ? 'rgba(239,68,68,0.1)' : '#fef2f2', border: `1px solid ${theme === 'dark' ? 'rgba(239,68,68,0.2)' : '#fecaca'}` }} onClick={() => { if (window.confirm('Akkauntni o\'chirmoqchimisiz?')) { logout(); setShowAccountSettings(false); } }}>
+              <Trash2 className="w-4 h-4" style={{ color: '#ef4444' }} />
+              <span className="text-sm font-medium" style={{ color: '#ef4444' }}>Akkauntni o'chirish</span>
+            </button>
+
+            <div className="h-8" />
+          </div>
+        </div>,
+        document.body
+      )}
     </div>
   );
 }
