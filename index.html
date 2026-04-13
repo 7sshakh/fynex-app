@@ -64,15 +64,6 @@
         display: none;
       }
       
-      /* Disable animations when .animations-disabled class is present */
-      .animations-disabled *,
-      .animations-disabled *::before,
-      .animations-disabled *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-      
       /* Loading screen */
       #loading-screen {
         position: fixed;
@@ -203,11 +194,6 @@
         window.Telegram.WebApp.enableClosingConfirmation();
       }
       
-      // Check for animations setting
-      const animationsDisabled = localStorage.getItem('fynex_animations') === 'false';
-      if (animationsDisabled) {
-        document.documentElement.classList.add('animations-disabled');
-      }
     </script>
   </body>
 </html>

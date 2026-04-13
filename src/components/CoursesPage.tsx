@@ -207,132 +207,115 @@ export default function CoursesPage() {
         </AnimatePresence>
       </motion.div>
 
-      {/* Course Detail Modal */}
+      {/* Course Detail Fullscreen */}
       <AnimatePresence>
         {selectedCourse && selectedCourseData && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
-            onClick={() => setSelectedCourse(null)}
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 40 }}
+            transition={{ type: 'spring', damping: 28, stiffness: 300 }}
+            className="fixed inset-0 z-50 bg-white flex flex-col overflow-hidden"
           >
-            <motion.div
-              initial={{ y: '100%' }}
-              animate={{ y: 0 }}
-              exit={{ y: '100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 300, duration: 0.2 }}
-              drag="y"
-              dragConstraints={{ top: 0, bottom: 0 }}
-              dragElastic={{ top: 0, bottom: 0.5 }}
-              onClick={(e) => e.stopPropagation()}
-              className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl max-h-[85vh] overflow-hidden"
-            >
-              {/* Handle */}
-              <div className="flex justify-center py-3">
-                <div className="w-10 h-1 bg-gray-300 rounded-full" />
+            {/* Hero Header */}
+            <div className={`relative w-full pt-12 pb-6 px-6 bg-gradient-to-br ${selectedCourseData.color}`}>
+              <div className="absolute top-0 right-0 w-48 h-48 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
+              <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2" />
+
+              <button
+                onClick={() => setSelectedCourse(null)}
+                className="relative z-10 w-10 h-10 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center mb-4"
+              >
+                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
+              </button>
+
+              <div className="relative z-10 flex items-center gap-4">
+                <div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center">
+                  {(() => { const Icon = getIcon(selectedCourseData.category); return <Icon className="w-9 h-9 text-white" />; })()}
+                </div>
+                <div className="flex-1">
+                  <h2 className="text-2xl font-bold text-white mb-1">{selectedCourseData.title}</h2>
+                  <p className="text-white/80 text-sm">{selectedCourseData.description}</p>
+                </div>
               </div>
+            </div>
 
-              {/* Content */}
-              <div className="px-6 pb-36 overflow-y-auto max-h-[80vh] overscroll-contain">
-                {/* Hero */}
-                <div className={`w-full h-32 rounded-2xl bg-gradient-to-br ${selectedCourseData.color} flex items-center justify-center mb-6 relative overflow-hidden`}>
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-                  {(() => {
-                    const Icon = getIcon(selectedCourseData.category);
-                    return <Icon className="w-16 h-16 text-white/90" />;
-                  })()}
+            {/* Stats */}
+            <div className="px-6 -mt-0 pt-4 pb-2">
+              <div className="grid grid-cols-3 gap-3">
+                <div className="bg-gray-50 rounded-2xl p-3 text-center">
+                  <p className="text-2xl font-bold text-indigo-600">{selectedCourseData.lessons.length}</p>
+                  <p className="text-xs text-gray-500">Darslar</p>
                 </div>
-
-                {/* Info */}
-                <div className="flex items-start justify-between mb-4">
-                  <div>
-                    <h2 className="text-2xl font-bold text-gray-900 mb-1">{selectedCourseData.title}</h2>
-                    <p className="text-gray-500">{selectedCourseData.description}</p>
-                  </div>
-                  {selectedCourseData.isPro && !user?.isPro && (
-                    <span className="px-3 py-1 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full text-white text-sm font-medium">
-                      PRO
-                    </span>
-                  )}
+                <div className="bg-gray-50 rounded-2xl p-3 text-center">
+                  <p className="text-2xl font-bold text-amber-500">+{selectedCourseData.totalXp}</p>
+                  <p className="text-xs text-gray-500">XP</p>
                 </div>
-
-                {/* Stats */}
-                <div className="grid grid-cols-3 gap-3 mb-6">
-                  <div className="bg-gray-50 rounded-2xl p-3 text-center">
-                    <p className="text-2xl font-bold text-indigo-600">{selectedCourseData.lessons.length}</p>
-                    <p className="text-xs text-gray-500">Darslar</p>
-                  </div>
-                  <div className="bg-gray-50 rounded-2xl p-3 text-center">
-                    <p className="text-2xl font-bold text-amber-500">+{selectedCourseData.totalXp}</p>
-                    <p className="text-xs text-gray-500">XP</p>
-                  </div>
-                  <div className="bg-gray-50 rounded-2xl p-3 text-center">
-                    <p className="text-2xl font-bold text-emerald-500">{selectedCourseProgress}%</p>
-                    <p className="text-xs text-gray-500">Tugallangan</p>
-                  </div>
+                <div className="bg-gray-50 rounded-2xl p-3 text-center">
+                  <p className="text-2xl font-bold text-emerald-500">{selectedCourseProgress}%</p>
+                  <p className="text-xs text-gray-500">Tugallangan</p>
                 </div>
+              </div>
+            </div>
 
-                {/* Lessons */}
-                <div className="mb-6">
-                  <h3 className="font-bold text-gray-900 mb-3">Darslar ro'yxati</h3>
-                  <div className="space-y-2">
-                    {selectedCourseData.lessons.map((lesson, index) => (
-                      <motion.div
-                        key={lesson.id}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.05 }}
-                        className={`flex items-center justify-between p-4 rounded-2xl border ${
-                          lesson.completed
-                            ? 'bg-emerald-50 border-emerald-200'
-                            : 'bg-white border-gray-100'
-                        }`}
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${
-                            lesson.completed ? 'bg-emerald-500' : 'bg-gray-100'
-                          }`}>
-                            {lesson.completed ? (
-                              <Check className="w-4 h-4 text-white" />
-                            ) : (
-                              <span className="text-sm font-medium text-gray-500">{index + 1}</span>
-                            )}
-                          </div>
-                          <div>
-                            <p className={`font-medium ${lesson.completed ? 'text-emerald-700' : 'text-gray-900'}`}>
-                              {lesson.title}
-                            </p>
-                            <p className="text-xs text-gray-400">{lesson.duration} daqiqa</p>
-                          </div>
-                        </div>
-                        {!lesson.completed && (
-                          <button
-                            onClick={() => startLesson(selectedCourseData.id, lesson.id)}
-                            className="w-8 h-8 rounded-xl bg-indigo-100 flex items-center justify-center"
-                          >
-                            <Play className="w-4 h-4 text-indigo-600 ml-0.5" />
-                          </button>
-                        )}
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Start Button */}
-                <div className="sticky bottom-0 left-0 right-0 bg-white pt-4 pb-6">
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={startCourse}
-                    className="w-full bg-indigo-600 text-white font-semibold py-4 rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-indigo-200"
+            {/* Lessons List */}
+            <div className="flex-1 overflow-y-auto px-6 pt-2 pb-32">
+              <h3 className="font-bold text-gray-900 mb-3">Darslar ro'yxati</h3>
+              <div className="space-y-2">
+                {selectedCourseData.lessons.map((lesson, index) => (
+                  <motion.div
+                    key={lesson.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                    className={`flex items-center justify-between p-4 rounded-2xl border ${
+                      lesson.completed || startedLessons.includes(lesson.id)
+                        ? 'bg-emerald-50 border-emerald-200'
+                        : 'bg-white border-gray-100'
+                    }`}
                   >
-                    <Play className="w-5 h-5" />
-                    Darsni boshlash
-                  </motion.button>
-                </div>
+                    <div className="flex items-center gap-3">
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                        lesson.completed || startedLessons.includes(lesson.id) ? 'bg-emerald-500' : 'bg-gray-100'
+                      }`}>
+                        {lesson.completed || startedLessons.includes(lesson.id) ? (
+                          <Check className="w-5 h-5 text-white" />
+                        ) : (
+                          <span className="text-sm font-bold text-gray-500">{index + 1}</span>
+                        )}
+                      </div>
+                      <div>
+                        <p className={`font-medium ${lesson.completed || startedLessons.includes(lesson.id) ? 'text-emerald-700' : 'text-gray-900'}`}>
+                          {lesson.title}
+                        </p>
+                        <p className="text-xs text-gray-400">{lesson.duration} daqiqa</p>
+                      </div>
+                    </div>
+                    {!(lesson.completed || startedLessons.includes(lesson.id)) && (
+                      <motion.button
+                        whileTap={{ scale: 0.9 }}
+                        onClick={() => startLesson(selectedCourseData.id, lesson.id)}
+                        className="w-10 h-10 rounded-xl bg-indigo-100 flex items-center justify-center"
+                      >
+                        <Play className="w-5 h-5 text-indigo-600 ml-0.5" />
+                      </motion.button>
+                    )}
+                  </motion.div>
+                ))}
               </div>
-            </motion.div>
+            </div>
+
+            {/* Fixed Bottom Button */}
+            <div className="absolute bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-gray-100 px-6 pt-4 pb-safe">
+              <motion.button
+                whileTap={{ scale: 0.98 }}
+                onClick={startCourse}
+                className="w-full bg-indigo-600 text-white font-semibold py-4 rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-indigo-200"
+              >
+                <Play className="w-5 h-5" />
+                Darsni boshlash
+              </motion.button>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

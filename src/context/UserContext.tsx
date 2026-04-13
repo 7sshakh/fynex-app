@@ -17,8 +17,6 @@ interface UserContextType {
   toggleNotifications: () => void;
   offlineEnabled: boolean;
   toggleOffline: () => void;
-  animationsEnabled: boolean;
-  toggleAnimations: () => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -28,7 +26,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [offlineEnabled, setOfflineEnabled] = useState(false);
-  const [animationsEnabled, setAnimationsEnabled] = useState(true);
 
   useEffect(() => {
     const stored = localStorage.getItem('fynex_user');
@@ -46,10 +43,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
     }
     if (storedOffline) {
       setOfflineEnabled(storedOffline === 'true');
-    }
-    const storedAnimations = localStorage.getItem('fynex_animations');
-    if (storedAnimations) {
-      setAnimationsEnabled(storedAnimations === 'true');
     }
   }, []);
 
@@ -72,10 +65,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('fynex_offline', String(offlineEnabled));
   }, [offlineEnabled]);
 
-  useEffect(() => {
-    localStorage.setItem('fynex_animations', String(animationsEnabled));
-    document.documentElement.classList.toggle('animations-disabled', !animationsEnabled);
-  }, [animationsEnabled]);
 
   const login = (phone: string, name: string) => {
     const newUser: User = {
@@ -130,9 +119,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
     setOfflineEnabled((current) => !current);
   };
 
-  const toggleAnimations = () => {
-    setAnimationsEnabled((current) => !current);
-  };
 
   return (
     <UserContext.Provider
@@ -151,8 +137,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
         toggleNotifications,
         offlineEnabled,
         toggleOffline,
-        animationsEnabled,
-        toggleAnimations,
       }}
     >
       {children}

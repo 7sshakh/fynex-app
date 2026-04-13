@@ -3,13 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useUser } from '../context/UserContext';
 import { 
   Settings, Bell, Globe, LogOut, Crown, Check,
-  Zap, BookOpen, Flame, ChevronRight, Sparkles,
-  Shield, Download, Headphones
+  Zap, BookOpen, Flame, ChevronRight,
+  Shield, Download, Headphones, Sparkles
 } from 'lucide-react';
 import SupportChat from './SupportChat';
 
 export default function ProfilePage() {
-  const { user, logout, togglePro, theme, toggleTheme, notificationsEnabled, toggleNotifications, offlineEnabled, toggleOffline, animationsEnabled, toggleAnimations } = useUser();
+  const { user, logout, togglePro, theme, toggleTheme, notificationsEnabled, toggleNotifications, offlineEnabled, toggleOffline } = useUser();
   const [showProModal, setShowProModal] = useState(false);
   const [showSupportChat, setShowSupportChat] = useState(false);
   const settingsRef = useRef<HTMLDivElement | null>(null);
@@ -18,10 +18,9 @@ export default function ProfilePage() {
     { icon: Bell, label: 'Bildirishnomalar', hasToggle: true, value: notificationsEnabled, onClick: toggleNotifications },
     { icon: Globe, label: 'Dark mode', hasToggle: true, value: theme === 'dark', onClick: toggleTheme },
     { icon: Download, label: 'Offline yuklab olish', hasToggle: true, value: offlineEnabled, onClick: toggleOffline },
-    { icon: Sparkles, label: 'Animatsiyalar', hasToggle: true, value: animationsEnabled, onClick: toggleAnimations },
     { icon: Headphones, label: 'Qo\'llab quvvatlash', value: 'Online chat', onClick: () => setShowSupportChat(true) },
     { icon: Shield, label: 'Maxfiylik siyosati', value: 'Ko\'rish', onClick: () => window.alert('Maxfiylik siyosati keyingi yangilanishda batafsil ulanadi.') },
-  ]), [notificationsEnabled, offlineEnabled, theme, animationsEnabled, toggleNotifications, toggleOffline, toggleTheme, toggleAnimations]);
+  ]), [notificationsEnabled, offlineEnabled, theme, toggleNotifications, toggleOffline, toggleTheme]);
 
   const proBenefits = [
     'Barcha kurslar ochiq',

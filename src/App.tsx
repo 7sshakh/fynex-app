@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion, MotionConfig } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { UserProvider, useUser } from './context/UserContext';
 import LoginPage from './components/LoginPage';
 import BottomNav from './components/BottomNav';
@@ -18,7 +18,7 @@ const tabComponents: Record<TabType, React.FC> = {
 };
 
 function AppContent() {
-  const { isAuthenticated, theme, animationsEnabled } = useUser();
+  const { isAuthenticated, theme } = useUser();
   const [activeTab, setActiveTab] = useState<TabType>('home');
   const [isLoading, setIsLoading] = useState(true);
   const [showSplash, setShowSplash] = useState(true);
@@ -54,26 +54,22 @@ function AppContent() {
   }
 
   const ActivePage = tabComponents[activeTab];
-  const noAnim = !animationsEnabled;
 
   return (
-    <MotionConfig transition={noAnim ? { duration: 0 } : undefined}>
-    <div className={`page-shell min-h-screen max-w-md mx-auto relative overflow-hidden ${theme === 'dark' ? 'theme-surface-dark' : 'theme-surface-light'}`}>
+    <div className={`page-shell min-h-screen relative overflow-hidden ${theme === 'dark' ? 'theme-surface-dark' : 'theme-surface-light'}`}>
       {/* Animated Background */}
-      {animationsEnabled && (
-        <div className="fixed inset-0 pointer-events-none overflow-hidden">
-          <motion.div
-            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-            transition={{ repeat: Infinity, duration: 8 }}
-            className="absolute -top-1/2 -right-1/2 w-full h-full bg-gradient-to-br from-indigo-200/30 to-purple-200/30 rounded-full blur-3xl"
-          />
-          <motion.div
-            animate={{ scale: [1.2, 1, 1.2], opacity: [0.3, 0.5, 0.3] }}
-            transition={{ repeat: Infinity, duration: 10 }}
-            className="absolute -bottom-1/2 -left-1/2 w-full h-full bg-gradient-to-tr from-violet-200/30 to-pink-200/30 rounded-full blur-3xl"
-          />
-        </div>
-      )}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <motion.div
+          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+          transition={{ repeat: Infinity, duration: 8 }}
+          className="absolute -top-1/2 -right-1/2 w-full h-full bg-gradient-to-br from-indigo-200/30 to-purple-200/30 rounded-full blur-3xl"
+        />
+        <motion.div
+          animate={{ scale: [1.2, 1, 1.2], opacity: [0.3, 0.5, 0.3] }}
+          transition={{ repeat: Infinity, duration: 10 }}
+          className="absolute -bottom-1/2 -left-1/2 w-full h-full bg-gradient-to-tr from-violet-200/30 to-pink-200/30 rounded-full blur-3xl"
+        />
+      </div>
 
       {/* Page Content */}
       <div className="relative">
@@ -83,7 +79,6 @@ function AppContent() {
       {/* Bottom Navigation */}
       <BottomNav activeTab={activeTab} onTabChange={(tab) => setActiveTab(tab as TabType)} />
     </div>
-    </MotionConfig>
   );
 }
 

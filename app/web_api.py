@@ -1093,10 +1093,13 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
         if not bot_token or not admin_id_str:
             raise HTTPException(status_code=500, detail="Bot not configured")
         text = (
-            f"\U0001f4e9 <b>Yangi xabar</b>\n\n"
-            f"\U0001f464 <b>Ism:</b> {payload.user_name}\n"
-            f"\U0001f4f1 <b>Telefon:</b> {payload.user_phone}\n\n"
-            f"\U0001f4ac {payload.message}"
+            f"\U0001f4e9 <b>SUPPORT XABAR</b>\n"
+            f"\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\n"
+            f"\U0001f464 <b>{payload.user_name}</b>\n"
+            f"\U0001f4f1 <code>{payload.user_phone}</code>\n"
+            f"\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\n\n"
+            f"\U0001f4ac {payload.message}\n\n"
+            f"\U000026a1 <i>Bu xabarga REPLY qiling javob berish uchun</i>"
         )
         url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
         data = urllib.parse.urlencode({"chat_id": admin_id_str, "text": text, "parse_mode": "HTML"}).encode()
