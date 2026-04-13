@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Home, BookOpen, Trophy, User, Settings } from 'lucide-react';
+import { Home, BookOpen, Trophy, Settings } from 'lucide-react';
 
 interface BottomNavProps {
   activeTab: string;

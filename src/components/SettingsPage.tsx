@@ -1,5 +1,5 @@
 import { useUser } from '../context/UserContext';
-import { Moon, Bell, WifiOff, Palette, MessageCircle, LogOut, ChevronRight } from 'lucide-react';
+import { Bell, WifiOff, Palette, MessageCircle, LogOut, ChevronRight } from 'lucide-react';
 import { cn } from '../utils/cn';
 import { motion } from 'framer-motion';
 

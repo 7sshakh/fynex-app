@@ -9,7 +9,7 @@ import LeaderboardPage from './components/LeaderboardPage';
 import SettingsPage from './components/SettingsPage';
 import ProfilePage from './components/ProfilePage';
 
-type TabType = 'home' | 'courses' | 'leaderboard' | 'profile';
+type TabType = 'home' | 'courses' | 'leaderboard' | 'profile' | 'settings';
 
 function AppContent() {
   const { isAuthenticated, theme } = useUser();

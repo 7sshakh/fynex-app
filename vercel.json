@@ -3,13 +3,13 @@
   "builds": [
     { "src": "api/index.py", "use": "@vercel/python" },
     {
-      "src": "fynex1/package.json",
+      "src": "package.json",
       "use": "@vercel/static-build",
       "config": { "distDir": "dist" }
     }
   ],
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/index.py" },
-    { "src": "/(.*)", "dest": "/fynex1/index.html" }
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }

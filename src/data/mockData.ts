@@ -4,7 +4,7 @@ export const mockCourses: Course[] = [
   {
     id: '1',
     title: 'Ingliz Tili Beginner',
-    description: 'Ingliz tilining asosiy so'z va grammatik qoidalarini o'rganing',
+    description: "Ingliz tilining asosiy so\u2018z va grammatik qoidalarini o\u2018rganing",
     category: 'english',
     color: 'from-blue-500 to-cyan-400',
     isPro: false,
@@ -20,7 +20,7 @@ export const mockCourses: Course[] = [
   {
     id: '2',
     title: 'Ingliz Tili Intermediate',
-    description: 'Murakkabroq grammatika va muloqot ko'nikmalarini rivojlantiring',
+    description: "Murakkabroq grammatika va muloqot ko\u2018nikmalarini rivojlantiring",
     category: 'english',
     color: 'from-blue-600 to-indigo-500',
     isPro: true,
@@ -34,21 +34,21 @@ export const mockCourses: Course[] = [
   {
     id: '3',
     title: 'Rus Tili Beginner',
-    description: 'Rus tilining asoslari: alfavit va birinchi so'zlar',
+    description: "Rus tilining asoslari: alfavit va birinchi so\u2018zlar",
     category: 'russian',
     color: 'from-red-500 to-pink-400',
     isPro: false,
     totalXp: 450,
     lessons: [
       { id: '3-1', title: 'Kirill alfaviti', duration: 30, completed: false },
-      { id: '3-2', title: 'Birinchi so'zlar', duration: 25, completed: false },
+      { id: '3-2', title: "Birinchi so\u2018zlar", duration: 25, completed: false },
       { id: '3-3', title: 'Soni va paytdosh', duration: 30, completed: false },
     ]
   },
   {
     id: '4',
     title: 'Matematika Asoslari',
-    description: 'Algebra, geometriya va arifmetikaning asosiy tushunchalari',
+    description: "Algebra, geometriya va arifmetikaning asosiy tushunchalari",
     category: 'math',
     color: 'from-emerald-500 to-teal-400',
     isPro: false,
@@ -63,7 +63,7 @@ export const mockCourses: Course[] = [
   {
     id: '5',
     title: 'Fizika Fundamental',
-    description: 'Fizikaning asosiy qonunlari va formulalari',
+    description: "Fizikaning asosiy qonunlari va formulalari",
     category: 'physics',
     color: 'from-purple-500 to-violet-400',
     isPro: false,
@@ -77,13 +77,13 @@ export const mockCourses: Course[] = [
   {
     id: '6',
     title: 'Dasturlash Asoslari',
-    description: 'Python bilan dasturlashga birinchi qadamlar',
+    description: "Python bilan dasturlashga birinchi qadamlar",
     category: 'programming',
     color: 'from-amber-500 to-orange-400',
     isPro: true,
     totalXp: 1000,
     lessons: [
-      { id: '6-1', title: 'O'zgaruvchilar', duration: 30, completed: false },
+      { id: '6-1', title: "O\u2018zgaruvchilar", duration: 30, completed: false },
       { id: '6-2', title: 'Shartli operatorlar', duration: 35, completed: false },
       { id: '6-3', title: 'Sikllar', duration: 40, completed: false },
       { id: '6-4', title: 'Funksiyalar', duration: 45, completed: false },
@@ -92,7 +92,7 @@ export const mockCourses: Course[] = [
   {
     id: '7',
     title: 'Rus Tili Advanced',
-    description: 'Murakkab grammatika va adabiy til ko'nikmalari',
+    description: "Murakkab grammatika va adabiy til ko\u2018nikmalari",
     category: 'russian',
     color: 'from-red-600 to-rose-500',
     isPro: true,
@@ -105,7 +105,7 @@ export const mockCourses: Course[] = [
   {
     id: '8',
     title: 'Matematika Advanced',
-    description: 'Funksiyalar, logarifmlar va trigonometriya',
+    description: "Funksiyalar, logarifmlar va trigonometriya",
     category: 'math',
     color: 'from-emerald-600 to-green-500',
     isPro: true,
@@ -143,8 +143,8 @@ export const currentUser: User = {
 
 export const dailyChallenges: DailyChallenge[] = [
   { id: '1', title: '2 ta dars tugatng', xp: 50, completed: false },
-  { id: '2', title: '5 ta so'z yodlang', xp: 25, completed: false },
-  { id: '3', title: 'Bugungi streak'ni saqlang', xp: 30, completed: false },
+  { id: '2', title: "5 ta so\u2018z yodlang", xp: 25, completed: false },
+  { id: '3', title: "Bugungi streak\u2018ni saqlang", xp: 30, completed: false },
 ];
 
 export const categories = [
