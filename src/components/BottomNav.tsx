@@ -15,8 +15,8 @@ const tabs = [
 
 export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
   return (
-    <div style={{ flexShrink: 0 }}>
-      <div className="bg-white/80 backdrop-blur-xl border-t border-gray-200/50 px-4 py-2 nav-safe">
+    <div style={{ flexShrink: 0, position: 'relative' }}>
+      <div className="bg-white/80 backdrop-blur-xl border-t border-gray-200/50 px-4 py-2" style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom, 8px))' }}>
         <div className="flex justify-around items-center">
           {tabs.map((tab) => {
             const Icon = tab.icon;
@@ -67,6 +67,8 @@ export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
           })}
         </div>
       </div>
+      {/* APPROACH 4: Color extension below nav to cover any viewport gap */}
+      <div className="bg-white/80" style={{ height: 100, marginBottom: -100 }} />
     </div>
   );
 }

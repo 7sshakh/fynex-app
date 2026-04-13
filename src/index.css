@@ -18,16 +18,52 @@
   padding-bottom: max(0.1rem, calc(env(safe-area-inset-bottom) * 0.45));
 }
 
-html, body {
+/* === APPROACH 1: Background color on html/body so gap is invisible === */
+html {
   margin: 0;
   padding: 0;
+  background: #f0f2ff; /* light mode match */
   height: 100%;
+  height: -webkit-fill-available;
   overflow: hidden;
   overscroll-behavior: none;
 }
 
+body {
+  margin: 0;
+  padding: 0;
+  background: #f0f2ff; /* light mode match - overridden by JS for dark */
+  height: 100%;
+  height: -webkit-fill-available;
+  overflow: hidden;
+  overscroll-behavior: none;
+  /* APPROACH 2: min-height with all possible viewport units */
+  min-height: 100vh;
+  min-height: 100dvh;
+  min-height: 100svh;
+  min-height: -webkit-fill-available;
+}
+
 #root {
   height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  min-height: -webkit-fill-available;
+  position: relative;
+  overflow: hidden;
+}
+
+/* APPROACH 5: Pseudo-element covers any remaining gap at bottom */
+#root::after {
+  content: '';
+  position: fixed;
+  bottom: -100px;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background: inherit;
+  z-index: 9989;
+  pointer-events: none;
 }
 
 .page-content {

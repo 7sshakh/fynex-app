@@ -24,6 +24,14 @@ function AppContent() {
   const [showSplash, setShowSplash] = useState(true);
   const [appHeight, setAppHeight] = useState(window.innerHeight);
 
+  // APPROACH 1: Sync html/body background with current theme
+  useEffect(() => {
+    const bg = theme === 'dark' ? '#050605' : '#f0f2ff';
+    document.documentElement.style.background = bg;
+    document.body.style.background = bg;
+  }, [theme]);
+
+  // APPROACH 3: Dynamic window.innerHeight
   useEffect(() => {
     const updateHeight = () => setAppHeight(window.innerHeight);
     window.addEventListener('resize', updateHeight);
@@ -32,8 +40,10 @@ function AppContent() {
     if (tg) {
       tg.onEvent?.('viewportChanged', updateHeight);
     }
-    // Run once after a small delay to ensure correct value
-    setTimeout(updateHeight, 100);
+    // Multiple delayed checks to catch late viewport changes
+    setTimeout(updateHeight, 50);
+    setTimeout(updateHeight, 150);
+    setTimeout(updateHeight, 500);
     return () => {
       window.removeEventListener('resize', updateHeight);
       window.removeEventListener('orientationchange', updateHeight);
@@ -76,7 +86,16 @@ function AppContent() {
   return (
     <div
       className={`relative ${theme === 'dark' ? 'theme-surface-dark' : 'theme-surface-light'}`}
-      style={{ height: appHeight + 'px', display: 'flex', flexDirection: 'column', overflow: 'hidden', overscrollBehavior: 'none' }}
+      style={{
+        /* APPROACH 2+3: Multiple height strategies */
+        height: appHeight + 'px',
+        minHeight: '100vh',
+        minHeight: '100dvh',
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        overscrollBehavior: 'none',
+      } as React.CSSProperties}
     >
       {/* Animated Background — absolute, never moves */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -109,8 +128,13 @@ function SplashScreen() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 flex items-center justify-center overflow-hidden"
+      className="flex items-center justify-center overflow-hidden"
       style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
         background:
           'radial-gradient(circle at bottom, rgba(193, 255, 46, 0.26), transparent 28%), linear-gradient(180deg, #060706 0%, #0a0d09 58%, #14180c 100%)',
       }}
