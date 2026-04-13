@@ -69,8 +69,6 @@ export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
           })}
         </div>
       </div>
-      {/* Colored fill below nav — covers any remaining gap to screen edge */}
-      <div className="bottom-nav-fill" />
     </div>
   );
 }

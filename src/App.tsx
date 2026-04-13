@@ -24,13 +24,19 @@ function AppContent() {
   const [showSplash, setShowSplash] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // HACK: Set html/body bg to EXACTLY match nav bar color
-  // If viewport doesn't reach screen bottom, the gap shows body bg
-  // Making body bg = nav bg = gap becomes invisible
+  // Detect environment: Telegram Web App vs Browser/PWA
   useEffect(() => {
-    const navBg = theme === 'dark' ? 'rgb(14, 18, 11)' : '#ffffff';
-    document.documentElement.style.background = navBg;
-    document.body.style.background = navBg;
+    const tg = (window as any).Telegram?.WebApp;
+    const isTWA = !!(tg && tg.initData && tg.initData.length > 0);
+    document.documentElement.classList.remove('twa-mode', 'pwa-mode');
+    document.documentElement.classList.add(isTWA ? 'twa-mode' : 'pwa-mode');
+  }, []);
+
+  // Sync body bg with theme
+  useEffect(() => {
+    const bg = theme === 'dark' ? '#050605' : '#f0f2ff';
+    document.documentElement.style.background = bg;
+    document.body.style.background = bg;
   }, [theme]);
 
   // Reset scroll to top when switching tabs
