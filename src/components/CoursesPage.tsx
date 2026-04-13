@@ -6,12 +6,15 @@ import {
   Globe, Calculator, Atom, Code, Sparkles, Lock, 
   Play, Check 
 } from 'lucide-react';
+import LessonPlayer from './LessonPlayer';
+import { lessonSteps } from '../data/lessonContent';
 
 export default function CoursesPage() {
   const { user, updateXp, completeCourse } = useUser();
   const [activeCategory, setActiveCategory] = useState('all');
   const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
   const [startedLessons, setStartedLessons] = useState<string[]>([]);
+  const [activeLesson, setActiveLesson] = useState<{ id: string; title: string; courseId: string } | null>(null);
 
   const filteredCourses = activeCategory === 'all'
     ? mockCourses
@@ -54,12 +57,23 @@ export default function CoursesPage() {
   }, [selectedCourse]);
 
   const startLesson = (courseId: string, lessonId: string) => {
-    if (!startedLessons.includes(lessonId)) {
-      setStartedLessons((current) => [...current, lessonId]);
+    const course = mockCourses.find(c => c.id === courseId);
+    const lesson = course?.lessons.find(l => l.id === lessonId);
+    if (lesson) {
+      setActiveLesson({ id: lessonId, title: lesson.title, courseId });
+    }
+  };
+
+  const handleLessonComplete = () => {
+    if (!activeLesson) return;
+    if (!startedLessons.includes(activeLesson.id)) {
+      setStartedLessons((current) => [...current, activeLesson.id]);
       updateXp(10);
     }
-    if (getCourseProgress(courseId) >= 100) {
-      completeCourse(courseId);
+    const course = mockCourses.find(c => c.id === activeLesson.courseId);
+    if (course) {
+      const completed = course.lessons.filter(l => l.completed || [...startedLessons, activeLesson.id].includes(l.id)).length;
+      if (completed >= course.lessons.length) completeCourse(activeLesson.courseId);
     }
   };
 
@@ -319,6 +333,15 @@ export default function CoursesPage() {
           </motion.div>
         )}
       </AnimatePresence>
+      {/* Lesson Player */}
+      <LessonPlayer
+        isOpen={!!activeLesson}
+        onClose={() => setActiveLesson(null)}
+        lessonTitle={activeLesson?.title || ''}
+        steps={activeLesson ? (lessonSteps[activeLesson.id] || []) : []}
+        xpReward={10}
+        onComplete={handleLessonComplete}
+      />
     </div>
   );
 }
