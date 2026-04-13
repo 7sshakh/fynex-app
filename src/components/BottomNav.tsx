@@ -27,7 +27,7 @@ export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
       <div
         className="bg-white/80 backdrop-blur-xl border-t border-gray-200/50 px-4 py-2"
         style={{
-          paddingBottom: 'calc(8px + env(safe-area-inset-bottom, 0px))',
+          paddingBottom: 'calc(8px + max(env(safe-area-inset-bottom, 0px), 34px))',
         }}
       >
         <div className="flex justify-around items-center">
