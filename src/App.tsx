@@ -22,6 +22,24 @@ function AppContent() {
   const [activeTab, setActiveTab] = useState<TabType>('home');
   const [isLoading, setIsLoading] = useState(true);
   const [showSplash, setShowSplash] = useState(true);
+  const [appHeight, setAppHeight] = useState(window.innerHeight);
+
+  useEffect(() => {
+    const updateHeight = () => setAppHeight(window.innerHeight);
+    window.addEventListener('resize', updateHeight);
+    window.addEventListener('orientationchange', updateHeight);
+    const tg = (window as any).Telegram?.WebApp;
+    if (tg) {
+      tg.onEvent?.('viewportChanged', updateHeight);
+    }
+    // Run once after a small delay to ensure correct value
+    setTimeout(updateHeight, 100);
+    return () => {
+      window.removeEventListener('resize', updateHeight);
+      window.removeEventListener('orientationchange', updateHeight);
+      if (tg) tg.offEvent?.('viewportChanged', updateHeight);
+    };
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -58,7 +76,7 @@ function AppContent() {
   return (
     <div
       className={`relative ${theme === 'dark' ? 'theme-surface-dark' : 'theme-surface-light'}`}
-      style={{ height: '100dvh', display: 'flex', flexDirection: 'column', overflow: 'hidden', overscrollBehavior: 'none' }}
+      style={{ height: appHeight + 'px', display: 'flex', flexDirection: 'column', overflow: 'hidden', overscrollBehavior: 'none' }}
     >
       {/* Animated Background — absolute, never moves */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">

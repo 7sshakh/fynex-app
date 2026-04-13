@@ -10,7 +10,7 @@ import LessonPlayer from './LessonPlayer';
 import { lessonSteps } from '../data/lessonContent';
 
 export default function CoursesPage() {
-  const { user, updateXp, completeCourse } = useUser();
+  const { user, updateXp, completeCourse, theme } = useUser();
   const [activeCategory, setActiveCategory] = useState('all');
   const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
   const [startedLessons, setStartedLessons] = useState<string[]>([]);
@@ -84,15 +84,15 @@ export default function CoursesPage() {
   };
 
   return (
-    <div className="page-content min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50 pb-24">
+    <div className={`page-content min-h-screen pb-24 ${theme === 'dark' ? 'bg-transparent' : 'bg-gradient-to-br from-slate-50 via-white to-indigo-50'}`}>
       {/* Header */}
       <motion.header 
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="px-6 pt-12 pb-6"
       >
-        <h1 className="text-2xl font-bold text-gray-900 mb-1">Kurslar</h1>
-        <p className="text-gray-500">O'rganishni boshlang</p>
+        <h1 className={`text-2xl font-bold mb-1 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Kurslar</h1>
+        <p className={theme === 'dark' ? 'text-lime-200/60' : 'text-gray-500'}>O'rganishni boshlang</p>
       </motion.header>
 
       {/* Categories */}
@@ -116,8 +116,8 @@ export default function CoursesPage() {
                 whileTap={{ scale: 0.95 }}
                 className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl whitespace-nowrap transition-all ${
                   isActive
-                    ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200'
-                    : 'bg-white text-gray-600 border border-gray-200'
+                    ? theme === 'dark' ? 'bg-lime-400 text-black shadow-lg shadow-lime-500/20' : 'bg-indigo-600 text-white shadow-lg shadow-indigo-200'
+                    : theme === 'dark' ? 'bg-zinc-800/90 text-lime-100/70 border border-lime-300/10' : 'bg-white text-gray-600 border border-gray-200'
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -152,7 +152,9 @@ export default function CoursesPage() {
                 whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => !isLocked && setSelectedCourse(course.id)}
-                className={`relative bg-white rounded-3xl p-5 shadow-sm border border-gray-100 ${
+                className={`relative rounded-3xl p-5 shadow-sm border ${
+                  theme === 'dark' ? 'bg-zinc-900 border-lime-300/8' : 'bg-white border-gray-100'
+                } ${
                   isLocked ? 'opacity-80' : 'cursor-pointer'
                 }`}
               >
@@ -169,21 +171,21 @@ export default function CoursesPage() {
                   {/* Content */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between mb-1">
-                      <h3 className="font-bold text-gray-900 truncate pr-2">{course.title}</h3>
+                      <h3 className={`font-bold truncate pr-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{course.title}</h3>
                       {course.isPro && !user?.isPro && (
                         <span className="px-2 py-0.5 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full text-white text-xs font-medium shrink-0">
                           PRO
                         </span>
                       )}
                     </div>
-                    <p className="text-gray-500 text-sm mb-3 line-clamp-2">{course.description}</p>
+                    <p className={`text-sm mb-3 line-clamp-2 ${theme === 'dark' ? 'text-lime-200/50' : 'text-gray-500'}`}>{course.description}</p>
                     
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <span className="text-xs text-gray-400">
+                        <span className={`text-xs ${theme === 'dark' ? 'text-lime-200/40' : 'text-gray-400'}`}>
                           {completedLessons}/{course.lessons.length} dars
                         </span>
-                        <span className="text-xs text-amber-600 font-medium">
+                        <span className={`text-xs font-medium ${theme === 'dark' ? 'text-lime-400' : 'text-amber-600'}`}>
                           +{course.totalXp} XP
                         </span>
                       </div>
@@ -229,7 +231,7 @@ export default function CoursesPage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 40 }}
             transition={{ type: 'spring', damping: 28, stiffness: 300 }}
-            className="fixed inset-0 z-50 bg-white flex flex-col overflow-hidden"
+            className={`fixed inset-0 z-50 flex flex-col overflow-hidden ${theme === 'dark' ? 'bg-zinc-950' : 'bg-white'}`}
           >
             {/* Hero Header */}
             <div className={`relative w-full pt-12 pb-6 px-6 bg-gradient-to-br ${selectedCourseData.color}`}>
@@ -257,24 +259,24 @@ export default function CoursesPage() {
             {/* Stats */}
             <div className="px-6 -mt-0 pt-4 pb-2">
               <div className="grid grid-cols-3 gap-3">
-                <div className="bg-gray-50 rounded-2xl p-3 text-center">
-                  <p className="text-2xl font-bold text-indigo-600">{selectedCourseData.lessons.length}</p>
-                  <p className="text-xs text-gray-500">Darslar</p>
+                <div className={`rounded-2xl p-3 text-center ${theme === 'dark' ? 'bg-zinc-900' : 'bg-gray-50'}`}>
+                  <p className={`text-2xl font-bold ${theme === 'dark' ? 'text-lime-400' : 'text-indigo-600'}`}>{selectedCourseData.lessons.length}</p>
+                  <p className={`text-xs ${theme === 'dark' ? 'text-lime-200/50' : 'text-gray-500'}`}>Darslar</p>
                 </div>
-                <div className="bg-gray-50 rounded-2xl p-3 text-center">
-                  <p className="text-2xl font-bold text-amber-500">+{selectedCourseData.totalXp}</p>
-                  <p className="text-xs text-gray-500">XP</p>
+                <div className={`rounded-2xl p-3 text-center ${theme === 'dark' ? 'bg-zinc-900' : 'bg-gray-50'}`}>
+                  <p className={`text-2xl font-bold ${theme === 'dark' ? 'text-lime-300' : 'text-amber-500'}`}>+{selectedCourseData.totalXp}</p>
+                  <p className={`text-xs ${theme === 'dark' ? 'text-lime-200/50' : 'text-gray-500'}`}>XP</p>
                 </div>
-                <div className="bg-gray-50 rounded-2xl p-3 text-center">
-                  <p className="text-2xl font-bold text-emerald-500">{selectedCourseProgress}%</p>
-                  <p className="text-xs text-gray-500">Tugallangan</p>
+                <div className={`rounded-2xl p-3 text-center ${theme === 'dark' ? 'bg-zinc-900' : 'bg-gray-50'}`}>
+                  <p className={`text-2xl font-bold ${theme === 'dark' ? 'text-emerald-400' : 'text-emerald-500'}`}>{selectedCourseProgress}%</p>
+                  <p className={`text-xs ${theme === 'dark' ? 'text-lime-200/50' : 'text-gray-500'}`}>Tugallangan</p>
                 </div>
               </div>
             </div>
 
             {/* Lessons List */}
             <div className="flex-1 min-h-0 overflow-y-auto px-6 pt-2 pb-32" style={{ overscrollBehavior: 'contain' }}>
-              <h3 className="font-bold text-gray-900 mb-3">Darslar ro'yxati</h3>
+              <h3 className={`font-bold mb-3 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Darslar ro'yxati</h3>
               <div className="space-y-2">
                 {selectedCourseData.lessons.map((lesson, index) => {
                   const isDone = lesson.completed || startedLessons.includes(lesson.id);
@@ -288,38 +290,38 @@ export default function CoursesPage() {
                       transition={{ delay: index * 0.05 }}
                       className={`flex items-center justify-between p-4 rounded-2xl border ${
                         isDone
-                          ? 'bg-emerald-50 border-emerald-200'
+                          ? theme === 'dark' ? 'bg-emerald-950/60 border-emerald-800/40' : 'bg-emerald-50 border-emerald-200'
                           : isLocked
-                            ? 'bg-gray-50 border-gray-100 opacity-60'
-                            : 'bg-white border-gray-100'
+                            ? theme === 'dark' ? 'bg-zinc-900/80 border-zinc-800 opacity-60' : 'bg-gray-50 border-gray-100 opacity-60'
+                            : theme === 'dark' ? 'bg-zinc-900 border-zinc-800' : 'bg-white border-gray-100'
                       }`}
                     >
                       <div className="flex items-center gap-3">
                         <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                          isDone ? 'bg-emerald-500' : isLocked ? 'bg-gray-200' : 'bg-gray-100'
+                          isDone ? 'bg-emerald-500' : isLocked ? (theme === 'dark' ? 'bg-zinc-700' : 'bg-gray-200') : (theme === 'dark' ? 'bg-zinc-800' : 'bg-gray-100')
                         }`}>
                           {isDone ? (
                             <Check className="w-5 h-5 text-white" />
                           ) : isLocked ? (
                             <LockKeyhole className="w-4 h-4 text-gray-400" />
                           ) : (
-                            <span className="text-sm font-bold text-gray-500">{index + 1}</span>
+                            <span className={`text-sm font-bold ${theme === 'dark' ? 'text-lime-300' : 'text-gray-500'}`}>{index + 1}</span>
                           )}
                         </div>
                         <div>
-                          <p className={`font-medium ${isDone ? 'text-emerald-700' : isLocked ? 'text-gray-400' : 'text-gray-900'}`}>
+                          <p className={`font-medium ${isDone ? (theme === 'dark' ? 'text-emerald-300' : 'text-emerald-700') : isLocked ? (theme === 'dark' ? 'text-zinc-500' : 'text-gray-400') : (theme === 'dark' ? 'text-white' : 'text-gray-900')}`}>
                             {lesson.title}
                           </p>
-                          <p className="text-xs text-gray-400">{lesson.duration} daqiqa</p>
+                          <p className={`text-xs ${theme === 'dark' ? 'text-zinc-500' : 'text-gray-400'}`}>{lesson.duration} daqiqa</p>
                         </div>
                       </div>
                       {!isDone && !isLocked && (
                         <motion.button
                           whileTap={{ scale: 0.9 }}
                           onClick={() => startLesson(selectedCourseData.id, lesson.id)}
-                          className="w-10 h-10 rounded-xl bg-indigo-100 flex items-center justify-center"
+                          className={`w-10 h-10 rounded-xl flex items-center justify-center ${theme === 'dark' ? 'bg-lime-400/15' : 'bg-indigo-100'}`}
                         >
-                          <Play className="w-5 h-5 text-indigo-600 ml-0.5" />
+                          <Play className={`w-5 h-5 ml-0.5 ${theme === 'dark' ? 'text-lime-400' : 'text-indigo-600'}`} />
                         </motion.button>
                       )}
                     </motion.div>
@@ -329,11 +331,11 @@ export default function CoursesPage() {
             </div>
 
             {/* Fixed Bottom Button */}
-            <div className="absolute bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-gray-100 px-6 pt-4" style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom, 1rem))' }}>
+            <div className={`absolute bottom-0 left-0 right-0 backdrop-blur-xl border-t px-6 pt-4 ${theme === 'dark' ? 'bg-zinc-950/90 border-zinc-800' : 'bg-white/90 border-gray-100'}`} style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom, 1rem))' }}>
               <motion.button
                 whileTap={{ scale: 0.98 }}
                 onClick={startCourse}
-                className="w-full bg-indigo-600 text-white font-semibold py-4 rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-indigo-200"
+                className={`w-full font-semibold py-4 rounded-2xl flex items-center justify-center gap-2 shadow-lg ${theme === 'dark' ? 'bg-lime-400 text-black shadow-lime-500/20' : 'bg-indigo-600 text-white shadow-indigo-200'}`}
               >
                 <Play className="w-5 h-5" />
                 Darsni boshlash

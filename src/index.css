@@ -55,15 +55,15 @@ html, body {
 
 .theme-dark .bg-white,
 .theme-dark .bg-white\/80 {
-  background: rgba(14, 18, 11, 0.86) !important;
+  background: rgb(14, 18, 11) !important;
 }
 
 .theme-dark .bg-gray-50 {
-  background: rgba(18, 24, 13, 0.9) !important;
+  background: rgb(18, 24, 13) !important;
 }
 
 .theme-dark .bg-gray-100 {
-  background: rgba(31, 39, 18, 0.88) !important;
+  background: rgb(31, 39, 18) !important;
 }
 
 .theme-dark .border-gray-100,
