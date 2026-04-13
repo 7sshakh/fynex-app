@@ -6,10 +6,12 @@ import {
   Zap, BookOpen, Flame, ChevronRight, Sparkles,
   Shield, Download, Headphones
 } from 'lucide-react';
+import SupportChat from './SupportChat';
 
 export default function ProfilePage() {
   const { user, logout, togglePro, theme, toggleTheme, notificationsEnabled, toggleNotifications, offlineEnabled, toggleOffline, animationsEnabled, toggleAnimations } = useUser();
   const [showProModal, setShowProModal] = useState(false);
+  const [showSupportChat, setShowSupportChat] = useState(false);
   const settingsRef = useRef<HTMLDivElement | null>(null);
 
   const settingsItems = useMemo(() => ([
@@ -17,7 +19,7 @@ export default function ProfilePage() {
     { icon: Globe, label: 'Dark mode', hasToggle: true, value: theme === 'dark', onClick: toggleTheme },
     { icon: Download, label: 'Offline yuklab olish', hasToggle: true, value: offlineEnabled, onClick: toggleOffline },
     { icon: Sparkles, label: 'Animatsiyalar', hasToggle: true, value: animationsEnabled, onClick: toggleAnimations },
-    { icon: Headphones, label: 'Qo\'llab quvvatlash', value: '@fynex_assist', onClick: () => window.open('https://t.me/fynex_assist', '_blank') },
+    { icon: Headphones, label: 'Qo\'llab quvvatlash', value: 'Online chat', onClick: () => setShowSupportChat(true) },
     { icon: Shield, label: 'Maxfiylik siyosati', value: 'Ko\'rish', onClick: () => window.alert('Maxfiylik siyosati keyingi yangilanishda batafsil ulanadi.') },
   ]), [notificationsEnabled, offlineEnabled, theme, animationsEnabled, toggleNotifications, toggleOffline, toggleTheme, toggleAnimations]);
 
@@ -331,6 +333,8 @@ export default function ProfilePage() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <SupportChat isOpen={showSupportChat} onClose={() => setShowSupportChat(false)} />
     </div>
   );
 }

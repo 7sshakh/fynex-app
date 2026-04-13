@@ -119,7 +119,7 @@ export default function HomePage() {
             <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center mb-2">
               <Trophy className="w-5 h-5 text-emerald-600" />
             </div>
-            <p className="text-gray-900 font-bold text-lg">#{3}</p>
+            <p className="text-gray-900 font-bold text-lg">#0</p>
             <p className="text-gray-500 text-xs">Reyting</p>
           </motion.div>
           
@@ -130,7 +130,7 @@ export default function HomePage() {
             <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center mb-2">
               <Target className="w-5 h-5 text-purple-600" />
             </div>
-            <p className="text-gray-900 font-bold text-lg">12</p>
+            <p className="text-gray-900 font-bold text-lg">0</p>
             <p className="text-gray-500 text-xs">Darslar</p>
           </motion.div>
         </div>
@@ -223,18 +223,18 @@ export default function HomePage() {
                 Ingliz Tili
               </span>
               <h3 className="text-white text-xl font-bold mb-1">Ingliz Tili Beginner</h3>
-              <p className="text-white/70 text-sm mb-4">2/5 dars tugallangan</p>
+              <p className="text-white/70 text-sm mb-4">0/5 dars tugallangan</p>
               
               <div className="flex items-center gap-3">
                 <div className="flex-1 h-2 bg-white/20 rounded-full overflow-hidden">
                   <motion.div
                     initial={{ width: 0 }}
-                    animate={{ width: '40%' }}
+                    animate={{ width: '0%' }}
                     transition={{ delay: 0.4, duration: 0.7 }}
                     className="h-full bg-white rounded-full"
                   />
                 </div>
-                <span className="text-white text-sm font-medium">40%</span>
+                <span className="text-white text-sm font-medium">0%</span>
               </div>
             </div>
             

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, MotionConfig } from 'framer-motion';
 import { UserProvider, useUser } from './context/UserContext';
 import LoginPage from './components/LoginPage';
 import BottomNav from './components/BottomNav';
@@ -11,7 +11,7 @@ import ProfilePage from './components/ProfilePage';
 type TabType = 'home' | 'courses' | 'leaderboard' | 'profile';
 
 function AppContent() {
-  const { isAuthenticated, theme } = useUser();
+  const { isAuthenticated, theme, animationsEnabled } = useUser();
   const [activeTab, setActiveTab] = useState<TabType>('home');
   const [isLoading, setIsLoading] = useState(true);
   const [showSplash, setShowSplash] = useState(true);
@@ -56,6 +56,7 @@ function AppContent() {
   const currentIndex = tabs.findIndex(t => t.id === activeTab);
 
   return (
+    <MotionConfig reducedMotion={animationsEnabled ? 'never' : 'always'}>
     <div className={`page-shell min-h-screen max-w-md mx-auto relative overflow-hidden ${theme === 'dark' ? 'theme-surface-dark' : 'theme-surface-light'}`}>
       {/* Animated Background */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
@@ -95,6 +96,7 @@ function AppContent() {
       {/* Bottom Navigation */}
       <BottomNav activeTab={activeTab} onTabChange={(tab) => setActiveTab(tab as TabType)} />
     </div>
+    </MotionConfig>
   );
 }
 
