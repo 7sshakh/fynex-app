@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { UserProvider, useUser } from './context/UserContext';
 import LoginPage from './components/LoginPage';
@@ -22,34 +22,21 @@ function AppContent() {
   const [activeTab, setActiveTab] = useState<TabType>('home');
   const [isLoading, setIsLoading] = useState(true);
   const [showSplash, setShowSplash] = useState(true);
-  const [appHeight, setAppHeight] = useState(window.innerHeight);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
-  // APPROACH 1: Sync html/body background with current theme
+  // Sync html/body background with current theme so any gap matches
   useEffect(() => {
     const bg = theme === 'dark' ? '#050605' : '#f0f2ff';
     document.documentElement.style.background = bg;
     document.body.style.background = bg;
   }, [theme]);
 
-  // APPROACH 3: Dynamic window.innerHeight
+  // Reset scroll to top when switching tabs
   useEffect(() => {
-    const updateHeight = () => setAppHeight(window.innerHeight);
-    window.addEventListener('resize', updateHeight);
-    window.addEventListener('orientationchange', updateHeight);
-    const tg = (window as any).Telegram?.WebApp;
-    if (tg) {
-      tg.onEvent?.('viewportChanged', updateHeight);
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = 0;
     }
-    // Multiple delayed checks to catch late viewport changes
-    setTimeout(updateHeight, 50);
-    setTimeout(updateHeight, 150);
-    setTimeout(updateHeight, 500);
-    return () => {
-      window.removeEventListener('resize', updateHeight);
-      window.removeEventListener('orientationchange', updateHeight);
-      if (tg) tg.offEvent?.('viewportChanged', updateHeight);
-    };
-  }, []);
+  }, [activeTab]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -85,17 +72,15 @@ function AppContent() {
 
   return (
     <div
-      className={`relative ${theme === 'dark' ? 'theme-surface-dark' : 'theme-surface-light'}`}
+      className={`${theme === 'dark' ? 'theme-surface-dark' : 'theme-surface-light'}`}
       style={{
-        /* APPROACH 2+3: Multiple height strategies */
-        height: appHeight + 'px',
-        minHeight: '100vh',
-        minHeight: '100dvh',
-        display: 'flex',
-        flexDirection: 'column',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
         overflow: 'hidden',
-        overscrollBehavior: 'none',
-      } as React.CSSProperties}
+      }}
     >
       {/* Animated Background — absolute, never moves */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -111,12 +96,26 @@ function AppContent() {
         />
       </div>
 
-      {/* Page Content — scrollable, takes remaining space */}
-      <div style={{ flex: 1, minHeight: 0, overflow: 'auto', overscrollBehavior: 'none', position: 'relative' }}>
+      {/* Page Content — scrollable, padded at bottom for fixed nav */}
+      <div
+        ref={scrollRef}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          overflowY: 'auto',
+          overflowX: 'hidden',
+          WebkitOverflowScrolling: 'touch',
+          overscrollBehavior: 'none',
+          paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))',
+        }}
+      >
         <ActivePage />
       </div>
 
-      {/* Bottom Navigation — pinned to bottom via flex */}
+      {/* Bottom Navigation — fixed to viewport bottom */}
       <BottomNav activeTab={activeTab} onTabChange={(tab) => setActiveTab(tab as TabType)} />
     </div>
   );
