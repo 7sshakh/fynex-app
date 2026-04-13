@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useUser } from '../context/UserContext';
 import { Phone, MessageCircle, ArrowRight, Check } from 'lucide-react';
@@ -9,11 +9,29 @@ export default function LoginPage() {
   const [phone, setPhone] = useState('');
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [name, setName] = useState('');
+  const phoneInputRef = useRef<HTMLInputElement | null>(null);
+  const nameInputRef = useRef<HTMLInputElement | null>(null);
+  const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
   const fullPhone = `+998${phone}`;
+
+  useEffect(() => {
+    const focusDelay = window.setTimeout(() => {
+      if (step === 'phone') {
+        phoneInputRef.current?.focus();
+      } else if (step === 'otp') {
+        otpRefs.current[0]?.focus();
+      } else if (step === 'name') {
+        nameInputRef.current?.focus();
+      }
+    }, 240);
+
+    return () => window.clearTimeout(focusDelay);
+  }, [step]);
 
   const handlePhoneSubmit = () => {
     if (phone.length === 9) {
-      setTimeout(() => setStep('otp'), 500);
+      (document.activeElement as HTMLElement | null)?.blur?.();
+      setTimeout(() => setStep('otp'), 220);
     }
   };
 
@@ -24,22 +42,21 @@ export default function LoginPage() {
       setOtp(newOtp);
 
       if (value && index < 5) {
-        const nextInput = document.getElementById(`otp-${index + 1}`);
-        nextInput?.focus();
+        otpRefs.current[index + 1]?.focus();
       }
     }
   };
 
   const handleOtpKeyDown = (index: number, e: React.KeyboardEvent) => {
     if (e.key === 'Backspace' && !otp[index] && index > 0) {
-      const prevInput = document.getElementById(`otp-${index - 1}`);
-      prevInput?.focus();
+      otpRefs.current[index - 1]?.focus();
     }
   };
 
   const handleOtpSubmit = () => {
     if (otp.join('').length === 6) {
-      setTimeout(() => setStep('name'), 500);
+      (document.activeElement as HTMLElement | null)?.blur?.();
+      setTimeout(() => setStep('name'), 220);
     }
   };
 
@@ -51,7 +68,7 @@ export default function LoginPage() {
 
   return (
     <div
-      className="relative min-h-screen flex items-center justify-center overflow-hidden p-6"
+      className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden px-5 py-6 sm:p-6"
       style={{
         background: `
           radial-gradient(ellipse 80% 50% at 50% 120%, rgba(193, 255, 46, 0.28) 0%, transparent 50%),
@@ -76,7 +93,7 @@ export default function LoginPage() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative z-10 w-full max-w-md"
+        className="relative z-10 flex min-h-[calc(100dvh-48px)] w-full max-w-md flex-col justify-center"
       >
         {/* Logo with enhanced glow */}
         <motion.div
@@ -142,7 +159,7 @@ export default function LoginPage() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, type: 'spring', stiffness: 100 }}
-          className="rounded-[28px] border border-white/10 bg-white/[0.08] p-7 shadow-2xl backdrop-blur-2xl"
+          className="rounded-[32px] border border-white/10 bg-white/[0.08] px-6 py-8 shadow-2xl backdrop-blur-2xl sm:px-7"
           style={{
             background: 'linear-gradient(145deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.05) 100%)',
             boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.1)',
@@ -168,12 +185,19 @@ export default function LoginPage() {
                   <div className="w-full bg-black/20 border border-white/10 rounded-2xl py-[14px] pl-12 pr-4 flex items-center gap-3 focus-within:border-lime-300/30 focus-within:bg-black/30 transition-all duration-200">
                     <span className="shrink-0 text-white/70 font-medium text-[15px]">+998</span>
                     <input
+                      ref={phoneInputRef}
                       type="tel"
                       inputMode="numeric"
                       pattern="[0-9]*"
                       autoComplete="tel-national"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 9))}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          handlePhoneSubmit();
+                        }
+                      }}
                       className="w-full bg-transparent text-white text-[15px] font-medium placeholder-white/30 focus:outline-none tracking-wide"
                       placeholder="90 123 45 67"
                     />
@@ -223,6 +247,9 @@ export default function LoginPage() {
                     <motion.input
                       key={index}
                       id={`otp-${index}`}
+                      ref={(element) => {
+                        otpRefs.current[index] = element;
+                      }}
                       type="tel"
                       inputMode="numeric"
                       pattern="[0-9]*"
@@ -284,9 +311,16 @@ export default function LoginPage() {
                 <div className="relative group">
                   <MessageCircle className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40 group-focus-within:text-lime-300/60 transition-colors" />
                   <input
+                    ref={nameInputRef}
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleNameSubmit();
+                      }
+                    }}
                     className="w-full bg-black/20 border border-white/10 rounded-2xl py-[14px] pl-12 pr-4 text-white text-[15px] font-medium placeholder-white/30 focus:outline-none focus:border-lime-300/30 focus:bg-black/30 transition-all duration-200"
                     placeholder="Ismingiz"
                   />
