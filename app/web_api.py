@@ -226,6 +226,13 @@ class ChatSendPayload(BaseModel):
     message: str
 
 
+class ChatAIPayload(BaseModel):
+    user_name: str
+    user_phone: str
+    message: str
+    history: list = []
+
+
 _CHAT_STORE_PATH = "/tmp/fynex_chat.json"
 
 
@@ -1147,6 +1154,94 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
             store["replies"][phone] = []
             _save_chat_store(store)
         return {"ok": True, "replies": replies}
+
+    @app.post("/api/chat/ai-respond")
+    async def chat_ai_respond(payload: ChatAIPayload) -> dict:
+        openrouter_key = os.getenv("OPENROUTER_API_KEY", "").strip()
+        bot_token = os.getenv("BOT_TOKEN", "").strip()
+        admin_id_str = os.getenv("ADMIN_ID", "").strip()
+
+        system_prompt = (
+            "Sen Fynex ta'lim platformasining AI yordamchisisan. Fynex - bepul ta'lim platformasi "
+            "(ingliz tili, rus tili, matematika, fizika, dasturlash kurslari bor). "
+            "Foydalanuvchilarga ilova, kurslar, XP, streak, reyting, texnik yordam haqida javob ber. "
+            "O'zbek tilida qisqa va foydali javob ber. "
+            "Agar savolga javob bera olmasang yoki foydalanuvchi haqiqiy odam bilan gaplashmoqchi bo'lsa, "
+            "javobingni AYNAN 'ESCALATE:' so'zi bilan boshla va sababini yoz. "
+            "Masalan: 'ESCALATE: Bu savol uchun admin kerak'"
+        )
+
+        ai_text = None
+        escalated = False
+
+        if openrouter_key:
+            messages = [{"role": "system", "content": system_prompt}]
+            for h in (payload.history or [])[-10:]:
+                role = "assistant" if h.get("isBot") else "user"
+                messages.append({"role": role, "content": h.get("text", "")})
+            messages.append({"role": "user", "content": payload.message})
+
+            req_body = json.dumps({"model": "openai/gpt-4.1-nano", "messages": messages, "max_tokens": 500}).encode()
+            try:
+                req = urllib.request.Request(
+                    "https://openrouter.ai/api/v1/chat/completions",
+                    data=req_body,
+                    headers={"Authorization": f"Bearer {openrouter_key}", "Content-Type": "application/json"},
+                )
+                resp = urllib.request.urlopen(req, timeout=20)
+                result = json.loads(resp.read())
+                ai_text = result["choices"][0]["message"]["content"].strip()
+            except Exception:
+                ai_text = None
+
+        if ai_text and ai_text.upper().startswith("ESCALATE"):
+            escalated = True
+            ai_text = ai_text.split(":", 1)[1].strip() if ":" in ai_text else ai_text[8:].strip()
+        elif not ai_text:
+            escalated = True
+            ai_text = ""
+
+        if bot_token and admin_id_str:
+            if escalated:
+                tg_text = (
+                    f"\U0001f4e9 <b>SUPPORT XABAR</b>\n"
+                    f"\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\n"
+                    f"\U0001f464 <b>{payload.user_name}</b>\n"
+                    f"\U0001f4f1 <code>{payload.user_phone}</code>\n"
+                    f"\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\n\n"
+                    f"\U0001f4ac {payload.message}\n\n"
+                    f"\U000026a0 <b>AI javob bera olmadi</b>\n"
+                    + (f"\U0001f916 AI: {ai_text}\n\n" if ai_text else "\n")
+                    + f"\U000026a1 <i>REPLY qiling javob berish uchun</i>"
+                )
+            else:
+                tg_text = (
+                    f"\U0001f4e9 SUPPORT\n"
+                    f"\U0001f464 <b>{payload.user_name}</b> | \U0001f4f1 <code>{payload.user_phone}</code>\n\n"
+                    f"\U0001f4ac {payload.message}\n\n"
+                    f"\U00002705 <b>AI javob berdi:</b>\n"
+                    f"\U0001f916 {ai_text}\n\n"
+                    f"\U0001f4a1 <i>Noto'g'ri bo'lsa REPLY qiling</i>"
+                )
+            tg_url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+            tg_data = urllib.parse.urlencode({"chat_id": admin_id_str, "text": tg_text, "parse_mode": "HTML"}).encode()
+            try:
+                tg_req = urllib.request.Request(tg_url, data=tg_data)
+                tg_resp = urllib.request.urlopen(tg_req, timeout=10)
+                tg_result = json.loads(tg_resp.read())
+                if tg_result.get("ok"):
+                    msg_id = str(tg_result["result"]["message_id"])
+                    store = _load_chat_store()
+                    store.setdefault("messages", {})[msg_id] = {"phone": payload.user_phone, "name": payload.user_name}
+                    _save_chat_store(store)
+            except Exception:
+                pass
+
+        return {
+            "ok": True,
+            "ai_response": ai_text if not escalated else None,
+            "escalated": escalated,
+        }
 
     @app.post("/api/chat/setup-webhook")
     async def setup_chat_webhook() -> dict:
