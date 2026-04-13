@@ -109,7 +109,7 @@ function AppContent() {
           overflowX: 'hidden',
           WebkitOverflowScrolling: 'touch',
           overscrollBehavior: 'none',
-          paddingBottom: 'calc(72px + max(env(safe-area-inset-bottom, 0px), 34px))',
+          paddingBottom: 'calc(72px + var(--safe-area-bottom, 0px))',
         }}
       >
         <ActivePage />

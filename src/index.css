@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+:root {
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.bottom-nav {
+  padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+}
+
 /* Custom scrollbar hide */
 .scrollbar-hide {
   -ms-overflow-style: none;
