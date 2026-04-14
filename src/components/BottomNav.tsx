@@ -20,7 +20,7 @@ export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
   const colors = getPalette(theme);
   return (
     <div className="bottom-nav-wrap" style={{ background: 'transparent' }}>
-      <div className="px-4 pt-2 nav-safe">
+      <div className="px-4 nav-safe">
         <div
           className="flex justify-around items-center py-2 px-2 rounded-full neon-shadow"
           style={{
@@ -28,6 +28,7 @@ export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
             backdropFilter: 'blur(24px)',
             WebkitBackdropFilter: 'blur(24px)',
             border: `1px solid ${colors.outlineVariant}33`,
+            pointerEvents: 'auto',
           }}
         >
           {tabs.map((tab) => {

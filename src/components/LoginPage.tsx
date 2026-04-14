@@ -26,6 +26,14 @@ export default function LoginPage() {
     return () => window.clearTimeout(timer);
   }, [step]);
 
+  useEffect(() => {
+    if (step !== 'otp') return;
+    if (otpStatus !== 'idle') return;
+    if (otp.every((digit) => digit.length === 1)) {
+      goOtp();
+    }
+  }, [otp, otpStatus, step]);
+
   const goPhone = () => {
     if (phone.length !== 9) return;
     (document.activeElement as HTMLElement | null)?.blur?.();
@@ -54,6 +62,20 @@ export default function LoginPage() {
     }, 450);
   };
 
+  const applyOtpValue = (value: string, startIndex = 0) => {
+    if (otpStatus !== 'idle') return;
+    const digits = value.replace(/\D/g, '').slice(0, 6 - startIndex).split('');
+    if (!digits.length) return;
+    const next = [...otp];
+    digits.forEach((digit, offset) => {
+      next[startIndex + offset] = digit;
+    });
+    setOtp(next);
+    const nextIndex = Math.min(startIndex + digits.length, 5);
+    if (next.every((digit) => digit.length === 1)) return;
+    otpRefs.current[nextIndex]?.focus();
+  };
+
   const finish = () => {
     if (name.trim().length < 2) return;
     login(fullPhone, name.trim());
@@ -62,11 +84,14 @@ export default function LoginPage() {
   const updateOtp = (index: number, value: string) => {
     if (!/^\d*$/.test(value)) return;
     if (otpStatus !== 'idle') return;
+    if (value.length > 1) {
+      applyOtpValue(value, index);
+      return;
+    }
     const next = [...otp];
     next[index] = value.slice(-1);
     setOtp(next);
     if (value && index < 5) otpRefs.current[index + 1]?.focus();
-    if (value && index === 5) window.setTimeout(goOtp, 120);
   };
 
   const goBack = () => {
@@ -199,6 +224,10 @@ export default function LoginPage() {
                         maxLength={1}
                         value={digit}
                         onChange={(event) => updateOtp(index, event.target.value)}
+                        onPaste={(event) => {
+                          event.preventDefault();
+                          applyOtpValue(event.clipboardData.getData('text'), index);
+                        }}
                         onKeyDown={(event) => {
                           if (event.key === 'Backspace' && !otp[index] && index > 0) otpRefs.current[index - 1]?.focus();
                           if (event.key === 'Enter') {
@@ -222,11 +251,10 @@ export default function LoginPage() {
                   </div>
                 </div>
 
-                <div className="mt-auto pt-8 text-center text-sm font-medium text-white/65">
+                <div className="mt-auto pt-8 text-center text-sm font-medium text-white/65 min-h-6">
                   {otpStatus === 'checking' && 'Kod tekshirilmoqda...'}
                   {otpStatus === 'success' && <span className="text-green-400">Kod tasdiqlandi</span>}
                   {otpStatus === 'error' && <span className="text-red-400">Kod xato, qayta kiriting</span>}
-                  {otpStatus === 'idle' && '6 xonali kod to‘liq kiritilgach avtomatik tekshiriladi'}
                 </div>
               </motion.section>
             )}
