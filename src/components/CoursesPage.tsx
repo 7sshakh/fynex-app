@@ -297,9 +297,9 @@ export default function CoursesPage() {
             </div>
 
             <div className="grid grid-cols-3 gap-3 px-6 py-4">
-              <StatCard label="Darslar" value={selectedCourse.lessons.length} accent={colors.primary} />
-              <StatCard label="XP" value={`+${selectedCourse.totalXp}`} accent={colors.tertiary} />
-              <StatCard label="Progress" value={`${getCourseProgress(selectedCourse.id)}%`} accent={colors.secondary} />
+              <StatCard label="Darslar" value={selectedCourse.lessons.length} accent={colors.primary} bg={colors.surfaceContainerLow} sub={colors.onSurfaceVariant} />
+              <StatCard label="XP" value={`+${selectedCourse.totalXp}`} accent={colors.tertiary} bg={colors.surfaceContainerLow} sub={colors.onSurfaceVariant} />
+              <StatCard label="Progress" value={`${getCourseProgress(selectedCourse.id)}%`} accent={colors.secondary} bg={colors.surfaceContainerLow} sub={colors.onSurfaceVariant} />
             </div>
 
             <div className="min-h-0 flex-1 overflow-y-auto px-6 pb-32 pt-2" style={{ overscrollBehavior: 'contain' }}>
@@ -405,13 +405,13 @@ export default function CoursesPage() {
   );
 }
 
-function StatCard({ label, value, accent }: { label: string; value: string | number; accent: string }) {
+function StatCard({ label, value, accent, bg, sub }: { label: string; value: string | number; accent: string; bg: string; sub: string }) {
   return (
-    <div className="rounded-[22px] p-3 text-center" style={{ background: colors.surfaceContainerLow }}>
+    <div className="rounded-[22px] p-3 text-center" style={{ background: bg }}>
       <p className="text-2xl font-black tracking-[-0.05em]" style={{ color: accent }}>
         {value}
       </p>
-      <p className="text-xs" style={{ color: colors.onSurfaceVariant }}>
+      <p className="text-xs" style={{ color: sub }}>
         {label}
       </p>
     </div>
