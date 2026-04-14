@@ -1,61 +1,21 @@
 @import "tailwindcss";
 
-/* ========== iOS PWA LAYOUT FIX ========== */
-
-/* 
- * Strategy: 
- * 1. html/body use --app-height (set by JS from window.innerHeight)
- * 2. NO position:fixed on html/body (breaks iOS containing block)
- * 3. !important beats Tailwind preflight resets
- * 4. Children use height:100% to inherit
- * 5. Only .app-fullscreen/.app-shell use position:fixed as last resort
+/* ========== LAYOUT ========== 
+ * #root = position:fixed inset:0 (set in index.html inline style)
+ * Everything else = height:100% or flex 
+ * NO --app-height, NO 100vh, NO window.innerHeight
  */
 
-html {
-  margin: 0 !important;
-  padding: 0 !important;
-  width: 100% !important;
-  height: var(--app-height, 100vh) !important;
-  overflow: hidden !important;
-  overscroll-behavior: none !important;
-  background: #050505 !important;
-}
-
-body {
-  margin: 0 !important;
-  padding: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  overflow: hidden !important;
-  overscroll-behavior: none !important;
-  background: #050505 !important;
-}
-
-#root {
-  width: 100% !important;
-  height: 100% !important;
-  overflow: hidden !important;
-}
-
-/* Fullscreen wrapper for Login & Splash — inherits height chain */
-.app-fullscreen {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  position: relative;
-}
-
-/* App shell — flex column, inherits full height */
+/* App shell — flex column fills #root */
 .app-shell {
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
-  position: relative;
 }
 
-/* Scrollable content area */
+/* Scrollable content */
 .app-content {
   flex: 1 1 0%;
   min-height: 0;
@@ -67,17 +27,14 @@ body {
   z-index: 1;
 }
 
-/* Nav wrapper — flex child pinned at bottom */
+/* Nav at bottom */
 .bottom-nav-wrap {
   flex: 0 0 auto;
-  position: relative;
   z-index: 9990;
-  width: 100%;
 }
 
-/* Nav bottom padding — safe area for home indicator */
 .bottom-nav {
-  padding-bottom: max(8px, env(safe-area-inset-bottom, 8px));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 /* ========== END LAYOUT ========== */

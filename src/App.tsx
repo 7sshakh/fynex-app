@@ -24,15 +24,6 @@ function AppContent() {
   const [showSplash, setShowSplash] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Backup resize listener (primary one is in index.html <head>)
-  useEffect(() => {
-    const setVH = () => {
-      document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
-    };
-    window.addEventListener('resize', setVH);
-    return () => window.removeEventListener('resize', setVH);
-  }, []);
-
   // Reset scroll to top when switching tabs
   useEffect(() => {
     if (scrollRef.current) {
@@ -63,19 +54,11 @@ function AppContent() {
   }, []);
 
   if (!isAuthenticated) {
-    return (
-      <div className="app-fullscreen">
-        <LoginPage />
-      </div>
-    );
+    return <LoginPage />;
   }
 
   if (showSplash || isLoading) {
-    return (
-      <div className="app-fullscreen">
-        <SplashScreen />
-      </div>
-    );
+    return <SplashScreen />;
   }
 
   const ActivePage = tabComponents[activeTab];
@@ -115,7 +98,7 @@ function SplashScreen() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="h-full flex items-center justify-center overflow-hidden"
+      className="absolute inset-0 flex items-center justify-center overflow-hidden"
       style={{
         background:
           'radial-gradient(circle at bottom, rgba(193, 255, 46, 0.26), transparent 28%), linear-gradient(180deg, #060706 0%, #0a0d09 58%, #14180c 100%)',
