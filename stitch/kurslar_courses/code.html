@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="uz"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline": "#777575",
+                    "on-primary-fixed": "#364b00",
+                    "surface-container-high": "#201f1f",
+                    "tertiary-container": "#ff5722",
+                    "inverse-primary": "#4c6800",
+                    "error-dim": "#d53d18",
+                    "error": "#ff7351",
+                    "background": "#0e0e0e",
+                    "on-surface": "#ffffff",
+                    "on-secondary": "#4d5630",
+                    "on-primary-fixed-variant": "#4e6a00",
+                    "surface": "#0e0e0e",
+                    "outline-variant": "#494847",
+                    "on-surface-variant": "#adaaaa",
+                    "primary": "#c3ff2d",
+                    "secondary": "#dde8b7",
+                    "on-background": "#ffffff",
+                    "surface-container-low": "#131313",
+                    "on-error": "#450900",
+                    "tertiary-dim": "#ff734a",
+                    "on-tertiary-fixed-variant": "#6f1a00",
+                    "on-error-container": "#ffd2c8",
+                    "on-tertiary-container": "#250400",
+                    "on-tertiary": "#430c00",
+                    "on-tertiary-fixed": "#340800",
+                    "surface-dim": "#0e0e0e",
+                    "primary-dim": "#b5f018",
+                    "secondary-fixed-dim": "#cfd9aa",
+                    "surface-container-lowest": "#000000",
+                    "inverse-surface": "#fcf8f8",
+                    "tertiary-fixed": "#ff9475",
+                    "inverse-on-surface": "#565554",
+                    "surface-container": "#1a1919",
+                    "primary-container": "#b2ed12",
+                    "surface-container-highest": "#262626",
+                    "on-secondary-fixed-variant": "#565f39",
+                    "on-secondary-container": "#cbd5a6",
+                    "primary-fixed": "#c3ff2d",
+                    "error-container": "#b92902",
+                    "on-primary": "#455f00",
+                    "surface-bright": "#2c2c2c",
+                    "tertiary-fixed-dim": "#ff7d57",
+                    "secondary-dim": "#cfd9aa",
+                    "surface-variant": "#262626",
+                    "on-primary-container": "#3d5400",
+                    "on-secondary-fixed": "#3a4320",
+                    "primary-fixed-dim": "#b5f018",
+                    "secondary-container": "#424a26",
+                    "surface-tint": "#c3ff2d",
+                    "secondary-fixed": "#dde8b7",
+                    "tertiary": "#ff734a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Inter"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #0e0e0e; color: #ffffff; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-panel { background: rgba(14, 14, 14, 0.6); backdrop-filter: blur(24px); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-32">
+<!-- Top Navigation Header -->
+<header class="flex justify-between items-center w-full px-6 py-4 max-w-md mx-auto sticky top-0 z-40 bg-background/80 backdrop-blur-md">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container-highest">
+<img alt="User Profile Photo" class="w-full h-full object-cover" data-alt="Professional portrait of a young man with a friendly smile, studio lighting, clean minimalist aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqDoKrpphf-INNxZ9YvD8fjZOxHKIsrFPxEZDPGNHBhjK4HaIcjSJB66DJXN4qyJM-zUt5jcAP6UStAlZbZtrmsnzxDN5FtDBR5zjCIqqok1uRu79LHQx1O-mfHYbsRuIMOs0Px2CBxuycZO9w9-9UGZLUA-Graazhflfl7tKerE2TQgJvLsKiVP8e9miMqcGIA1sxS1dNfnHaRGrDyicROvfWPTs3CPybt8ufw_-0D4hZcZG6dcdvucRLDFB0_bMGw_sajfrWA7M"/>
+</div>
+<div>
+<h1 class="font-['Inter'] font-black text-lg tracking-[-0.04em] text-[#c3ff2e]">Kurslar</h1>
+</div>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container text-[#c3ff2e]">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</header>
+<main class="max-w-md mx-auto px-6 space-y-8">
+<!-- Search & Welcome Section -->
+<section class="space-y-4">
+<div class="space-y-1">
+<p class="text-on-surface-variant text-sm font-medium">O'rganishni boshlang</p>
+<h2 class="text-3xl font-black tracking-tight text-on-surface uppercase italic">Fynex 3.0</h2>
+</div>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input class="w-full bg-surface-container-lowest border-0 border-b-2 border-transparent focus:border-primary focus:ring-0 rounded-xl py-4 pl-12 pr-4 text-on-surface transition-all duration-300" placeholder="Kurslarni izlash..." type="text"/>
+</div>
+</section>
+<!-- Categories Section -->
+<section class="overflow-x-auto no-scrollbar -mx-6 px-6">
+<div class="flex gap-3 whitespace-nowrap">
+<button class="px-6 py-2.5 rounded-full bg-primary text-on-primary font-bold text-sm">Barchasi</button>
+<button class="px-6 py-2.5 rounded-full bg-surface-container text-on-surface-variant font-semibold text-sm hover:bg-surface-bright transition-colors">Ingliz</button>
+<button class="px-6 py-2.5 rounded-full bg-surface-container text-on-surface-variant font-semibold text-sm hover:bg-surface-bright transition-colors">Rus</button>
+<button class="px-6 py-2.5 rounded-full bg-surface-container text-on-surface-variant font-semibold text-sm hover:bg-surface-bright transition-colors">Matem</button>
+<button class="px-6 py-2.5 rounded-full bg-surface-container text-on-surface-variant font-semibold text-sm hover:bg-surface-bright transition-colors">Fizika</button>
+<button class="px-6 py-2.5 rounded-full bg-surface-container text-on-surface-variant font-semibold text-sm hover:bg-surface-bright transition-colors">Dastur</button>
+</div>
+</section>
+<!-- Course Cards Grid -->
+<section class="space-y-6">
+<!-- Card 1 (Active) -->
+<div class="bg-surface-container rounded-lg p-5 space-y-4 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4">
+<span class="bg-gradient-to-r from-amber-400 to-orange-600 text-black text-[10px] font-black px-3 py-1 rounded-full tracking-wider uppercase">PRO</span>
+</div>
+<div class="flex items-start gap-4">
+<div class="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl" data-icon="terminal">terminal</span>
+</div>
+<div class="flex-1 pr-12">
+<h3 class="text-xl font-bold leading-tight text-on-surface">Python Dasturlash Asoslari</h3>
+<div class="flex items-center gap-2 mt-1 text-on-surface-variant text-xs font-medium">
+<span class="material-symbols-outlined text-sm" data-icon="menu_book">menu_book</span>
+<span>24/40 dars</span>
+</div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-[11px] font-black uppercase tracking-widest text-primary">
+<span>Progress</span>
+<span>60%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full w-[60%] shadow-[0_0_10px_rgba(195,255,46,0.3)]"></div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-2">
+<div class="flex items-center gap-2 px-3 py-1.5 bg-surface-container-highest rounded-full">
+<span class="material-symbols-outlined text-tertiary-dim text-sm" data-icon="bolt" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span class="text-xs font-bold">+1200 XP</span>
+</div>
+<button class="bg-primary text-on-primary text-xs font-black px-5 py-2.5 rounded-full hover:scale-105 transition-transform active:scale-95 uppercase">Davom etish</button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container rounded-lg p-5 space-y-4 relative overflow-hidden group">
+<div class="flex items-start gap-4">
+<div class="w-14 h-14 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-3xl" data-icon="translate">translate</span>
+</div>
+<div class="flex-1">
+<h3 class="text-xl font-bold leading-tight text-on-surface">Advanced English Speaking</h3>
+<div class="flex items-center gap-2 mt-1 text-on-surface-variant text-xs font-medium">
+<span class="material-symbols-outlined text-sm" data-icon="menu_book">menu_book</span>
+<span>0/12 dars</span>
+</div>
+</div>
+</div>
+<div class="space-y-2 opacity-40">
+<div class="flex justify-between text-[11px] font-black uppercase tracking-widest text-on-surface-variant">
+<span>Progress</span>
+<span>0%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-lowest rounded-full"></div>
+</div>
+<div class="flex items-center justify-between pt-2">
+<div class="flex items-center gap-2 px-3 py-1.5 bg-surface-container-highest rounded-full">
+<span class="material-symbols-outlined text-tertiary-dim text-sm" data-icon="bolt" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span class="text-xs font-bold">+2500 XP</span>
+</div>
+<button class="bg-surface-bright text-on-surface text-xs font-black px-5 py-2.5 rounded-full hover:scale-105 transition-transform active:scale-95 uppercase">Boshlash</button>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container rounded-lg p-5 space-y-4 relative overflow-hidden group">
+<div class="flex items-start gap-4">
+<div class="w-14 h-14 rounded-2xl bg-error/10 flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-3xl" data-icon="functions">functions</span>
+</div>
+<div class="flex-1">
+<h3 class="text-xl font-bold leading-tight text-on-surface">Oliy Matematika: Integrallar</h3>
+<div class="flex items-center gap-2 mt-1 text-on-surface-variant text-xs font-medium">
+<span class="material-symbols-outlined text-sm" data-icon="menu_book">menu_book</span>
+<span>5/20 dars</span>
+</div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-[11px] font-black uppercase tracking-widest text-primary">
+<span>Progress</span>
+<span>25%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full w-[25%]"></div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-2">
+<div class="flex items-center gap-2 px-3 py-1.5 bg-surface-container-highest rounded-full">
+<span class="material-symbols-outlined text-tertiary-dim text-sm" data-icon="bolt" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span class="text-xs font-bold">+800 XP</span>
+</div>
+<button class="bg-surface-bright text-on-surface text-xs font-black px-5 py-2.5 rounded-full hover:scale-105 transition-transform active:scale-95 uppercase">Davom etish</button>
+</div>
+</div>
+<!-- Bento Featured Mini Card -->
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-low rounded-lg p-4 space-y-3 border-l-4 border-primary/40">
+<span class="material-symbols-outlined text-primary" data-icon="psychology">psychology</span>
+<h4 class="text-sm font-bold text-on-surface leading-tight">Yangi: Sun'iy Intellekt</h4>
+<p class="text-[10px] text-on-surface-variant">Hozirda 1.2k talaba o'rganmoqda</p>
+</div>
+<div class="bg-surface-container-low rounded-lg p-4 space-y-3 border-l-4 border-tertiary">
+<span class="material-symbols-outlined text-tertiary" data-icon="local_fire_department">local_fire_department</span>
+<h4 class="text-sm font-bold text-on-surface leading-tight">Eng Ommabop: UI/UX</h4>
+<p class="text-[10px] text-on-surface-variant">Haftalik trendda #1 o'rin</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Shell -->
+<nav class="fixed bottom-0 left-0 w-full z-50 px-6 pb-8 flex justify-around items-center">
+<div class="bg-[#0e0e0e]/60 backdrop-blur-xl fixed bottom-6 left-4 right-4 rounded-full border-0 shadow-[0_0_40px_rgba(195,255,46,0.12)] flex justify-between items-center px-4 py-2">
+<!-- Bosh sahifa -->
+<a class="flex flex-col items-center justify-center text-[#f4f7df]/60 px-4 py-2 hover:scale-110 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-['Inter'] text-[10px] font-semibold tracking-tight">Bosh sahifa</span>
+</a>
+<!-- Kurslar (ACTIVE) -->
+<a class="flex flex-col items-center justify-center bg-[#c3ff2e] text-black rounded-full px-6 py-2 scale-105 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="school" style="font-variation-settings: 'FILL' 1;">school</span>
+<span class="font-['Inter'] text-[10px] font-bold tracking-tight uppercase">Kurslar</span>
+</a>
+<!-- Reyting -->
+<a class="flex flex-col items-center justify-center text-[#f4f7df]/60 px-4 py-2 hover:scale-110 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+<span class="font-['Inter'] text-[10px] font-semibold tracking-tight">Reyting</span>
+</a>
+<!-- Profil -->
+<a class="flex flex-col items-center justify-center text-[#f4f7df]/60 px-4 py-2 hover:scale-110 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-['Inter'] text-[10px] font-semibold tracking-tight">Profil</span>
+</a>
+</div>
+</nav>
+<!-- Floating Action Button Contextual Suppression check: Only on relevant pages -->
+<!-- Suppression: Kurslar page generally doesn't have a single primary action that fits a FAB better than the list, suppressing for cleaner UI. -->
+</body></html>

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { UserProvider, useUser } from './context/UserContext';
+import { colors } from './theme';
 import LoginPage from './components/LoginPage';
 import BottomNav from './components/BottomNav';
 import HomePage from './components/HomePage';
@@ -18,75 +19,40 @@ const tabComponents: Record<TabType, React.FC> = {
 };
 
 function AppContent() {
-  const { isAuthenticated, theme } = useUser();
+  const { isAuthenticated } = useUser();
   const [activeTab, setActiveTab] = useState<TabType>('home');
   const [isLoading, setIsLoading] = useState(true);
   const [showSplash, setShowSplash] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Reset scroll to top when switching tabs
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = 0;
-    }
+    if (scrollRef.current) scrollRef.current.scrollTop = 0;
   }, [activeTab]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowSplash(false);
-      setIsLoading(false);
-    }, 1900);
+    const timer = setTimeout(() => { setShowSplash(false); setIsLoading(false); }, 1900);
     return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
     const handleNavigate = (event: Event) => {
       const customEvent = event as CustomEvent<TabType>;
-      if (customEvent.detail) {
-        setActiveTab(customEvent.detail);
-      }
+      if (customEvent.detail) setActiveTab(customEvent.detail);
     };
-
     window.addEventListener('fynex:navigate', handleNavigate);
-    return () => {
-      window.removeEventListener('fynex:navigate', handleNavigate);
-    };
+    return () => window.removeEventListener('fynex:navigate', handleNavigate);
   }, []);
 
-  if (!isAuthenticated) {
-    return <LoginPage />;
-  }
-
-  if (showSplash || isLoading) {
-    return <SplashScreen />;
-  }
+  if (!isAuthenticated) return <LoginPage />;
+  if (showSplash || isLoading) return <SplashScreen />;
 
   const ActivePage = tabComponents[activeTab];
 
   return (
-    <div
-      className={`app-shell ${theme === 'dark' ? 'theme-surface-dark' : 'theme-surface-light'}`}
-    >
-      {/* Animated Background — absolute, never moves */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
-        <motion.div
-          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-          transition={{ repeat: Infinity, duration: 8 }}
-          className="absolute -top-1/2 -right-1/2 w-full h-full bg-gradient-to-br from-indigo-200/30 to-purple-200/30 rounded-full blur-3xl"
-        />
-        <motion.div
-          animate={{ scale: [1.2, 1, 1.2], opacity: [0.3, 0.5, 0.3] }}
-          transition={{ repeat: Infinity, duration: 10 }}
-          className="absolute -bottom-1/2 -left-1/2 w-full h-full bg-gradient-to-tr from-violet-200/30 to-pink-200/30 rounded-full blur-3xl"
-        />
-      </div>
-
-      {/* Page Content — scrollable, takes remaining flex space */}
-      <div ref={scrollRef} className="app-content">
+    <div className="app-shell">
+      <div ref={scrollRef} className="app-content" style={{ background: colors.background }}>
         <ActivePage />
       </div>
-
-      {/* Bottom Navigation — flex child at bottom, NOT fixed */}
       <BottomNav activeTab={activeTab} onTabChange={(tab) => setActiveTab(tab as TabType)} />
     </div>
   );
@@ -98,77 +64,65 @@ function SplashScreen() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="absolute inset-0 flex items-center justify-center overflow-hidden"
-      style={{
-        background:
-          'radial-gradient(circle at bottom, rgba(193, 255, 46, 0.26), transparent 28%), linear-gradient(180deg, #060706 0%, #0a0d09 58%, #14180c 100%)',
-      }}
+      className="absolute inset-0 flex flex-col items-center justify-between overflow-hidden py-20 px-6"
+      style={{ background: colors.background }}
     >
-      <div className="absolute inset-0 pointer-events-none">
+      {/* Subtle Radial Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(195,255,45,0.05) 0%, transparent 70%)' }} />
+
+      <div className="flex flex-col items-center relative z-10">
+        {/* Logo */}
         <motion.div
-          animate={{ opacity: [0.18, 0.3, 0.18], scale: [1, 1.08, 1] }}
-          transition={{ repeat: Infinity, duration: 3.2, ease: 'easeInOut' }}
-          className="absolute -bottom-24 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-lime-300/20 blur-3xl"
-        />
+          initial={{ scale: 0.5, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: 'spring', damping: 15, stiffness: 200 }}
+          className="relative"
+        >
+          <div className="absolute inset-0 rounded-full blur-3xl opacity-50" style={{ background: `${colors.primary}33` }} />
+          <motion.div
+            animate={{ scale: [1, 1.05, 1] }}
+            transition={{ repeat: Infinity, duration: 2.5, ease: 'easeInOut' }}
+            className="relative w-32 h-32 flex items-center justify-center rounded-2xl overflow-visible primary-glow"
+            style={{ background: `${colors.surfaceContainer}99`, backdropFilter: 'blur(24px)', border: `1px solid rgba(255,255,255,0.05)` }}
+          >
+            <div className="w-16 h-20" style={{
+              background: `linear-gradient(135deg, ${colors.primary}, ${colors.primaryDim}, ${colors.primaryContainer})`,
+              clipPath: 'polygon(44% 0, 100% 0, 71% 43%, 100% 43%, 29% 100%, 46% 56%, 0 56%)',
+              boxShadow: '0 0 30px rgba(195,255,45,0.4)',
+            }} />
+            <div className="absolute -top-3 -right-3 w-10 h-10 flex items-center justify-center rounded-full text-xl font-black border-4"
+              style={{ background: colors.primary, color: '#364b00', borderColor: colors.background }}>3</div>
+          </motion.div>
+        </motion.div>
+
+        {/* Title */}
+        <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="mt-12 text-center space-y-3">
+          <h1 className="text-4xl font-black tracking-[-0.05em]" style={{ color: colors.onSurface }}>
+            Fynex <span className="italic" style={{ color: colors.primary }}>3.0</span>
+          </h1>
+          <p className="text-xs font-medium tracking-tight uppercase" style={{ color: colors.onSurfaceVariant, opacity: 0.8 }}>
+            Bepul ta'lim platformasi
+          </p>
+        </motion.div>
       </div>
-      <motion.div
-        initial={{ scale: 0.5, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ type: 'spring', damping: 15, stiffness: 200 }}
-        className="text-center"
-      >
-        <motion.div
-          animate={{
-            scale: [1, 1.1, 1],
-            rotate: [0, 4, -4, 0],
-          }}
-          transition={{ repeat: Infinity, duration: 1.9, ease: 'easeInOut' }}
-          className="mx-auto mb-6 flex h-28 w-28 items-center justify-center rounded-[2rem] border border-lime-300/10 bg-lime-300/5 backdrop-blur-xl shadow-2xl"
-        >
-          <div className="relative h-14 w-14">
-            <div
-              className="absolute inset-0 rounded-[1rem]"
-              style={{
-                background: 'linear-gradient(180deg, #dbff61 0%, #c3ff2e 55%, #9fdc16 100%)',
-                clipPath: 'polygon(20% 0%, 82% 0%, 60% 44%, 78% 44%, 56% 100%, 0% 100%, 26% 42%, 8% 42%)',
-              }}
+
+      {/* Footer */}
+      <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }} className="flex flex-col items-center gap-12">
+        {/* Loading dots */}
+        <div className="flex gap-2.5">
+          {[0, 1, 2].map((i) => (
+            <motion.div
+              key={i}
+              animate={{ y: [0, -8, 0], opacity: [0.3, 1, 0.3] }}
+              transition={{ repeat: Infinity, duration: 1.4, delay: i * 0.2, ease: 'easeInOut' }}
+              className="w-2.5 h-2.5 rounded-full"
+              style={{ background: colors.primary }}
             />
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-        >
-          <h1 className="mb-2 text-4xl font-bold tracking-tight text-lime-50">Fynex 2.0</h1>
-          <p className="text-lime-100/70">Bepul ta'lim platformasi</p>
-        </motion.div>
-
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="mt-8"
-        >
-          <div className="flex gap-2 justify-center">
-            {[0, 1, 2].map((i) => (
-              <motion.div
-                key={i}
-                animate={{
-                  scale: [1, 1.5, 1],
-                  opacity: [0.5, 1, 0.5],
-                }}
-                transition={{
-                  repeat: Infinity,
-                  duration: 1,
-                  delay: i * 0.2,
-                }}
-                className="h-3 w-3 rounded-full bg-lime-300"
-              />
-            ))}
-          </div>
-        </motion.div>
+          ))}
+        </div>
+        <div className="flex flex-col items-center gap-1">
+          <span className="text-[10px] tracking-widest font-bold uppercase" style={{ color: colors.outline, opacity: 0.4 }}>O'zbekistonda tayyorlangan</span>
+        </div>
       </motion.div>
     </motion.div>
   );

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="uz"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
+<title>Fynex 3.0 | Splash</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline": "#777575",
+                    "on-primary-fixed": "#364b00",
+                    "surface-container-high": "#201f1f",
+                    "tertiary-container": "#ff5722",
+                    "inverse-primary": "#4c6800",
+                    "error-dim": "#d53d18",
+                    "error": "#ff7351",
+                    "background": "#050505",
+                    "on-surface": "#ffffff",
+                    "on-secondary": "#4d5630",
+                    "on-primary-fixed-variant": "#4e6a00",
+                    "surface": "#0e0e0e",
+                    "outline-variant": "#494847",
+                    "on-surface-variant": "#adaaaa",
+                    "primary": "#c3ff2d",
+                    "secondary": "#dde8b7",
+                    "on-background": "#ffffff",
+                    "surface-container-low": "#131313",
+                    "on-error": "#450900",
+                    "tertiary-dim": "#ff734a",
+                    "on-tertiary-fixed-variant": "#6f1a00",
+                    "on-error-container": "#ffd2c8",
+                    "on-tertiary-container": "#250400",
+                    "on-tertiary": "#430c00",
+                    "on-tertiary-fixed": "#340800",
+                    "surface-dim": "#0e0e0e",
+                    "primary-dim": "#b5f018",
+                    "secondary-fixed-dim": "#cfd9aa",
+                    "surface-container-lowest": "#000000",
+                    "inverse-surface": "#fcf8f8",
+                    "tertiary-fixed": "#ff9475",
+                    "inverse-on-surface": "#565554",
+                    "surface-container": "#1a1919",
+                    "primary-container": "#b2ed12",
+                    "surface-container-highest": "#262626",
+                    "on-secondary-fixed-variant": "#565f39",
+                    "on-secondary-container": "#cbd5a6",
+                    "primary-fixed": "#c3ff2d",
+                    "error-container": "#b92902",
+                    "on-primary": "#455f00",
+                    "surface-bright": "#2c2c2c",
+                    "tertiary-fixed-dim": "#ff7d57",
+                    "secondary-dim": "#cfd9aa",
+                    "surface-variant": "#262626",
+                    "on-primary-container": "#3d5400",
+                    "on-secondary-fixed": "#3a4320",
+                    "primary-fixed-dim": "#b5f018",
+                    "secondary-container": "#424a26",
+                    "surface-tint": "#c3ff2d",
+                    "secondary-fixed": "#dde8b7",
+                    "tertiary": "#ff734a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Inter"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #050505;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+        .lightning-clip {
+            clip-path: polygon(44% 0, 100% 0, 71% 43%, 100% 43%, 29% 100%, 46% 56%, 0 56%);
+        }
+        .glow-pulse {
+            box-shadow: 0 0 80px 20px rgba(195, 255, 45, 0.08);
+        }
+        @keyframes bounce-dots {
+            0%, 80%, 100% { transform: translateY(0); opacity: 0.3; }
+            40% { transform: translateY(-8px); opacity: 1; }
+        }
+        .dot-1 { animation: bounce-dots 1.4s infinite ease-in-out; }
+        .dot-2 { animation: bounce-dots 1.4s infinite ease-in-out 0.2s; }
+        .dot-3 { animation: bounce-dots 1.4s infinite ease-in-out 0.4s; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex items-center justify-center min-h-screen">
+<!-- Subtle Radial Glow Background -->
+<div class="fixed inset-0 pointer-events-none">
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[120px]"></div>
+</div>
+<!-- Main Content Wrapper -->
+<main class="relative z-10 flex flex-col items-center justify-between h-full py-20 px-6 max-w-sm w-full">
+<div class="flex flex-col items-center">
+<!-- Glassmorphism Logo Container -->
+<div class="relative group">
+<!-- Outer Glow -->
+<div class="absolute inset-0 bg-primary/20 blur-3xl opacity-50 group-hover:opacity-80 transition-opacity"></div>
+<!-- The Shell -->
+<div class="relative w-32 h-32 lg:w-40 lg:h-40 bg-surface-container/60 backdrop-blur-2xl rounded-lg flex items-center justify-center overflow-visible border border-white/5 glow-pulse">
+<!-- Lightning Bolt Graphic -->
+<div class="lightning-clip w-16 h-20 bg-gradient-to-br from-primary via-primary-dim to-primary-container shadow-[0_0_30px_rgba(195,255,45,0.4)]"></div>
+<!-- Version Badge -->
+<div class="absolute -top-3 -right-3 w-10 h-10 bg-primary text-on-primary-fixed font-black text-xl flex items-center justify-center rounded-full border-4 border-background shadow-lg">
+                        3
+                    </div>
+</div>
+</div>
+<!-- Typography Cluster -->
+<div class="mt-12 text-center space-y-3">
+<h1 class="text-4xl font-black tracking-[-0.05em] text-on-surface">
+                    Fynex <span class="text-primary italic">3.0</span>
+</h1>
+<p class="text-on-surface-variant font-medium tracking-tight opacity-80 uppercase text-xs">
+                    Bepul ta'lim platformasi
+                </p>
+</div>
+</div>
+<!-- Footer Elements -->
+<div class="flex flex-col items-center gap-12 mt-auto">
+<!-- Loading Indicator -->
+<div class="flex gap-2.5">
+<div class="dot-1 w-2.5 h-2.5 rounded-full bg-primary"></div>
+<div class="dot-2 w-2.5 h-2.5 rounded-full bg-primary"></div>
+<div class="dot-3 w-2.5 h-2.5 rounded-full bg-primary"></div>
+</div>
+<!-- Legal/Brand Footer -->
+<div class="flex flex-col items-center gap-1">
+<span class="text-[10px] text-outline tracking-widest font-bold opacity-40 uppercase">O'zbekistonda tayyorlangan</span>
+<div class="w-8 h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-1/3 rounded-full"></div>
+</div>
+</div>
+</div>
+</main>
+<!-- Background Texture Overlay -->
+<div class="fixed inset-0 pointer-events-none opacity-[0.03]" data-alt="subtle dark carbon fiber texture for high-tech premium aesthetic" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBzgasMAa9d7V9rvpgwOOq3leRU-59Y0KG59vGPPb_KQk8ojhuW7EvLGHWevZTvlbQaTwvOETMqAbVC1_DVlLeEBb3jzfwC3c-FErnkXvlKG28BKIn6FKSQ0x7tT1DaCnwqKh6SY5q4b-ZMwc9lzafXcRNq94gB9Znf5AO11SCmd5UVYOcbzoyYy3W2YRdRLq-Ftjq60s0lOy5XXe_jTmzdcqYPS5nTwPOr8dnwoGuxhY8QO-Ao0u_dnInW5AcQxwEo5MZwpcV3XSM');">
+</div>
+</body></html>

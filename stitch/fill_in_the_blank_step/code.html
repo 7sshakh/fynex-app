@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="uz"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface-variant": "#adaaaa",
+                    "tertiary": "#ff734a",
+                    "inverse-surface": "#fcf8f8",
+                    "surface-container-highest": "#262626",
+                    "on-tertiary-fixed-variant": "#6f1a00",
+                    "on-error-container": "#ffd2c8",
+                    "on-background": "#ffffff",
+                    "surface-variant": "#262626",
+                    "secondary-dim": "#cfd9aa",
+                    "surface": "#0e0e0e",
+                    "primary-container": "#b2ed12",
+                    "on-secondary-fixed-variant": "#565f39",
+                    "primary-fixed": "#c3ff2d",
+                    "on-tertiary": "#430c00",
+                    "on-primary-container": "#3d5400",
+                    "inverse-primary": "#4c6800",
+                    "secondary": "#dde8b7",
+                    "secondary-container": "#424a26",
+                    "on-surface": "#ffffff",
+                    "surface-container-low": "#131313",
+                    "surface-tint": "#c3ff2d",
+                    "tertiary-container": "#ff5722",
+                    "on-tertiary-container": "#250400",
+                    "error-container": "#b92902",
+                    "on-secondary-container": "#cbd5a6",
+                    "background": "#0e0e0e",
+                    "on-primary-fixed-variant": "#4e6a00",
+                    "primary-dim": "#b5f018",
+                    "tertiary-fixed": "#ff9475",
+                    "tertiary-dim": "#ff734a",
+                    "on-secondary-fixed": "#3a4320",
+                    "on-primary": "#455f00",
+                    "secondary-fixed-dim": "#cfd9aa",
+                    "on-primary-fixed": "#364b00",
+                    "surface-dim": "#0e0e0e",
+                    "outline-variant": "#494847",
+                    "error-dim": "#d53d18",
+                    "on-tertiary-fixed": "#340800",
+                    "primary": "#c3ff2d",
+                    "inverse-on-surface": "#565554",
+                    "error": "#ff7351",
+                    "on-error": "#450900",
+                    "surface-container": "#1a1919",
+                    "surface-bright": "#2c2c2c",
+                    "on-secondary": "#4d5630",
+                    "surface-container-high": "#201f1f",
+                    "surface-container-lowest": "#000000",
+                    "primary-fixed-dim": "#b5f018",
+                    "outline": "#777575",
+                    "tertiary-fixed-dim": "#ff7d57",
+                    "secondary-fixed": "#dde8b7"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Inter"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen flex flex-col">
+<!-- TopAppBar from Shared Components JSON -->
+<header class="fixed top-0 w-full z-50 bg-[#0e0e0e]/60 backdrop-blur-xl shadow-[0_40px_60px_-5px_rgba(195,255,46,0.12)]">
+<div class="flex items-center justify-between px-6 h-16 w-full max-w-none">
+<div class="flex items-center gap-4">
+<button class="active:scale-95 transition-transform duration-200 ease-out text-[#c3ff2e]">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="text-lg font-black text-[#c3ff2e] font-['Inter'] tracking-[-0.04em] uppercase">Dasturlash Asoslari</h1>
+</div>
+<div class="flex items-center gap-3">
+<span class="px-3 py-1 rounded-full bg-surface-container-highest text-[#c3ff2e] font-black text-sm">150 XP</span>
+</div>
+</div>
+<!-- Progress Bar (The Tonal Shift Logic) -->
+<div class="w-full h-1.5 bg-surface-container-low overflow-hidden">
+<div class="h-full bg-primary w-[60%] shadow-[0_0_15px_rgba(195,255,46,0.6)] transition-all duration-500"></div>
+</div>
+</header>
+<main class="flex-grow pt-24 pb-8 px-6 max-w-2xl mx-auto w-full flex flex-col">
+<!-- Exercise Meta -->
+<div class="mb-10">
+<div class="flex justify-between items-end mb-2">
+<h2 class="text-3xl font-black tracking-[-0.04em] text-on-background">Mashq: Bo'sh joyni to'ldiring</h2>
+<span class="text-primary font-bold text-sm tracking-widest opacity-80 uppercase">3 / 5</span>
+</div>
+<p class="text-on-surface-variant text-sm font-medium">To'g'ri so'zni tanlab, gapni yakunlang.</p>
+</div>
+<!-- Content Canvas -->
+<div class="flex-grow flex flex-col justify-center gap-12">
+<!-- Sentence Plate -->
+<div class="bg-surface-container p-8 rounded-lg relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary"></div>
+<p class="text-2xl md:text-3xl font-semibold leading-relaxed text-on-surface">
+                    O'zgaruvchi nomi har doim 
+                    <span class="inline-flex items-center justify-center min-w-[120px] h-12 mx-2 px-4 rounded-xl border-b-4 border-primary bg-surface-container-highest text-primary-fixed-dim font-black animate-pulse">
+                        ____
+                    </span> 
+                    bilan boshlanishi kerak.
+                </p>
+</div>
+<!-- Options Grid (2x2) -->
+<div class="grid grid-cols-2 gap-4">
+<button class="bg-surface-container hover:bg-surface-bright active:scale-95 transition-all duration-300 py-6 px-4 rounded-lg flex items-center justify-center group relative overflow-hidden">
+<span class="text-xl font-bold group-hover:text-primary transition-colors">son</span>
+</button>
+<button class="bg-surface-container hover:bg-surface-bright active:scale-95 transition-all duration-300 py-6 px-4 rounded-lg flex items-center justify-center group relative overflow-hidden">
+<span class="text-xl font-bold group-hover:text-primary transition-colors">belgi</span>
+</button>
+<!-- Selected State Simulated -->
+<button class="bg-primary text-on-primary active:scale-95 transition-all duration-300 py-6 px-4 rounded-lg flex items-center justify-center shadow-[0_10px_30px_-5px_rgba(195,255,46,0.3)]">
+<span class="text-xl font-black">harf</span>
+</button>
+<button class="bg-surface-container hover:bg-surface-bright active:scale-95 transition-all duration-300 py-6 px-4 rounded-lg flex items-center justify-center group relative overflow-hidden">
+<span class="text-xl font-bold group-hover:text-primary transition-colors">probeli</span>
+</button>
+</div>
+</div>
+<!-- Hint Card / Footer Actions -->
+<div class="mt-12 space-y-6">
+<!-- Hint Plate -->
+<div class="bg-surface-container-low p-5 rounded-lg border-l-4 border-tertiary flex gap-4 items-start">
+<div class="p-2 bg-tertiary/10 rounded-lg">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
+</div>
+<div>
+<h4 class="text-tertiary font-bold text-sm uppercase tracking-wider mb-1">Maslahat</h4>
+<p class="text-on-surface-variant text-sm leading-snug">Raqamlar bilan o'zgaruvchi nomini boshlash sintaktik xatolikka olib keladi.</p>
+</div>
+</div>
+<!-- Primary Action -->
+<button class="w-full bg-primary text-on-primary py-5 rounded-xl font-black text-lg tracking-tight shadow-[0_20px_40px_-10px_rgba(195,255,46,0.4)] active:scale-[0.98] transition-transform">
+                TEKSHIRISH
+            </button>
+</div>
+</main>
+<!-- Decoration: Ambient Pulse -->
+<div class="fixed -bottom-32 -left-32 w-64 h-64 bg-primary/10 blur-[100px] pointer-events-none"></div>
+<div class="fixed -top-32 -right-32 w-64 h-64 bg-tertiary/5 blur-[100px] pointer-events-none"></div>
+</body></html>

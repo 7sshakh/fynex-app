@@ -1,5 +1,6 @@
 export interface User {
   id: string;
+  telegramId?: number;
   name: string;
   phone: string;
   avatar?: string;

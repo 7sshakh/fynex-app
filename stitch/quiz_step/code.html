@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="uz"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface-variant": "#adaaaa",
+                    "tertiary": "#ff734a",
+                    "inverse-surface": "#fcf8f8",
+                    "surface-container-highest": "#262626",
+                    "on-tertiary-fixed-variant": "#6f1a00",
+                    "on-error-container": "#ffd2c8",
+                    "on-background": "#ffffff",
+                    "surface-variant": "#262626",
+                    "secondary-dim": "#cfd9aa",
+                    "surface": "#0e0e0e",
+                    "primary-container": "#b2ed12",
+                    "on-secondary-fixed-variant": "#565f39",
+                    "primary-fixed": "#c3ff2d",
+                    "on-tertiary": "#430c00",
+                    "on-primary-container": "#3d5400",
+                    "inverse-primary": "#4c6800",
+                    "secondary": "#dde8b7",
+                    "secondary-container": "#424a26",
+                    "on-surface": "#ffffff",
+                    "surface-container-low": "#131313",
+                    "surface-tint": "#c3ff2d",
+                    "tertiary-container": "#ff5722",
+                    "on-tertiary-container": "#250400",
+                    "error-container": "#b92902",
+                    "on-secondary-container": "#cbd5a6",
+                    "background": "#0e0e0e",
+                    "on-primary-fixed-variant": "#4e6a00",
+                    "primary-dim": "#b5f018",
+                    "tertiary-fixed": "#ff9475",
+                    "tertiary-dim": "#ff734a",
+                    "on-secondary-fixed": "#3a4320",
+                    "on-primary": "#455f00",
+                    "secondary-fixed-dim": "#cfd9aa",
+                    "on-primary-fixed": "#364b00",
+                    "surface-dim": "#0e0e0e",
+                    "outline-variant": "#494847",
+                    "error-dim": "#d53d18",
+                    "on-tertiary-fixed": "#340800",
+                    "primary": "#c3ff2d",
+                    "inverse-on-surface": "#565554",
+                    "error": "#ff7351",
+                    "on-error": "#450900",
+                    "surface-container": "#1a1919",
+                    "surface-bright": "#2c2c2c",
+                    "on-secondary": "#4d5630",
+                    "surface-container-high": "#201f1f",
+                    "surface-container-lowest": "#000000",
+                    "primary-fixed-dim": "#b5f018",
+                    "outline": "#777575",
+                    "tertiary-fixed-dim": "#ff7d57",
+                    "secondary-fixed": "#dde8b7"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Inter"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0e0e0e;
+            color: #ffffff;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface selection:bg-primary selection:text-on-primary min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#0e0e0e]/60 backdrop-blur-xl shadow-[0_40px_60px_-5px_rgba(195,255,46,0.12)]">
+<div class="flex items-center justify-between px-6 h-16 w-full max-w-none">
+<div class="flex items-center gap-4">
+<button class="active:scale-95 transition-transform duration-200 ease-out hover:bg-[#2c2c2c] p-2 rounded-full">
+<span class="material-symbols-outlined text-[#c3ff2e]">arrow_back</span>
+</button>
+<h1 class="font-['Inter'] font-black tracking-[-0.04em] uppercase text-lg text-[#c3ff2e]">Dasturlash Asoslari</h1>
+</div>
+<div class="flex items-center gap-2 bg-surface-container px-4 py-1.5 rounded-full border border-outline-variant/10">
+<span class="material-symbols-outlined text-tertiary text-sm" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span class="font-['Inter'] font-black tracking-[-0.04em] uppercase text-sm">150 XP</span>
+</div>
+</div>
+<!-- Progress Bar (The Separation Logic) -->
+<div class="h-1.5 w-full bg-surface-container-low overflow-hidden">
+<div class="h-full bg-primary transition-all duration-700 ease-out" style="width: 40%"></div>
+</div>
+</header>
+<main class="flex-grow pt-24 pb-32 px-6 max-w-4xl mx-auto w-full">
+<!-- Progress Indicator -->
+<div class="mb-8 flex justify-between items-end">
+<div>
+<span class="text-on-surface-variant font-semibold tracking-wider text-xs uppercase">Progress</span>
+<div class="text-3xl font-black text-on-surface mt-1">2/5</div>
+</div>
+<div class="text-primary font-bold text-sm bg-primary/10 px-3 py-1 rounded-full">
+                40% Tamomlandi
+            </div>
+</div>
+<!-- Question Section -->
+<section class="mb-12">
+<h2 class="text-on-surface-variant text-lg font-semibold mb-4 italic">Savol: To'g'ri javobni tanlang</h2>
+<div class="relative">
+<h3 class="text-3xl md:text-5xl font-black leading-tight tracking-[-0.04em] relative z-10">
+                    Python dasturlash tilida o'zgaruvchini e'lon qilish uchun qaysi kalit so'z ishlatiladi?
+                </h3>
+<div class="absolute -top-6 -left-6 w-24 h-24 bg-primary/10 blur-3xl rounded-full -z-10"></div>
+</div>
+</section>
+<!-- Options Grid (Bento Style) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Option 1 -->
+<button class="group relative flex items-center p-6 bg-surface-container rounded-2xl border border-outline-variant/10 hover:bg-surface-bright active:scale-[0.98] transition-all duration-300 text-left">
+<div class="w-12 h-12 rounded-xl bg-surface-container-highest flex items-center justify-center font-black text-on-surface-variant group-hover:text-primary transition-colors">A</div>
+<span class="ml-4 text-xl font-bold text-on-surface">var</span>
+</button>
+<!-- Option 2 -->
+<button class="group relative flex items-center p-6 bg-surface-container rounded-2xl border border-outline-variant/10 hover:bg-surface-bright active:scale-[0.98] transition-all duration-300 text-left">
+<div class="w-12 h-12 rounded-xl bg-surface-container-highest flex items-center justify-center font-black text-on-surface-variant group-hover:text-primary transition-colors">B</div>
+<span class="ml-4 text-xl font-bold text-on-surface">let</span>
+</button>
+<!-- Option 3 -->
+<button class="group relative flex items-center p-6 bg-surface-container rounded-2xl border border-outline-variant/10 hover:bg-surface-bright active:scale-[0.98] transition-all duration-300 text-left">
+<div class="w-12 h-12 rounded-xl bg-surface-container-highest flex items-center justify-center font-black text-on-surface-variant group-hover:text-primary transition-colors">C</div>
+<span class="ml-4 text-xl font-bold text-on-surface">kalit</span>
+</button>
+<!-- Option 4: Selected State -->
+<button class="group relative flex items-center p-6 bg-surface-container rounded-2xl ring-2 ring-primary bg-primary/5 shadow-[0_0_40px_-5px_rgba(195,255,46,0.15)] active:scale-[0.98] transition-all duration-300 text-left">
+<div class="w-12 h-12 rounded-xl bg-primary flex items-center justify-center font-black text-on-primary">D</div>
+<span class="ml-4 text-xl font-bold text-on-surface">nom</span>
+<div class="ml-auto">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</button>
+</div>
+</main>
+<!-- Bottom Action Bar (Floating FAB Layout) -->
+<footer class="fixed bottom-0 w-full p-6 bg-gradient-to-t from-surface via-surface/90 to-transparent">
+<div class="max-w-4xl mx-auto flex justify-between items-center gap-6">
+<div class="hidden md:flex flex-col">
+<span class="text-on-surface-variant text-xs uppercase tracking-widest font-black">Keyingi bosqich</span>
+<span class="text-on-surface font-semibold">O'zgaruvchilar va tiplar</span>
+</div>
+<button class="w-full md:w-auto px-12 py-5 bg-primary text-on-primary rounded-xl font-black uppercase tracking-widest text-lg shadow-[0_20px_50px_rgba(195,255,46,0.3)] hover:bg-primary-container transition-all duration-300 active:scale-95 transform">
+                Tekshirish
+            </button>
+</div>
+</footer>
+<!-- Decorative background elements -->
+<div class="fixed top-1/4 -right-20 w-96 h-96 bg-primary/5 blur-[120px] rounded-full -z-20"></div>
+<div class="fixed bottom-0 -left-20 w-[500px] h-[500px] bg-tertiary/5 blur-[150px] rounded-full -z-20"></div>
+</body></html>

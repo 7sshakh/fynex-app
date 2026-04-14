@@ -70,10 +70,12 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
 
   const login = (phone: string, name: string) => {
+    const telegramId = (window as { Telegram?: { WebApp?: { initDataUnsafe?: { user?: { id?: number } } } } }).Telegram?.WebApp?.initDataUnsafe?.user?.id;
     const newUser: User = {
       ...initialUser,
       phone,
       name,
+      telegramId,
     };
     setUser(newUser);
   };

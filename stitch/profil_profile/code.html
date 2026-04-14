@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="uz"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline": "#777575",
+                    "on-primary-fixed": "#364b00",
+                    "surface-container-high": "#201f1f",
+                    "tertiary-container": "#ff5722",
+                    "inverse-primary": "#4c6800",
+                    "error-dim": "#d53d18",
+                    "error": "#ff7351",
+                    "background": "#0e0e0e",
+                    "on-surface": "#ffffff",
+                    "on-secondary": "#4d5630",
+                    "on-primary-fixed-variant": "#4e6a00",
+                    "surface": "#0e0e0e",
+                    "outline-variant": "#494847",
+                    "on-surface-variant": "#adaaaa",
+                    "primary": "#c3ff2d",
+                    "secondary": "#dde8b7",
+                    "on-background": "#ffffff",
+                    "surface-container-low": "#131313",
+                    "on-error": "#450900",
+                    "tertiary-dim": "#ff734a",
+                    "on-tertiary-fixed-variant": "#6f1a00",
+                    "on-error-container": "#ffd2c8",
+                    "on-tertiary-container": "#250400",
+                    "on-tertiary": "#430c00",
+                    "on-tertiary-fixed": "#340800",
+                    "surface-dim": "#0e0e0e",
+                    "primary-dim": "#b5f018",
+                    "secondary-fixed-dim": "#cfd9aa",
+                    "surface-container-lowest": "#000000",
+                    "inverse-surface": "#fcf8f8",
+                    "tertiary-fixed": "#ff9475",
+                    "inverse-on-surface": "#565554",
+                    "surface-container": "#1a1919",
+                    "primary-container": "#b2ed12",
+                    "surface-container-highest": "#262626",
+                    "on-secondary-fixed-variant": "#565f39",
+                    "on-secondary-container": "#cbd5a6",
+                    "primary-fixed": "#c3ff2d",
+                    "error-container": "#b92902",
+                    "on-primary": "#455f00",
+                    "surface-bright": "#2c2c2c",
+                    "tertiary-fixed-dim": "#ff7d57",
+                    "secondary-dim": "#cfd9aa",
+                    "surface-variant": "#262626",
+                    "on-primary-container": "#3d5400",
+                    "on-secondary-fixed": "#3a4320",
+                    "primary-fixed-dim": "#b5f018",
+                    "secondary-container": "#424a26",
+                    "surface-tint": "#c3ff2d",
+                    "secondary-fixed": "#dde8b7",
+                    "tertiary": "#ff734a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Inter"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { background-color: #0e0e0e; font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+        .glass-panel { backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-surface select-none">
+<!-- Top Navigation Anchor -->
+<header class="flex justify-between items-center w-full px-6 py-4 max-w-md mx-auto fixed top-0 left-0 right-0 z-40 bg-background/80 backdrop-blur-md">
+<h1 class="text-[#c3ff2e] font-black italic font-headline text-lg tracking-[-0.04em]">Profil</h1>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#c3ff2e] hover:opacity-80 transition-all cursor-pointer">notifications</span>
+<div class="w-8 h-8 rounded-full bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="professional portrait of a young man with a friendly expression in a modern tech environment with soft bokeh background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdnKy0X3jTbh0xNIUZXITijDJujXsnb8hV6D2eAd7BHLOUJOreqo_XJPPZvmHEJGsZNCfR8NXIK-diFY5WNPqdXxwhI39N8R0LKEb_RTOVpLLtNMqyMRusaUDBLJHow7mcoCQshuEru4vVjoNnKFM-JLyZ616mZOMiUHDBV8RFp4Zl-IO_Tj5qabkT9hyxU5eFuFSDwaSyENiNGfKJWyydXHVRgTVdtbDlF2KOmQlM97TqdOZ84ajT4bE19uLp9axhiOOgLXHEqOo"/>
+</div>
+</div>
+</header>
+<main class="max-w-md mx-auto pt-24 pb-32 px-6 space-y-8">
+<!-- Profile Card: Tonal Layering -->
+<section class="bg-surface-container p-6 rounded-lg flex items-center gap-5">
+<div class="relative">
+<div class="w-20 h-20 rounded-full border-4 border-primary/20 p-1">
+<img class="w-full h-full rounded-full object-cover" data-alt="close up avatar photo of a user for a mobile app profile screen with high key lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6niYMnffDSCMVfY-CYwQx1ftw9rbfCNH4E5r9NcTHWP_DwKGVTJ5zrgsMUNeux6y3MSiupN3rFCiJm-R1etvjV2KRgGbZiwFLikhaOD2CUMlPAbGIZZOhYk0RYJeq3wWj7LD-EIosie2RgR-oglZmwj_B5sXsm0dJEbpUlie9qD0BDBdJUrKvpODVb35Kd7-wkODkJ8_nUI7YDvbSVfDfUowxs0a-Tm6xdzIV3paYGsvJOsLzueuCRXds59Nx5Bi_kj3u03rD4EI"/>
+</div>
+<div class="absolute -bottom-1 -right-1 bg-primary text-on-primary px-2 py-0.5 rounded-full text-[10px] font-black tracking-tight">PRO</div>
+</div>
+<div class="flex-1">
+<h2 class="text-xl font-extrabold tracking-tight text-on-surface">Abduaziz Ziyodov</h2>
+<p class="text-on-surface-variant text-sm font-medium">+998 90 123 45 67</p>
+<div class="mt-2 inline-flex items-center gap-1.5 px-3 py-1 bg-surface-container-high rounded-full">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="text-[11px] font-bold text-primary">Aktiv</span>
+</div>
+</div>
+</section>
+<!-- Stats Bento Grid -->
+<section class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-low p-5 rounded-lg flex flex-col justify-between h-32 border-b-2 border-primary/10">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<div>
+<div class="text-2xl font-black tracking-tight">1,240</div>
+<div class="text-on-surface-variant text-[11px] font-bold uppercase tracking-wider">Umumiy XP</div>
+</div>
+</div>
+<div class="grid grid-rows-2 gap-4">
+<div class="bg-surface-container-low p-4 rounded-lg flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<div>
+<div class="text-lg font-black leading-none">12</div>
+<div class="text-on-surface-variant text-[10px] font-bold">Kunlik Streak</div>
+</div>
+</div>
+<div class="bg-surface-container-low p-4 rounded-lg flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">task_alt</span>
+<div>
+<div class="text-lg font-black leading-none">48</div>
+<div class="text-on-surface-variant text-[10px] font-bold">Tugallangan</div>
+</div>
+</div>
+</div>
+</section>
+<!-- PRO Upgrade Card: Signature Gradient -->
+<section class="relative overflow-hidden bg-gradient-to-br from-tertiary to-error-container p-6 rounded-lg shadow-[0_0_40px_rgba(255,115,74,0.2)] group">
+<div class="relative z-10 flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-on-tertiary text-2xl font-black italic tracking-tighter">PRO ga o'tish</h3>
+<p class="text-on-tertiary/80 text-xs font-semibold max-w-[180px]">Barcha kurslar va offline rejimga cheksiz kirish imkoniyati.</p>
+</div>
+<div class="bg-on-tertiary/10 backdrop-blur-md p-2 rounded-xl">
+<span class="material-symbols-outlined text-on-tertiary text-3xl">workspace_premium</span>
+</div>
+</div>
+<div class="flex items-end justify-between mt-2">
+<div>
+<span class="text-on-tertiary font-black text-xl">9,999 UZS</span>
+<span class="text-on-tertiary/60 text-xs font-bold">/oy</span>
+</div>
+<button class="bg-on-tertiary text-tertiary px-6 py-2 rounded-full font-black text-sm transition-transform active:scale-95">Obuna bo'lish</button>
+</div>
+</div>
+<!-- Decorative Grain/Texture -->
+<div class="absolute inset-0 opacity-10 pointer-events-none mix-blend-overlay">
+<div class="w-full h-full" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB5cV-bJaRxQq82uXsB8ULqjANALYh8mkodBX_8FyvKdr333dvBQkHjQathvhkMaOOI7pwGfGkJ9mKjyMjDLyvIDgm0ahi4tWXWrmOWgfwU8szEGfypPOrWvDPZn54nk4LDS0cvZSfLlL-RgdWTdAl3oTFUZOE6c-QO0IVotbOwnpceZ5YzQ08J8sWBTrs1Jf5RA6xrMsh07aJjid59dkMIJ2U5cqgzUoiYIkAS-mYvczWf1imlGyJv6jYqs2wN2WuFqOkIR9BMXYE');"></div>
+</div>
+</section>
+<!-- Settings List: Editorial Aesthetic -->
+<section class="space-y-6">
+<h4 class="text-on-surface-variant text-xs font-black uppercase tracking-[0.2em] px-1">Sozlamalar</h4>
+<div class="space-y-2">
+<!-- Toggle Row -->
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-lg">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-bright flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-xl">notifications_active</span>
+</div>
+<span class="font-semibold text-on-surface">Bildirishnomalar</span>
+</div>
+<div class="w-12 h-6 bg-primary rounded-full relative flex items-center px-1">
+<div class="w-4 h-4 bg-on-primary rounded-full ml-auto"></div>
+</div>
+</div>
+<!-- Toggle Row -->
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-lg">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-bright flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-xl">dark_mode</span>
+</div>
+<span class="font-semibold text-on-surface">Tungi rejim</span>
+</div>
+<div class="w-12 h-6 bg-primary rounded-full relative flex items-center px-1">
+<div class="w-4 h-4 bg-on-primary rounded-full ml-auto"></div>
+</div>
+</div>
+<!-- Toggle Row -->
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-lg">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-bright flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-xl">cloud_off</span>
+</div>
+<span class="font-semibold text-on-surface">Offline rejim</span>
+</div>
+<div class="w-12 h-6 bg-surface-container-highest rounded-full relative flex items-center px-1">
+<div class="w-4 h-4 bg-outline rounded-full"></div>
+</div>
+</div>
+<!-- Nav Row -->
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-lg cursor-pointer hover:bg-surface-container transition-colors group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-bright flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-xl">forum</span>
+</div>
+<span class="font-semibold text-on-surface">Yordam markazi</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform">chevron_right</span>
+</div>
+</div>
+<!-- Logout Button -->
+<button class="w-full flex items-center justify-center gap-2 p-5 bg-error-container/10 text-error rounded-lg font-black tracking-tight active:scale-95 transition-all">
+<span class="material-symbols-outlined">logout</span>
+                Chiqish
+            </button>
+</section>
+</main>
+<!-- Bottom Navigation Shell (Mandatory Execution) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 px-6 pb-8 flex justify-around items-center">
+<!-- Floating Blur Container -->
+<div class="bg-[#0e0e0e]/60 backdrop-blur-xl fixed bottom-6 left-4 right-4 rounded-full flex justify-around items-center py-2 shadow-[0_0_40px_rgba(195,255,46,0.12)]">
+<div class="flex flex-col items-center justify-center text-[#f4f7df]/60 px-4 py-2 hover:scale-110 transition-transform cursor-pointer">
+<span class="material-symbols-outlined">home</span>
+<span class="font-['Inter'] text-[10px] font-semibold tracking-tight">Bosh sahifa</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#f4f7df]/60 px-4 py-2 hover:scale-110 transition-transform cursor-pointer">
+<span class="material-symbols-outlined">school</span>
+<span class="font-['Inter'] text-[10px] font-semibold tracking-tight">Kurslar</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#f4f7df]/60 px-4 py-2 hover:scale-110 transition-transform cursor-pointer">
+<span class="material-symbols-outlined">leaderboard</span>
+<span class="font-['Inter'] text-[10px] font-semibold tracking-tight">Reyting</span>
+</div>
+<!-- Active Item: Profil -->
+<div class="flex flex-col items-center justify-center bg-[#c3ff2e] text-black rounded-full px-4 py-2 scale-105 transition-all duration-300 shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-['Inter'] text-[10px] font-black tracking-tight">Profil</span>
+</div>
+</div>
+</nav>
+</body></html>

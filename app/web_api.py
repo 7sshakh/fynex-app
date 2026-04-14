@@ -223,12 +223,14 @@ class AppScenarioPayload(BaseModel):
 class ChatSendPayload(BaseModel):
     user_name: str
     user_phone: str
+    user_telegram_id: int | None = None
     message: str
 
 
 class ChatAIPayload(BaseModel):
     user_name: str
     user_phone: str
+    user_telegram_id: int | None = None
     message: str
     history: list = []
 
@@ -257,6 +259,26 @@ def _admin_id() -> int | None:
 def _is_admin(user_id: int) -> bool:
     admin_id = _admin_id()
     return admin_id is not None and user_id == admin_id
+
+
+def _support_bot_token() -> str:
+    return os.getenv("SUPPORT_BOT_TOKEN", "").strip() or os.getenv("BOT_TOKEN", "").strip()
+
+
+def _support_username() -> str:
+    return os.getenv("SUPPORT_USERNAME", "@fynex-_assist").strip() or "@fynex-_assist"
+
+
+def _telegram_send_message(bot_token: str, chat_id: int | str, text: str) -> bool:
+    url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+    data = urllib.parse.urlencode({"chat_id": str(chat_id), "text": text, "parse_mode": "HTML"}).encode()
+    try:
+        req = urllib.request.Request(url, data=data)
+        resp = urllib.request.urlopen(req, timeout=10)
+        result = json.loads(resp.read())
+        return bool(result.get("ok"))
+    except Exception:
+        return False
 
 
 def _normalize_subject(value: str | None) -> str | None:
@@ -1095,7 +1117,7 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
 
     @app.post("/api/chat/send")
     async def chat_send(payload: ChatSendPayload) -> dict:
-        bot_token = os.getenv("BOT_TOKEN", "").strip()
+        bot_token = _support_bot_token()
         admin_id_str = os.getenv("ADMIN_ID", "").strip()
         if not bot_token or not admin_id_str:
             raise HTTPException(status_code=500, detail="Bot not configured")
@@ -1108,9 +1130,9 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
             f"\U0001f4ac {payload.message}\n\n"
             f"\U000026a1 <i>Bu xabarga REPLY qiling javob berish uchun</i>"
         )
-        url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
-        data = urllib.parse.urlencode({"chat_id": admin_id_str, "text": text, "parse_mode": "HTML"}).encode()
         try:
+            url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+            data = urllib.parse.urlencode({"chat_id": admin_id_str, "text": text, "parse_mode": "HTML"}).encode()
             req = urllib.request.Request(url, data=data)
             resp = urllib.request.urlopen(req, timeout=10)
             result = json.loads(resp.read())
@@ -1119,7 +1141,11 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
         if result.get("ok"):
             msg_id = str(result["result"]["message_id"])
             store = _load_chat_store()
-            store.setdefault("messages", {})[msg_id] = {"phone": payload.user_phone, "name": payload.user_name}
+            store.setdefault("messages", {})[msg_id] = {
+                "phone": payload.user_phone,
+                "name": payload.user_name,
+                "telegram_id": payload.user_telegram_id,
+            }
             _save_chat_store(store)
             return {"ok": True, "message_id": msg_id}
         raise HTTPException(status_code=500, detail="Failed to send message")
@@ -1140,10 +1166,14 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
         if not mapping:
             return {"ok": True}
         phone = mapping["phone"]
+        telegram_id = mapping.get("telegram_id")
         replies = store.setdefault("replies", {})
         user_replies = replies.setdefault(phone, [])
         user_replies.append({"text": text, "time": str(message.get("date", ""))})
         _save_chat_store(store)
+        bot_token = _support_bot_token()
+        if bot_token and telegram_id:
+            _telegram_send_message(bot_token, telegram_id, text)
         return {"ok": True}
 
     @app.get("/api/chat/poll")
@@ -1158,34 +1188,38 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
     @app.post("/api/chat/ai-respond")
     async def chat_ai_respond(payload: ChatAIPayload) -> dict:
         openrouter_key = os.getenv("OPENROUTER_API_KEY", "").strip()
-        bot_token = os.getenv("BOT_TOKEN", "").strip()
+        bot_token = _support_bot_token()
         admin_id_str = os.getenv("ADMIN_ID", "").strip()
 
         system_prompt = (
-            "Sen Fynex ta'lim platformasining FAQAT texnik qo'llab-quvvatlash yordamchisisan. "
-            "Sen FAQAT Fynex ilovasi bilan bog'liq savollarga javob berasan. "
-            "Fynex - bepul ta'lim platformasi (ingliz tili, rus tili, matematika, fizika, dasturlash kurslari bor). "
-            "Sen HECH QACHON test tuzmaysan, dars bermaysan, biologiya/kimyo/tarix kabi fanlardan javob bermaysan. "
-            "Sen faqat SUPPORT vazifasini bajarasan. "
-            "\n\nSen javob bera oladigan mavzular:"
-            "\n- Ro'yxatdan o'tishda muammo (kod kelmasa: ilovani qayta yopib oching, telefonni o'chirib yoqing, internet aloqasini tekshiring)"
-            "\n- Ilova ishlamayapti (ilovani yangilang, keshni tozalang, qayta o'rnating)"
-            "\n- Kurslar ochilmayapti (PRO obuna kerak yoki internet aloqasini tekshiring)"
-            "\n- XP, streak, reyting haqida savollar"
-            "\n- PRO obuna, to'lov muammolari"
-            "\n- Profil sozlamalari (ism, raqam o'zgartirish)"
-            "\n- Ilovadagi xatolar (bug report)"
-            "\n\nQoidalar:"
-            "\n1. O'zbek tilida qisqa va aniq javob ber"
-            "\n2. Agar savol Fynex ilovasi bilan bog'liq BO'LMASA (masalan: test tuz, dars ber, matematikadan yech, biologiyadan ayt), "
-            "javobingni AYNAN 'ESCALATE:' bilan boshla"
-            "\n3. Agar foydalanuvchi admin/odam bilan gaplashmoqchi bo'lsa, 'ESCALATE:' bilan boshla"
-            "\n4. Agar savolga javob bera olmasang, 'ESCALATE:' bilan boshla"
-            "\n5. ESCALATE formatida sababini yoz: 'ESCALATE: Bu savolga javob bera olmayman'"
+            "Sen Fynex ta'lim platformasining qo'llab-quvvatlash yordamchisisan. "
+            "Sen Fynex ilovasi bilan bog'liq savollarga qisqa, aniq va foydali javob berasan. "
+            "Fynex — bepul ta'lim platformasi (ingliz tili, rus tili, matematika, fizika, dasturlash, mantiqiy fikrlash). "
+            "Agar savol Fynex bilan bevosita bog'liq bo'lmasa, javobni Fynex kontekstiga qaytarib, foydali yo'nalish ber. "
+            "Javoblarda 'javob bera olmayman' kabi iboralarni ishlatma. "
+            "Foydalanuvchi operator yoki admin bilan bog'lanishni so'rasa, Telegramdagi "
+            f"{_support_username()} akkauntini taklif qil."
         )
 
+        def wants_handoff(text: str) -> bool:
+            return bool(re.search(r"\b(admin|operator|odam|support|qo'llab|yordam|telegram)\b", text, re.I))
+
+        def fallback_answer(text: str) -> str:
+            text_l = text.lower()
+            if "kod" in text_l or "sms" in text_l:
+                return "SMS kodi kechiksa, ilovani yopib qayta oching, internetni tekshiring va 1-2 daqiqa kuting. Baribir kelmasa, qayta yuborish tugmasini bosing."
+            if "login" in text_l or "kirish" in text_l or "ro'yxat" in text_l:
+                return "Kirishda muammo bo'lsa, raqamni to'g'ri formatda kiriting va ilovani qayta ochib ko'ring."
+            if "kurs" in text_l or "dars" in text_l:
+                return "Kurslar ochilmasa, internetni tekshiring va ilovani yangilang. Agar PRO bo'lim bo'lsa, obuna kerak bo'lishi mumkin."
+            if "xp" in text_l or "streak" in text_l or "reyting" in text_l:
+                return "XP va Streak real darslar bajarilganda oshadi. Kechikish bo'lsa, ilovani qayta oching."
+            if "to'lov" in text_l or "pro" in text_l:
+                return "To'lovda muammo bo'lsa, bank ilovasidan tranzaksiyani tekshiring va qayta urinib ko'ring."
+            return "Savolingiz bo'yicha qisqa yordam: ilovani yangilang, internetni tekshiring va qayta urining. Aniqroq yozsangiz, tezroq yo'naltiraman."
+
         ai_text = None
-        escalated = False
+        want_handoff = wants_handoff(payload.message or "")
 
         if openrouter_key:
             messages = [{"role": "system", "content": system_prompt}]
@@ -1207,58 +1241,50 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
             except Exception:
                 ai_text = None
 
-        if ai_text and ai_text.upper().startswith("ESCALATE"):
-            escalated = True
-            ai_text = ai_text.split(":", 1)[1].strip() if ":" in ai_text else ai_text[8:].strip()
-        elif not ai_text:
-            escalated = True
-            ai_text = ""
+        if not ai_text:
+            ai_text = fallback_answer(payload.message or "")
+
+        if want_handoff:
+            ai_text = f"{ai_text}\n\nAgar operator bilan bog'lanmoqchi bo'lsangiz, Telegramda {_support_username()} ga yozing."
 
         if bot_token and admin_id_str:
-            if escalated:
-                tg_text = (
-                    f"\U0001f4e9 <b>SUPPORT XABAR</b>\n"
-                    f"\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\n"
-                    f"\U0001f464 <b>{payload.user_name}</b>\n"
-                    f"\U0001f4f1 <code>{payload.user_phone}</code>\n"
-                    f"\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\U00002501\n\n"
-                    f"\U0001f4ac {payload.message}\n\n"
-                    f"\U000026a0 <b>AI javob bera olmadi</b>\n"
-                    + (f"\U0001f916 AI: {ai_text}\n\n" if ai_text else "\n")
-                    + f"\U000026a1 <i>REPLY qiling javob berish uchun</i>"
-                )
-            else:
-                tg_text = (
-                    f"\U0001f4e9 SUPPORT\n"
-                    f"\U0001f464 <b>{payload.user_name}</b> | \U0001f4f1 <code>{payload.user_phone}</code>\n\n"
-                    f"\U0001f4ac {payload.message}\n\n"
-                    f"\U00002705 <b>AI javob berdi:</b>\n"
-                    f"\U0001f916 {ai_text}\n\n"
-                    f"\U0001f4a1 <i>Noto'g'ri bo'lsa REPLY qiling</i>"
-                )
-            tg_url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
-            tg_data = urllib.parse.urlencode({"chat_id": admin_id_str, "text": tg_text, "parse_mode": "HTML"}).encode()
+            tg_text = (
+                f"\U0001f4e9 SUPPORT\n"
+                f"\U0001f464 <b>{payload.user_name}</b> | \U0001f4f1 <code>{payload.user_phone}</code>\n\n"
+                f"\U0001f4ac {payload.message}\n\n"
+                f"\U0001f916 AI: {ai_text}\n\n"
+                f"\U0001f4a1 <i>REPLY qilsangiz foydalanuvchiga javob yuboriladi</i>"
+            )
             try:
+                tg_url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+                tg_data = urllib.parse.urlencode({"chat_id": admin_id_str, "text": tg_text, "parse_mode": "HTML"}).encode()
                 tg_req = urllib.request.Request(tg_url, data=tg_data)
                 tg_resp = urllib.request.urlopen(tg_req, timeout=10)
                 tg_result = json.loads(tg_resp.read())
                 if tg_result.get("ok"):
                     msg_id = str(tg_result["result"]["message_id"])
                     store = _load_chat_store()
-                    store.setdefault("messages", {})[msg_id] = {"phone": payload.user_phone, "name": payload.user_name}
+                    store.setdefault("messages", {})[msg_id] = {
+                        "phone": payload.user_phone,
+                        "name": payload.user_name,
+                        "telegram_id": payload.user_telegram_id,
+                    }
                     _save_chat_store(store)
             except Exception:
                 pass
 
+            if payload.user_telegram_id:
+                _telegram_send_message(bot_token, payload.user_telegram_id, ai_text)
+
         return {
             "ok": True,
-            "ai_response": ai_text if not escalated else None,
-            "escalated": escalated,
+            "ai_response": ai_text,
+            "escalated": False,
         }
 
     @app.post("/api/chat/setup-webhook")
     async def setup_chat_webhook() -> dict:
-        bot_token = os.getenv("BOT_TOKEN", "").strip()
+        bot_token = _support_bot_token()
         web_url = os.getenv("WEB_APP_URL", "").strip()
         if not bot_token:
             raise HTTPException(status_code=500, detail="BOT_TOKEN not set")

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="uz"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "outline": "#777575",
+                "on-primary-fixed": "#364b00",
+                "surface-container-high": "#201f1f",
+                "tertiary-container": "#ff5722",
+                "inverse-primary": "#4c6800",
+                "error-dim": "#d53d18",
+                "error": "#ff7351",
+                "background": "#0e0e0e",
+                "on-surface": "#ffffff",
+                "on-secondary": "#4d5630",
+                "on-primary-fixed-variant": "#4e6a00",
+                "surface": "#0e0e0e",
+                "outline-variant": "#494847",
+                "on-surface-variant": "#adaaaa",
+                "primary": "#c3ff2d",
+                "secondary": "#dde8b7",
+                "on-background": "#ffffff",
+                "surface-container-low": "#131313",
+                "on-error": "#450900",
+                "tertiary-dim": "#ff734a",
+                "on-tertiary-fixed-variant": "#6f1a00",
+                "on-error-container": "#ffd2c8",
+                "on-tertiary-container": "#250400",
+                "on-tertiary": "#430c00",
+                "on-tertiary-fixed": "#340800",
+                "surface-dim": "#0e0e0e",
+                "primary-dim": "#b5f018",
+                "secondary-fixed-dim": "#cfd9aa",
+                "surface-container-lowest": "#000000",
+                "inverse-surface": "#fcf8f8",
+                "tertiary-fixed": "#ff9475",
+                "inverse-on-surface": "#565554",
+                "surface-container": "#1a1919",
+                "primary-container": "#b2ed12",
+                "surface-container-highest": "#262626",
+                "on-secondary-fixed-variant": "#565f39",
+                "on-secondary-container": "#cbd5a6",
+                "primary-fixed": "#c3ff2d",
+                "error-container": "#b92902",
+                "on-primary": "#455f00",
+                "surface-bright": "#2c2c2c",
+                "tertiary-fixed-dim": "#ff7d57",
+                "secondary-dim": "#cfd9aa",
+                "surface-variant": "#262626",
+                "on-primary-container": "#3d5400",
+                "on-secondary-fixed": "#3a4320",
+                "primary-fixed-dim": "#b5f018",
+                "secondary-container": "#424a26",
+                "surface-tint": "#c3ff2d",
+                "secondary-fixed": "#dde8b7",
+                "tertiary": "#ff734a"
+            },
+            "borderRadius": {
+                "DEFAULT": "1rem",
+                "lg": "2rem",
+                "xl": "3rem",
+                "full": "9999px"
+            },
+            "fontFamily": {
+                "headline": ["Inter"],
+                "body": ["Inter"],
+                "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #0e0e0e; color: #ffffff; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .podium-gradient { background: linear-gradient(180deg, rgba(195, 255, 45, 0.1) 0%, rgba(14, 14, 14, 0) 100%); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-32">
+<!-- Top AppBar -->
+<header class="flex justify-between items-center w-full px-6 py-4 max-w-md mx-auto sticky top-0 z-50 bg-[#0e0e0e]/80 backdrop-blur-lg">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container overflow-hidden border border-primary/20">
+<img class="w-full h-full object-cover" data-alt="Close up portrait of a young professional man with a confident smile, high-end studio lighting, clean dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB92l8DrWgMRlEi1ItbV_8THJaN7yWCxVADdU1Ww2wOFvYe0vkfH971vla_H20EqK-oMITFfV47LxB-yLnE0JYkAGgl5_B0SUWdFV_jegmCmkqlZGOEXf8TjTeloEgFJVg1aBaAbqZz9tSg4-swmPbOE9wexGRfmeLJJ1YCav7Yj8_SeDCM3kMzZ3AataU2heKkOjocQOc-9ShG8Gubj8U0RPNv4EJTrUfl0GdqA0MdHa-Yt4lVy5nwua_Qq0a214RjIkFtdwMIssI"/>
+</div>
+<h1 class="font-['Inter'] font-black text-lg tracking-[-0.04em] text-[#c3ff2e]">Reyting</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container text-[#c3ff2e] hover:opacity-80 transition-all duration-200">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</header>
+<main class="max-w-md mx-auto px-6 pt-4">
+<!-- Time Filters -->
+<div class="flex gap-2 p-1 bg-surface-container-low rounded-full mb-8">
+<button class="flex-1 py-2 px-4 rounded-full text-xs font-bold bg-primary text-on-primary transition-all duration-300">Bu hafta</button>
+<button class="flex-1 py-2 px-4 rounded-full text-xs font-bold text-on-surface-variant hover:bg-surface-bright transition-all duration-200">Bu oy</button>
+<button class="flex-1 py-2 px-4 rounded-full text-xs font-bold text-on-surface-variant hover:bg-surface-bright transition-all duration-200">Barcha davr</button>
+</div>
+<!-- Podium Section -->
+<div class="relative flex justify-center items-end gap-2 pt-16 pb-12 podium-gradient rounded-3xl">
+<!-- Rank 2 -->
+<div class="flex flex-col items-center flex-1">
+<div class="relative mb-3">
+<div class="w-16 h-16 rounded-full border-4 border-secondary/30 p-1">
+<img class="w-full h-full object-cover rounded-full" data-alt="Portrait of a creative woman with glasses, smiling softly, soft natural window lighting, cinematic photography style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnn4gqY256BnzoIgzAUHUl5otcsocjum9sdNOqxQLNhsJKFg5pt80m1VQBA60YTIj20ouI4uXJd1jx7wJm6Xvu1x2zyyUCl5JIF_u-fp9VP54vl2vz4ytEthi1GX9I_aTg2qZhtWhROwkX8SjLjCrhgB1cmCsY3cWBfRXC7uhcnq7V-32q7D8tzeEA8VWctI0NgUjehRgIH1ca39b4GIv-yQ8cFgASOknbrPyZLOZmxKO81Elanobbs03nYSAgf2mPqXNpQ7gNhPo"/>
+</div>
+<div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-surface-container border border-secondary px-2 py-0.5 rounded-full">
+<span class="text-[10px] font-black text-secondary">#2</span>
+</div>
+</div>
+<p class="text-[11px] font-bold truncate w-20 text-center">Malika A.</p>
+<p class="text-[10px] text-primary font-black">12.4K XP</p>
+</div>
+<!-- Rank 1 -->
+<div class="flex flex-col items-center flex-1 -mt-8">
+<div class="relative mb-4">
+<div class="absolute -top-10 left-1/2 -translate-x-1/2 text-primary animate-bounce">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+</div>
+<div class="w-24 h-24 rounded-full border-4 border-primary p-1 shadow-[0_0_30px_rgba(195,255,46,0.3)]">
+<img class="w-full h-full object-cover rounded-full" data-alt="Charismatic young man with modern hairstyle, clean aesthetic, neon rim lighting reflecting off skin, high detail" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdluSa9Bf4Ri6M84dFzyBjTCrNhS8Tiu-feDlaYArVSTYClKD57oVgTcyg4Yc8ymWMJ5o7hs-QKR_AZj4qsb4BLVafrNlovi91IYnsA31zQ_ray8HFaWfpbQ0M6HYyxMz7GqpTaU2SyVhoVKRlFoNGTewZJw5TGax2zuNSV43iGlEF-06dhXJE6T84kqC3atZJj1z66BYa3K283LJzqds8WjCYRBcLxK4drqYYjp7BI4JP1DFhi7GDnY4wch_7bcwEfQwL-GRHx5M"/>
+</div>
+<div class="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-primary px-3 py-1 rounded-full">
+<span class="text-xs font-black text-on-primary">#1</span>
+</div>
+</div>
+<p class="text-sm font-black truncate w-24 text-center">Javohir R.</p>
+<p class="text-xs text-primary font-black">15.8K XP</p>
+</div>
+<!-- Rank 3 -->
+<div class="flex flex-col items-center flex-1">
+<div class="relative mb-3">
+<div class="w-16 h-16 rounded-full border-4 border-tertiary/30 p-1">
+<img class="w-full h-full object-cover rounded-full" data-alt="Friendly young man in casual attire, outdoor evening setting with warm urban bokeh lights, professional photography" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVfqvh6_b3Mcns_luYWbR_LyTV2CQXutonjw_rgOoaqsdqIPkixjJi7gEu0PrZh7DH1lS-7vkTg3KeUcgwZWkKCrFDoqcYgEwnxzGF3Ef8I12xUi6qZGBsHa4Ya8u9ZcXm4bsBrL_APsIjwk2KHgFy7ysyKv2qhuh1CTiG_USNft-aZpAdIunwbfyPdpUqRq3V_cGdQPokqmXZcUOaXoEZsfx9qvYbXmjaC_VI-VCgOiQ-zj-1drPfUSF2jZXmRMKAfZAZviRA_FE"/>
+</div>
+<div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-surface-container border border-tertiary px-2 py-0.5 rounded-full">
+<span class="text-[10px] font-black text-tertiary">#3</span>
+</div>
+</div>
+<p class="text-[11px] font-bold truncate w-20 text-center">Sardor K.</p>
+<p class="text-[10px] text-primary font-black">11.1K XP</p>
+</div>
+</div>
+<!-- Leaderboard List -->
+<div class="space-y-3 mt-4">
+<!-- Rank 4 -->
+<div class="flex items-center gap-4 p-4 bg-surface-container rounded-2xl">
+<span class="text-on-surface-variant font-black italic w-4">4</span>
+<div class="w-10 h-10 rounded-full bg-surface-bright overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Portrait of a focused professional woman, high contrast lighting, clean modern studio aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCf_grImsv4Zw3wKo15PwSnFT8hXv40x9GTJg2H-y33elOoU9x5DAcsQTtiF7dL6_ULAbxfSJJW3wFbEd_T7i-cC9Oj5oD4g9q3SVwk9bDz2vF-mRhqxc4OfVk6S97YKiwV7PZzB4pyhj5_ABX645UWxu1NbctoHK5TehASmCZ3yqj0EP7MO0zA6VAZ38sD82KlJracrJgsL-QBfwjbqHrWFeKTrXpole7rCoAA3dCSIHbG2mf7B8vsdEb3e9_hY3dB28PcqWAFp4M"/>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold">Dilnoza M.</p>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-tertiary" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="text-[10px] text-on-surface-variant">12 kunlik seriya</span>
+</div>
+</div>
+<div class="text-right">
+<p class="text-xs font-black text-on-surface">9,842</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-tighter">XP</p>
+</div>
+</div>
+<!-- Rank 5 -->
+<div class="flex items-center gap-4 p-4 bg-surface-container rounded-2xl">
+<span class="text-on-surface-variant font-black italic w-4">5</span>
+<div class="w-10 h-10 rounded-full bg-surface-bright overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Studio portrait of a smiling young man, soft directional light, neutral grey background, high resolution" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuW1y32LirWFEwq58MSjtRrIuRadzz1zk9PYvPPENX0vmdfAmo4PAtNT8483Ju0ZpgnWK62RH2x1j-nxeFB8PU9QegRzE6tCmebbURtOucfq0YeQpvaZBeBfC_XDW_i3zsUtyRDhx_02X9W-fKCnFjSRh_cWm4s3MXSLsp3w5K0MD8WKZOXD86jc5EThGCMqNL-53bxmd0zffZESiMExRlav9M9TxOn9jOhFsIb5mfh8nK9PTR-bGOJR6krrvyN69R5asus5m1Wb0"/>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold">Azizbek G.</p>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-tertiary" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="text-[10px] text-on-surface-variant">8 kunlik seriya</span>
+</div>
+</div>
+<div class="text-right">
+<p class="text-xs font-black text-on-surface">8,901</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-tighter">XP</p>
+</div>
+</div>
+<!-- User's Rank Highlighted -->
+<div class="flex items-center gap-4 p-4 bg-primary text-on-primary rounded-2xl shadow-[0_0_20px_rgba(195,255,46,0.2)]">
+<span class="font-black italic w-4">12</span>
+<div class="w-10 h-10 rounded-full bg-on-primary-container/20 overflow-hidden ring-2 ring-on-primary">
+<img class="w-full h-full object-cover" data-alt="Close up portrait of a young professional man with a confident smile, high-end studio lighting, clean dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDv53qNZUrfoeeGm8-uTFM7doq1QEmey8sQ6dlHykGaCxmF05oKU0fIjREGUxJDKvFC014aZLbO2GwPYX_TTvl2A57VLgQjrL0elbujKXdyACT4uli4zWxIUH98HZujI2odAqZ-kdvxOwa7Bv73GT5uvJph1pCe2mm9t8mCzXhr4Znq3Aei9eC53N1vR2po9CNxOc3_rvTSRF0XPDRDFAyYj2s-U0BpsqfM4JUwRxSZA4Qzmlp96TotkW4SsZYj0jCJRIF4xhqsono"/>
+</div>
+<div class="flex-1">
+<p class="text-sm font-black">User (Siz)</p>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="text-[10px] font-bold">5 kunlik seriya</span>
+</div>
+</div>
+<div class="text-right">
+<p class="text-xs font-black">4,230</p>
+<p class="text-[10px] opacity-70 uppercase tracking-tighter">XP</p>
+</div>
+</div>
+<!-- Rank 13 -->
+<div class="flex items-center gap-4 p-4 bg-surface-container rounded-2xl opacity-60">
+<span class="text-on-surface-variant font-black italic w-4">13</span>
+<div class="w-10 h-10 rounded-full bg-surface-bright overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Portrait of a focused student, natural lighting in a library setting, cinematic depth of field" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6Q7-0m1jRjdwQ7jQeuViG51E6nA8pI3s3MYSFfptvUMZxjMcnZ7VhAfFdDkkO5ctOTo4c41iJqKg6UJ14Q0lFHwijc-BKwW9k9thlC6SofCqWMnYhqkAWZq-cDOrd5YYqeqE73iZrEh1-HR0ObIGCCi2NiDhc39oPaX4XQBAvM-ePrY711EBd-6lXW-6CTE2cwo8ToxrbaKc-KjMLpdE66zc0cxA4P146NnDBaId0MQhWRGq-I_bHMszEyBzPiaRdx2lgPv1zXqE"/>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold">Kamola S.</p>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-tertiary" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="text-[10px] text-on-surface-variant">3 kunlik seriya</span>
+</div>
+</div>
+<div class="text-right">
+<p class="text-xs font-black text-on-surface">4,115</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-tighter">XP</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Sticky User Standing Bar -->
+<div class="fixed bottom-32 left-0 w-full px-6 pointer-events-none">
+<div class="max-w-md mx-auto pointer-events-auto">
+<div class="bg-surface-container-high/90 backdrop-blur-xl border border-outline-variant/10 p-4 rounded-3xl flex items-center justify-between shadow-2xl">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+<span class="text-xs font-black text-on-primary">12</span>
+</div>
+<div>
+<p class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest">Sizning o'rningiz</p>
+<p class="text-sm font-black">Top 15% ichida</p>
+</div>
+</div>
+<div class="flex items-center gap-2 bg-surface-bright py-1 px-3 rounded-full">
+<span class="text-xs font-black text-primary">+120 XP</span>
+<span class="text-[10px] text-on-surface-variant">bugun</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 px-6 pb-8 flex justify-around items-center">
+<div class="bg-[#0e0e0e]/60 backdrop-blur-xl shadow-[0_0_40px_rgba(195,255,46,0.12)] fixed bottom-6 left-4 right-4 rounded-full border-0 flex justify-around items-center px-4 py-3">
+<!-- Bosh sahifa -->
+<div class="flex flex-col items-center justify-center text-[#f4f7df]/60 px-4 py-2 hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">home</span>
+<span class="font-['Inter'] text-[10px] font-semibold tracking-tight">Bosh sahifa</span>
+</div>
+<!-- Kurslar -->
+<div class="flex flex-col items-center justify-center text-[#f4f7df]/60 px-4 py-2 hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">school</span>
+<span class="font-['Inter'] text-[10px] font-semibold tracking-tight">Kurslar</span>
+</div>
+<!-- Reyting (Active) -->
+<div class="flex flex-col items-center justify-center bg-[#c3ff2e] text-black rounded-full px-4 py-2 scale-105 transition-all duration-300">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">leaderboard</span>
+<span class="font-['Inter'] text-[10px] font-semibold tracking-tight">Reyting</span>
+</div>
+<!-- Profil -->
+<div class="flex flex-col items-center justify-center text-[#f4f7df]/60 px-4 py-2 hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">person</span>
+<span class="font-['Inter'] text-[10px] font-semibold tracking-tight">Profil</span>
+</div>
+</div>
+</nav>
+</body></html>

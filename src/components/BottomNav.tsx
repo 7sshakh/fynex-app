@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { Home, BookOpen, Trophy, User } from 'lucide-react';
+import { Home, GraduationCap, BarChart3, User } from 'lucide-react';
+import { colors } from '../theme';
 
 interface BottomNavProps {
   activeTab: string;
@@ -8,18 +9,23 @@ interface BottomNavProps {
 
 const tabs = [
   { id: 'home', label: 'Bosh sahifa', icon: Home },
-  { id: 'courses', label: 'Kurslar', icon: BookOpen },
-  { id: 'leaderboard', label: 'Reyting', icon: Trophy },
+  { id: 'courses', label: 'Kurslar', icon: GraduationCap },
+  { id: 'leaderboard', label: 'Reyting', icon: BarChart3 },
   { id: 'profile', label: 'Profil', icon: User },
 ];
 
 export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
   return (
-    <div className="bottom-nav-wrap">
-      <div
-        className="bg-white/80 backdrop-blur-xl border-t border-gray-200/50 px-4 py-2 bottom-nav"
-      >
-        <div className="flex justify-around items-center">
+    <div className="bottom-nav-wrap" style={{ background: 'transparent' }}>
+      <div className="px-4 pt-2 pb-3 nav-safe">
+        <div
+          className="flex justify-around items-center py-2 px-2 rounded-full neon-shadow"
+          style={{
+            background: 'rgba(14, 14, 14, 0.6)',
+            backdropFilter: 'blur(24px)',
+            WebkitBackdropFilter: 'blur(24px)',
+          }}
+        >
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -28,42 +34,21 @@ export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
               <motion.button
                 key={tab.id}
                 onClick={() => onTabChange(tab.id)}
-                whileTap={{ scale: 0.9 }}
-                className="relative flex flex-col items-center py-2 px-4 rounded-2xl"
+                whileTap={{ scale: 0.95 }}
+                className="flex flex-col items-center justify-center px-4 py-2 rounded-full transition-all duration-300"
+                style={isActive ? {
+                  background: colors.primary,
+                  color: '#000',
+                  transform: 'scale(1.05)',
+                } : {
+                  background: 'transparent',
+                  color: 'rgba(244, 247, 223, 0.6)',
+                }}
               >
-                <motion.div
-                  animate={{
-                    scale: isActive ? 1.15 : 1,
-                    y: isActive ? -2 : 0,
-                  }}
-                  transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                >
-                  <Icon
-                    className={`w-6 h-6 transition-colors ${
-                      isActive ? 'text-indigo-600' : 'text-gray-400'
-                    }`}
-                    strokeWidth={isActive ? 2.5 : 2}
-                  />
-                </motion.div>
-
-                <motion.span
-                  animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : -4 }}
-                  transition={{ duration: 0.15 }}
-                  className={`text-xs mt-1 font-medium ${
-                    isActive ? 'text-indigo-600' : 'text-gray-400'
-                  }`}
-                >
+                <Icon className="w-5 h-5" strokeWidth={isActive ? 2.5 : 2} />
+                <span className="text-[10px] font-semibold tracking-tight mt-0.5">
                   {tab.label}
-                </motion.span>
-
-                {isActive && (
-                  <motion.div
-                    initial={{ scaleX: 0 }}
-                    animate={{ scaleX: 1 }}
-                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                    className="absolute -bottom-1 w-12 h-1 bg-indigo-600 rounded-full"
-                  />
-                )}
+                </span>
               </motion.button>
             );
           })}

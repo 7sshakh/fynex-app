@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="uz"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline": "#777575",
+                    "on-primary-fixed": "#364b00",
+                    "surface-container-high": "#201f1f",
+                    "tertiary-container": "#ff5722",
+                    "inverse-primary": "#4c6800",
+                    "error-dim": "#d53d18",
+                    "error": "#ff7351",
+                    "background": "#0e0e0e",
+                    "on-surface": "#ffffff",
+                    "on-secondary": "#4d5630",
+                    "on-primary-fixed-variant": "#4e6a00",
+                    "surface": "#0e0e0e",
+                    "outline-variant": "#494847",
+                    "on-surface-variant": "#adaaaa",
+                    "primary": "#c3ff2d",
+                    "secondary": "#dde8b7",
+                    "on-background": "#ffffff",
+                    "surface-container-low": "#131313",
+                    "on-error": "#450900",
+                    "tertiary-dim": "#ff734a",
+                    "on-tertiary-fixed-variant": "#6f1a00",
+                    "on-error-container": "#ffd2c8",
+                    "on-tertiary-container": "#250400",
+                    "on-tertiary": "#430c00",
+                    "on-tertiary-fixed": "#340800",
+                    "surface-dim": "#0e0e0e",
+                    "primary-dim": "#b5f018",
+                    "secondary-fixed-dim": "#cfd9aa",
+                    "surface-container-lowest": "#000000",
+                    "inverse-surface": "#fcf8f8",
+                    "tertiary-fixed": "#ff9475",
+                    "inverse-on-surface": "#565554",
+                    "surface-container": "#1a1919",
+                    "primary-container": "#b2ed12",
+                    "surface-container-highest": "#262626",
+                    "on-secondary-fixed-variant": "#565f39",
+                    "on-secondary-container": "#cbd5a6",
+                    "primary-fixed": "#c3ff2d",
+                    "error-container": "#b92902",
+                    "on-primary": "#455f00",
+                    "surface-bright": "#2c2c2c",
+                    "tertiary-fixed-dim": "#ff7d57",
+                    "secondary-dim": "#cfd9aa",
+                    "surface-variant": "#262626",
+                    "on-primary-container": "#3d5400",
+                    "on-secondary-fixed": "#3a4320",
+                    "primary-fixed-dim": "#b5f018",
+                    "secondary-container": "#424a26",
+                    "surface-tint": "#c3ff2d",
+                    "secondary-fixed": "#dde8b7",
+                    "tertiary": "#ff734a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Inter"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-card { backdrop-filter: blur(24px); }
+        .streak-glow { box-shadow: 0 0 40px rgba(255, 115, 74, 0.2); }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-6 py-4 max-w-md mx-auto fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary">
+<img class="w-full h-full object-cover" data-alt="Modern close-up portrait of a young male professional with friendly expression on a minimalist studio background with soft lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvlIVv3diSuxZCcyFsRHa8BPlaAEVak_wWzI475DeWw1f4yfXvxc1-mrKeUPh6x1ykkToQo8ujjFgfxU7SrEeBs2IEG54sQc6xerAZ2ycB1hqWqOoj1IiuCLU6FL2YZZu8NzhJWQZrVedo6SH8dZwUxggk8ozhE53lw_zNvHcw4fObe3bLFAee128BNqOgU1fBsoVhtLvKH4K-FxwXreNnv7R_wVNhHpvsXQQ-REdIeGsQogxxhm3JSS8UizeNFS0HN0ABED25i_k"/>
+</div>
+<div class="flex flex-col">
+<span class="text-on-surface-variant text-[10px] font-semibold tracking-wider uppercase">FYNEX 3.0</span>
+<h1 class="font-['Inter'] font-black text-lg tracking-[-0.04em] text-primary italic">Xush kelibsiz, User</h1>
+</div>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container hover:opacity-80 transition-all active:scale-95">
+<span class="material-symbols-outlined text-primary">notifications</span>
+</button>
+</header>
+<main class="max-w-md mx-auto px-6 pt-24 space-y-8">
+<!-- Streak Hero Card -->
+<section class="relative overflow-hidden rounded-lg p-6 bg-gradient-to-br from-tertiary to-tertiary-container streak-glow">
+<div class="relative z-10 flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-on-tertiary font-bold text-sm">Kunlik streak</p>
+<h2 class="text-4xl font-black tracking-tighter text-on-tertiary">14 Kun</h2>
+</div>
+<div class="bg-white/20 p-3 rounded-full">
+<span class="material-symbols-outlined text-4xl text-on-tertiary" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-2 pt-4 border-t border-white/10">
+<div class="flex flex-col">
+<span class="text-on-tertiary/70 text-xs font-semibold">Jami XP</span>
+<span class="text-on-tertiary text-lg font-black">12,450</span>
+</div>
+<div class="bg-on-tertiary text-tertiary px-4 py-1.5 rounded-full font-black text-xs uppercase tracking-widest">
+                        SUPER
+                    </div>
+</div>
+</div>
+<!-- Decorative Vector -->
+<div class="absolute -right-4 -bottom-4 opacity-10">
+<span class="material-symbols-outlined text-[160px]">show_chart</span>
+</div>
+</section>
+<!-- Davom etish (Progress) Card -->
+<section class="bg-surface-container rounded-lg p-5">
+<div class="flex justify-between items-end mb-4">
+<div class="space-y-1">
+<span class="text-primary font-bold text-[10px] tracking-widest uppercase">Davom etish</span>
+<h3 class="text-xl font-extrabold tracking-tight">UI/UX Design Master</h3>
+</div>
+<span class="text-on-surface-variant text-xs font-bold">78%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 78%"></div>
+</div>
+<div class="mt-4 flex items-center justify-between">
+<p class="text-on-surface-variant text-xs font-medium">12-modul: Ranglar psixologiyasi</p>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-full text-xs font-black tracking-tight active:scale-95 transition-transform">
+                    DAVOM ETISH
+                </button>
+</div>
+</section>
+<!-- Stats Grid (Asymmetric Bento) -->
+<section class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-low p-5 rounded-lg flex flex-col justify-between aspect-square">
+<span class="material-symbols-outlined text-primary text-3xl">task_alt</span>
+<div>
+<h4 class="text-2xl font-black">42</h4>
+<p class="text-on-surface-variant text-[11px] font-bold uppercase tracking-wider leading-none">Bajarilgan topshiriqlar</p>
+</div>
+</div>
+<div class="space-y-4">
+<div class="bg-surface-container-low p-4 rounded-lg flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-xl">leaderboard</span>
+</div>
+<div>
+<p class="text-xs text-on-surface-variant font-bold">Reyting</p>
+<p class="text-lg font-black text-on-surface">#12</p>
+</div>
+</div>
+<div class="bg-surface-container-low p-4 rounded-lg flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-tertiary-container/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary text-xl">school</span>
+</div>
+<div>
+<p class="text-xs text-on-surface-variant font-bold">Kurslar</p>
+<p class="text-lg font-black text-on-surface">4</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Weekly Progress Chart -->
+<section class="bg-surface-container rounded-lg p-6">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-sm font-black uppercase tracking-widest text-on-surface-variant">Haftalik Progress</h3>
+<span class="text-primary text-xs font-bold">+24% bugun</span>
+</div>
+<div class="flex items-end justify-between h-24 gap-2">
+<div class="w-full bg-surface-container-highest rounded-t-sm h-[40%]"></div>
+<div class="w-full bg-surface-container-highest rounded-t-sm h-[60%]"></div>
+<div class="w-full bg-surface-container-highest rounded-t-sm h-[30%]"></div>
+<div class="w-full bg-primary/20 rounded-t-sm h-[80%] border-t-2 border-primary"></div>
+<div class="w-full bg-surface-container-highest rounded-t-sm h-[45%]"></div>
+<div class="w-full bg-surface-container-highest rounded-t-sm h-[55%]"></div>
+<div class="w-full bg-primary rounded-t-sm h-[100%] shadow-[0_-8px_16px_rgba(195,255,46,0.2)]"></div>
+</div>
+<div class="flex justify-between mt-3">
+<span class="text-[9px] font-bold text-on-surface-variant/50">DUSH</span>
+<span class="text-[9px] font-bold text-on-surface-variant/50">SESH</span>
+<span class="text-[9px] font-bold text-on-surface-variant/50">CHOR</span>
+<span class="text-[9px] font-bold text-on-surface-variant/50">PAY</span>
+<span class="text-[9px] font-bold text-on-surface-variant/50">JUM</span>
+<span class="text-[9px] font-bold text-on-surface-variant/50">SHAN</span>
+<span class="text-[9px] font-bold text-primary">YAK</span>
+</div>
+</section>
+<!-- Kunlik Vazifalar -->
+<section class="space-y-4">
+<div class="flex justify-between items-center">
+<h3 class="text-xl font-black tracking-tight">Kunlik vazifalar</h3>
+<a class="text-primary text-xs font-bold hover:underline" href="#">Hammasi</a>
+</div>
+<div class="space-y-3">
+<!-- Task 1 -->
+<div class="bg-surface-container-low p-4 rounded-lg flex items-center gap-4">
+<div class="w-12 h-12 flex-shrink-0 bg-surface-container flex items-center justify-center rounded-full border border-outline-variant/10">
+<span class="material-symbols-outlined text-on-surface-variant">edit_square</span>
+</div>
+<div class="flex-grow">
+<h4 class="text-sm font-bold">Tezkor test</h4>
+<p class="text-xs text-on-surface-variant">3 daqiqa • +50 XP</p>
+</div>
+<button class="w-8 h-8 rounded-full flex items-center justify-center border border-primary text-primary active:bg-primary active:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-sm">play_arrow</span>
+</button>
+</div>
+<!-- Task 2 -->
+<div class="bg-surface-container-low p-4 rounded-lg flex items-center gap-4">
+<div class="w-12 h-12 flex-shrink-0 bg-surface-container flex items-center justify-center rounded-full border border-outline-variant/10">
+<span class="material-symbols-outlined text-on-surface-variant">forum</span>
+</div>
+<div class="flex-grow">
+<h4 class="text-sm font-bold">Jamiyat bilan muloqot</h4>
+<p class="text-xs text-on-surface-variant">1 ta post • +20 XP</p>
+</div>
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 px-6 pb-8 flex justify-around items-center">
+<div class="bg-[#0e0e0e]/60 backdrop-blur-xl fixed bottom-6 left-4 right-4 rounded-full border-0 flex justify-around items-center py-3 px-2 shadow-[0_0_40px_rgba(195,255,46,0.12)]">
+<!-- Active: Bosh sahifa -->
+<a class="flex flex-col items-center justify-center bg-[#c3ff2e] text-black rounded-full px-4 py-2 scale-105 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-['Inter'] text-[10px] font-semibold tracking-tight">Bosh sahifa</span>
+</a>
+<!-- Inactive: Kurslar -->
+<a class="flex flex-col items-center justify-center text-[#f4f7df]/60 px-4 py-2 hover:scale-110 transition-transform" href="#">
+<span class="material-symbols-outlined">school</span>
+<span class="font-['Inter'] text-[10px] font-semibold tracking-tight">Kurslar</span>
+</a>
+<!-- Inactive: Reyting -->
+<a class="flex flex-col items-center justify-center text-[#f4f7df]/60 px-4 py-2 hover:scale-110 transition-transform" href="#">
+<span class="material-symbols-outlined">leaderboard</span>
+<span class="font-['Inter'] text-[10px] font-semibold tracking-tight">Reyting</span>
+</a>
+<!-- Inactive: Profil -->
+<a class="flex flex-col items-center justify-center text-[#f4f7df]/60 px-4 py-2 hover:scale-110 transition-transform" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-['Inter'] text-[10px] font-semibold tracking-tight">Profil</span>
+</a>
+</div>
+</nav>
+</body></html>
