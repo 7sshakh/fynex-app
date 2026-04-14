@@ -24,20 +24,7 @@ function AppContent() {
   const [showSplash, setShowSplash] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Detect environment: Telegram Web App vs Browser/PWA vs Standalone
-  useEffect(() => {
-    const tg = (window as any).Telegram?.WebApp;
-    const isTWA = !!(tg && tg.initData && tg.initData.length > 0);
-    const isStandalone = window.matchMedia('(display-mode: standalone)').matches
-      || (window.navigator as any).standalone === true;
-
-    const root = document.documentElement;
-    root.classList.remove('twa-mode', 'pwa-mode', 'standalone-mode');
-    root.classList.add(isTWA ? 'twa-mode' : 'pwa-mode');
-    if (isStandalone) root.classList.add('standalone-mode');
-  }, []);
-
-  // Dynamic viewport height — fixes iOS PWA where vh is unreliable
+  // Dynamic viewport height — fixes iOS PWA where 100vh is wrong
   useEffect(() => {
     const setVH = () => {
       const vh = window.innerHeight;
@@ -46,6 +33,9 @@ function AppContent() {
     setVH();
     window.addEventListener('resize', setVH);
     window.addEventListener('orientationchange', setVH);
+    // Extra delayed checks for iOS PWA
+    setTimeout(setVH, 100);
+    setTimeout(setVH, 500);
     return () => {
       window.removeEventListener('resize', setVH);
       window.removeEventListener('orientationchange', setVH);
@@ -89,11 +79,19 @@ function AppContent() {
   }, []);
 
   if (!isAuthenticated) {
-    return <LoginPage />;
+    return (
+      <div className="app-fullscreen">
+        <LoginPage />
+      </div>
+    );
   }
 
   if (showSplash || isLoading) {
-    return <SplashScreen />;
+    return (
+      <div className="app-fullscreen">
+        <SplashScreen />
+      </div>
+    );
   }
 
   const ActivePage = tabComponents[activeTab];
@@ -133,13 +131,8 @@ function SplashScreen() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="flex items-center justify-center overflow-hidden"
+      className="h-full flex items-center justify-center overflow-hidden"
       style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
         background:
           'radial-gradient(circle at bottom, rgba(193, 255, 46, 0.26), transparent 28%), linear-gradient(180deg, #060706 0%, #0a0d09 58%, #14180c 100%)',
       }}

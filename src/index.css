@@ -31,12 +31,17 @@ body {
   overflow: hidden;
 }
 
-/* App shell — flex column fills entire viewport */
+/* Fullscreen wrapper for Login & Splash */
+.app-fullscreen {
+  width: 100%;
+  height: var(--app-height, 100vh);
+  overflow: hidden;
+  position: relative;
+}
+
+/* App shell — flex column fills viewport */
 .app-shell {
   width: 100%;
-  height: 100%;
-  height: 100vh;
-  height: 100dvh;
   height: var(--app-height, 100vh);
   display: flex;
   flex-direction: column;
@@ -64,19 +69,9 @@ body {
   width: 100%;
 }
 
-/* ===== TELEGRAM MODE (TWA) ===== */
-.twa-mode .bottom-nav {
-  padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
-}
-
-/* ===== PWA in browser — simple ===== */
-.pwa-mode .bottom-nav {
+/* Nav bottom padding */
+.bottom-nav {
   padding-bottom: 8px;
-}
-
-/* ===== PWA STANDALONE MODE (Add to Homescreen) — needs safe area ===== */
-.pwa-mode.standalone-mode .bottom-nav {
-  padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
 }
 
 /* ========== END LAYOUT ========== */

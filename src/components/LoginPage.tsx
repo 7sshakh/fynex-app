@@ -68,7 +68,7 @@ export default function LoginPage() {
 
   return (
     <div
-      className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden px-5 py-6 sm:p-6"
+      className="relative h-full flex items-center justify-center overflow-hidden p-6"
       style={{
         background: `
           radial-gradient(ellipse 80% 50% at 50% 120%, rgba(193, 255, 46, 0.28) 0%, transparent 50%),
