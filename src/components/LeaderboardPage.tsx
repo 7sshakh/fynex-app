@@ -123,9 +123,9 @@ export default function LeaderboardPage() {
 
       <section className="mb-8 rounded-[32px] px-4 pb-10 pt-16" style={{ background: 'linear-gradient(180deg, rgba(195,255,45,0.08) 0%, rgba(14,14,14,0) 100%)' }}>
         <div className="flex items-end justify-center gap-3">
-          {topThree[1] && <PodiumCard entry={topThree[1]} place={2} />}
-          {topThree[0] && <PodiumCard entry={topThree[0]} place={1} primary />}
-          {topThree[2] && <PodiumCard entry={topThree[2]} place={3} />}
+          {topThree[1] && <PodiumCard entry={topThree[1]} place={2} colors={colors} />}
+          {topThree[0] && <PodiumCard entry={topThree[0]} place={1} primary colors={colors} />}
+          {topThree[2] && <PodiumCard entry={topThree[2]} place={3} colors={colors} />}
         </div>
       </section>
 
@@ -229,10 +229,12 @@ function PodiumCard({
   entry,
   place,
   primary = false,
+  colors,
 }: {
   entry: LeaderboardEntry & { score?: number };
   place: 1 | 2 | 3;
   primary?: boolean;
+  colors: ReturnType<typeof getPalette>;
 }) {
   const avatar = entry.user.name
     .split(' ')

@@ -12,6 +12,7 @@ export default function LoginPage() {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [name, setName] = useState('');
   const [otpStatus, setOtpStatus] = useState<'idle' | 'checking' | 'success' | 'error'>('idle');
+  const [otpAttempt, setOtpAttempt] = useState(0);
   const phoneRef = useRef<HTMLInputElement | null>(null);
   const nameRef = useRef<HTMLInputElement | null>(null);
   const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
@@ -43,7 +44,6 @@ export default function LoginPage() {
   const goOtp = () => {
     if (otp.join('').length !== 6) return;
     setOtpStatus('checking');
-    (document.activeElement as HTMLElement | null)?.blur?.();
     window.setTimeout(() => {
       if (otp.join('') === '123456') {
         setOtpStatus('success');
@@ -53,10 +53,13 @@ export default function LoginPage() {
         }, 900);
       } else {
         setOtpStatus('error');
+        setOtpAttempt((current) => current + 1);
         window.setTimeout(() => {
           setOtp(['', '', '', '', '', '']);
           setOtpStatus('idle');
-          otpRefs.current[0]?.focus();
+          const firstInput = otpRefs.current[0];
+          firstInput?.focus();
+          firstInput?.setSelectionRange?.(0, 1);
         }, 900);
       }
     }, 450);
@@ -210,7 +213,18 @@ export default function LoginPage() {
                   <h2 className="mb-2 text-4xl font-black tracking-[-0.06em]">Tasdiqlash</h2>
                   <p className="mb-7 text-sm text-white/68">{fullPhone} raqamiga yuborilgan kodni kiriting</p>
 
-                  <div className="mb-5 flex justify-center gap-2">
+                  <motion.div
+                    key={otpAttempt}
+                    animate={
+                      otpStatus === 'error'
+                        ? { x: [0, -10, 10, -8, 8, -4, 4, 0] }
+                        : otpStatus === 'success'
+                          ? { scale: [1, 1.04, 1] }
+                          : { x: 0, scale: 1 }
+                    }
+                    transition={{ duration: otpStatus === 'error' ? 0.46 : 0.34, ease: 'easeOut' }}
+                    className="mb-5 flex justify-center gap-2"
+                  >
                     {otp.map((digit, index) => (
                       <input
                         key={index}
@@ -235,15 +249,36 @@ export default function LoginPage() {
                             goOtp();
                           }
                         }}
-                        disabled={otpStatus === 'checking' || otpStatus === 'success'}
                         className="h-16 w-12 rounded-2xl border text-center text-2xl font-black text-white focus:outline-none disabled:opacity-100"
                         style={{
-                          background: otpStatus === 'success' ? 'rgba(34,197,94,0.18)' : otpStatus === 'error' ? 'rgba(239,68,68,0.18)' : 'rgba(0,0,0,0.25)',
-                          borderColor: otpStatus === 'success' ? 'rgba(34,197,94,0.72)' : otpStatus === 'error' ? 'rgba(239,68,68,0.72)' : 'rgba(255,255,255,0.10)',
+                          background:
+                            otpStatus === 'success'
+                              ? 'linear-gradient(180deg, rgba(34,197,94,0.30), rgba(34,197,94,0.12))'
+                              : otpStatus === 'error'
+                                ? 'linear-gradient(180deg, rgba(239,68,68,0.30), rgba(239,68,68,0.12))'
+                                : otpStatus === 'checking'
+                                  ? 'linear-gradient(180deg, rgba(195,255,46,0.26), rgba(195,255,46,0.08))'
+                                  : 'rgba(0,0,0,0.25)',
+                          borderColor:
+                            otpStatus === 'success'
+                              ? 'rgba(74,222,128,0.88)'
+                              : otpStatus === 'error'
+                                ? 'rgba(248,113,113,0.88)'
+                                : otpStatus === 'checking'
+                                  ? 'rgba(195,255,46,0.62)'
+                                  : 'rgba(255,255,255,0.10)',
+                          boxShadow:
+                            otpStatus === 'success'
+                              ? '0 0 18px rgba(74,222,128,0.28)'
+                              : otpStatus === 'error'
+                                ? '0 0 18px rgba(248,113,113,0.22)'
+                                : otpStatus === 'checking'
+                                  ? '0 0 16px rgba(195,255,46,0.20)'
+                                  : 'none',
                         }}
                       />
                     ))}
-                  </div>
+                  </motion.div>
 
                   <div className="rounded-2xl border border-lime-300/10 bg-lime-300/[0.06] px-4 py-3">
                     <p className="text-xs uppercase tracking-[0.2em] text-lime-300/80">Demo kod</p>
@@ -251,11 +286,18 @@ export default function LoginPage() {
                   </div>
                 </div>
 
-                <div className="mt-auto pt-8 text-center text-sm font-medium text-white/65 min-h-6">
-                  {otpStatus === 'checking' && 'Kod tekshirilmoqda...'}
+                <motion.div
+                  initial={false}
+                  animate={{
+                    opacity: otpStatus === 'idle' ? 0 : 1,
+                    y: otpStatus === 'idle' ? 8 : 0,
+                  }}
+                  className="mt-auto pt-8 text-center text-sm font-medium text-white/65 min-h-6"
+                >
+                  {otpStatus === 'checking' && <span className="text-lime-300">Kod tekshirilmoqda...</span>}
                   {otpStatus === 'success' && <span className="text-green-400">Kod tasdiqlandi</span>}
                   {otpStatus === 'error' && <span className="text-red-400">Kod xato, qayta kiriting</span>}
-                </div>
+                </motion.div>
               </motion.section>
             )}
 

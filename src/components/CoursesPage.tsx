@@ -123,9 +123,6 @@ export default function CoursesPage() {
           <p className="mb-1 text-sm font-medium" style={{ color: colors.onSurfaceVariant }}>
             O‘rganishni boshlang
           </p>
-          <h2 className="text-3xl font-black uppercase italic tracking-[-0.06em]" style={{ color: colors.onSurface }}>
-            Fynex
-          </h2>
         </div>
 
         <label className="relative block">
