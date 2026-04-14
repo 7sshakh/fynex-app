@@ -118,4 +118,102 @@ export const lessonSteps: Record<string, LessonStep[]> = {
     { type: 'quiz', question: 'Om qonuni formulasi?', options: ['U = IR', 'P = UI', 'W = Pt', 'F = qE'], correctIndex: 0, explanation: 'U = I × R — kuchlanish = tok × qarshilik' },
     { type: 'fill_blank', before: 'Tok kuchi birligi —', after: '.', correctWord: 'Amper', options: ['Amper', 'Volt', 'Vatt', 'Om'], hint: 'Andre-Mari ... nomi bilan' },
   ],
+
+  // Course 2: Ingliz tili Intermediate
+  '2-1': [
+    { type: 'flashcard', word: 'have finished', pronunciation: '[hæv ˈfɪnɪʃt]', translation: 'tugatganman', definition: 'Present Perfect shakli' },
+    { type: 'quiz', question: 'Present Perfect qaysi formulada to‘g‘ri yozilgan?', options: ['have/has + V3', 'did + V1', 'am/is/are + Ving', 'was/were + V3'], correctIndex: 0, explanation: 'Present Perfect: have/has + past participle (V3).' },
+    { type: 'fill_blank', before: 'She has', after: 'her homework already.', correctWord: 'finished', options: ['finished', 'finish', 'finishes', 'finishing'], hint: 'V3 shakli kerak' },
+  ],
+  '2-2': [
+    { type: 'flashcard', word: 'should', pronunciation: '[ʃʊd]', translation: 'kerak', definition: 'Maslahat berishda ishlatiladi' },
+    { type: 'quiz', question: 'Qaysi gapda modal verb to‘g‘ri ishlatilgan?', options: ['You should study more.', 'You should to study.', 'You should studying.', 'You should studies.'], correctIndex: 0 },
+    { type: 'fill_blank', before: 'You', after: 'drink more water.', correctWord: 'should', options: ['should', 'can', 'musted', 'are'], hint: 'Maslahat beryapsiz' },
+  ],
+  '2-3': [
+    { type: 'flashcard', word: 'If I had time', pronunciation: '[ɪf aɪ hæd taɪm]', translation: 'Agar vaqtim bo‘lsa edi', definition: 'Conditionals misoli' },
+    { type: 'quiz', question: 'Second Conditional qaysi ko‘rinishda tuziladi?', options: ['If + past simple, would + V1', 'If + V1, will + V1', 'If + had + V3, would have + V3', 'If + V2, will + V1'], correctIndex: 0 },
+    { type: 'fill_blank', before: 'If I had more money, I', after: 'travel more.', correctWord: 'would', options: ['would', 'will', 'am', 'have'], hint: 'Second Conditional' },
+  ],
+
+  // Course 6: Dasturlash
+  '6-1': [
+    { type: 'flashcard', word: 'variable', pronunciation: '[ˈver.i.ə.bəl]', translation: 'o‘zgaruvchi', definition: 'Ma’lumot saqlaydigan nomlangan joy' },
+    { type: 'quiz', question: 'Python’da o‘zgaruvchi qanday yaratiladi?', options: ['x = 10', 'int x = 10', 'let x = 10', 'var x:10'], correctIndex: 0, explanation: 'Python’da turini alohida yozish shart emas.' },
+    { type: 'fill_blank', before: 'name', after: '"Ali"', correctWord: '=', options: ['=', '==', ':', '->'], hint: 'Qiymat biriktirish belgisi kerak' },
+  ],
+  '6-2': [
+    { type: 'flashcard', word: 'if', pronunciation: '[ɪf]', translation: 'agar', definition: 'Shartli operator' },
+    { type: 'quiz', question: 'Qaysi kod bo‘lagi shartni tekshiradi?', options: ['if x > 5:', 'for x > 5:', 'def x > 5:', 'print x > 5:'], correctIndex: 0 },
+    { type: 'fill_blank', before: 'if score >= 70', after: ' print("Passed")', correctWord: ':', options: [':', ';', ',', '.'], hint: 'Shartdan keyin ikki nuqta qo‘yiladi' },
+  ],
+  '6-3': [
+    { type: 'flashcard', word: 'for loop', pronunciation: '[fɔːr luːp]', translation: 'takrorlash operatori', definition: 'Bir xil amalni qayta bajaradi' },
+    { type: 'quiz', question: 'Python’da 5 marta takrorlash uchun qaysi variant to‘g‘ri?', options: ['for i in range(5):', 'repeat(5):', 'loop i to 5:', 'while 5:'], correctIndex: 0 },
+    { type: 'fill_blank', before: 'for i in', after: '(3): print(i)', correctWord: 'range', options: ['range', 'loop', 'list', 'set'], hint: 'Eng ko‘p ishlatiladigan funksiya' },
+  ],
+  '6-4': [
+    { type: 'flashcard', word: 'function', pronunciation: '[ˈfʌŋk.ʃən]', translation: 'funksiya', definition: 'Qayta ishlatiladigan kod bloki' },
+    { type: 'quiz', question: 'Python’da funksiya qaysi kalit so‘z bilan ochiladi?', options: ['def', 'func', 'function', 'lambda'], correctIndex: 0 },
+    { type: 'fill_blank', before: 'def greet', after: ':\n    print("Hi")', correctWord: '()', options: ['()', '[]', '{}', '<>'], hint: 'Qavslar kerak' },
+  ],
+
+  // Course 7: Rus tili Advanced
+  '7-1': [
+    { type: 'flashcard', word: 'совершенный вид', pronunciation: '[səvʲɪrˈʂenːɨj vʲit]', translation: 'tugallangan harakat', definition: 'Glagolning turi' },
+    { type: 'quiz', question: 'Qaysi fe’l tugallangan harakatni bildiradi?', options: ['сделать', 'делать', 'читать', 'говорить'], correctIndex: 0 },
+    { type: 'fill_blank', before: 'Я хочу', after: 'домашнее задание сегодня.', correctWord: 'сделать', options: ['сделать', 'делать', 'сделал', 'делаю'], hint: 'Bir martalik yakun' },
+  ],
+  '7-2': [
+    { type: 'flashcard', word: 'сложное предложение', pronunciation: '[ˈsloʐnəjə prʲɪdlɐˈʐenʲɪjə]', translation: 'murakkab gap', definition: 'Bir nechta qismli gap' },
+    { type: 'quiz', question: 'Sintaksis nimani o‘rganadi?', options: ['Gap tuzilishini', 'Tovushlarni', 'Harflarni', 'Urg‘uni'], correctIndex: 0 },
+    { type: 'fill_blank', before: 'Когда я пришёл, он уже', after: '.', correctWord: 'ушёл', options: ['ушёл', 'идёт', 'идти', 'ушли'], hint: 'O‘tgan zamon' },
+  ],
+
+  // Course 8: Matematika Advanced
+  '8-1': [
+    { type: 'quiz', question: 'x² - 5x + 6 = 0 tenglamaning ildizlari?', options: ['2 va 3', '1 va 6', '-2 va -3', '3 va 5'], correctIndex: 0, explanation: '(x-2)(x-3)=0' },
+    { type: 'fill_blank', before: 'Diskriminant formulasi: b² -', after: '.', correctWord: '4ac', options: ['4ac', '2ac', 'a²c', '4ab'], hint: 'Kvadrat tenglama formulasi' },
+    { type: 'flashcard', word: 'discriminant', pronunciation: '[dɪˈskrɪmɪnənt]', translation: 'diskriminant' },
+  ],
+  '8-2': [
+    { type: 'flashcard', word: 'logarithm', pronunciation: '[ˈlɒɡərɪðəm]', translation: 'logarifm', definition: 'Darajaga ko‘tarishning teskari amali' },
+    { type: 'quiz', question: 'log₁₀(100) nechaga teng?', options: ['1', '2', '10', '100'], correctIndex: 1 },
+    { type: 'fill_blank', before: 'log₂(8) =', after: '', correctWord: '3', options: ['2', '3', '4', '8'], hint: '2 ning nechanchi darajasi 8?' },
+  ],
+  '8-3': [
+    { type: 'flashcard', word: 'sin 90°', pronunciation: '[sain nainti dɪˈɡriːz]', translation: '1 ga teng' },
+    { type: 'quiz', question: 'cos 0° nechaga teng?', options: ['0', '1', '-1', '90'], correctIndex: 1 },
+    { type: 'fill_blank', before: 'sin 30° =', after: '', correctWord: '1/2', options: ['1/2', '1', '0', '√3'], hint: 'Asosiy trigonometrik qiymat' },
+  ],
 };
+
+export function getLessonSteps(lessonId: string, lessonTitle?: string): LessonStep[] {
+  const direct = lessonSteps[lessonId];
+  if (direct && direct.length > 0) return direct;
+
+  return [
+    {
+      type: 'flashcard',
+      word: lessonTitle || 'Yangi dars',
+      pronunciation: '[lesson]',
+      translation: 'Asosiy tushuncha',
+      definition: 'Bu dars uchun demo kontent tayyorlandi.',
+    },
+    {
+      type: 'quiz',
+      question: `${lessonTitle || 'Ushbu dars'} bo‘yicha asosiy maqsad nima?`,
+      options: ['Tushunchani anglash', 'Shunchaki o‘tib ketish', 'Tasodifiy belgilash', 'Bekor qilish'],
+      correctIndex: 0,
+      explanation: 'Avval mazmunni tushunish, keyin amaliyot qilish muhim.',
+    },
+    {
+      type: 'fill_blank',
+      before: 'Yaxshi natija uchun darsni',
+      after: 'yakunlash kerak.',
+      correctWord: 'oxirigacha',
+      options: ['tezda', 'oxirigacha', 'bekorga', 'yarimta'],
+      hint: 'To‘liq yakunlash progressni oshiradi.',
+    },
+  ];
+}

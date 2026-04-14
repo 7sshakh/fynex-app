@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Atom, BookOpen, Calculator, Check, Code, Globe, Lock, LockKeyhole, Play, Search, Sparkles, X, Zap } from 'lucide-react';
 import { mockCourses, categories } from '../data/mockData';
-import { lessonSteps } from '../data/lessonContent';
+import { getLessonSteps } from '../data/lessonContent';
 import { useUser } from '../context/UserContext';
 import LessonPlayer from './LessonPlayer';
 import { getPalette } from '../theme';
@@ -397,7 +397,7 @@ export default function CoursesPage() {
         isOpen={!!activeLesson}
         onClose={() => setActiveLesson(null)}
         lessonTitle={activeLesson?.title || ''}
-        steps={activeLesson ? lessonSteps[activeLesson.id] || [] : []}
+        steps={activeLesson ? getLessonSteps(activeLesson.id, activeLesson.title) : []}
         xpReward={10}
         onComplete={handleLessonComplete}
       />
