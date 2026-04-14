@@ -24,12 +24,32 @@ function AppContent() {
   const [showSplash, setShowSplash] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Detect environment: Telegram Web App vs Browser/PWA
+  // Detect environment: Telegram Web App vs Browser/PWA vs Standalone
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp;
     const isTWA = !!(tg && tg.initData && tg.initData.length > 0);
-    document.documentElement.classList.remove('twa-mode', 'pwa-mode');
-    document.documentElement.classList.add(isTWA ? 'twa-mode' : 'pwa-mode');
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+      || (window.navigator as any).standalone === true;
+
+    const root = document.documentElement;
+    root.classList.remove('twa-mode', 'pwa-mode', 'standalone-mode');
+    root.classList.add(isTWA ? 'twa-mode' : 'pwa-mode');
+    if (isStandalone) root.classList.add('standalone-mode');
+  }, []);
+
+  // Dynamic viewport height — fixes iOS PWA where vh is unreliable
+  useEffect(() => {
+    const setVH = () => {
+      const vh = window.innerHeight;
+      document.documentElement.style.setProperty('--app-height', `${vh}px`);
+    };
+    setVH();
+    window.addEventListener('resize', setVH);
+    window.addEventListener('orientationchange', setVH);
+    return () => {
+      window.removeEventListener('resize', setVH);
+      window.removeEventListener('orientationchange', setVH);
+    };
   }, []);
 
   // Sync body bg with theme

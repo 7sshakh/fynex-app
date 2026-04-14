@@ -5,6 +5,9 @@ html {
   margin: 0;
   padding: 0;
   height: 100%;
+  height: 100vh;
+  height: 100dvh;
+  height: -webkit-fill-available;
   overflow: hidden;
   overscroll-behavior: none;
   background: #f0f2ff;
@@ -14,6 +17,9 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
+  height: 100vh;
+  height: 100dvh;
+  height: -webkit-fill-available;
   overflow: hidden;
   overscroll-behavior: none;
   background: #f0f2ff;
@@ -21,24 +27,26 @@ body {
 
 #root {
   height: 100%;
+  height: var(--app-height, 100vh);
   overflow: hidden;
 }
 
 /* App shell — flex column fills entire viewport */
 .app-shell {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  width: 100%;
+  height: 100%;
+  height: 100vh;
+  height: 100dvh;
+  height: var(--app-height, 100vh);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  position: relative;
 }
 
 /* Scrollable content area */
 .app-content {
-  flex: 1;
+  flex: 1 1 0%;
   min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
@@ -48,21 +56,27 @@ body {
   z-index: 1;
 }
 
-/* Nav wrapper — flex child at bottom */
+/* Nav wrapper — flex child pinned at bottom */
 .bottom-nav-wrap {
-  flex-shrink: 0;
+  flex: 0 0 auto;
   position: relative;
   z-index: 9990;
+  width: 100%;
 }
 
-/* ===== TELEGRAM MODE (TWA) — safe area padding ===== */
+/* ===== TELEGRAM MODE (TWA) ===== */
 .twa-mode .bottom-nav {
   padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
 }
 
-/* ===== BROWSER / PWA MODE — simple padding, no safe-area bloat ===== */
+/* ===== PWA in browser — simple ===== */
 .pwa-mode .bottom-nav {
   padding-bottom: 8px;
+}
+
+/* ===== PWA STANDALONE MODE (Add to Homescreen) — needs safe area ===== */
+.pwa-mode.standalone-mode .bottom-nav {
+  padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
 }
 
 /* ========== END LAYOUT ========== */
