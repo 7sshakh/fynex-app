@@ -1,7 +1,4 @@
-// Fynex 3.0 Design System — "The Neon Academic"
-// Based on Google Stitch design output
-
-export const colors = {
+export const darkColors = {
   background: '#0e0e0e',
   surface: '#0e0e0e',
   surfaceDim: '#0e0e0e',
@@ -12,34 +9,64 @@ export const colors = {
   surfaceContainerHighest: '#262626',
   surfaceBright: '#2c2c2c',
   surfaceVariant: '#262626',
-
   primary: '#c3ff2d',
   primaryDim: '#b5f018',
   primaryContainer: '#b2ed12',
   onPrimary: '#455f00',
   onPrimaryContainer: '#3d5400',
-
   secondary: '#dde8b7',
   secondaryDim: '#cfd9aa',
   secondaryContainer: '#424a26',
   onSecondaryContainer: '#cbd5a6',
-
   tertiary: '#ff734a',
   tertiaryDim: '#ff734a',
   tertiaryContainer: '#ff5722',
   onTertiary: '#430c00',
-
   error: '#ff7351',
   errorDim: '#d53d18',
   errorContainer: '#b92902',
-
   onSurface: '#ffffff',
   onSurfaceVariant: '#adaaaa',
   onBackground: '#ffffff',
-
   outline: '#777575',
   outlineVariant: '#494847',
 } as const;
+
+export const lightColors = {
+  background: '#f7f8fb',
+  surface: '#f7f8fb',
+  surfaceDim: '#eef1f5',
+  surfaceContainerLowest: '#ffffff',
+  surfaceContainerLow: '#ffffff',
+  surfaceContainer: '#ffffff',
+  surfaceContainerHigh: '#f3f4f6',
+  surfaceContainerHighest: '#e7eaf0',
+  surfaceBright: '#dfe4ec',
+  surfaceVariant: '#eef2f7',
+  primary: '#2f8f1f',
+  primaryDim: '#3ea52c',
+  primaryContainer: '#dff5d7',
+  onPrimary: '#ffffff',
+  onPrimaryContainer: '#1c4f13',
+  secondary: '#64748b',
+  secondaryDim: '#475569',
+  secondaryContainer: '#dbe4f0',
+  onSecondaryContainer: '#263445',
+  tertiary: '#ff7a45',
+  tertiaryDim: '#ff8f66',
+  tertiaryContainer: '#ffe4d8',
+  onTertiary: '#7a2600',
+  error: '#ef4444',
+  errorDim: '#dc2626',
+  errorContainer: '#fee2e2',
+  onSurface: '#121417',
+  onSurfaceVariant: '#667085',
+  onBackground: '#121417',
+  outline: '#98a2b3',
+  outlineVariant: '#d0d5dd',
+} as const;
+
+export const colors = darkColors;
 
 export const gradients = {
   primary: 'linear-gradient(135deg, #c3ff2d, #b2ed12)',
@@ -49,3 +76,7 @@ export const gradients = {
   primaryShadow: '0 10px 40px rgba(195, 255, 46, 0.2)',
   neonGlow: '0 0 30px rgba(195, 255, 46, 0.4)',
 } as const;
+
+export function getPalette(theme: 'light' | 'dark') {
+  return theme === 'dark' ? darkColors : lightColors;
+}

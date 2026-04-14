@@ -5,12 +5,13 @@ import { mockCourses, categories } from '../data/mockData';
 import { lessonSteps } from '../data/lessonContent';
 import { useUser } from '../context/UserContext';
 import LessonPlayer from './LessonPlayer';
-import { colors } from '../theme';
+import { getPalette } from '../theme';
 
 type CourseIcon = typeof Globe;
 
 export default function CoursesPage() {
-  const { user, updateXp, completeCourse } = useUser();
+  const { user, updateXp, completeCourse, theme } = useUser();
+  const colors = getPalette(theme);
   const [activeCategory, setActiveCategory] = useState('all');
   const [query, setQuery] = useState('');
   const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
@@ -100,15 +101,16 @@ export default function CoursesPage() {
   };
 
   return (
-    <div className="page-content min-h-full px-6 pt-6 pb-8" style={{ background: colors.background }}>
+    <div className="page-content min-h-full px-6 pb-8" style={{ background: colors.background }}>
       <motion.header
         initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
-        className="sticky top-0 z-20 -mx-6 mb-6 bg-[#0e0e0e]/85 px-6 py-4 backdrop-blur-xl"
+        className="sticky top-0 z-20 -mx-6 mb-6 px-6 pb-4 pt-safe-top backdrop-blur-xl"
+        style={{ background: theme === 'dark' ? 'rgba(14,14,14,0.88)' : 'rgba(247,248,251,0.92)' }}
       >
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full" style={{ background: colors.surfaceContainer }}>
+            <div className="flex h-10 w-10 items-center justify-center rounded-full" style={{ background: colors.surfaceContainerHigh }}>
               <BookOpen className="h-5 w-5" style={{ color: colors.primary }} />
             </div>
             <h1 className="text-lg font-black tracking-[-0.04em]" style={{ color: colors.primary }}>
@@ -187,7 +189,7 @@ export default function CoursesPage() {
                 <div className="mb-4 flex justify-end">
                   <span
                     className="rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-[0.24em]"
-                    style={{ background: 'linear-gradient(135deg,#fbbf24,#ea580c)', color: '#111111' }}
+                    style={{ background: theme === 'dark' ? 'linear-gradient(135deg,#fbbf24,#ea580c)' : 'linear-gradient(135deg,#fb923c,#f97316)', color: '#111111' }}
                   >
                     PRO
                   </span>
@@ -229,8 +231,8 @@ export default function CoursesPage() {
                   initial={{ width: 0 }}
                   animate={{ width: `${progress}%` }}
                   transition={{ duration: 0.35 }}
-                  className="h-full rounded-full"
-                  style={{ background: colors.primary }}
+                      className="h-full rounded-full"
+                      style={{ background: colors.primary }}
                 />
               </div>
 

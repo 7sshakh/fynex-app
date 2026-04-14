@@ -21,7 +21,7 @@ import {
 } from 'lucide-react';
 import { useUser } from '../context/UserContext';
 import SupportChat from './SupportChat';
-import { colors } from '../theme';
+import { getPalette } from '../theme';
 
 export default function ProfilePage() {
   const {
@@ -36,6 +36,7 @@ export default function ProfilePage() {
     updatePhone,
     updateEmail,
   } = useUser();
+  const colors = getPalette(theme);
 
   const [showProModal, setShowProModal] = useState(false);
   const [showSupportChat, setShowSupportChat] = useState(false);
@@ -96,11 +97,12 @@ export default function ProfilePage() {
   ];
 
   return (
-    <div className="page-content min-h-full px-6 pt-6 pb-8" style={{ background: colors.background }}>
+    <div className="page-content min-h-full px-6 pb-8" style={{ background: colors.background }}>
       <motion.header
         initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
-        className="sticky top-0 z-20 -mx-6 mb-6 flex items-center justify-between bg-[#0e0e0e]/85 px-6 py-4 backdrop-blur-xl"
+        className="sticky top-0 z-20 -mx-6 mb-6 flex items-center justify-between px-6 pb-4 pt-safe-top backdrop-blur-xl"
+        style={{ background: theme === 'dark' ? 'rgba(14,14,14,0.88)' : 'rgba(247,248,251,0.92)' }}
       >
         <h1 className="text-lg font-black italic tracking-[-0.04em]" style={{ color: colors.primary }}>
           Profil

@@ -2,10 +2,11 @@ import { motion } from 'framer-motion';
 import { Bell, BookOpen, ChevronRight, Flame, Play, Trophy, Zap } from 'lucide-react';
 import { useUser } from '../context/UserContext';
 import { mockCourses, dailyChallenges } from '../data/mockData';
-import { colors, gradients } from '../theme';
+import { getPalette } from '../theme';
 
 export default function HomePage() {
-  const { user } = useUser();
+  const { user, theme } = useUser();
+  const colors = getPalette(theme);
 
   const firstName = user?.name?.trim().split(/\s+/)[0] || 'User';
   const featuredCourse =
@@ -22,13 +23,16 @@ export default function HomePage() {
   ];
 
   const weeklyBars = [42, 58, 34, 78, 45, 53, 100];
+  const headerBg = theme === 'dark' ? 'rgba(14,14,14,0.88)' : 'rgba(247,248,251,0.92)';
+  const streakBg = theme === 'dark' ? 'linear-gradient(135deg,#ff734a,#ff5722)' : 'linear-gradient(135deg,#86d96b,#3ea52c)';
 
   return (
-    <div className="page-content min-h-full px-6 pt-6 pb-8" style={{ background: colors.background }}>
+    <div className="page-content min-h-full px-6 pb-8" style={{ background: colors.background }}>
       <motion.header
         initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
-        className="sticky top-0 z-20 -mx-6 mb-6 flex items-center justify-between bg-[#0e0e0e]/85 px-6 py-4 backdrop-blur-xl"
+        className="sticky top-0 z-20 -mx-6 mb-6 flex items-center justify-between px-6 pb-4 pt-safe-top backdrop-blur-xl"
+        style={{ background: headerBg }}
       >
         <div className="flex items-center gap-3">
           <div
@@ -44,7 +48,7 @@ export default function HomePage() {
               FYNEX
             </span>
             <h1 className="text-lg font-black italic tracking-[-0.04em]" style={{ color: colors.primary }}>
-              Xush kelibsiz, {firstName}
+              Salom, {firstName}
             </h1>
           </div>
         </div>
@@ -63,7 +67,7 @@ export default function HomePage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.05 }}
         className="relative mb-6 overflow-hidden rounded-[28px] p-6 streak-glow"
-        style={{ background: gradients.tertiary }}
+        style={{ background: streakBg }}
       >
         <div className="relative z-10 flex items-start justify-between">
           <div>
@@ -75,7 +79,7 @@ export default function HomePage() {
             </h2>
           </div>
 
-          <div className="rounded-full bg-white/15 p-3">
+          <div className="rounded-full p-3" style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.28)' }}>
             <Flame className="h-10 w-10" style={{ color: '#fff7ef' }} />
           </div>
         </div>
@@ -87,7 +91,7 @@ export default function HomePage() {
             </span>
             <span className="text-lg font-black text-white">{user?.xp || 0}</span>
           </div>
-          <div className="rounded-full bg-white px-4 py-1.5 text-[11px] font-black uppercase tracking-[0.24em]" style={{ color: colors.tertiary }}>
+          <div className="rounded-full bg-white px-4 py-1.5 text-[11px] font-black uppercase tracking-[0.24em]" style={{ color: theme === 'dark' ? colors.tertiary : colors.primary }}>
             START
           </div>
         </div>

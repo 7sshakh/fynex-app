@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowLeft, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useUser } from '../context/UserContext';
 
 type Step = 'phone' | 'otp' | 'name';
@@ -11,6 +11,7 @@ export default function LoginPage() {
   const [phone, setPhone] = useState('');
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [name, setName] = useState('');
+  const [otpStatus, setOtpStatus] = useState<'idle' | 'checking' | 'success' | 'error'>('idle');
   const phoneRef = useRef<HTMLInputElement | null>(null);
   const nameRef = useRef<HTMLInputElement | null>(null);
   const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
@@ -33,8 +34,24 @@ export default function LoginPage() {
 
   const goOtp = () => {
     if (otp.join('').length !== 6) return;
+    setOtpStatus('checking');
     (document.activeElement as HTMLElement | null)?.blur?.();
-    window.setTimeout(() => setStep('name'), 180);
+    window.setTimeout(() => {
+      if (otp.join('') === '123456') {
+        setOtpStatus('success');
+        window.setTimeout(() => {
+          setOtpStatus('idle');
+          setStep('name');
+        }, 900);
+      } else {
+        setOtpStatus('error');
+        window.setTimeout(() => {
+          setOtp(['', '', '', '', '', '']);
+          setOtpStatus('idle');
+          otpRefs.current[0]?.focus();
+        }, 900);
+      }
+    }, 450);
   };
 
   const finish = () => {
@@ -44,6 +61,7 @@ export default function LoginPage() {
 
   const updateOtp = (index: number, value: string) => {
     if (!/^\d*$/.test(value)) return;
+    if (otpStatus !== 'idle') return;
     const next = [...otp];
     next[index] = value.slice(-1);
     setOtp(next);
@@ -54,6 +72,7 @@ export default function LoginPage() {
   const goBack = () => {
     if (step === 'otp') setStep('phone');
     if (step === 'name') setStep('otp');
+    setOtpStatus('idle');
   };
 
   return (
@@ -166,7 +185,7 @@ export default function LoginPage() {
                   <h2 className="mb-2 text-4xl font-black tracking-[-0.06em]">Tasdiqlash</h2>
                   <p className="mb-7 text-sm text-white/68">{fullPhone} raqamiga yuborilgan kodni kiriting</p>
 
-                  <div className="mb-5 flex justify-between gap-2">
+                  <div className="mb-5 flex justify-center gap-2">
                     {otp.map((digit, index) => (
                       <input
                         key={index}
@@ -187,7 +206,12 @@ export default function LoginPage() {
                             goOtp();
                           }
                         }}
-                        className="h-16 w-12 rounded-2xl border border-white/10 bg-black/25 text-center text-2xl font-black text-white focus:border-lime-300/35 focus:outline-none"
+                        disabled={otpStatus === 'checking' || otpStatus === 'success'}
+                        className="h-16 w-12 rounded-2xl border text-center text-2xl font-black text-white focus:outline-none disabled:opacity-100"
+                        style={{
+                          background: otpStatus === 'success' ? 'rgba(34,197,94,0.18)' : otpStatus === 'error' ? 'rgba(239,68,68,0.18)' : 'rgba(0,0,0,0.25)',
+                          borderColor: otpStatus === 'success' ? 'rgba(34,197,94,0.72)' : otpStatus === 'error' ? 'rgba(239,68,68,0.72)' : 'rgba(255,255,255,0.10)',
+                        }}
                       />
                     ))}
                   </div>
@@ -198,17 +222,11 @@ export default function LoginPage() {
                   </div>
                 </div>
 
-                <div className="mt-auto pt-8">
-                  <motion.button
-                    whileTap={{ scale: 0.985 }}
-                    onClick={goOtp}
-                    disabled={otp.join('').length !== 6}
-                    className="flex h-16 w-full items-center justify-center gap-2 rounded-full text-lg font-black transition-all disabled:opacity-40"
-                    style={{ background: 'linear-gradient(135deg, #d4ff5c 0%, #c3ff2e 55%, #b1ef1a 100%)', color: '#0a0d09', boxShadow: '0 12px 40px rgba(195,255,46,0.18)' }}
-                  >
-                    Kodni tasdiqlash
-                    <CheckCircle2 className="h-5 w-5" />
-                  </motion.button>
+                <div className="mt-auto pt-8 text-center text-sm font-medium text-white/65">
+                  {otpStatus === 'checking' && 'Kod tekshirilmoqda...'}
+                  {otpStatus === 'success' && <span className="text-green-400">Kod tasdiqlandi</span>}
+                  {otpStatus === 'error' && <span className="text-red-400">Kod xato, qayta kiriting</span>}
+                  {otpStatus === 'idle' && '6 xonali kod to‘liq kiritilgach avtomatik tekshiriladi'}
                 </div>
               </motion.section>
             )}
@@ -243,7 +261,7 @@ export default function LoginPage() {
                       }
                     }}
                     className="w-full rounded-[22px] border border-white/10 bg-black/25 px-4 py-4 text-lg font-bold text-white placeholder:text-white/25 focus:border-lime-300/35 focus:outline-none"
-                    placeholder="Masalan: Aziz"
+                    placeholder=""
                   />
                 </div>
 

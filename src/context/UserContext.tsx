@@ -18,17 +18,14 @@ interface UserContextType {
   toggleTheme: () => void;
   notificationsEnabled: boolean;
   toggleNotifications: () => void;
-  offlineEnabled: boolean;
-  toggleOffline: () => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export function UserProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const [offlineEnabled, setOfflineEnabled] = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem('fynex_user');
@@ -37,15 +34,13 @@ export function UserProvider({ children }: { children: ReactNode }) {
     }
     const storedTheme = localStorage.getItem('fynex_theme');
     const storedNotifications = localStorage.getItem('fynex_notifications');
-    const storedOffline = localStorage.getItem('fynex_offline');
     if (storedTheme === 'dark' || storedTheme === 'light') {
       setTheme(storedTheme);
+    } else {
+      setTheme('dark');
     }
     if (storedNotifications) {
       setNotificationsEnabled(storedNotifications === 'true');
-    }
-    if (storedOffline) {
-      setOfflineEnabled(storedOffline === 'true');
     }
   }, []);
 
@@ -58,16 +53,15 @@ export function UserProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     localStorage.setItem('fynex_theme', theme);
     document.documentElement.classList.toggle('theme-dark', theme === 'dark');
+    document.documentElement.style.colorScheme = theme;
+    document.body.style.colorScheme = theme;
+    document.documentElement.style.setProperty('--fynex-app-bg', theme === 'dark' ? '#0e0e0e' : '#f7f8fb');
+    document.body.style.backgroundColor = theme === 'dark' ? '#0e0e0e' : '#f7f8fb';
   }, [theme]);
 
   useEffect(() => {
     localStorage.setItem('fynex_notifications', String(notificationsEnabled));
   }, [notificationsEnabled]);
-
-  useEffect(() => {
-    localStorage.setItem('fynex_offline', String(offlineEnabled));
-  }, [offlineEnabled]);
-
 
   const login = (phone: string, name: string) => {
     const telegramId = (window as { Telegram?: { WebApp?: { initDataUnsafe?: { user?: { id?: number } } } } }).Telegram?.WebApp?.initDataUnsafe?.user?.id;
@@ -132,10 +126,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
     setNotificationsEnabled((current) => !current);
   };
 
-  const toggleOffline = () => {
-    setOfflineEnabled((current) => !current);
-  };
-
 
   return (
     <UserContext.Provider
@@ -155,8 +145,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
         toggleTheme,
         notificationsEnabled,
         toggleNotifications,
-        offlineEnabled,
-        toggleOffline,
       }}
     >
       {children}

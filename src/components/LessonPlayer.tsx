@@ -256,7 +256,7 @@ export default function LessonPlayer({ isOpen, onClose, lessonTitle, steps, xpRe
   return createPortal(
     <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 9999, display: 'flex', flexDirection: 'column', background: t.bg, height: '100dvh' }}>
       {/* Header */}
-      <div style={{ background: t.headerBg, borderBottom: `1px solid ${t.border}`, flexShrink: 0, paddingTop: '48px', backdropFilter: 'blur(12px)' }} className="px-4 pb-3">
+      <div style={{ background: t.headerBg, borderBottom: `1px solid ${t.border}`, flexShrink: 0, paddingTop: 'max(48px, calc(env(safe-area-inset-top) + 16px))', backdropFilter: 'blur(12px)' }} className="px-4 pb-3">
         <div className="flex justify-between items-center mb-3">
           <div className="flex items-center gap-3">
             <button onClick={onClose} className="w-10 h-10 rounded-full flex items-center justify-center active:scale-95" style={{ background: t.primaryBg }}>

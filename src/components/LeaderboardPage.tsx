@@ -4,7 +4,7 @@ import { Crown, Flame, Medal, Trophy } from 'lucide-react';
 import { currentUser as baseCurrentUser, mockLeaderboard } from '../data/mockData';
 import { useUser } from '../context/UserContext';
 import type { LeaderboardEntry } from '../types';
-import { colors } from '../theme';
+import { getPalette } from '../theme';
 
 type TimeFilter = 'week' | 'month' | 'all';
 
@@ -42,7 +42,8 @@ const seededEntries: LeaderboardEntry[] = [
 ];
 
 export default function LeaderboardPage() {
-  const { user } = useUser();
+  const { user, theme } = useUser();
+  const colors = getPalette(theme);
   const [timeFilter, setTimeFilter] = useState<TimeFilter>('week');
 
   const filters: { key: TimeFilter; label: string }[] = [
@@ -83,11 +84,12 @@ export default function LeaderboardPage() {
   const currentUserRank = leaderboardData.find((entry) => entry.user.id === user?.id)?.rank ?? null;
 
   return (
-    <div className="page-content min-h-full px-6 pt-6 pb-8" style={{ background: colors.background }}>
+    <div className="page-content min-h-full px-6 pb-8" style={{ background: colors.background }}>
       <motion.header
         initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
-        className="sticky top-0 z-20 -mx-6 mb-6 bg-[#0e0e0e]/85 px-6 py-4 backdrop-blur-xl"
+        className="sticky top-0 z-20 -mx-6 mb-6 px-6 pb-4 pt-safe-top backdrop-blur-xl"
+        style={{ background: theme === 'dark' ? 'rgba(14,14,14,0.88)' : 'rgba(247,248,251,0.92)' }}
       >
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-full" style={{ background: colors.surfaceContainer }}>

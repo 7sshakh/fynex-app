@@ -11,7 +11,7 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background: #0e0e0e;
+  background: var(--fynex-app-bg, #0e0e0e);
 }
 
 .app-content {
@@ -30,6 +30,7 @@
   flex: 0 0 auto;
   z-index: 9990;
   position: relative;
+  background: var(--fynex-app-bg, #0e0e0e);
 }
 
 .bottom-nav {
@@ -42,7 +43,9 @@
 
 /* ========== SAFE AREA ========== */
 .pb-safe { padding-bottom: max(0.5rem, env(safe-area-inset-bottom)); }
-.nav-safe { padding-bottom: max(0.1rem, calc(env(safe-area-inset-bottom) * 0.45)); }
+.nav-safe { padding-bottom: max(0.15rem, env(safe-area-inset-bottom)); }
+.pt-safe-top { padding-top: max(0.75rem, calc(env(safe-area-inset-top) + 0.35rem)); }
+.top-safe-offset { top: env(safe-area-inset-top); }
 
 /* ========== GLASS ========== */
 .glass-card {

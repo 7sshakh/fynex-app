@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Home, GraduationCap, BarChart3, User } from 'lucide-react';
-import { colors } from '../theme';
+import { useUser } from '../context/UserContext';
+import { getPalette } from '../theme';
 
 interface BottomNavProps {
   activeTab: string;
@@ -15,15 +16,18 @@ const tabs = [
 ];
 
 export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
+  const { theme } = useUser();
+  const colors = getPalette(theme);
   return (
     <div className="bottom-nav-wrap" style={{ background: 'transparent' }}>
-      <div className="px-4 pt-2 pb-3 nav-safe">
+      <div className="px-4 pt-2 nav-safe">
         <div
           className="flex justify-around items-center py-2 px-2 rounded-full neon-shadow"
           style={{
-            background: 'rgba(14, 14, 14, 0.6)',
+            background: theme === 'dark' ? 'rgba(14, 14, 14, 0.82)' : 'rgba(255,255,255,0.92)',
             backdropFilter: 'blur(24px)',
             WebkitBackdropFilter: 'blur(24px)',
+            border: `1px solid ${colors.outlineVariant}33`,
           }}
         >
           {tabs.map((tab) => {
@@ -42,7 +46,7 @@ export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
                   transform: 'scale(1.05)',
                 } : {
                   background: 'transparent',
-                  color: 'rgba(244, 247, 223, 0.6)',
+                  color: colors.onSurfaceVariant,
                 }}
               >
                 <Icon className="w-5 h-5" strokeWidth={isActive ? 2.5 : 2} />
