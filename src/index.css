@@ -1,52 +1,61 @@
 @import "tailwindcss";
 
-/* ========== LAYOUT ========== */
+/* ========== iOS NUCLEAR LAYOUT ========== */
 html {
   margin: 0;
   padding: 0;
-  height: 100%;
-  height: 100vh;
-  height: 100dvh;
-  height: -webkit-fill-available;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   overflow: hidden;
   overscroll-behavior: none;
-  background: #f0f2ff;
+  background: #050505;
 }
 
 body {
   margin: 0;
   padding: 0;
-  height: 100%;
-  height: 100vh;
-  height: 100dvh;
-  height: -webkit-fill-available;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   overflow: hidden;
   overscroll-behavior: none;
-  background: #f0f2ff;
+  background: #050505;
 }
 
 #root {
-  height: 100%;
-  height: var(--app-height, 100vh);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   overflow: hidden;
 }
 
 /* Fullscreen wrapper for Login & Splash */
 .app-fullscreen {
-  width: 100%;
-  height: var(--app-height, 100vh);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   overflow: hidden;
-  position: relative;
 }
 
 /* App shell — flex column fills viewport */
 .app-shell {
-  width: 100%;
-  height: var(--app-height, 100vh);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  position: relative;
 }
 
 /* Scrollable content area */
@@ -71,7 +80,7 @@ body {
 
 /* Nav bottom padding */
 .bottom-nav {
-  padding-bottom: 8px;
+  padding-bottom: max(8px, env(safe-area-inset-bottom, 8px));
 }
 
 /* ========== END LAYOUT ========== */
