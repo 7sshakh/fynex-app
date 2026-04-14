@@ -1,13 +1,48 @@
 import { useMemo, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { Crown, Flame, Medal, Trophy } from 'lucide-react';
 import { currentUser as baseCurrentUser, mockLeaderboard } from '../data/mockData';
 import { useUser } from '../context/UserContext';
-import { Trophy, Flame, Crown, Medal, ChevronUp } from 'lucide-react';
+import type { LeaderboardEntry } from '../types';
+import { colors } from '../theme';
 
 type TimeFilter = 'week' | 'month' | 'all';
 
+const seededEntries: LeaderboardEntry[] = [
+  {
+    rank: 1,
+    xp: 15800,
+    streak: 19,
+    user: { ...baseCurrentUser, id: 'seed-1', name: 'Javohir R.', completedCourses: ['1', '4', '5'], xp: 15800, streak: 19 },
+  },
+  {
+    rank: 2,
+    xp: 12400,
+    streak: 14,
+    user: { ...baseCurrentUser, id: 'seed-2', name: 'Malika A.', completedCourses: ['1', '3'], xp: 12400, streak: 14 },
+  },
+  {
+    rank: 3,
+    xp: 11100,
+    streak: 11,
+    user: { ...baseCurrentUser, id: 'seed-3', name: 'Sardor K.', completedCourses: ['4', '5'], xp: 11100, streak: 11 },
+  },
+  {
+    rank: 4,
+    xp: 9842,
+    streak: 12,
+    user: { ...baseCurrentUser, id: 'seed-4', name: 'Dilnoza M.', completedCourses: ['1', '4'], xp: 9842, streak: 12 },
+  },
+  {
+    rank: 5,
+    xp: 8901,
+    streak: 8,
+    user: { ...baseCurrentUser, id: 'seed-5', name: 'Azizbek G.', completedCourses: ['5'], xp: 8901, streak: 8 },
+  },
+];
+
 export default function LeaderboardPage() {
-  const { user, theme } = useUser();
+  const { user } = useUser();
   const [timeFilter, setTimeFilter] = useState<TimeFilter>('week');
 
   const filters: { key: TimeFilter; label: string }[] = [
@@ -17,322 +52,241 @@ export default function LeaderboardPage() {
   ];
 
   const leaderboardData = useMemo(() => {
+    const source = mockLeaderboard.length > 0 ? mockLeaderboard : seededEntries;
     const activeUser = user
       ? {
           rank: 0,
+          xp: user.xp,
+          streak: user.streak,
           user: {
             ...baseCurrentUser,
             ...user,
           },
-          xp: user.xp,
-          streak: user.streak,
         }
       : null;
 
-    const otherEntries = mockLeaderboard.filter((entry) => entry.user.id !== activeUser?.user.id);
-    const combined = activeUser ? [...otherEntries, activeUser] : [...mockLeaderboard];
-    const multiplier = timeFilter === 'week' ? 1 : timeFilter === 'month' ? 1.2 : 1.45;
+    const withoutUser = source.filter((entry) => entry.user.id !== activeUser?.user.id);
+    const combined = activeUser ? [...withoutUser, activeUser] : [...withoutUser];
+    const multiplier = timeFilter === 'week' ? 1 : timeFilter === 'month' ? 1.15 : 1.35;
 
     return combined
       .map((entry) => ({
         ...entry,
-        score: Math.round(entry.xp * multiplier + entry.streak * 12 + entry.user.completedCourses.length * 25),
+        score: Math.round(entry.xp * multiplier + entry.streak * 17 + entry.user.completedCourses.length * 45),
       }))
       .sort((a, b) => b.score - a.score)
-      .map((entry, index) => ({
-        ...entry,
-        rank: index + 1,
-      }));
+      .map((entry, index) => ({ ...entry, rank: index + 1 }));
   }, [timeFilter, user]);
 
   const topThree = leaderboardData.slice(0, 3);
-  const remaining = leaderboardData.slice(3);
+  const rest = leaderboardData.slice(3);
   const currentUserRank = leaderboardData.find((entry) => entry.user.id === user?.id)?.rank ?? null;
 
   return (
-    <div className="page-content min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50 pb-24">
+    <div className="page-content min-h-full px-6 pt-6 pb-8" style={{ background: colors.background }}>
       <motion.header
-        initial={{ opacity: 0, y: -20 }}
+        initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
-        className="px-6 pt-12 pb-6"
+        className="sticky top-0 z-20 -mx-6 mb-6 bg-[#0e0e0e]/85 px-6 py-4 backdrop-blur-xl"
       >
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-1">Leaderboard</h1>
-            <p className="text-gray-500">Eng faol o'quvchilar reytingi</p>
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full" style={{ background: colors.surfaceContainer }}>
+            <Trophy className="h-5 w-5" style={{ color: colors.primary }} />
           </div>
-          <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg ${theme === 'dark' ? 'bg-gradient-to-br from-lime-300 to-yellow-400 shadow-lime-500/20' : 'bg-gradient-to-br from-amber-400 to-orange-500 shadow-amber-200'}`}>
-            <Trophy className={`w-6 h-6 ${theme === 'dark' ? 'text-black' : 'text-white'}`} />
-          </div>
+          <h1 className="text-lg font-black tracking-[-0.04em]" style={{ color: colors.primary }}>
+            Reyting
+          </h1>
         </div>
       </motion.header>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.05 }}
-        className="px-6 mb-6"
-      >
-        <div className="bg-white rounded-2xl p-1.5 inline-flex shadow-sm border border-gray-100">
-          {filters.map((filter) => (
-            <motion.button
+      <div className="mb-8 flex gap-2 rounded-full p-1" style={{ background: colors.surfaceContainerLow }}>
+        {filters.map((filter) => {
+          const active = timeFilter === filter.key;
+          return (
+            <button
               key={filter.key}
+              type="button"
               onClick={() => setTimeFilter(filter.key)}
-              whileTap={{ scale: 0.95 }}
-              className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                timeFilter === filter.key ? 'bg-indigo-600 text-white shadow-md' : 'text-gray-500 hover:text-gray-900'
-              }`}
+              className="flex-1 rounded-full px-4 py-2.5 text-xs font-bold transition-all"
+              style={{
+                background: active ? colors.primary : 'transparent',
+                color: active ? colors.onPrimary : colors.onSurfaceVariant,
+              }}
             >
               {filter.label}
-            </motion.button>
-          ))}
-        </div>
-      </motion.div>
+            </button>
+          );
+        })}
+      </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-        className="px-6 mb-8"
-      >
+      <section className="mb-8 rounded-[32px] px-4 pb-10 pt-16" style={{ background: 'linear-gradient(180deg, rgba(195,255,45,0.08) 0%, rgba(14,14,14,0) 100%)' }}>
         <div className="flex items-end justify-center gap-3">
-          {topThree[1] && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.3 }}
-              className="flex-1 flex flex-col items-center"
-            >
-              <div className="relative mb-3">
-                <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center text-2xl font-bold text-white shadow-lg">
-                  {topThree[1].user.name.split(' ').map((n) => n[0]).join('').slice(0, 2)}
-                </div>
-                <motion.div
-                  animate={{ y: [0, -5, 0] }}
-                  transition={{ repeat: Infinity, duration: 1.8 }}
-                  className="absolute -top-2 -right-2 w-7 h-7 bg-gray-400 rounded-full flex items-center justify-center"
-                >
-                  <Medal className="w-4 h-4 text-white" />
-                </motion.div>
-              </div>
-              <p className="font-semibold text-gray-900 text-sm truncate w-full text-center">
-                {topThree[1].user.name.split(' ')[0]}
-              </p>
-              <p className="text-gray-500 text-xs mb-2">
-                {topThree[1].score.toLocaleString()} XP
-              </p>
-              <div className="w-full bg-gray-200 rounded-t-3xl rounded-b-2xl p-3 bg-gradient-to-t from-gray-100 to-gray-200">
-                <p className="text-center font-bold text-gray-600">2</p>
-              </div>
-            </motion.div>
-          )}
-
-          {topThree[0] && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 }}
-              className="flex-1 flex flex-col items-center"
-            >
-              <motion.div
-                animate={{ y: [0, -8, 0] }}
-                transition={{ repeat: Infinity, duration: 1.3, ease: 'easeInOut' }}
-                className="relative mb-3"
-              >
-                <div className={`w-24 h-24 rounded-2xl flex items-center justify-center text-2xl font-bold shadow-xl ${theme === 'dark' ? 'bg-gradient-to-br from-lime-300 to-yellow-400 text-black shadow-lime-400/30' : 'bg-gradient-to-br from-amber-400 to-amber-500 text-white shadow-amber-200'}`}>
-                  {topThree[0].user.name.split(' ').map((n) => n[0]).join('').slice(0, 2)}
-                </div>
-                <motion.div
-                  animate={{ rotate: [0, 10, -10, 0] }}
-                  transition={{ repeat: Infinity, duration: 1.9 }}
-                  className={`absolute -top-3 -right-3 w-8 h-8 rounded-full flex items-center justify-center shadow-lg ${theme === 'dark' ? 'bg-lime-300' : 'bg-amber-500'}`}
-                >
-                  <Crown className={`w-5 h-5 ${theme === 'dark' ? 'text-black' : 'text-white'}`} />
-                </motion.div>
-              </motion.div>
-              <p className="font-bold text-gray-900 text-sm truncate w-full text-center">
-                {topThree[0].user.name.split(' ')[0]}
-              </p>
-              <p className={`${theme === 'dark' ? 'text-lime-400' : 'text-amber-600'} text-xs font-medium mb-2`}>
-                {topThree[0].score.toLocaleString()} XP
-              </p>
-              <div className={`w-full rounded-t-3xl rounded-b-2xl p-4 bg-gradient-to-t ${theme === 'dark' ? 'from-lime-200 to-yellow-300' : 'from-amber-200 to-amber-300'}`}>
-                <p className={`text-center font-bold ${theme === 'dark' ? 'text-black' : 'text-amber-800'}`}>1</p>
-              </div>
-            </motion.div>
-          )}
-
-          {topThree[2] && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.4 }}
-              className="flex-1 flex flex-col items-center"
-            >
-              <div className="relative mb-3">
-                <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-amber-600 to-orange-700 flex items-center justify-center text-2xl font-bold text-white shadow-lg">
-                  {topThree[2].user.name.split(' ').map((n) => n[0]).join('').slice(0, 2)}
-                </div>
-                <motion.div
-                  animate={{ y: [0, -5, 0] }}
-                  transition={{ repeat: Infinity, duration: 1.9, delay: 0.4 }}
-                  className="absolute -top-2 -right-2 w-7 h-7 bg-orange-600 rounded-full flex items-center justify-center"
-                >
-                  <Medal className="w-4 h-4 text-white" />
-                </motion.div>
-              </div>
-              <p className="font-semibold text-gray-900 text-sm truncate w-full text-center">
-                {topThree[2].user.name.split(' ')[0]}
-              </p>
-              <p className="text-gray-500 text-xs mb-2">
-                {topThree[2].score.toLocaleString()} XP
-              </p>
-              <div className="w-full bg-orange-200 rounded-t-3xl rounded-b-2xl p-3 bg-gradient-to-t from-orange-100 to-orange-200">
-                <p className="text-center font-bold text-orange-700">3</p>
-              </div>
-            </motion.div>
-          )}
+          {topThree[1] && <PodiumCard entry={topThree[1]} place={2} />}
+          {topThree[0] && <PodiumCard entry={topThree[0]} place={1} primary />}
+          {topThree[2] && <PodiumCard entry={topThree[2]} place={3} />}
         </div>
-      </motion.div>
+      </section>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.4 }}
-        className="px-6 space-y-3"
-      >
-        <AnimatePresence>
-          {remaining.map((entry, index) => {
-            const isCurrentUser = entry.user.id === user?.id;
-
-            return (
-              <motion.div
-                key={entry.user.id}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                transition={{ delay: index * 0.05 }}
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.99 }}
-                className={`flex items-center gap-4 p-4 rounded-2xl transition-all ${
-                  isCurrentUser
-                    ? theme === 'dark'
-                      ? 'bg-lime-300 shadow-lg shadow-lime-500/20'
-                      : 'bg-indigo-600 shadow-lg shadow-indigo-200'
-                    : 'bg-white border border-gray-100 shadow-sm'
-                }`}
+      <section className="space-y-3">
+        {rest.map((entry, index) => {
+          const isCurrentUser = entry.user.id === user?.id;
+          return (
+            <motion.div
+              key={entry.user.id}
+              initial={{ opacity: 0, x: -18 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.04 }}
+              className="flex items-center gap-4 rounded-[24px] p-4"
+              style={{
+                background: isCurrentUser ? colors.primary : colors.surfaceContainer,
+                color: isCurrentUser ? colors.onPrimary : colors.onSurface,
+                boxShadow: isCurrentUser ? '0 0 20px rgba(195,255,46,0.18)' : 'none',
+              }}
+            >
+              <span
+                className="w-4 text-sm font-black italic"
+                style={{ color: isCurrentUser ? colors.onPrimary : colors.onSurfaceVariant }}
               >
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold ${
-                  isCurrentUser
-                    ? theme === 'dark'
-                      ? 'bg-black/10 text-black'
-                      : 'bg-white/20 text-white'
-                    : 'bg-gray-100 text-gray-600'
-                }`}>
-                  {entry.rank}
-                </div>
+                {entry.rank}
+              </span>
 
-                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-white ${
-                  isCurrentUser
-                    ? theme === 'dark'
-                      ? 'bg-gradient-to-br from-black to-zinc-800'
-                      : 'bg-gradient-to-br from-indigo-400 to-purple-500'
-                    : 'bg-gradient-to-br from-gray-400 to-gray-500'
-                }`}>
-                  {entry.user.name.split(' ').map((n) => n[0]).join('').slice(0, 2)}
-                </div>
+              <div
+                className="flex h-10 w-10 items-center justify-center rounded-full text-sm font-black"
+                style={{ background: isCurrentUser ? 'rgba(0,0,0,0.14)' : colors.surfaceBright, color: isCurrentUser ? colors.onPrimary : colors.primary }}
+              >
+                {entry.user.name
+                  .split(' ')
+                  .map((part) => part[0])
+                  .join('')
+                  .slice(0, 2)}
+              </div>
 
-                <div className="flex-1 min-w-0">
-                  <p className={`font-semibold truncate ${
-                    isCurrentUser
-                      ? theme === 'dark'
-                        ? 'text-black'
-                        : 'text-white'
-                      : 'text-gray-900'
-                  }`}>
-                    {entry.user.name}
-                    {isCurrentUser && (
-                      <span className={`ml-2 text-xs ${theme === 'dark' ? 'text-black/60' : 'text-white/70'}`}>(Siz)</span>
-                    )}
-                  </p>
-                  <div className="flex items-center gap-3">
-                    <span className={`text-xs ${
-                      isCurrentUser
-                        ? theme === 'dark'
-                          ? 'text-black/70'
-                          : 'text-white/70'
-                        : 'text-gray-500'
-                    }`}>
-                      {entry.user.completedCourses.length} kurs
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-bold">
+                  {entry.user.name}
+                  {isCurrentUser && (
+                    <span className="ml-2 text-[11px]" style={{ color: 'inherit', opacity: 0.75 }}>
+                      (Siz)
                     </span>
-                    <span className={`flex items-center gap-1 text-xs ${
-                      isCurrentUser
-                        ? theme === 'dark'
-                          ? 'text-black/70'
-                          : 'text-white/70'
-                        : 'text-gray-400'
-                    }`}>
-                      <Flame className="w-3 h-3 text-orange-500" />
-                      {entry.streak}
-                    </span>
-                  </div>
+                  )}
+                </p>
+                <div className="flex items-center gap-2 text-[10px]" style={{ color: isCurrentUser ? 'inherit' : colors.onSurfaceVariant }}>
+                  <Flame className="h-3 w-3" style={{ color: colors.tertiary }} />
+                  <span>{entry.streak} kunlik streak</span>
                 </div>
+              </div>
 
-                <div className="text-right">
-                  <p className={`font-bold ${
-                    isCurrentUser
-                      ? theme === 'dark'
-                        ? 'text-black'
-                        : 'text-white'
-                      : 'text-gray-900'
-                  }`}>
-                    {entry.score.toLocaleString()}
-                  </p>
-                  <p className={`text-xs ${
-                    isCurrentUser
-                      ? theme === 'dark'
-                        ? 'text-black/70'
-                        : 'text-white/70'
-                      : 'text-gray-500'
-                  }`}>XP</p>
-                </div>
+              <div className="text-right">
+                <p className="text-sm font-black">{entry.score.toLocaleString()}</p>
+                <p className="text-[10px] uppercase tracking-[0.18em]" style={{ color: isCurrentUser ? 'inherit' : colors.onSurfaceVariant }}>
+                  XP
+                </p>
+              </div>
+            </motion.div>
+          );
+        })}
+      </section>
 
-                {index % 2 === 0 && (
-                  <div className="flex flex-col items-center">
-                    <ChevronUp className="w-4 h-4 text-emerald-500" />
-                    <span className="text-xs text-emerald-500 font-medium">+2</span>
-                  </div>
-                )}
-              </motion.div>
-            );
-          })}
-        </AnimatePresence>
-      </motion.div>
-
-      {/* Sticky rank bar — sticks to bottom of scrollable area */}
-      <div style={{ position: 'sticky', bottom: 0, zIndex: 40 }} className="px-4 pb-3 pt-2">
-        <div className={`rounded-2xl px-4 py-3 flex items-center justify-between ${
-          theme === 'dark'
-            ? 'bg-gradient-to-r from-zinc-900 to-zinc-800 border border-lime-300/10 shadow-lg shadow-lime-500/5'
-            : 'bg-gradient-to-r from-indigo-600 to-violet-600 shadow-lg shadow-indigo-200/50'
-        }`}>
+      <div className="sticky bottom-0 z-10 px-1 pb-2 pt-4">
+        <div
+          className="flex items-center justify-between rounded-[28px] border px-4 py-4 backdrop-blur-xl"
+          style={{
+            background: 'rgba(32,31,31,0.9)',
+            borderColor: `${colors.outlineVariant}22`,
+          }}
+        >
           <div className="flex items-center gap-3">
-            <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${
-              theme === 'dark' ? 'bg-lime-300/15' : 'bg-white/20'
-            }`}>
-              <Trophy className={`w-4 h-4 ${theme === 'dark' ? 'text-lime-300' : 'text-white'}`} />
+            <div className="flex h-9 w-9 items-center justify-center rounded-full" style={{ background: colors.primary }}>
+              <Trophy className="h-4 w-4" style={{ color: colors.onPrimary }} />
             </div>
             <div>
-              <p className={`text-[10px] ${theme === 'dark' ? 'text-lime-200/70' : 'text-white/70'}`}>Sizning o'rningiz</p>
-              <p className={`text-base font-bold ${theme === 'dark' ? 'text-white' : 'text-white'}`}>#{currentUserRank ?? '-'}</p>
+              <p className="text-[10px] uppercase tracking-[0.18em]" style={{ color: colors.onSurfaceVariant }}>
+                Sizning o'rningiz
+              </p>
+              <p className="text-base font-black" style={{ color: colors.onSurface }}>
+                #{currentUserRank ?? '-'}
+              </p>
             </div>
           </div>
+
           <div className="text-right">
-            <p className={`text-[10px] ${theme === 'dark' ? 'text-lime-200/70' : 'text-white/70'}`}>Jami XP</p>
-            <p className={`text-base font-bold ${theme === 'dark' ? 'text-lime-300' : 'text-white'}`}>{user?.xp.toLocaleString() || 0}</p>
+            <p className="text-[10px] uppercase tracking-[0.18em]" style={{ color: colors.onSurfaceVariant }}>
+              Jami XP
+            </p>
+            <p className="text-base font-black" style={{ color: colors.primary }}>
+              {user?.xp || 0}
+            </p>
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+function PodiumCard({
+  entry,
+  place,
+  primary = false,
+}: {
+  entry: LeaderboardEntry & { score?: number };
+  place: 1 | 2 | 3;
+  primary?: boolean;
+}) {
+  const avatar = entry.user.name
+    .split(' ')
+    .map((part) => part[0])
+    .join('')
+    .slice(0, 2);
+
+  return (
+    <div className={`flex flex-1 flex-col items-center ${primary ? '-mt-8' : ''}`}>
+      <div className="relative mb-3">
+        <div
+          className={`flex items-center justify-center rounded-full border-4 font-black ${primary ? 'h-24 w-24 text-2xl' : 'h-16 w-16 text-lg'}`}
+          style={{
+            borderColor: primary ? `${colors.primary}55` : place === 2 ? `${colors.secondary}44` : `${colors.tertiary}44`,
+            background: primary ? colors.primary : colors.surfaceContainer,
+            color: primary ? colors.onPrimary : colors.onSurface,
+          }}
+        >
+          {avatar}
+        </div>
+
+        <div
+          className="absolute -bottom-2 left-1/2 -translate-x-1/2 rounded-full px-3 py-1"
+          style={{
+            background: primary ? colors.primary : colors.surfaceContainer,
+            border: `1px solid ${primary ? `${colors.primary}66` : `${colors.outlineVariant}55`}`,
+          }}
+        >
+          <span
+            className="text-[10px] font-black"
+            style={{ color: primary ? colors.onPrimary : place === 2 ? colors.secondary : colors.tertiary }}
+          >
+            #{place}
+          </span>
+        </div>
+
+        {primary ? (
+          <div className="absolute -right-2 -top-2 flex h-8 w-8 items-center justify-center rounded-full" style={{ background: colors.primary }}>
+            <Crown className="h-4 w-4" style={{ color: colors.onPrimary }} />
+          </div>
+        ) : (
+          <div
+            className="absolute -right-2 -top-2 flex h-7 w-7 items-center justify-center rounded-full"
+            style={{ background: place === 2 ? colors.surfaceBright : `${colors.tertiary}CC` }}
+          >
+            <Medal className="h-4 w-4" style={{ color: '#ffffff' }} />
+          </div>
+        )}
+      </div>
+
+      <p className="w-24 truncate text-center text-sm font-bold" style={{ color: colors.onSurface }}>
+        {entry.user.name}
+      </p>
+      <p className="text-[11px] font-black" style={{ color: colors.primary }}>
+        {(entry.score || entry.xp).toLocaleString()} XP
+      </p>
     </div>
   );
 }

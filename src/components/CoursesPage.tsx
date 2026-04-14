@@ -1,33 +1,25 @@
 import { useEffect, useMemo, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Atom, BookOpen, Calculator, Check, Code, Globe, Lock, LockKeyhole, Play, Search, Sparkles, X } from 'lucide-react';
 import { mockCourses, categories } from '../data/mockData';
-import { useUser } from '../context/UserContext';
-import { 
-  Globe, Calculator, Atom, Code, Sparkles, Lock, 
-  Play, Check, LockKeyhole 
-} from 'lucide-react';
-import LessonPlayer from './LessonPlayer';
 import { lessonSteps } from '../data/lessonContent';
+import { useUser } from '../context/UserContext';
+import LessonPlayer from './LessonPlayer';
+import { colors } from '../theme';
+
+type CourseIcon = typeof Globe;
 
 export default function CoursesPage() {
-  const { user, updateXp, completeCourse, theme } = useUser();
+  const { user, updateXp, completeCourse } = useUser();
   const [activeCategory, setActiveCategory] = useState('all');
-  const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
+  const [query, setQuery] = useState('');
+  const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
   const [startedLessons, setStartedLessons] = useState<string[]>([]);
   const [activeLesson, setActiveLesson] = useState<{ id: string; title: string; courseId: string } | null>(null);
 
-  const filteredCourses = activeCategory === 'all'
-    ? mockCourses
-    : mockCourses.filter(c => c.category === activeCategory);
+  const selectedCourse = mockCourses.find((course) => course.id === selectedCourseId) ?? null;
 
-  const getCourseProgress = (courseId: string) => {
-    const course = mockCourses.find(c => c.id === courseId);
-    if (!course) return 0;
-    const completed = course.lessons.filter(l => l.completed || startedLessons.includes(l.id)).length;
-    return Math.round((completed / course.lessons.length) * 100);
-  };
-
-  const getIcon = (category: string) => {
+  const getIcon = (category: string): CourseIcon => {
     switch (category) {
       case 'english':
       case 'russian':
@@ -43,11 +35,25 @@ export default function CoursesPage() {
     }
   };
 
-  const selectedCourseData = mockCourses.find(c => c.id === selectedCourse);
-  const selectedCourseProgress = useMemo(
-    () => (selectedCourseData ? getCourseProgress(selectedCourseData.id) : 0),
-    [selectedCourseData, startedLessons],
-  );
+  const getCourseProgress = (courseId: string) => {
+    const course = mockCourses.find((item) => item.id === courseId);
+    if (!course) return 0;
+    const completed = course.lessons.filter(
+      (lesson) => lesson.completed || startedLessons.includes(lesson.id) || user?.completedCourses.includes(course.id),
+    ).length;
+    return Math.round((completed / course.lessons.length) * 100);
+  };
+
+  const filteredCourses = useMemo(() => {
+    return mockCourses.filter((course) => {
+      const categoryMatch = activeCategory === 'all' || course.category === activeCategory;
+      const queryMatch =
+        !query.trim() ||
+        course.title.toLowerCase().includes(query.toLowerCase()) ||
+        course.description.toLowerCase().includes(query.toLowerCase());
+      return categoryMatch && queryMatch;
+    });
+  }, [activeCategory, query]);
 
   useEffect(() => {
     document.body.style.overflow = selectedCourse ? 'hidden' : '';
@@ -57,11 +63,10 @@ export default function CoursesPage() {
   }, [selectedCourse]);
 
   const startLesson = (courseId: string, lessonId: string) => {
-    const course = mockCourses.find(c => c.id === courseId);
-    const lesson = course?.lessons.find(l => l.id === lessonId);
-    if (lesson) {
-      setActiveLesson({ id: lessonId, title: lesson.title, courseId });
-    }
+    const course = mockCourses.find((item) => item.id === courseId);
+    const lesson = course?.lessons.find((item) => item.id === lessonId);
+    if (!lesson) return;
+    setActiveLesson({ id: lessonId, title: lesson.title, courseId });
   };
 
   const handleLessonComplete = () => {
@@ -70,289 +75,346 @@ export default function CoursesPage() {
       setStartedLessons((current) => [...current, activeLesson.id]);
       updateXp(10);
     }
-    const course = mockCourses.find(c => c.id === activeLesson.courseId);
-    if (course) {
-      const completed = course.lessons.filter(l => l.completed || [...startedLessons, activeLesson.id].includes(l.id)).length;
-      if (completed >= course.lessons.length) completeCourse(activeLesson.courseId);
+
+    const course = mockCourses.find((item) => item.id === activeLesson.courseId);
+    if (!course) return;
+
+    const completedCount = course.lessons.filter(
+      (lesson) => lesson.completed || lesson.id === activeLesson.id || startedLessons.includes(lesson.id),
+    ).length;
+
+    if (completedCount >= course.lessons.length) {
+      completeCourse(course.id);
     }
   };
 
   const startCourse = () => {
-    if (!selectedCourseData) return;
-    const nextLesson = selectedCourseData.lessons.find((lesson) => !lesson.completed) ?? selectedCourseData.lessons[0];
-    startLesson(selectedCourseData.id, nextLesson.id);
+    if (!selectedCourse) return;
+    const nextLesson =
+      selectedCourse.lessons.find((lesson, index) => {
+        if (lesson.completed || startedLessons.includes(lesson.id)) return false;
+        return index === 0 || selectedCourse.lessons[index - 1].completed || startedLessons.includes(selectedCourse.lessons[index - 1].id);
+      }) ?? selectedCourse.lessons[0];
+
+    startLesson(selectedCourse.id, nextLesson.id);
   };
 
   return (
-    <div className={`page-content min-h-screen pb-24 ${theme === 'dark' ? 'bg-transparent' : 'bg-gradient-to-br from-slate-50 via-white to-indigo-50'}`}>
-      {/* Header */}
-      <motion.header 
-        initial={{ opacity: 0, y: -20 }}
+    <div className="page-content min-h-full px-6 pt-6 pb-8" style={{ background: colors.background }}>
+      <motion.header
+        initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
-        className="px-6 pt-12 pb-6"
+        className="sticky top-0 z-20 -mx-6 mb-6 bg-[#0e0e0e]/85 px-6 py-4 backdrop-blur-xl"
       >
-        <h1 className={`text-2xl font-bold mb-1 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Kurslar</h1>
-        <p className={theme === 'dark' ? 'text-lime-200/60' : 'text-gray-500'}>O'rganishni boshlang</p>
+        <div className="mb-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full" style={{ background: colors.surfaceContainer }}>
+              <BookOpen className="h-5 w-5" style={{ color: colors.primary }} />
+            </div>
+            <h1 className="text-lg font-black tracking-[-0.04em]" style={{ color: colors.primary }}>
+              Kurslar
+            </h1>
+          </div>
+        </div>
+
+        <div className="mb-5">
+          <p className="mb-1 text-sm font-medium" style={{ color: colors.onSurfaceVariant }}>
+            O‘rganishni boshlang
+          </p>
+          <h2 className="text-3xl font-black uppercase italic tracking-[-0.06em]" style={{ color: colors.onSurface }}>
+            Fynex 3.0
+          </h2>
+        </div>
+
+        <label className="relative block">
+          <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2" style={{ color: colors.onSurfaceVariant }} />
+          <input
+            type="text"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Kurslarni izlash..."
+            className="w-full rounded-2xl border-b-2 px-12 py-4 text-sm focus:outline-none"
+            style={{
+              background: colors.surfaceContainerLowest,
+              color: colors.onSurface,
+              borderColor: 'transparent',
+            }}
+          />
+        </label>
       </motion.header>
 
-      {/* Categories */}
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="px-6 mb-6 overflow-x-auto scrollbar-hide"
-      >
-        <div className="flex gap-2">
-          {categories.map((cat, index) => {
-            const Icon = getIcon(cat.id);
-            const isActive = activeCategory === cat.id;
-            
+      <section className="-mx-6 mb-6 overflow-x-auto px-6 scrollbar-hide">
+        <div className="flex gap-3 whitespace-nowrap">
+          {categories.map((category) => {
+            const active = activeCategory === category.id;
             return (
-              <motion.button
-                key={cat.id}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.04 }}
-                onClick={() => setActiveCategory(cat.id)}
-                whileTap={{ scale: 0.95 }}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl whitespace-nowrap transition-all ${
-                  isActive
-                    ? theme === 'dark' ? 'bg-lime-400 text-black shadow-lg shadow-lime-500/20' : 'bg-indigo-600 text-white shadow-lg shadow-indigo-200'
-                    : theme === 'dark' ? 'bg-zinc-800/90 text-lime-100/70 border border-lime-300/10' : 'bg-white text-gray-600 border border-gray-200'
-                }`}
+              <button
+                key={category.id}
+                type="button"
+                onClick={() => setActiveCategory(category.id)}
+                className="rounded-full px-6 py-2.5 text-sm font-bold transition-all"
+                style={{
+                  background: active ? colors.primary : colors.surfaceContainer,
+                  color: active ? colors.onPrimary : colors.onSurfaceVariant,
+                }}
               >
-                <Icon className="w-4 h-4" />
-                <span className="text-sm font-medium">{cat.label}</span>
-              </motion.button>
+                {category.label}
+              </button>
             );
           })}
         </div>
-      </motion.div>
+      </section>
 
-      {/* Courses Grid */}
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2 }}
-        className="px-6 space-y-4"
-      >
-        <AnimatePresence mode="wait">
-          {filteredCourses.map((course, index) => {
-            const Icon = getIcon(course.category);
-            const progress = getCourseProgress(course.id);
-            const isLocked = course.isPro && !user?.isPro;
-            const completedLessons = course.lessons.filter(l => l.completed).length;
+      <section className="space-y-5">
+        {filteredCourses.map((course, index) => {
+          const Icon = getIcon(course.category);
+          const progress = getCourseProgress(course.id);
+          const isLocked = course.isPro && !user?.isPro;
+          const completedLessons = course.lessons.filter(
+            (lesson) => lesson.completed || startedLessons.includes(lesson.id) || user?.completedCourses.includes(course.id),
+          ).length;
 
-            return (
-              <motion.div
-                key={course.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ delay: index * 0.05 }}
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => !isLocked && setSelectedCourse(course.id)}
-                className={`relative rounded-3xl p-5 shadow-sm border ${
-                  theme === 'dark' ? 'bg-zinc-900 border-lime-300/8' : 'bg-white border-gray-100'
-                } ${
-                  isLocked ? 'opacity-80' : 'cursor-pointer'
-                }`}
-              >
-                <div className="flex items-start gap-4">
-                  {/* Icon */}
-                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${course.color} flex items-center justify-center shadow-lg`}>
-                    {isLocked ? (
-                      <Lock className="w-6 h-6 text-white" />
-                    ) : (
-                      <Icon className="w-7 h-7 text-white" />
-                    )}
-                  </div>
+          return (
+            <motion.div
+              key={course.id}
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.05 }}
+              className="overflow-hidden rounded-[28px] p-5"
+              style={{ background: colors.surfaceContainer }}
+            >
+              {course.isPro && (
+                <div className="mb-4 flex justify-end">
+                  <span
+                    className="rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-[0.24em]"
+                    style={{ background: 'linear-gradient(135deg,#fbbf24,#ea580c)', color: '#111111' }}
+                  >
+                    PRO
+                  </span>
+                </div>
+              )}
 
-                  {/* Content */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between mb-1">
-                      <h3 className={`font-bold truncate pr-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{course.title}</h3>
-                      {course.isPro && !user?.isPro && (
-                        <span className="px-2 py-0.5 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full text-white text-xs font-medium shrink-0">
-                          PRO
-                        </span>
-                      )}
-                    </div>
-                    <p className={`text-sm mb-3 line-clamp-2 ${theme === 'dark' ? 'text-lime-200/50' : 'text-gray-500'}`}>{course.description}</p>
-                    
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <span className={`text-xs ${theme === 'dark' ? 'text-lime-200/40' : 'text-gray-400'}`}>
-                          {completedLessons}/{course.lessons.length} dars
-                        </span>
-                        <span className={`text-xs font-medium ${theme === 'dark' ? 'text-lime-400' : 'text-amber-600'}`}>
-                          +{course.totalXp} XP
-                        </span>
-                      </div>
-                      
-                      {!isLocked && progress > 0 && (
-                        <div className="flex items-center gap-2">
-                          <div className="w-16 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                            <motion.div
-                              initial={{ width: 0 }}
-                              animate={{ width: `${progress}%` }}
-                              transition={{ duration: 0.2 }}
-                              className="h-full bg-indigo-500 rounded-full"
-                            />
-                          </div>
-                          <span className="text-xs text-gray-500">{progress}%</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
+              <div className="flex items-start gap-4">
+                <div
+                  className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl"
+                  style={{ background: `${colors.primary}12`, color: colors.primary }}
+                >
+                  {isLocked ? <Lock className="h-7 w-7" /> : <Icon className="h-7 w-7" />}
                 </div>
 
-                {/* Completed badge */}
-                {progress === 100 && (
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className="absolute top-3 right-3 w-7 h-7 bg-emerald-500 rounded-full flex items-center justify-center"
-                  >
-                    <Check className="w-4 h-4 text-white" />
-                  </motion.div>
-                )}
-              </motion.div>
-            );
-          })}
-        </AnimatePresence>
-      </motion.div>
+                <div className="min-w-0 flex-1">
+                  <h3 className="mb-1 text-xl font-bold leading-tight" style={{ color: colors.onSurface }}>
+                    {course.title}
+                  </h3>
+                  <div className="mb-4 flex items-center gap-2 text-xs font-medium" style={{ color: colors.onSurfaceVariant }}>
+                    <BookOpen className="h-3.5 w-3.5" />
+                    <span>
+                      {completedLessons}/{course.lessons.length} dars
+                    </span>
+                  </div>
+                </div>
+              </div>
 
-      {/* Course Detail Fullscreen */}
+              <p className="mb-4 text-sm leading-6" style={{ color: colors.onSurfaceVariant }}>
+                {course.description}
+              </p>
+
+              <div className="mb-2 flex items-center justify-between text-[11px] font-black uppercase tracking-[0.24em]">
+                <span style={{ color: progress > 0 ? colors.primary : colors.onSurfaceVariant }}>Progress</span>
+                <span style={{ color: progress > 0 ? colors.primary : colors.onSurfaceVariant }}>{progress}%</span>
+              </div>
+
+              <div className="mb-4 h-2 overflow-hidden rounded-full" style={{ background: colors.surfaceContainerLowest }}>
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${progress}%` }}
+                  transition={{ duration: 0.35 }}
+                  className="h-full rounded-full"
+                  style={{ background: colors.primary }}
+                />
+              </div>
+
+              <div className="flex items-center justify-between pt-2">
+                <div
+                  className="flex items-center gap-2 rounded-full px-3 py-1.5"
+                  style={{ background: colors.surfaceContainerHighest }}
+                >
+                  <Zap className="h-4 w-4" style={{ color: colors.tertiary }} />
+                  <span className="text-xs font-bold" style={{ color: colors.onSurface }}>
+                    +{course.totalXp} XP
+                  </span>
+                </div>
+
+                <button
+                  type="button"
+                  disabled={isLocked}
+                  onClick={() => !isLocked && setSelectedCourseId(course.id)}
+                  className="rounded-full px-5 py-2.5 text-xs font-black uppercase transition-transform disabled:opacity-50 active:scale-95"
+                  style={{
+                    background: progress > 0 ? colors.primary : colors.surfaceBright,
+                    color: progress > 0 ? colors.onPrimary : colors.onSurface,
+                  }}
+                >
+                  {progress > 0 ? 'Davom etish' : 'Boshlash'}
+                </button>
+              </div>
+            </motion.div>
+          );
+        })}
+      </section>
+
       <AnimatePresence>
-        {selectedCourse && selectedCourseData && (
+        {selectedCourse && (
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 36 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 40 }}
-            transition={{ type: 'spring', damping: 28, stiffness: 300 }}
-            className={`fixed inset-0 z-50 flex flex-col overflow-hidden ${theme === 'dark' ? 'bg-zinc-950' : 'bg-white'}`}
+            exit={{ opacity: 0, y: 36 }}
+            transition={{ type: 'spring', damping: 28, stiffness: 280 }}
+            className="fixed inset-0 z-50 flex flex-col"
+            style={{ background: colors.background }}
           >
-            {/* Hero Header */}
-            <div className={`relative w-full pt-12 pb-6 px-6 bg-gradient-to-br ${selectedCourseData.color}`}>
-              <div className="absolute top-0 right-0 w-48 h-48 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-              <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2" />
-
+            <div className={`bg-gradient-to-br ${selectedCourse.color} relative px-6 pb-6 pt-12`}>
               <button
-                onClick={() => setSelectedCourse(null)}
-                className="relative z-10 w-10 h-10 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center mb-4"
+                type="button"
+                onClick={() => setSelectedCourseId(null)}
+                className="mb-5 flex h-10 w-10 items-center justify-center rounded-full bg-white/15 backdrop-blur"
               >
-                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
+                <X className="h-5 w-5 text-white" />
               </button>
 
-              <div className="relative z-10 flex items-center gap-4">
-                <div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center">
-                  {(() => { const Icon = getIcon(selectedCourseData.category); return <Icon className="w-9 h-9 text-white" />; })()}
+              <div className="flex items-start gap-4">
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 backdrop-blur">
+                  {(() => {
+                    const Icon = getIcon(selectedCourse.category);
+                    return <Icon className="h-9 w-9 text-white" />;
+                  })()}
                 </div>
-                <div className="flex-1">
-                  <h2 className="text-2xl font-bold text-white mb-1">{selectedCourseData.title}</h2>
-                  <p className="text-white/80 text-sm">{selectedCourseData.description}</p>
+
+                <div className="min-w-0 flex-1">
+                  <h2 className="mb-1 text-2xl font-black tracking-[-0.05em] text-white">{selectedCourse.title}</h2>
+                  <p className="text-sm text-white/80">{selectedCourse.description}</p>
                 </div>
               </div>
             </div>
 
-            {/* Stats */}
-            <div className="px-6 -mt-0 pt-4 pb-2">
-              <div className="grid grid-cols-3 gap-3">
-                <div className={`rounded-2xl p-3 text-center ${theme === 'dark' ? 'bg-zinc-900' : 'bg-gray-50'}`}>
-                  <p className={`text-2xl font-bold ${theme === 'dark' ? 'text-lime-400' : 'text-indigo-600'}`}>{selectedCourseData.lessons.length}</p>
-                  <p className={`text-xs ${theme === 'dark' ? 'text-lime-200/50' : 'text-gray-500'}`}>Darslar</p>
-                </div>
-                <div className={`rounded-2xl p-3 text-center ${theme === 'dark' ? 'bg-zinc-900' : 'bg-gray-50'}`}>
-                  <p className={`text-2xl font-bold ${theme === 'dark' ? 'text-lime-300' : 'text-amber-500'}`}>+{selectedCourseData.totalXp}</p>
-                  <p className={`text-xs ${theme === 'dark' ? 'text-lime-200/50' : 'text-gray-500'}`}>XP</p>
-                </div>
-                <div className={`rounded-2xl p-3 text-center ${theme === 'dark' ? 'bg-zinc-900' : 'bg-gray-50'}`}>
-                  <p className={`text-2xl font-bold ${theme === 'dark' ? 'text-emerald-400' : 'text-emerald-500'}`}>{selectedCourseProgress}%</p>
-                  <p className={`text-xs ${theme === 'dark' ? 'text-lime-200/50' : 'text-gray-500'}`}>Tugallangan</p>
-                </div>
-              </div>
+            <div className="grid grid-cols-3 gap-3 px-6 py-4">
+              <StatCard label="Darslar" value={selectedCourse.lessons.length} accent={colors.primary} />
+              <StatCard label="XP" value={`+${selectedCourse.totalXp}`} accent={colors.tertiary} />
+              <StatCard label="Progress" value={`${getCourseProgress(selectedCourse.id)}%`} accent={colors.secondary} />
             </div>
 
-            {/* Lessons List */}
-            <div className="flex-1 min-h-0 overflow-y-auto px-6 pt-2 pb-32" style={{ overscrollBehavior: 'contain' }}>
-              <h3 className={`font-bold mb-3 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Darslar ro'yxati</h3>
-              <div className="space-y-2">
-                {selectedCourseData.lessons.map((lesson, index) => {
-                  const isDone = lesson.completed || startedLessons.includes(lesson.id);
-                  const prevDone = index === 0 || selectedCourseData.lessons[index - 1].completed || startedLessons.includes(selectedCourseData.lessons[index - 1].id);
-                  const isLocked = !isDone && !prevDone;
+            <div className="min-h-0 flex-1 overflow-y-auto px-6 pb-32 pt-2" style={{ overscrollBehavior: 'contain' }}>
+              <h3 className="mb-3 text-sm font-black uppercase tracking-[0.22em]" style={{ color: colors.onSurfaceVariant }}>
+                Darslar ro'yxati
+              </h3>
+
+              <div className="space-y-3">
+                {selectedCourse.lessons.map((lesson, index) => {
+                  const isDone =
+                    lesson.completed || startedLessons.includes(lesson.id) || user?.completedCourses.includes(selectedCourse.id);
+                  const prevDone =
+                    index === 0 ||
+                    selectedCourse.lessons[index - 1].completed ||
+                    startedLessons.includes(selectedCourse.lessons[index - 1].id);
+                  const locked = !isDone && !prevDone;
+
                   return (
-                    <motion.div
+                    <div
                       key={lesson.id}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.05 }}
-                      className={`flex items-center justify-between p-4 rounded-2xl border ${
-                        isDone
-                          ? theme === 'dark' ? 'bg-emerald-950/60 border-emerald-800/40' : 'bg-emerald-50 border-emerald-200'
-                          : isLocked
-                            ? theme === 'dark' ? 'bg-zinc-900/80 border-zinc-800 opacity-60' : 'bg-gray-50 border-gray-100 opacity-60'
-                            : theme === 'dark' ? 'bg-zinc-900 border-zinc-800' : 'bg-white border-gray-100'
-                      }`}
+                      className="flex items-center justify-between rounded-[24px] border p-4"
+                      style={{
+                        background: isDone ? 'rgba(195,255,46,0.08)' : colors.surfaceContainer,
+                        borderColor: locked ? `${colors.outlineVariant}22` : `${colors.outlineVariant}38`,
+                        opacity: locked ? 0.6 : 1,
+                      }}
                     >
                       <div className="flex items-center gap-3">
-                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                          isDone ? 'bg-emerald-500' : isLocked ? (theme === 'dark' ? 'bg-zinc-700' : 'bg-gray-200') : (theme === 'dark' ? 'bg-zinc-800' : 'bg-gray-100')
-                        }`}>
+                        <div
+                          className="flex h-10 w-10 items-center justify-center rounded-xl"
+                          style={{
+                            background: isDone ? colors.primary : locked ? colors.surfaceContainerHighest : colors.surfaceContainerHighest,
+                          }}
+                        >
                           {isDone ? (
-                            <Check className="w-5 h-5 text-white" />
-                          ) : isLocked ? (
-                            <LockKeyhole className="w-4 h-4 text-gray-400" />
+                            <Check className="h-5 w-5" style={{ color: colors.onPrimary }} />
+                          ) : locked ? (
+                            <LockKeyhole className="h-4 w-4" style={{ color: colors.onSurfaceVariant }} />
                           ) : (
-                            <span className={`text-sm font-bold ${theme === 'dark' ? 'text-lime-300' : 'text-gray-500'}`}>{index + 1}</span>
+                            <span className="text-sm font-black" style={{ color: colors.primary }}>
+                              {index + 1}
+                            </span>
                           )}
                         </div>
+
                         <div>
-                          <p className={`font-medium ${isDone ? (theme === 'dark' ? 'text-emerald-300' : 'text-emerald-700') : isLocked ? (theme === 'dark' ? 'text-zinc-500' : 'text-gray-400') : (theme === 'dark' ? 'text-white' : 'text-gray-900')}`}>
+                          <p className="text-sm font-bold" style={{ color: colors.onSurface }}>
                             {lesson.title}
                           </p>
-                          <p className={`text-xs ${theme === 'dark' ? 'text-zinc-500' : 'text-gray-400'}`}>{lesson.duration} daqiqa</p>
+                          <p className="text-xs" style={{ color: colors.onSurfaceVariant }}>
+                            {lesson.duration} daqiqa
+                          </p>
                         </div>
                       </div>
-                      {!isDone && !isLocked && (
-                        <motion.button
-                          whileTap={{ scale: 0.9 }}
-                          onClick={() => startLesson(selectedCourseData.id, lesson.id)}
-                          className={`w-10 h-10 rounded-xl flex items-center justify-center ${theme === 'dark' ? 'bg-lime-400/15' : 'bg-indigo-100'}`}
+
+                      {!isDone && !locked && (
+                        <button
+                          type="button"
+                          onClick={() => startLesson(selectedCourse.id, lesson.id)}
+                          className="flex h-10 w-10 items-center justify-center rounded-xl"
+                          style={{ background: `${colors.primary}18` }}
                         >
-                          <Play className={`w-5 h-5 ml-0.5 ${theme === 'dark' ? 'text-lime-400' : 'text-indigo-600'}`} />
-                        </motion.button>
+                          <Play className="ml-0.5 h-5 w-5" style={{ color: colors.primary }} />
+                        </button>
                       )}
-                    </motion.div>
+                    </div>
                   );
                 })}
               </div>
             </div>
 
-            {/* Fixed Bottom Button */}
-            <div className={`absolute bottom-0 left-0 right-0 backdrop-blur-xl border-t px-6 pt-4 ${theme === 'dark' ? 'bg-zinc-950/90 border-zinc-800' : 'bg-white/90 border-gray-100'}`} style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom, 1rem))' }}>
-              <motion.button
-                whileTap={{ scale: 0.98 }}
+            <div
+              className="absolute bottom-0 left-0 right-0 border-t px-6 pt-4 backdrop-blur-xl"
+              style={{
+                background: 'rgba(14,14,14,0.92)',
+                borderColor: `${colors.outlineVariant}33`,
+                paddingBottom: 'max(1rem, env(safe-area-inset-bottom, 1rem))',
+              }}
+            >
+              <button
+                type="button"
                 onClick={startCourse}
-                className={`w-full font-semibold py-4 rounded-2xl flex items-center justify-center gap-2 shadow-lg ${theme === 'dark' ? 'bg-lime-400 text-black shadow-lime-500/20' : 'bg-indigo-600 text-white shadow-indigo-200'}`}
+                className="flex w-full items-center justify-center gap-2 rounded-2xl py-4 text-sm font-black uppercase transition-transform active:scale-[0.985]"
+                style={{ background: colors.primary, color: colors.onPrimary }}
               >
-                <Play className="w-5 h-5" />
+                <Play className="h-5 w-5" />
                 Darsni boshlash
-              </motion.button>
+              </button>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-      {/* Lesson Player */}
+
       <LessonPlayer
         isOpen={!!activeLesson}
         onClose={() => setActiveLesson(null)}
         lessonTitle={activeLesson?.title || ''}
-        steps={activeLesson ? (lessonSteps[activeLesson.id] || []) : []}
+        steps={activeLesson ? lessonSteps[activeLesson.id] || [] : []}
         xpReward={10}
         onComplete={handleLessonComplete}
       />
+    </div>
+  );
+}
+
+function StatCard({ label, value, accent }: { label: string; value: string | number; accent: string }) {
+  return (
+    <div className="rounded-[22px] p-3 text-center" style={{ background: colors.surfaceContainerLow }}>
+      <p className="text-2xl font-black tracking-[-0.05em]" style={{ color: accent }}>
+        {value}
+      </p>
+      <p className="text-xs" style={{ color: colors.onSurfaceVariant }}>
+        {label}
+      </p>
     </div>
   );
 }

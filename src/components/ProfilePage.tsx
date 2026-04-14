@@ -1,507 +1,506 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useUser } from '../context/UserContext';
-import { 
-  Settings, Bell, Globe, LogOut, Crown, Check,
-  Zap, BookOpen, Flame, ChevronRight, ArrowLeft,
-  Shield, Download, Headphones, Sparkles, User, Mail, Phone, Pen, Trash2, Languages
+import { AnimatePresence, motion } from 'framer-motion';
+import {
+  Bell,
+  ChevronRight,
+  Crown,
+  Globe,
+  Headphones,
+  LogOut,
+  Mail,
+  Moon,
+  Phone,
+  Settings,
+  Shield,
+  User,
+  Zap,
+  BookOpen,
+  Flame,
+  Download,
+  Check,
 } from 'lucide-react';
+import { useUser } from '../context/UserContext';
 import SupportChat from './SupportChat';
+import { colors } from '../theme';
 
 export default function ProfilePage() {
-  const { user, logout, togglePro, theme, toggleTheme, notificationsEnabled, toggleNotifications, offlineEnabled, toggleOffline, updateName, updatePhone, updateEmail } = useUser();
+  const {
+    user,
+    logout,
+    togglePro,
+    theme,
+    toggleTheme,
+    notificationsEnabled,
+    toggleNotifications,
+    offlineEnabled,
+    toggleOffline,
+    updateName,
+    updatePhone,
+    updateEmail,
+  } = useUser();
+
   const [showProModal, setShowProModal] = useState(false);
   const [showSupportChat, setShowSupportChat] = useState(false);
   const [showAccountSettings, setShowAccountSettings] = useState(false);
-  const settingsRef = useRef<HTMLDivElement | null>(null);
-
-  // Account settings state
-  const [editName, setEditName] = useState('');
-  const [editPhone, setEditPhone] = useState('');
-  const [editEmail, setEditEmail] = useState('');
-  const [phoneCode, setPhoneCode] = useState('');
-  const [emailCode, setEmailCode] = useState('');
-  const [phoneStep, setPhoneStep] = useState<'edit'|'verify'>('edit');
-  const [emailStep, setEmailStep] = useState<'edit'|'verify'>('edit');
-  const [nameSaved, setNameSaved] = useState(false);
-  const [phoneSaved, setPhoneSaved] = useState(false);
-  const [emailSaved, setEmailSaved] = useState(false);
-
-  const openAccountSettings = () => {
-    setEditName(user?.name || '');
-    setEditPhone(user?.phone || '');
-    setEditEmail(user?.email || '');
-    setPhoneStep('edit'); setEmailStep('edit');
-    setPhoneCode(''); setEmailCode('');
-    setNameSaved(false); setPhoneSaved(false); setEmailSaved(false);
-    setShowAccountSettings(true);
-  };
-
-  const saveName = () => {
-    if (editName.trim()) { updateName(editName.trim()); setNameSaved(true); setTimeout(() => setNameSaved(false), 2000); }
-  };
-  const sendPhoneCode = () => { setPhoneStep('verify'); };
-  const verifyPhone = () => {
-    if (phoneCode.length >= 4) { updatePhone(editPhone); setPhoneSaved(true); setPhoneStep('edit'); setTimeout(() => setPhoneSaved(false), 2000); }
-  };
-  const sendEmailCode = () => { setEmailStep('verify'); };
-  const verifyEmail = () => {
-    if (emailCode.length >= 4) { updateEmail(editEmail); setEmailSaved(true); setEmailStep('edit'); setTimeout(() => setEmailSaved(false), 2000); }
-  };
-
-  const settingsItems = useMemo(() => ([
-    { icon: Bell, label: 'Bildirishnomalar', hasToggle: true, value: notificationsEnabled, onClick: toggleNotifications },
-    { icon: Globe, label: 'Dark mode', hasToggle: true, value: theme === 'dark', onClick: toggleTheme },
-    { icon: Download, label: 'Offline yuklab olish', hasToggle: true, value: offlineEnabled, onClick: toggleOffline },
-    { icon: Headphones, label: 'Qo\'llab quvvatlash', value: 'Online chat', onClick: () => setShowSupportChat(true) },
-    { icon: Shield, label: 'Maxfiylik siyosati', value: 'Ko\'rish', onClick: () => window.alert('Maxfiylik siyosati keyingi yangilanishda batafsil ulanadi.') },
-  ]), [notificationsEnabled, offlineEnabled, theme, toggleNotifications, toggleOffline, toggleTheme]);
-
-  const proBenefits = [
-    'Barcha kurslar ochiq',
-    'Reklama yo\'q',
-    'VIP kurslar',
-    'Priority qo\'llab quvvatlash',
-    'Kelajakda offline rejim',
-  ];
+  const [editName, setEditName] = useState(user?.name || '');
+  const [editPhone, setEditPhone] = useState(user?.phone || '');
+  const [editEmail, setEditEmail] = useState(user?.email || '');
 
   useEffect(() => {
-    document.body.style.overflow = showProModal ? 'hidden' : '';
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [showProModal]);
+    if (showAccountSettings) {
+      setEditName(user?.name || '');
+      setEditPhone(user?.phone || '');
+      setEditEmail(user?.email || '');
+    }
+  }, [showAccountSettings, user]);
+
+  const initials =
+    user?.name
+      ?.split(' ')
+      .map((part) => part[0])
+      .join('')
+      .slice(0, 2)
+      .toUpperCase() || 'U';
+
+  const stats = [
+    { label: 'XP', value: user?.xp || 0, icon: Zap, accent: colors.primary },
+    { label: 'Tugallangan', value: user?.completedCourses.length || 0, icon: BookOpen, accent: colors.secondary },
+    { label: 'Streak', value: user?.streak || 0, icon: Flame, accent: colors.tertiary },
+  ];
+
+  const settingsItems = [
+    {
+      icon: Bell,
+      label: 'Bildirishnomalar',
+      toggle: true,
+      value: notificationsEnabled,
+      onClick: toggleNotifications,
+    },
+    {
+      icon: Moon,
+      label: 'Tungi rejim',
+      toggle: true,
+      value: theme === 'dark',
+      onClick: toggleTheme,
+    },
+    {
+      icon: Download,
+      label: 'Offline rejim',
+      toggle: true,
+      value: offlineEnabled,
+      onClick: toggleOffline,
+    },
+    {
+      icon: Headphones,
+      label: 'Yordam markazi',
+      value: 'Online chat',
+      onClick: () => setShowSupportChat(true),
+    },
+    {
+      icon: Shield,
+      label: 'Maxfiylik siyosati',
+      value: 'Ko‘rish',
+      onClick: () => window.alert('Maxfiylik siyosati alohida sahifa sifatida keyingi bosqichda ulanadi.'),
+    },
+  ];
 
   return (
-    <div className="page-content min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50 pb-24">
-      {/* Header */}
-      <motion.header 
-        initial={{ opacity: 0, y: -20 }}
+    <div className="page-content min-h-full px-6 pt-6 pb-8" style={{ background: colors.background }}>
+      <motion.header
+        initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
-        className="px-6 pt-12 pb-6"
+        className="sticky top-0 z-20 -mx-6 mb-6 flex items-center justify-between bg-[#0e0e0e]/85 px-6 py-4 backdrop-blur-xl"
       >
-        <h1 className="text-2xl font-bold text-gray-900">Profil</h1>
-      </motion.header>
+        <h1 className="text-lg font-black italic tracking-[-0.04em]" style={{ color: colors.primary }}>
+          Profil
+        </h1>
 
-      {/* Profile Card */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-        className="px-6 mb-6"
-      >
-        <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
-          <div className="flex items-center gap-4 mb-6">
-            {/* Avatar */}
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="relative"
-            >
-              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-2xl font-bold text-white shadow-lg">
-                {user?.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() || 'U'}
-              </div>
-              {user?.isPro && (
-                <motion.div
-                  animate={{ scale: [1, 1.1, 1] }}
-                  transition={{ repeat: Infinity, duration: 2 }}
-                  className="absolute -bottom-1 -right-1 w-7 h-7 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg border-2 border-white"
-                >
-                  <Crown className="w-4 h-4 text-white" />
-                </motion.div>
-              )}
-            </motion.div>
-
-            {/* Info */}
-            <div className="flex-1">
-              <h2 className="text-xl font-bold text-gray-900">{user?.name || 'Foydalanuvchi'}</h2>
-              <p className="text-gray-500 text-sm">{user?.phone}</p>
-              {user?.isPro ? (
-                <span className="inline-flex items-center gap-1 mt-2 px-3 py-1 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full text-white text-xs font-medium">
-                  <Crown className="w-3 h-3" />
-                  PRO
-                </span>
-              ) : (
-                <span className="inline-block mt-2 px-3 py-1 bg-gray-100 rounded-full text-gray-500 text-xs font-medium">
-                  Bepul
-                </span>
-              )}
-            </div>
-
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={openAccountSettings}
-              className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center"
-            >
-              <Settings className="w-5 h-5 text-gray-500" />
-            </motion.button>
-          </div>
-
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-3">
-            <motion.div
-              whileHover={{ y: -4 }}
-              className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-4 text-center"
-            >
-              <div className="w-10 h-10 rounded-xl bg-indigo-100 flex items-center justify-center mx-auto mb-2">
-                <Zap className="w-5 h-5 text-indigo-600" />
-              </div>
-              <p className="text-xl font-bold text-gray-900">{user?.xp || 0}</p>
-              <p className="text-xs text-gray-500">XP</p>
-            </motion.div>
-            
-            <motion.div
-              whileHover={{ y: -4 }}
-              className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-4 text-center"
-            >
-              <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center mx-auto mb-2">
-                <BookOpen className="w-5 h-5 text-emerald-600" />
-              </div>
-              <p className="text-xl font-bold text-gray-900">{user?.completedCourses.length || 0}</p>
-              <p className="text-xs text-gray-500">Tugallangan</p>
-            </motion.div>
-            
-            <motion.div
-              whileHover={{ y: -4 }}
-              className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl p-4 text-center"
-            >
-              <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center mx-auto mb-2">
-                <Flame className="w-5 h-5 text-orange-600" />
-              </div>
-              <p className="text-xl font-bold text-gray-900">{user?.streak || 0}</p>
-              <p className="text-xs text-gray-500">Streak</p>
-            </motion.div>
+        <div className="flex items-center gap-4">
+          <Bell className="h-5 w-5" style={{ color: colors.primary }} />
+          <div className="flex h-8 w-8 items-center justify-center rounded-full" style={{ background: colors.surfaceContainer }}>
+            <span className="text-xs font-black" style={{ color: colors.onSurface }}>
+              {initials}
+            </span>
           </div>
         </div>
-      </motion.div>
+      </motion.header>
 
-      {/* Pro Upgrade Card */}
-      {!user?.isPro && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="px-6 mb-6"
+      <motion.section
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-6 flex items-center gap-5 rounded-[28px] p-6"
+        style={{ background: colors.surfaceContainer }}
+      >
+        <div className="relative">
+          <div className="rounded-full border-4 p-1" style={{ borderColor: `${colors.primary}22` }}>
+            <div
+              className="flex h-20 w-20 items-center justify-center rounded-full text-xl font-black"
+              style={{ background: colors.surfaceContainerHighest, color: colors.primary }}
+            >
+              {initials}
+            </div>
+          </div>
+          {user?.isPro && (
+            <div className="absolute -bottom-1 -right-1 rounded-full px-2 py-0.5 text-[10px] font-black" style={{ background: colors.primary, color: colors.onPrimary }}>
+              PRO
+            </div>
+          )}
+        </div>
+
+        <div className="min-w-0 flex-1">
+          <h2 className="truncate text-xl font-extrabold tracking-[-0.04em]" style={{ color: colors.onSurface }}>
+            {user?.name || 'Foydalanuvchi'}
+          </h2>
+          <p className="text-sm font-medium" style={{ color: colors.onSurfaceVariant }}>
+            {user?.phone || '+998'}
+          </p>
+          <div className="mt-2 inline-flex items-center gap-1.5 rounded-full px-3 py-1" style={{ background: colors.surfaceContainerHigh }}>
+            <span className="h-2 w-2 rounded-full" style={{ background: colors.primary }} />
+            <span className="text-[11px] font-bold" style={{ color: colors.primary }}>
+              {user?.isPro ? 'PRO foydalanuvchi' : 'Aktiv'}
+            </span>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setShowAccountSettings(true)}
+          className="flex h-10 w-10 items-center justify-center rounded-full"
+          style={{ background: colors.surfaceContainerHigh }}
         >
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => setShowProModal(true)}
-            className="bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 rounded-3xl p-5 shadow-xl shadow-orange-200/50 relative overflow-hidden cursor-pointer"
-          >
-            <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-            <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2" />
-            
-            <div className="relative flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center">
-                  <Crown className="w-8 h-8 text-white" />
-                </div>
+          <Settings className="h-5 w-5" style={{ color: colors.onSurfaceVariant }} />
+        </button>
+      </motion.section>
+
+      <motion.section
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.05 }}
+        className="mb-6 grid grid-cols-2 gap-4"
+      >
+        <div className="flex h-32 flex-col justify-between rounded-[28px] p-5" style={{ background: colors.surfaceContainerLow }}>
+          <Zap className="h-8 w-8" style={{ color: colors.primary }} />
+          <div>
+            <div className="text-2xl font-black tracking-[-0.05em]" style={{ color: colors.onSurface }}>
+              {user?.xp || 0}
+            </div>
+            <div className="text-[11px] font-bold uppercase tracking-[0.18em]" style={{ color: colors.onSurfaceVariant }}>
+              Umumiy XP
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-rows-2 gap-4">
+          {stats.slice(1).map((stat) => {
+            const Icon = stat.icon;
+            return (
+              <div key={stat.label} className="flex items-center gap-3 rounded-[24px] p-4" style={{ background: colors.surfaceContainerLow }}>
+                <Icon className="h-5 w-5" style={{ color: stat.accent }} />
                 <div>
-                  <p className="text-white/80 text-sm">PRO ga o'tish</p>
-                  <p className="text-white text-xl font-bold">9,999 UZS/oy</p>
+                  <div className="text-lg font-black leading-none" style={{ color: colors.onSurface }}>
+                    {stat.value}
+                  </div>
+                  <div className="text-[10px] font-bold" style={{ color: colors.onSurfaceVariant }}>
+                    {stat.label}
+                  </div>
                 </div>
               </div>
-              <ChevronRight className="w-6 h-6 text-white/70" />
+            );
+          })}
+        </div>
+      </motion.section>
+
+      {!user?.isPro && (
+        <motion.section
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="relative mb-8 overflow-hidden rounded-[28px] p-6"
+          style={{ background: 'linear-gradient(135deg,#ff734a,#b92902)' }}
+        >
+          <div className="relative z-10 flex items-end justify-between gap-4">
+            <div>
+              <h3 className="text-2xl font-black italic tracking-[-0.05em] text-white">PRO ga o'tish</h3>
+              <p className="mt-1 max-w-[220px] text-xs font-semibold text-white/80">
+                Barcha kurslar va offline rejimga cheksiz kirish imkoniyati.
+              </p>
+              <div className="mt-4">
+                <span className="text-xl font-black text-white">9,999 UZS</span>
+                <span className="text-xs font-bold text-white/70"> /oy</span>
+              </div>
             </div>
-          </motion.div>
-        </motion.div>
+
+            <button
+              type="button"
+              onClick={() => setShowProModal(true)}
+              className="rounded-full bg-white px-5 py-2 text-sm font-black transition-transform active:scale-95"
+              style={{ color: colors.tertiary }}
+            >
+              Obuna bo'lish
+            </button>
+          </div>
+        </motion.section>
       )}
 
-      {/* Settings List */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3 }}
-        className="px-6 space-y-3"
-      >
-        <h3 className="text-lg font-bold text-gray-900 mb-2">Sozlamalar</h3>
-        
-        <div ref={settingsRef} />
-        
-        {settingsItems.map((item, index) => {
-          const Icon = item.icon;
-          
-          return (
-            <motion.div
-              key={item.label}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 + index * 0.05 }}
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
-              onClick={item.onClick}
-              className="flex items-center justify-between p-4 bg-white rounded-2xl border border-gray-100 shadow-sm"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center">
-                  <Icon className="w-5 h-5 text-gray-500" />
-                </div>
-                <span className="font-medium text-gray-900">{item.label}</span>
-              </div>
-              
-              {item.hasToggle ? (
-                <div className={`w-12 h-7 rounded-full p-1 transition-colors ${item.value ? 'bg-indigo-600' : 'bg-gray-200'}`}>
-                  <motion.div
-                    animate={{ x: item.value ? 20 : 0 }}
-                    className="w-5 h-5 rounded-full bg-white shadow-md"
-                  />
-                </div>
-              ) : (
-                <div className="flex items-center gap-2">
-                  <span className="text-gray-400 text-sm">{item.value}</span>
-                  <ChevronRight className="w-5 h-5 text-gray-400" />
-                </div>
-              )}
-            </motion.div>
-          );
-        })}
+      <section className="space-y-6">
+        <h4 className="px-1 text-xs font-black uppercase tracking-[0.22em]" style={{ color: colors.onSurfaceVariant }}>
+          Sozlamalar
+        </h4>
 
-        {/* Logout */}
-        <motion.button
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.5 }}
-          whileHover={{ scale: 1.01 }}
-          whileTap={{ scale: 0.99 }}
+        <div className="space-y-2">
+          {settingsItems.map((item) => {
+            const Icon = item.icon;
+            return (
+              <button
+                key={item.label}
+                type="button"
+                onClick={item.onClick}
+                className="flex w-full items-center justify-between rounded-[24px] p-4 text-left"
+                style={{ background: colors.surfaceContainerLow }}
+              >
+                <div className="flex items-center gap-4">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full" style={{ background: colors.surfaceBright }}>
+                    <Icon className="h-5 w-5" style={{ color: colors.primary }} />
+                  </div>
+                  <span className="text-sm font-semibold" style={{ color: colors.onSurface }}>
+                    {item.label}
+                  </span>
+                </div>
+
+                {'toggle' in item && item.toggle ? (
+                  <div
+                    className="flex h-6 w-12 items-center rounded-full px-1"
+                    style={{ background: item.value ? colors.primary : colors.surfaceContainerHighest }}
+                  >
+                    <div
+                      className="h-4 w-4 rounded-full transition-transform"
+                      style={{
+                        background: item.value ? colors.onPrimary : colors.outline,
+                        transform: item.value ? 'translateX(24px)' : 'translateX(0)',
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-medium" style={{ color: colors.onSurfaceVariant }}>
+                      {item.value}
+                    </span>
+                    <ChevronRight className="h-4 w-4" style={{ color: colors.onSurfaceVariant }} />
+                  </div>
+                )}
+              </button>
+            );
+          })}
+        </div>
+
+        <button
+          type="button"
           onClick={logout}
-          className="w-full flex items-center justify-center gap-2 p-4 bg-red-50 rounded-2xl border border-red-100 text-red-600 font-medium"
+          className="flex w-full items-center justify-center gap-2 rounded-[24px] p-5 font-black transition-transform active:scale-[0.985]"
+          style={{ background: 'rgba(255,115,81,0.12)', color: colors.error }}
         >
-          <LogOut className="w-5 h-5" />
+          <LogOut className="h-5 w-5" />
           Chiqish
-        </motion.button>
-      </motion.div>
-
-      {/* Pro Modal */}
-      <AnimatePresence>
-        {showProModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
-            onClick={() => setShowProModal(false)}
-          >
-            <motion.div
-              initial={{ y: '100%' }}
-              animate={{ y: 0 }}
-              exit={{ y: '100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-              drag="y"
-              dragConstraints={{ top: 0, bottom: 0 }}
-              onClick={(e) => e.stopPropagation()}
-              className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl max-h-[90vh] overflow-hidden"
-            >
-              {/* Handle */}
-              <div className="flex justify-center py-3">
-                <div className="w-10 h-1 bg-gray-300 rounded-full" />
-              </div>
-
-              {/* Content */}
-              <div className="px-6 pb-safe overflow-y-auto max-h-[85vh]" style={{ paddingBottom: 'max(2.5rem, env(safe-area-inset-bottom, 2.5rem))' }}>
-                {/* Header */}
-                <div className="text-center mb-6">
-                  <motion.div
-                    animate={{ y: [0, -10, 0], rotate: [0, 5, -5, 0] }}
-                    transition={{ repeat: Infinity, duration: 2 }}
-                    className="w-20 h-20 rounded-3xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center mx-auto mb-4 shadow-xl shadow-orange-200"
-                  >
-                    <Crown className="w-10 h-10 text-white" />
-                  </motion.div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Fynex PRO</h2>
-                  <p className="text-gray-500">Barcha imkoniyatlarni oching</p>
-                </div>
-
-                {/* Price */}
-                <div className="bg-gradient-to-br from-indigo-600 to-violet-600 rounded-3xl p-5 mb-6 text-center relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-                  <p className="text-white/80 text-sm mb-1">Bir oylik obuna</p>
-                  <p className="text-white text-4xl font-bold">9,999 <span className="text-2xl">UZS</span></p>
-                </div>
-
-                {/* Benefits */}
-                <div className="space-y-3 mb-6">
-                  <h3 className="font-bold text-gray-900">PRO afzalliklari:</h3>
-                  {proBenefits.map((benefit, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="flex items-center gap-3 p-3 bg-emerald-50 rounded-2xl"
-                    >
-                      <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center">
-                        <Check className="w-5 h-5 text-white" />
-                      </div>
-                      <span className="text-gray-700 font-medium">{benefit}</span>
-                    </motion.div>
-                  ))}
-                </div>
-
-                {/* CTA Buttons */}
-                <div className="space-y-3">
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => {
-                      togglePro();
-                      setShowProModal(false);
-                    }}
-                    className="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold py-4 rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-orange-200"
-                  >
-                    <Sparkles className="w-5 h-5" />
-                    PRO ga o'tish
-                  </motion.button>
-                  
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => setShowProModal(false)}
-                    className="w-full bg-gray-100 text-gray-600 font-medium py-4 rounded-2xl"
-                  >
-                    Keyinroq
-                  </motion.button>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+        </button>
+      </section>
 
       <SupportChat isOpen={showSupportChat} onClose={() => setShowSupportChat(false)} />
 
-      {/* Account Settings Fullscreen */}
-      {showAccountSettings && createPortal(
-        <div className={theme === 'dark' ? 'theme-dark' : ''} style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 9999, display: 'flex', flexDirection: 'column', height: '100dvh' }}>
-          {/* Background */}
-          <div className={`absolute inset-0 ${theme === 'dark' ? 'theme-surface-dark' : 'theme-surface-light'}`} />
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <div className={`absolute -top-1/2 -right-1/2 w-full h-full rounded-full blur-3xl ${theme === 'dark' ? 'bg-lime-300/5' : 'bg-indigo-200/30'}`} />
-          </div>
+      <AnimatePresence>
+        {showProModal && (
+          <ModalBackdrop onClose={() => setShowProModal(false)}>
+            <div className="rounded-[30px] p-6" style={{ background: colors.surfaceContainer }}>
+              <div className="mb-5 flex items-center justify-center">
+                <div className="flex h-20 w-20 items-center justify-center rounded-[24px]" style={{ background: 'linear-gradient(135deg,#fbbf24,#f97316)' }}>
+                  <Crown className="h-10 w-10 text-white" />
+                </div>
+              </div>
 
-          {/* Header */}
-          <div className="relative px-4 pb-3" style={{ paddingTop: 48, flexShrink: 0 }}>
-            <div className="flex items-center gap-3">
-              <button onClick={() => setShowAccountSettings(false)} className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center active:scale-95">
-                <ArrowLeft className="w-5 h-5 text-gray-500" />
+              <h2 className="mb-2 text-center text-2xl font-black tracking-[-0.05em]" style={{ color: colors.onSurface }}>
+                Fynex PRO
+              </h2>
+              <p className="mb-6 text-center text-sm" style={{ color: colors.onSurfaceVariant }}>
+                Barcha premium kurslar va qo‘shimcha imkoniyatlar ochiladi.
+              </p>
+
+              <div className="mb-6 rounded-[24px] p-5 text-center" style={{ background: colors.surfaceContainerLow }}>
+                <p className="text-sm" style={{ color: colors.onSurfaceVariant }}>
+                  Bir oylik obuna
+                </p>
+                <p className="text-4xl font-black" style={{ color: colors.primary }}>
+                  9,999 <span className="text-2xl">UZS</span>
+                </p>
+              </div>
+
+              <div className="mb-6 space-y-3">
+                {['Barcha kurslar ochiq', 'Reklamasiz tajriba', 'Priority qo‘llab-quvvatlash', 'Offline imkoniyatlar'].map((item) => (
+                  <div key={item} className="flex items-center gap-3 rounded-[20px] px-4 py-3" style={{ background: colors.surfaceContainerLow }}>
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full" style={{ background: `${colors.primary}18` }}>
+                      <Check className="h-4 w-4" style={{ color: colors.primary }} />
+                    </div>
+                    <span className="text-sm font-medium" style={{ color: colors.onSurface }}>
+                      {item}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  togglePro();
+                  setShowProModal(false);
+                }}
+                className="mb-3 flex w-full items-center justify-center gap-2 rounded-[22px] py-4 text-sm font-black uppercase transition-transform active:scale-[0.985]"
+                style={{ background: colors.primary, color: colors.onPrimary }}
+              >
+                <Crown className="h-5 w-5" />
+                PRO ga o'tish
               </button>
-              <h1 className="font-bold text-lg text-gray-900">Akkaunt sozlamalari</h1>
-            </div>
-          </div>
 
-          {/* Content */}
-          <div className="relative flex-1 overflow-y-auto px-5 py-4 space-y-4" style={{ overscrollBehavior: 'contain' }}>
-            {/* Profile Avatar + Name Preview */}
-            <div className="flex flex-col items-center mb-2">
-              <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center mb-3 shadow-lg shadow-indigo-200/50">
-                <User className="w-9 h-9 text-white" />
-              </div>
-              <p className="font-bold text-gray-900 text-lg">{user?.name || 'Foydalanuvchi'}</p>
-              <p className="text-gray-400 text-sm">{user?.phone}</p>
-            </div>
-
-            {/* Name */}
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center">
-                  <Pen className="w-4 h-4 text-indigo-600" />
-                </div>
-                <span className="text-sm font-semibold text-gray-900">Ismni o'zgartirish</span>
-                {nameSaved && <span className="text-xs text-emerald-500 font-medium ml-auto">✓ Saqlandi</span>}
-              </div>
-              <div className="flex gap-2">
-                <input value={editName} onChange={e => setEditName(e.target.value)} className="flex-1 rounded-xl px-3 py-2.5 text-sm bg-gray-50 border border-gray-100 text-gray-900 outline-none focus:border-indigo-300" placeholder="Ismingiz" />
-                <button onClick={saveName} className="px-4 py-2.5 rounded-xl text-sm font-medium bg-indigo-600 text-white active:scale-95 shadow-sm shadow-indigo-200">Saqlash</button>
-              </div>
-            </div>
-
-            {/* Phone */}
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center">
-                  <Phone className="w-4 h-4 text-emerald-600" />
-                </div>
-                <span className="text-sm font-semibold text-gray-900">Telefon raqam</span>
-                {phoneSaved && <span className="text-xs text-emerald-500 font-medium ml-auto">✓ O'zgartirildi</span>}
-              </div>
-              {phoneStep === 'edit' ? (
-                <div className="flex gap-2">
-                  <input value={editPhone} onChange={e => setEditPhone(e.target.value)} className="flex-1 rounded-xl px-3 py-2.5 text-sm bg-gray-50 border border-gray-100 text-gray-900 outline-none focus:border-emerald-300" placeholder="+998 XX XXX XX XX" />
-                  <button onClick={sendPhoneCode} disabled={editPhone === user?.phone} className="px-4 py-2.5 rounded-xl text-sm font-medium bg-emerald-600 text-white active:scale-95 disabled:opacity-40 shadow-sm shadow-emerald-200">Kod yuborish</button>
-                </div>
-              ) : (
-                <div className="flex gap-2">
-                  <input value={phoneCode} onChange={e => setPhoneCode(e.target.value)} maxLength={6} className="flex-1 rounded-xl px-3 py-2.5 text-sm text-center tracking-[0.5em] bg-gray-50 border border-gray-100 text-gray-900 outline-none focus:border-emerald-300" placeholder="● ● ● ●" />
-                  <button onClick={verifyPhone} className="px-4 py-2.5 rounded-xl text-sm font-medium bg-emerald-600 text-white active:scale-95 shadow-sm shadow-emerald-200">Tasdiqlash</button>
-                </div>
-              )}
-              <p className="text-[11px] text-gray-400 mt-2">SMS kod orqali tasdiqlanadi</p>
-            </div>
-
-            {/* Email */}
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
-                  <Mail className="w-4 h-4 text-blue-600" />
-                </div>
-                <span className="text-sm font-semibold text-gray-900">Elektron pochta</span>
-                {emailSaved && <span className="text-xs text-emerald-500 font-medium ml-auto">✓ Qo'shildi</span>}
-              </div>
-              {emailStep === 'edit' ? (
-                <div className="flex gap-2">
-                  <input value={editEmail} onChange={e => setEditEmail(e.target.value)} type="email" className="flex-1 rounded-xl px-3 py-2.5 text-sm bg-gray-50 border border-gray-100 text-gray-900 outline-none focus:border-blue-300" placeholder="email@example.com" />
-                  <button onClick={sendEmailCode} disabled={!editEmail.includes('@')} className="px-4 py-2.5 rounded-xl text-sm font-medium bg-blue-600 text-white active:scale-95 disabled:opacity-40 shadow-sm shadow-blue-200">Kod yuborish</button>
-                </div>
-              ) : (
-                <div className="flex gap-2">
-                  <input value={emailCode} onChange={e => setEmailCode(e.target.value)} maxLength={6} className="flex-1 rounded-xl px-3 py-2.5 text-sm text-center tracking-[0.5em] bg-gray-50 border border-gray-100 text-gray-900 outline-none focus:border-blue-300" placeholder="● ● ● ●" />
-                  <button onClick={verifyEmail} className="px-4 py-2.5 rounded-xl text-sm font-medium bg-blue-600 text-white active:scale-95 shadow-sm shadow-blue-200">Tasdiqlash</button>
-                </div>
-              )}
-              <p className="text-[11px] text-gray-400 mt-2">Emailga tasdiqlash kodi yuboriladi</p>
-            </div>
-
-            {/* Extra settings */}
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-              <button className="w-full flex items-center justify-between p-4 active:bg-gray-50">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center">
-                    <Languages className="w-4 h-4 text-orange-600" />
-                  </div>
-                  <div className="text-left">
-                    <p className="text-sm font-medium text-gray-900">Interfeys tili</p>
-                    <p className="text-xs text-gray-400">O'zbek tili</p>
-                  </div>
-                </div>
-                <ChevronRight className="w-5 h-5 text-gray-300" />
-              </button>
-              <div className="h-px bg-gray-100 mx-4" />
-              <button className="w-full flex items-center justify-between p-4 active:bg-gray-50">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center">
-                    <Shield className="w-4 h-4 text-purple-600" />
-                  </div>
-                  <div className="text-left">
-                    <p className="text-sm font-medium text-gray-900">Maxfiylik siyosati</p>
-                    <p className="text-xs text-gray-400">Shaxsiy ma'lumotlar himoyasi</p>
-                  </div>
-                </div>
-                <ChevronRight className="w-5 h-5 text-gray-300" />
+              <button
+                type="button"
+                onClick={() => setShowProModal(false)}
+                className="w-full rounded-[22px] py-4 text-sm font-bold"
+                style={{ background: colors.surfaceContainerLow, color: colors.onSurfaceVariant }}
+              >
+                Keyinroq
               </button>
             </div>
+          </ModalBackdrop>
+        )}
+      </AnimatePresence>
 
-            {/* Delete Account */}
-            <button className="w-full rounded-2xl p-4 flex items-center justify-center gap-2 bg-red-50 border border-red-100 active:scale-[0.98]" onClick={() => { if (window.confirm('Akkauntni o\'chirmoqchimisiz?')) { logout(); setShowAccountSettings(false); } }}>
-              <Trash2 className="w-4 h-4 text-red-500" />
-              <span className="text-sm font-medium text-red-500">Akkauntni o'chirish</span>
-            </button>
+      <AnimatePresence>
+        {showAccountSettings && (
+          <ModalBackdrop onClose={() => setShowAccountSettings(false)}>
+            <div className="rounded-[30px] p-6" style={{ background: colors.surfaceContainer }}>
+              <div className="mb-6 flex items-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full" style={{ background: colors.surfaceContainerLow }}>
+                  <User className="h-5 w-5" style={{ color: colors.primary }} />
+                </div>
+                <div>
+                  <h2 className="text-xl font-black tracking-[-0.04em]" style={{ color: colors.onSurface }}>
+                    Akkaunt sozlamalari
+                  </h2>
+                  <p className="text-xs" style={{ color: colors.onSurfaceVariant }}>
+                    Profil ma'lumotlarini yangilang
+                  </p>
+                </div>
+              </div>
 
-            <div className="h-10" />
-          </div>
-        </div>,
-        document.body
-      )}
+              <div className="space-y-4">
+                <Field label="Ism" icon={User}>
+                  <input
+                    value={editName}
+                    onChange={(event) => setEditName(event.target.value)}
+                    className="w-full rounded-2xl px-4 py-3 text-sm focus:outline-none"
+                    style={{ background: colors.surfaceContainerLow, color: colors.onSurface }}
+                    placeholder="Ismingiz"
+                  />
+                </Field>
+
+                <Field label="Telefon" icon={Phone}>
+                  <input
+                    value={editPhone}
+                    onChange={(event) => setEditPhone(event.target.value)}
+                    className="w-full rounded-2xl px-4 py-3 text-sm focus:outline-none"
+                    style={{ background: colors.surfaceContainerLow, color: colors.onSurface }}
+                    placeholder="+998 90 123 45 67"
+                  />
+                </Field>
+
+                <Field label="Email" icon={Mail}>
+                  <input
+                    value={editEmail}
+                    onChange={(event) => setEditEmail(event.target.value)}
+                    className="w-full rounded-2xl px-4 py-3 text-sm focus:outline-none"
+                    style={{ background: colors.surfaceContainerLow, color: colors.onSurface }}
+                    placeholder="email@example.com"
+                  />
+                </Field>
+
+                <Field label="Interfeys tili" icon={Globe}>
+                  <div className="rounded-2xl px-4 py-3 text-sm" style={{ background: colors.surfaceContainerLow, color: colors.onSurfaceVariant }}>
+                    O'zbek tili
+                  </div>
+                </Field>
+              </div>
+
+              <div className="mt-6 grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => setShowAccountSettings(false)}
+                  className="rounded-[22px] py-3 text-sm font-bold"
+                  style={{ background: colors.surfaceContainerLow, color: colors.onSurfaceVariant }}
+                >
+                  Bekor qilish
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    updateName(editName.trim() || user?.name || '');
+                    updatePhone(editPhone.trim() || user?.phone || '');
+                    updateEmail(editEmail.trim());
+                    setShowAccountSettings(false);
+                  }}
+                  className="rounded-[22px] py-3 text-sm font-black uppercase"
+                  style={{ background: colors.primary, color: colors.onPrimary }}
+                >
+                  Saqlash
+                </button>
+              </div>
+            </div>
+          </ModalBackdrop>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function ModalBackdrop({ children, onClose }: { children: React.ReactNode; onClose: () => void }) {
+  return createPortal(
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[9999] flex items-end bg-black/55 p-4 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ y: 48 }}
+        animate={{ y: 0 }}
+        exit={{ y: 48 }}
+        transition={{ type: 'spring', damping: 24, stiffness: 260 }}
+        className="mx-auto w-full max-w-md"
+        onClick={(event) => event.stopPropagation()}
+      >
+        {children}
+      </motion.div>
+    </motion.div>,
+    document.body,
+  );
+}
+
+function Field({
+  label,
+  icon: Icon,
+  children,
+}: {
+  label: string;
+  icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
+  children: React.ReactNode;
+}) {
+  return (
+    <div>
+      <div className="mb-2 flex items-center gap-2">
+        <Icon className="h-4 w-4" style={{ color: colors.primary }} />
+        <span className="text-sm font-semibold" style={{ color: colors.onSurface }}>
+          {label}
+        </span>
+      </div>
+      {children}
     </div>
   );
 }
