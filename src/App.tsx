@@ -24,30 +24,14 @@ function AppContent() {
   const [showSplash, setShowSplash] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Dynamic viewport height — fixes iOS PWA where 100vh is wrong
+  // Backup resize listener (primary one is in index.html <head>)
   useEffect(() => {
     const setVH = () => {
-      const vh = window.innerHeight;
-      document.documentElement.style.setProperty('--app-height', `${vh}px`);
+      document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
     };
-    setVH();
     window.addEventListener('resize', setVH);
-    window.addEventListener('orientationchange', setVH);
-    // Extra delayed checks for iOS PWA
-    setTimeout(setVH, 100);
-    setTimeout(setVH, 500);
-    return () => {
-      window.removeEventListener('resize', setVH);
-      window.removeEventListener('orientationchange', setVH);
-    };
+    return () => window.removeEventListener('resize', setVH);
   }, []);
-
-  // Sync body bg with theme
-  useEffect(() => {
-    const bg = theme === 'dark' ? '#050605' : '#f0f2ff';
-    document.documentElement.style.background = bg;
-    document.body.style.background = bg;
-  }, [theme]);
 
   // Reset scroll to top when switching tabs
   useEffect(() => {
