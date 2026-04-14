@@ -17,7 +17,6 @@ import {
   Zap,
   BookOpen,
   Flame,
-  Download,
   Check,
 } from 'lucide-react';
 import { useUser } from '../context/UserContext';
@@ -33,8 +32,6 @@ export default function ProfilePage() {
     toggleTheme,
     notificationsEnabled,
     toggleNotifications,
-    offlineEnabled,
-    toggleOffline,
     updateName,
     updatePhone,
     updateEmail,
@@ -83,13 +80,6 @@ export default function ProfilePage() {
       toggle: true,
       value: theme === 'dark',
       onClick: toggleTheme,
-    },
-    {
-      icon: Download,
-      label: 'Offline rejim',
-      toggle: true,
-      value: offlineEnabled,
-      onClick: toggleOffline,
     },
     {
       icon: Headphones,
@@ -223,7 +213,7 @@ export default function ProfilePage() {
             <div>
               <h3 className="text-2xl font-black italic tracking-[-0.05em] text-white">PRO ga o'tish</h3>
               <p className="mt-1 max-w-[220px] text-xs font-semibold text-white/80">
-                Barcha kurslar va offline rejimga cheksiz kirish imkoniyati.
+                Barcha kurslar va qo'shimcha imkoniyatlar siz uchun ochiladi.
               </p>
               <div className="mt-4">
                 <span className="text-xl font-black text-white">9,999 UZS</span>
@@ -309,8 +299,8 @@ export default function ProfilePage() {
 
       <AnimatePresence>
         {showProModal && (
-          <ModalBackdrop onClose={() => setShowProModal(false)}>
-            <div className="rounded-[30px] p-6" style={{ background: colors.surfaceContainer }}>
+          <ModalBackdrop onClose={() => setShowProModal(false)} fullscreen>
+            <div className="min-h-full p-6" style={{ background: colors.background }}>
               <div className="mb-5 flex items-center justify-center">
                 <div className="flex h-20 w-20 items-center justify-center rounded-[24px]" style={{ background: 'linear-gradient(135deg,#fbbf24,#f97316)' }}>
                   <Crown className="h-10 w-10 text-white" />
@@ -374,8 +364,8 @@ export default function ProfilePage() {
 
       <AnimatePresence>
         {showAccountSettings && (
-          <ModalBackdrop onClose={() => setShowAccountSettings(false)}>
-            <div className="rounded-[30px] p-6" style={{ background: colors.surfaceContainer }}>
+          <ModalBackdrop onClose={() => setShowAccountSettings(false)} fullscreen>
+            <div className="min-h-full p-6" style={{ background: colors.background }}>
               <div className="mb-6 flex items-center gap-3">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full" style={{ background: colors.surfaceContainerLow }}>
                   <User className="h-5 w-5" style={{ color: colors.primary }} />
@@ -459,21 +449,29 @@ export default function ProfilePage() {
   );
 }
 
-function ModalBackdrop({ children, onClose }: { children: React.ReactNode; onClose: () => void }) {
+function ModalBackdrop({
+  children,
+  onClose,
+  fullscreen = false,
+}: {
+  children: React.ReactNode;
+  onClose: () => void;
+  fullscreen?: boolean;
+}) {
   return createPortal(
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[9999] flex items-end bg-black/55 p-4 backdrop-blur-sm"
+      className={`fixed inset-0 z-[9999] bg-black/55 backdrop-blur-sm ${fullscreen ? 'flex items-stretch p-0' : 'flex items-end p-4'}`}
       onClick={onClose}
     >
       <motion.div
-        initial={{ y: 48 }}
-        animate={{ y: 0 }}
-        exit={{ y: 48 }}
+        initial={fullscreen ? { opacity: 0, scale: 0.985 } : { y: 48 }}
+        animate={fullscreen ? { opacity: 1, scale: 1 } : { y: 0 }}
+        exit={fullscreen ? { opacity: 0, scale: 0.985 } : { y: 48 }}
         transition={{ type: 'spring', damping: 24, stiffness: 260 }}
-        className="mx-auto w-full max-w-md"
+        className={fullscreen ? 'h-full w-full' : 'mx-auto w-full max-w-md'}
         onClick={(event) => event.stopPropagation()}
       >
         {children}

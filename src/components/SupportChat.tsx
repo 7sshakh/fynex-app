@@ -22,7 +22,7 @@ interface SupportChatProps {
 }
 
 const STORAGE_KEY = 'fynex_chat_messages';
-const DEFAULT_MSG: Message = { id: '1', text: "Salom! Fynex qo'llab-quvvatlash xizmatiga xush kelibsiz. Ilova bilan bog'liq savollaringizni yozing — biz yordam beramiz.", isBot: true, time: getTime() };
+const DEFAULT_MSG: Message = { id: '1', text: "Salom. Fynex yordam markaziga xush kelibsiz. Ilova bo'yicha savolingizni yozing, men imkon qadar tez va aniq yordam beraman.", isBot: true, time: getTime() };
 
 function loadMessages(): Message[] {
   try {
@@ -172,7 +172,7 @@ export default function SupportChat({ isOpen, onClose }: SupportChatProps) {
           <MessageCircle className="w-5 h-5" style={{ color: t.iconColor }} />
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className="font-bold text-sm" style={{ color: t.text }}>Fynex AI Support</h3>
+          <h3 className="font-bold text-sm" style={{ color: t.text }}>Fynex Support</h3>
           <p className="text-xs font-medium" style={{ color: t.subtext }}>Online</p>
         </div>
         <button onClick={() => window.open('https://t.me/fynex-_assist', '_blank')} className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center active:scale-95" style={{ backgroundColor: t.tgBg }}>

@@ -41,7 +41,7 @@ export default function HomePage() {
           </div>
           <div>
             <span className="block text-[10px] font-semibold uppercase tracking-[0.22em]" style={{ color: colors.onSurfaceVariant }}>
-              FYNEX 3.0
+              FYNEX
             </span>
             <h1 className="text-lg font-black italic tracking-[-0.04em]" style={{ color: colors.primary }}>
               Xush kelibsiz, {firstName}

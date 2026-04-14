@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Atom, BookOpen, Calculator, Check, Code, Globe, Lock, LockKeyhole, Play, Search, Sparkles, X } from 'lucide-react';
+import { Atom, BookOpen, Calculator, Check, Code, Globe, Lock, LockKeyhole, Play, Search, Sparkles, X, Zap } from 'lucide-react';
 import { mockCourses, categories } from '../data/mockData';
 import { lessonSteps } from '../data/lessonContent';
 import { useUser } from '../context/UserContext';
@@ -122,7 +122,7 @@ export default function CoursesPage() {
             O‘rganishni boshlang
           </p>
           <h2 className="text-3xl font-black uppercase italic tracking-[-0.06em]" style={{ color: colors.onSurface }}>
-            Fynex 3.0
+            Fynex
           </h2>
         </div>
 
