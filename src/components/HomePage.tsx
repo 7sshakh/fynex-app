@@ -256,9 +256,9 @@ export default function HomePage() {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.2 }}
-        className="mb-8 overflow-hidden rounded-[24px] p-5 relative cursor-pointer"
+        className="mb-8 overflow-hidden rounded-[24px] p-5 relative cursor-pointer shadow-xl shadow-indigo-900/10"
         style={{ background: 'linear-gradient(120deg, #1e1b4b, #312e81)', color: '#ffffff' }}
-        onClick={() => { alert('IELTS va SAT imtihon modullari tez orada ishga tushadi!'); }}
+        onClick={() => window.dispatchEvent(new CustomEvent('fynex:openMockTests'))}
       >
         <div className="absolute right-[-10%] top-[-20%] h-32 w-32 rounded-full bg-white/5" />
         <div className="absolute bottom-[-10%] left-[-10%] h-24 w-24 rounded-full bg-white/10" />

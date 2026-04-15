@@ -18,10 +18,13 @@ const tabComponents: Record<TabType, React.FC> = {
   profile: ProfilePage,
 };
 
+import MockTestSystem from './components/mock-tests/MockTestSystem';
+
 function AppContent() {
   const { isAuthenticated, theme } = useUser();
   const colors = getPalette(theme);
   const [activeTab, setActiveTab] = useState<TabType>('home');
+  const [showMockTests, setShowMockTests] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -33,8 +36,14 @@ function AppContent() {
       const customEvent = event as CustomEvent<TabType>;
       if (customEvent.detail) setActiveTab(customEvent.detail);
     };
+    const handleOpenMocks = () => setShowMockTests(true);
+    
     window.addEventListener('fynex:navigate', handleNavigate);
-    return () => window.removeEventListener('fynex:navigate', handleNavigate);
+    window.addEventListener('fynex:openMockTests', handleOpenMocks);
+    return () => {
+      window.removeEventListener('fynex:navigate', handleNavigate);
+      window.removeEventListener('fynex:openMockTests', handleOpenMocks);
+    };
   }, []);
 
   if (!isAuthenticated) return <LoginPage />;
@@ -57,6 +66,10 @@ function AppContent() {
         </AnimatePresence>
       </div>
       <BottomNav activeTab={activeTab} onTabChange={(tab) => setActiveTab(tab as TabType)} />
+      
+      <AnimatePresence>
+        {showMockTests && <MockTestSystem onClose={() => setShowMockTests(false)} />}
+      </AnimatePresence>
     </div>
   );
 }
