@@ -8,6 +8,7 @@ import HomePage from './components/HomePage';
 import CoursesPage from './components/CoursesPage';
 import LeaderboardPage from './components/LeaderboardPage';
 import ProfilePage from './components/ProfilePage';
+import OnboardingContainer from './components/onboarding/OnboardingContainer';
 
 type TabType = 'home' | 'courses' | 'leaderboard' | 'profile';
 
@@ -22,6 +23,9 @@ function AppContent() {
   const { isAuthenticated, theme } = useUser();
   const colors = getPalette(theme);
   const [activeTab, setActiveTab] = useState<TabType>('home');
+  const [onboardingDone, setOnboardingDone] = useState(() => {
+    return localStorage.getItem('fynex_onboarding_completed') === 'true';
+  });
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -38,6 +42,18 @@ function AppContent() {
   }, []);
 
   if (!isAuthenticated) return <LoginPage />;
+
+  // Show onboarding for first-time users
+  if (!onboardingDone) {
+    return (
+      <OnboardingContainer
+        onComplete={() => {
+          setOnboardingDone(true);
+        }}
+      />
+    );
+  }
+
   const ActivePage = tabComponents[activeTab];
 
   return (
