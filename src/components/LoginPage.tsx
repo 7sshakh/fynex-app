@@ -55,7 +55,7 @@ export default function LoginPage() {
   const { login } = useUser();
   const [step, setStep] = useState<Step>('phone');
   const [phone, setPhone] = useState('');
-  const [otp, setOtp] = useState(['', '', '', '', '', '']);
+  const [otpCode, setOtpCode] = useState('');
   const [name, setName] = useState('');
   const [otpStatus, setOtpStatus] = useState<'idle' | 'checking' | 'success' | 'error'>('idle');
   const [otpAttempt, setOtpAttempt] = useState(0);
@@ -64,7 +64,7 @@ export default function LoginPage() {
 
   const phoneRef = useRef<HTMLInputElement | null>(null);
   const nameRef = useRef<HTMLInputElement | null>(null);
-  const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const otpRef = useRef<HTMLInputElement | null>(null);
   const fullPhone = `+998${phone}`;
 
   /* ── dynamic step list ── */
@@ -87,7 +87,7 @@ export default function LoginPage() {
   useEffect(() => {
     const t = setTimeout(() => {
       if (step === 'phone') phoneRef.current?.focus();
-      if (step === 'otp') otpRefs.current[0]?.focus();
+      if (step === 'otp') otpRef.current?.focus();
       if (step === 'name') nameRef.current?.focus();
     }, 280);
     return () => clearTimeout(t);
@@ -96,8 +96,8 @@ export default function LoginPage() {
   /* ── OTP auto-submit ── */
   useEffect(() => {
     if (step !== 'otp' || otpStatus !== 'idle') return;
-    if (otp.every((d) => d.length === 1)) goOtp();
-  }, [otp, otpStatus, step]);
+    if (otpCode.length === 6) goOtp();
+  }, [otpCode, otpStatus, step]);
 
   /* ── can proceed? ── */
   const canNext = useMemo(() => {
@@ -122,16 +122,16 @@ export default function LoginPage() {
   };
 
   const goOtp = () => {
-    if (otp.join('').length !== 6) return;
+    if (otpCode.length !== 6) return;
     setOtpStatus('checking');
     setTimeout(() => {
-      if (otp.join('') === '123456') {
+      if (otpCode === '123456') {
         setOtpStatus('success');
         setTimeout(() => { setOtpStatus('idle'); setStep('name'); }, 900);
       } else {
         setOtpStatus('error');
         setOtpAttempt((a) => a + 1);
-        setTimeout(() => { setOtp(['', '', '', '', '', '']); setOtpStatus('idle'); otpRefs.current[0]?.focus(); }, 900);
+        setTimeout(() => { setOtpCode(''); setOtpStatus('idle'); otpRef.current?.focus(); }, 900);
       }
     }, 450);
   };
@@ -157,34 +157,11 @@ export default function LoginPage() {
     login(fullPhone, name.trim());
   };
 
-  /* ── OTP helpers (skip prevention) ── */
-  const handleOtpFocus = (index: number) => {
+  /* ── OTP helper ── */
+  const handleOtpChange = (value: string) => {
     if (otpStatus !== 'idle') return;
-    const firstEmpty = otp.findIndex((d) => d === '');
-    if (firstEmpty !== -1 && firstEmpty < index) {
-      requestAnimationFrame(() => otpRefs.current[firstEmpty]?.focus());
-    }
-  };
-
-  const applyOtpValue = (value: string, startIndex = 0) => {
-    if (otpStatus !== 'idle') return;
-    const digits = value.replace(/\D/g, '').slice(0, 6 - startIndex).split('');
-    if (!digits.length) return;
-    const next = [...otp];
-    digits.forEach((d, off) => { next[startIndex + off] = d; });
-    setOtp(next);
-    const ni = Math.min(startIndex + digits.length, 5);
-    if (next.every((d) => d.length === 1)) return;
-    otpRefs.current[ni]?.focus();
-  };
-
-  const updateOtp = (index: number, value: string) => {
-    if (!/^\d*$/.test(value) || otpStatus !== 'idle') return;
-    if (value.length > 1) { applyOtpValue(value, index); return; }
-    const next = [...otp];
-    next[index] = value.slice(-1);
-    setOtp(next);
-    if (value && index < 5) otpRefs.current[index + 1]?.focus();
+    const digits = value.replace(/\D/g, '').slice(0, 6);
+    setOtpCode(digits);
   };
 
   /* ── shared styles ── */
@@ -275,30 +252,31 @@ export default function LoginPage() {
                   <button type="button" onClick={goBack} className="mb-6 flex items-center gap-2 text-sm font-bold text-white/65 transition-colors hover:text-lime-300"><ArrowLeft className="h-4 w-4" /> Orqaga</button>
                   <h2 className="mb-2 text-4xl font-black tracking-[-0.06em]">Tasdiqlash</h2>
                   <p className="mb-7 text-sm text-white/68">{fullPhone} raqamiga yuborilgan kodni kiriting</p>
-                  <motion.div key={otpAttempt} animate={otpStatus === 'error' ? { x: [0, -10, 10, -8, 8, -4, 4, 0] } : otpStatus === 'success' ? { scale: [1, 1.04, 1] } : { x: 0, scale: 1 }} transition={{ duration: otpStatus === 'error' ? 0.46 : 0.34, ease: 'easeOut' }} className="mb-5 flex justify-center gap-2">
-                    {otp.map((digit, i) => (
-                      <input key={i} ref={(el) => { otpRefs.current[i] = el; }} type="tel" inputMode="numeric" pattern="[0-9]*" autoComplete={i === 0 ? 'one-time-code' : 'off'} maxLength={1} value={digit}
-                        onChange={(e) => updateOtp(i, e.target.value)}
-                        onFocus={() => handleOtpFocus(i)}
-                        onPaste={(e) => { e.preventDefault(); applyOtpValue(e.clipboardData.getData('text'), i); }}
-                        onKeyDown={(e) => { if (e.key === 'Backspace' && !otp[i] && i > 0) otpRefs.current[i - 1]?.focus(); if (e.key === 'Enter') { e.preventDefault(); goOtp(); } }}
-                        className="h-16 w-12 rounded-2xl border text-center text-2xl font-black text-white focus:outline-none"
-                        style={{
-                          background: otpStatus === 'success' ? 'linear-gradient(180deg, rgba(34,197,94,0.30), rgba(34,197,94,0.12))' : otpStatus === 'error' ? 'linear-gradient(180deg, rgba(239,68,68,0.30), rgba(239,68,68,0.12))' : otpStatus === 'checking' ? 'linear-gradient(180deg, rgba(195,255,46,0.26), rgba(195,255,46,0.08))' : 'rgba(0,0,0,0.25)',
-                          borderColor: otpStatus === 'success' ? 'rgba(74,222,128,0.88)' : otpStatus === 'error' ? 'rgba(248,113,113,0.88)' : otpStatus === 'checking' ? 'rgba(195,255,46,0.62)' : 'rgba(255,255,255,0.10)',
-                          boxShadow: otpStatus === 'success' ? '0 0 18px rgba(74,222,128,0.28)' : otpStatus === 'error' ? '0 0 18px rgba(248,113,113,0.22)' : otpStatus === 'checking' ? '0 0 16px rgba(195,255,46,0.20)' : 'none',
-                        }}
-                      />
-                    ))}
+                  <motion.div key={otpAttempt} animate={otpStatus === 'error' ? { x: [0, -10, 10, -8, 8, -4, 4, 0] } : otpStatus === 'success' ? { scale: [1, 1.04, 1] } : { x: 0, scale: 1 }} transition={{ duration: otpStatus === 'error' ? 0.46 : 0.34, ease: 'easeOut' }} className="mb-5">
+                    <input
+                      ref={otpRef}
+                      type="tel"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      autoComplete="one-time-code"
+                      maxLength={6}
+                      value={otpCode}
+                      onChange={(e) => handleOtpChange(e.target.value)}
+                      onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); goOtp(); } }}
+                      placeholder="123456"
+                      className="w-full bg-transparent text-center text-4xl font-black tracking-[0.4em] text-white placeholder:text-white/20 focus:outline-none"
+                      style={{
+                        color: otpStatus === 'success' ? '#4ade80' : otpStatus === 'error' ? '#f87171' : '#ffffff',
+                      }}
+                    />
                   </motion.div>
-                  <div className="rounded-2xl border border-lime-300/10 bg-lime-300/[0.06] px-4 py-3">
-                    <p className="text-xs uppercase tracking-[0.2em] text-lime-300/80">Demo kod</p>
-                    <p className="mt-1 text-base font-black text-lime-300">123456</p>
+                  <div className="h-1 w-full overflow-hidden rounded-full bg-white/[0.06]">
+                    <motion.div className="h-full rounded-full" style={{ background: otpStatus === 'success' ? '#4ade80' : otpStatus === 'error' ? '#f87171' : 'linear-gradient(90deg, #c3ff2e, #b2ed12)' }} initial={false} animate={{ width: `${(otpCode.length / 6) * 100}%` }} transition={{ duration: 0.2 }} />
                   </div>
                 </div>
                 <motion.div initial={false} animate={{ opacity: otpStatus === 'idle' ? 0 : 1, y: otpStatus === 'idle' ? 8 : 0 }} className="mt-auto pt-8 text-center text-sm font-medium text-white/65 min-h-6">
                   {otpStatus === 'checking' && <span className="text-lime-300">Kod tekshirilmoqda...</span>}
-                  {otpStatus === 'success' && <span className="text-green-400">Kod tasdiqlandi</span>}
+                  {otpStatus === 'success' && <span className="text-green-400">Kod tasdiqlandi ✓</span>}
                   {otpStatus === 'error' && <span className="text-red-400">Kod xato, qayta kiriting</span>}
                 </motion.div>
               </motion.section>

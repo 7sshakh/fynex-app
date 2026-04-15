@@ -39,18 +39,6 @@
   pointer-events: none;
 }
 
-/* iOS PWA: fill the home indicator area below the nav */
-.bottom-nav-wrap::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -50px;
-  height: 50px;
-  background: inherit;
-  pointer-events: none;
-}
-
 .bottom-nav {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
