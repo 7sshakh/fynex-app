@@ -45,7 +45,7 @@ export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
         <div
           className="flex justify-around items-center py-2 px-2 rounded-full"
           style={{
-            background: theme === 'dark' ? 'rgba(14, 14, 14, 0.82)' : 'rgba(255,255,255,0.92)',
+            background: theme === 'dark' ? 'rgba(14, 14, 14, 0.82)' : 'rgba(255,243,224,0.88)',
             backdropFilter: 'blur(24px)',
             WebkitBackdropFilter: 'blur(24px)',
             border: `1px solid ${colors.outlineVariant}33`,

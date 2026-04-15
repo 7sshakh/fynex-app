@@ -16,14 +16,14 @@ interface LessonPlayerProps {
 
 /* ───── theme tokens ───── */
 const light = {
-  bg: '#f9f9ff', surface: '#f3f3fa', card: '#ffffff', text: '#191c20', sub: '#464555',
-  primary: '#4f46e5', primaryGrad: 'linear-gradient(135deg,#4f46e5,#6366f1)',
-  primaryBg: 'rgba(79,70,229,0.08)', progressTrack: '#e7e8ee',
-  correct: '#10b981', correctBg: 'rgba(16,185,129,0.08)', correctBorder: '#10b981',
-  wrong: '#ef4444', wrongBg: 'rgba(239,68,68,0.08)',
-  accent: '#f59e0b', accentBg: 'rgba(245,158,11,0.1)',
-  headerBg: 'rgba(249,249,255,0.9)', border: 'rgba(0,0,0,0.06)',
-  cardShadow: '0 2px 12px rgba(79,70,229,0.06)',
+  bg: '#FFF3E0', surface: '#FFF0DC', card: '#FFFAF3', text: '#2C1810', sub: '#6D4C41',
+  primary: '#D62828', primaryGrad: 'linear-gradient(135deg,#D62828,#B71C1C)',
+  primaryBg: 'rgba(214,40,40,0.08)', progressTrack: '#FFDDB3',
+  correct: '#2E7D32', correctBg: 'rgba(46,125,50,0.08)', correctBorder: '#2E7D32',
+  wrong: '#C62828', wrongBg: 'rgba(198,40,40,0.08)',
+  accent: '#E65100', accentBg: 'rgba(230,81,0,0.1)',
+  headerBg: 'rgba(255,243,224,0.92)', border: 'rgba(44,24,16,0.06)',
+  cardShadow: '0 2px 12px rgba(214,40,40,0.06)',
 };
 const dark = {
   bg: '#0a0d09', surface: '#131713', card: '#1a1f1a', text: '#e8f5e9', sub: '#9ca3af',

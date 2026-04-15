@@ -45,16 +45,16 @@ const darkTheme = {
   tgBg: 'rgba(59,130,246,0.12)', tgColor: '#60a5fa',
 };
 const lightTheme = {
-  bg: '#f8fafc', headerBg: '#ffffff', headerBorder: '#e5e7eb',
-  accent: '#4f46e5', accentGrad: 'linear-gradient(135deg,#6366f1,#4f46e5)',
-  text: '#111827', subtext: '#10b981', backBg: '#f3f4f6', backColor: '#4b5563',
-  iconBg: 'linear-gradient(135deg,#6366f1,#818cf8)', iconColor: '#ffffff',
-  msgBg: '#f9fafb', botBubble: '#ffffff', botText: '#111827', botTime: '#9ca3af',
-  userBubble: 'linear-gradient(135deg,#6366f1,#4f46e5)', userText: '#ffffff', userTime: 'rgba(255,255,255,0.6)',
-  inputBg: '#f3f4f6', inputText: '#111827', inputBorder: '#e5e7eb',
-  sendActive: 'linear-gradient(135deg,#6366f1,#4f46e5)', sendActiveColor: '#ffffff',
-  sendInactive: '#f3f4f6', sendInactiveColor: '#9ca3af',
-  tgBg: '#eff6ff', tgColor: '#3b82f6',
+  bg: '#FFF3E0', headerBg: '#FFF0DC', headerBorder: '#FFDDB3',
+  accent: '#D62828', accentGrad: 'linear-gradient(135deg,#D62828,#B71C1C)',
+  text: '#2C1810', subtext: '#D62828', backBg: '#FFE8C8', backColor: '#6D4C41',
+  iconBg: 'linear-gradient(135deg,#D62828,#B71C1C)', iconColor: '#ffffff',
+  msgBg: '#FFF8ED', botBubble: '#FFFAF3', botText: '#2C1810', botTime: '#A1887F',
+  userBubble: 'linear-gradient(135deg,#D62828,#B71C1C)', userText: '#ffffff', userTime: 'rgba(255,255,255,0.6)',
+  inputBg: '#FFF0DC', inputText: '#2C1810', inputBorder: '#FFDDB3',
+  sendActive: 'linear-gradient(135deg,#D62828,#B71C1C)', sendActiveColor: '#ffffff',
+  sendInactive: '#FFE8C8', sendInactiveColor: '#A1887F',
+  tgBg: 'rgba(214,40,40,0.08)', tgColor: '#D62828',
 };
 
 export default function SupportChat({ isOpen, onClose }: SupportChatProps) {

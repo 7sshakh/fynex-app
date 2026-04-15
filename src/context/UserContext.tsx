@@ -55,8 +55,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
     document.documentElement.classList.toggle('theme-dark', theme === 'dark');
     document.documentElement.style.colorScheme = theme;
     document.body.style.colorScheme = theme;
-    document.documentElement.style.setProperty('--fynex-app-bg', theme === 'dark' ? '#0e0e0e' : '#f7f8fb');
-    document.body.style.backgroundColor = theme === 'dark' ? '#0e0e0e' : '#f7f8fb';
+    document.documentElement.style.setProperty('--fynex-app-bg', theme === 'dark' ? '#0e0e0e' : '#FFF3E0');
+    document.body.style.backgroundColor = theme === 'dark' ? '#0e0e0e' : '#FFF3E0';
   }, [theme]);
 
   useEffect(() => {

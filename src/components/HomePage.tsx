@@ -37,8 +37,8 @@ export default function HomePage() {
   ];
 
   const weeklyBars = [42, 58, 34, 78, 45, 53, 100];
-  const headerBg = theme === 'dark' ? 'rgba(14,14,14,0.88)' : 'rgba(247,248,251,0.92)';
-  const streakBg = theme === 'dark' ? 'linear-gradient(135deg,#ff734a,#ff5722)' : 'linear-gradient(135deg,#86d96b,#3ea52c)';
+  const headerBg = theme === 'dark' ? 'rgba(14,14,14,0.88)' : 'rgba(255,243,224,0.92)';
+  const streakBg = theme === 'dark' ? 'linear-gradient(135deg,#ff734a,#ff5722)' : 'linear-gradient(135deg,#D62828,#B71C1C)';
 
   return (
     <div className="page-content min-h-full px-6 pb-8" style={{ background: colors.background }}>

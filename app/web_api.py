@@ -1212,8 +1212,7 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
             "JAVOB BERMA. Buning o'rniga muloyimlik bilan ayt: 'Men faqat Fynex platformasi bo'yicha yordam bera olaman. Fynex bilan bog'liq savolingiz bo'lsa, bemalol yozing!'\n"
             "3. 'Javob bera olmayman' kabi salbiy iboralarni ishlatma.\n"
             "4. Javoblar qisqa, aniq va do'stona bo'lsin. O'zbek tilida javob ber.\n"
-            "5. Foydalanuvchi operator/admin bilan bog'lanishni xohlasa, Telegramdagi "
-            f"{_support_username()} akkauntini taklif qil.\n"
+            "5. Foydalanuvchi operator/admin bilan bog'lanishni xohlasa, 'Qo'shimcha yordam kerak bo'lsa, Telegram orqali murojaat qiling yoki xabar qoldiring' de. HECH QACHON konkret username yoki akkaunt nomi aytma.\n"
             "6. Texnik muammolarda (login, kurs ochilmayapti, XP ko'rinmayapti): internetni tekshirish, ilovani qayta ochish tavsiya qil.\n"
             "7. Foydalanuvchiga doim yordam berishga tayyor ekanligingni his ettir.\n"
         )
@@ -1262,7 +1261,7 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
             ai_text = fallback_answer(payload.message or "")
 
         if want_handoff:
-            ai_text = f"{ai_text}\n\nAgar operator bilan bog'lanmoqchi bo'lsangiz, Telegramda {_support_username()} ga yozing."
+            ai_text = f"{ai_text}\n\nQo'shimcha yordam kerak bo'lsa, Telegram orqali murojaat qiling yoki xabar qoldiring."
 
         if bot_token and admin_id_str:
             tg_text = (
