@@ -47,6 +47,8 @@
         -webkit-text-size-adjust: 100%;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        background-color: #0e0e0e;
+        height: 100%;
       }
       html, body {
         margin: 0;
@@ -56,6 +58,11 @@
         overscroll-behavior-y: none;
         -webkit-overflow-scrolling: touch;
       }
+      body {
+        min-height: 100vh;
+        min-height: 100dvh;
+        min-height: -webkit-fill-available;
+      }
       #root {
         position: fixed;
         top: 0;
@@ -63,6 +70,7 @@
         right: 0;
         bottom: 0;
         overflow: hidden;
+        background-color: #0e0e0e;
       }
       
       /* Hide scrollbar for iOS */

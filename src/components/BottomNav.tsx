@@ -35,7 +35,7 @@ export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
       {visible && (
     <motion.div
       className="bottom-nav-wrap"
-      style={{ background: 'transparent' }}
+      style={{ background: theme === 'dark' ? '#0e0e0e' : '#ffffff' }}
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       exit={{ y: 100, opacity: 0 }}
