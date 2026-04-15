@@ -302,7 +302,7 @@ export default function ProfilePage() {
       <AnimatePresence>
         {showProModal && (
           <ModalBackdrop onClose={() => setShowProModal(false)} fullscreen>
-            <div className="min-h-full p-6" style={{ background: colors.background }}>
+            <div className="min-h-full overflow-y-auto p-6" style={{ background: colors.background, paddingTop: 'max(48px, calc(env(safe-area-inset-top) + 24px))' }}>
               <div className="mb-5 flex items-center justify-center">
                 <div className="flex h-20 w-20 items-center justify-center rounded-[24px]" style={{ background: 'linear-gradient(135deg,#fbbf24,#f97316)' }}>
                   <Crown className="h-10 w-10 text-white" />
@@ -367,7 +367,7 @@ export default function ProfilePage() {
       <AnimatePresence>
         {showAccountSettings && (
           <ModalBackdrop onClose={() => setShowAccountSettings(false)} fullscreen>
-            <div className="min-h-full p-6" style={{ background: colors.background }}>
+            <div className="min-h-full overflow-y-auto p-6" style={{ background: colors.background, paddingTop: 'max(48px, calc(env(safe-area-inset-top) + 24px))' }}>
               <div className="mb-6 flex items-center gap-3">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full" style={{ background: colors.surfaceContainerLow }}>
                   <User className="h-5 w-5" style={{ color: colors.primary }} />
