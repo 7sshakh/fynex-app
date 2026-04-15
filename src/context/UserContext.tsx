@@ -51,14 +51,19 @@ export function UserProvider({ children }: { children: ReactNode }) {
   }, [user]);
 
   useEffect(() => {
+    const bg = theme === 'dark' ? '#0e0e0e' : '#f8fafc';
     localStorage.setItem('fynex_theme', theme);
     document.documentElement.classList.toggle('theme-dark', theme === 'dark');
     document.documentElement.style.colorScheme = theme;
     document.body.style.colorScheme = theme;
-    document.documentElement.style.setProperty('--fynex-app-bg', theme === 'dark' ? '#0e0e0e' : '#ffffff');
-    document.body.style.backgroundColor = theme === 'dark' ? '#0e0e0e' : '#ffffff';
+    
+    document.documentElement.style.setProperty('--fynex-app-bg', bg);
+    document.documentElement.style.backgroundColor = bg;
+    document.body.style.backgroundColor = bg;
+    
+    const root = document.getElementById('root');
+    if (root) root.style.backgroundColor = bg;
   }, [theme]);
-
   useEffect(() => {
     localStorage.setItem('fynex_notifications', String(notificationsEnabled));
   }, [notificationsEnabled]);

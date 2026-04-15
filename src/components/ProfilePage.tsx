@@ -417,48 +417,56 @@ export default function ProfilePage() {
               </div>
 
               <div className="space-y-4">
-                <Field label="Ism" icon={User} primaryColor={colors.primary} textColor={colors.onSurface}>
-                  <input
-                    value={editName}
-                    onChange={(event) => setEditName(event.target.value)}
-                    className="w-full rounded-2xl px-4 py-3 text-sm focus:outline-none"
-                    style={{ background: colors.surfaceContainerLow, color: colors.onSurface }}
-                    placeholder="Ismingiz"
-                  />
-                </Field>
+                <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}>
+                  <Field label="Ism" icon={User} primaryColor={colors.primary} textColor={colors.onSurface}>
+                    <input
+                      value={editName}
+                      onChange={(event) => setEditName(event.target.value)}
+                      className="w-full rounded-[20px] px-5 py-4 text-sm font-bold focus:outline-none focus:ring-2"
+                      style={{ background: colors.surfaceContainerLow, color: colors.onSurface, '--tw-ring-color': colors.primary } as any}
+                      placeholder="Ismingiz"
+                    />
+                  </Field>
+                </motion.div>
 
-                <Field label="Telefon" icon={Phone} primaryColor={colors.primary} textColor={colors.onSurface}>
-                  <input
-                    value={editPhone}
-                    onChange={(event) => setEditPhone(event.target.value)}
-                    className="w-full rounded-2xl px-4 py-3 text-sm focus:outline-none"
-                    style={{ background: colors.surfaceContainerLow, color: colors.onSurface }}
-                    placeholder="+998 90 123 45 67"
-                  />
-                </Field>
+                <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }}>
+                  <Field label="Telefon" icon={Phone} primaryColor={colors.primary} textColor={colors.onSurface}>
+                    <input
+                      value={editPhone}
+                      onChange={(event) => setEditPhone(event.target.value)}
+                      className="w-full rounded-[20px] px-5 py-4 text-sm font-bold focus:outline-none focus:ring-2"
+                      style={{ background: colors.surfaceContainerLow, color: colors.onSurface, '--tw-ring-color': colors.primary } as any}
+                      placeholder="+998 90 123 45 67"
+                    />
+                  </Field>
+                </motion.div>
 
-                <Field label="Email" icon={Mail} primaryColor={colors.primary} textColor={colors.onSurface}>
-                  <input
-                    value={editEmail}
-                    onChange={(event) => setEditEmail(event.target.value)}
-                    className="w-full rounded-2xl px-4 py-3 text-sm focus:outline-none"
-                    style={{ background: colors.surfaceContainerLow, color: colors.onSurface }}
-                    placeholder="email@example.com"
-                  />
-                </Field>
+                <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>
+                  <Field label="Email" icon={Mail} primaryColor={colors.primary} textColor={colors.onSurface}>
+                    <input
+                      value={editEmail}
+                      onChange={(event) => setEditEmail(event.target.value)}
+                      className="w-full rounded-[20px] px-5 py-4 text-sm font-bold focus:outline-none focus:ring-2"
+                      style={{ background: colors.surfaceContainerLow, color: colors.onSurface, '--tw-ring-color': colors.primary } as any}
+                      placeholder="email@example.com"
+                    />
+                  </Field>
+                </motion.div>
 
-                <Field label="Interfeys tili" icon={Globe} primaryColor={colors.primary} textColor={colors.onSurface}>
-                  <div className="rounded-2xl px-4 py-3 text-sm" style={{ background: colors.surfaceContainerLow, color: colors.onSurfaceVariant }}>
-                    O'zbek tili
-                  </div>
-                </Field>
+                <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 }}>
+                  <Field label="Interfeys tili" icon={Globe} primaryColor={colors.primary} textColor={colors.onSurface}>
+                    <div className="rounded-[20px] px-5 py-4 text-sm font-bold" style={{ background: colors.surfaceContainerLow, color: colors.onSurfaceVariant }}>
+                      O'zbek tili
+                    </div>
+                  </Field>
+                </motion.div>
               </div>
 
-              <div className="mt-6 grid grid-cols-2 gap-3">
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="mt-8 grid grid-cols-2 gap-3">
                 <button
                   type="button"
                   onClick={() => setShowAccountSettings(false)}
-                  className="rounded-[22px] py-3 text-sm font-bold"
+                  className="rounded-[24px] py-4 text-sm font-bold transition-transform active:scale-95"
                   style={{ background: colors.surfaceContainerLow, color: colors.onSurfaceVariant }}
                 >
                   Bekor qilish
@@ -471,12 +479,12 @@ export default function ProfilePage() {
                     updateEmail(editEmail.trim());
                     setShowAccountSettings(false);
                   }}
-                  className="rounded-[22px] py-3 text-sm font-black uppercase"
+                  className="rounded-[24px] py-4 text-sm font-black uppercase transition-transform active:scale-95 shadow-lg shadow-black/5"
                   style={{ background: colors.primary, color: colors.onPrimary }}
                 >
                   Saqlash
                 </button>
-              </div>
+              </motion.div>
             </div>
           </ModalBackdrop>
         )}

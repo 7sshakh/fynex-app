@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Bell, BookOpen, ChevronRight, Flame, Play, Trophy, X, Zap, CheckCircle2, Gift, TrendingUp, Megaphone } from 'lucide-react';
+import { Bell, BookOpen, ChevronRight, Flame, Play, Trophy, X, Zap, CheckCircle2, Gift, TrendingUp, Megaphone, GraduationCap } from 'lucide-react';
 import { useUser } from '../context/UserContext';
 import { mockCourses, dailyChallenges } from '../data/mockData';
 import { hideNav, showNav } from './BottomNav';
@@ -248,6 +248,34 @@ export default function HomePage() {
               </div>
             );
           })}
+        </div>
+      </motion.section>
+
+      {/* IELTS / SAT MOCK EXAMS */}
+      <motion.section
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.2 }}
+        className="mb-8 overflow-hidden rounded-[24px] p-5 relative cursor-pointer"
+        style={{ background: 'linear-gradient(120deg, #1e1b4b, #312e81)', color: '#ffffff' }}
+        onClick={() => { alert('IELTS va SAT imtihon modullari tez orada ishga tushadi!'); }}
+      >
+        <div className="absolute right-[-10%] top-[-20%] h-32 w-32 rounded-full bg-white/5" />
+        <div className="absolute bottom-[-10%] left-[-10%] h-24 w-24 rounded-full bg-white/10" />
+        <div className="relative z-10 flex items-center justify-between">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="rounded-full bg-red-500 px-2 py-0.5 text-[8px] font-black uppercase tracking-wider text-white">
+                Yangi
+              </span>
+              <p className="text-xs font-bold text-white/70 uppercase tracking-widest">Mock Tests</p>
+            </div>
+            <h3 className="text-xl font-black tracking-tight" style={{ color: '#ffffff' }}>IELTS & SAT Testlar</h3>
+            <p className="mt-1 text-xs text-white/50 font-medium">Haqiqiy imtihon muhitini his eting</p>
+          </div>
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 backdrop-blur-sm">
+            <GraduationCap className="h-6 w-6 text-white" />
+          </div>
         </div>
       </motion.section>
 

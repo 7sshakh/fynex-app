@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
-  ArrowLeft, ArrowRight, Rocket,
+  ArrowLeft, ArrowRight, Rocket, BrainCircuit,
   GraduationCap, BookOpen, Target, Users,
   Languages, Code2, TrendingUp,
   Globe, MapPin, User, CheckCircle2,
@@ -465,12 +465,17 @@ export default function LoginPage() {
             {step === 'loading' && (
               <motion.section key="loading" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex h-full flex-col items-center justify-center pb-20">
                 <motion.div
-                  animate={{ scale: [1, 1.15, 1], rotate: [0, 5, -5, 0] }}
-                  transition={{ repeat: Infinity, duration: 2.2, ease: 'easeInOut' }}
-                  className="mb-8 flex h-24 w-24 items-center justify-center rounded-[28px] shadow-[0_0_40px_rgba(195,255,46,0.15)]"
-                  style={{ background: 'linear-gradient(135deg, rgba(195,255,46,0.25), rgba(195,255,46,0.05))', border: '1px solid rgba(195,255,46,0.3)' }}
+                  animate={{ scale: [1, 1.05, 1] }}
+                  transition={{ repeat: Infinity, duration: 1.5, ease: 'easeInOut' }}
+                  className="relative mb-8 flex h-24 w-24 items-center justify-center rounded-[28px] shadow-[0_0_40px_rgba(195,255,46,0.15)]"
+                  style={{ background: 'linear-gradient(135deg, rgba(195,255,46,0.25), rgba(195,255,46,0.05))', border: '1px solid rgba(195,255,46,0.3)', overflow: 'hidden' }}
                 >
-                  <Rocket className="h-10 w-10 text-lime-300" />
+                  <motion.div 
+                    className="absolute inset-0 z-0 bg-gradient-to-b from-transparent via-lime-300/30 to-transparent"
+                    animate={{ y: ['-100%', '200%'] }}
+                    transition={{ repeat: Infinity, duration: 2, ease: 'linear' }}
+                  />
+                  <BrainCircuit className="z-10 h-10 w-10 text-lime-300" />
                 </motion.div>
                 <h2 className="mb-2 text-center text-2xl font-black tracking-[-0.04em]">Siz uchun shaxsiy reja <br/> tuzmoqdamiz...</h2>
                 <div className="mt-4 flex gap-1.5">
