@@ -35,7 +35,19 @@
   right: 0;
   bottom: 0;
   padding: 8px 0 max(env(safe-area-inset-bottom, 0px), 8px);
-  background: transparent;
+  background: var(--fynex-app-bg, #0e0e0e);
+  pointer-events: none;
+}
+
+/* iOS PWA: fill the home indicator area below the nav */
+.bottom-nav-wrap::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -50px;
+  height: 50px;
+  background: inherit;
   pointer-events: none;
 }
 

@@ -72,6 +72,18 @@
         overflow: hidden;
         background-color: #0e0e0e;
       }
+      /* iOS PWA: paint behind the home indicator area */
+      body::after {
+        content: '';
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: -1px;
+        height: calc(env(safe-area-inset-bottom, 0px) + 50px);
+        background: #0e0e0e;
+        z-index: 0;
+        pointer-events: none;
+      }
       
       /* Hide scrollbar for iOS */
       ::-webkit-scrollbar {
