@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Bell, BookOpen, ChevronRight, Flame, Play, Trophy, X, Zap, CheckCircle2, Gift, TrendingUp, Megaphone } from 'lucide-react';
@@ -6,6 +6,8 @@ import { useUser } from '../context/UserContext';
 import { mockCourses, dailyChallenges } from '../data/mockData';
 import { hideNav, showNav } from './BottomNav';
 import { getPalette } from '../theme';
+import { Roadmap } from '../lib/roadmap';
+import { ProgressData, markTaskComplete, updateDailyAccountability, saveProgress } from '../lib/progress';
 
 const mockNotifications = [
   { id: '1', icon: Gift, title: 'Fynex 3.0 yangilandi!', desc: 'Yangi kurslar va yaxshilangan dizayn sizni kutmoqda.', time: 'Bugun', accent: '#c3ff2e' },
@@ -18,6 +20,40 @@ export default function HomePage() {
   const { user, theme } = useUser();
   const colors = getPalette(theme);
   const [showNotifications, setShowNotifications] = useState(false);
+  
+  const [roadmap, setRoadmap] = useState<Roadmap | null>(null);
+  const [progress, setProgress] = useState<ProgressData | null>(null);
+
+  useEffect(() => {
+    const r = localStorage.getItem('fynex_roadmap');
+    if (r) setRoadmap(JSON.parse(r));
+    const p = localStorage.getItem('fynex_progress');
+    if (p) setProgress(JSON.parse(p));
+  }, []);
+
+  const completeTask = (dayIdx: number, taskIdx: number) => {
+    if (!roadmap || !progress) return;
+    const newRm = { ...roadmap };
+    if (newRm.dailyTasks[dayIdx].tasks[taskIdx].completed) return;
+
+    newRm.dailyTasks[dayIdx].tasks[taskIdx].completed = true;
+    setRoadmap(newRm);
+    localStorage.setItem('fynex_roadmap', JSON.stringify(newRm));
+
+    const totalTasks = newRm.dailyTasks.reduce((acc, d) => acc + d.tasks.length, 0);
+    const newProg = markTaskComplete(progress, totalTasks);
+    
+    // Check if day is fully done
+    const allDone = newRm.dailyTasks[dayIdx].tasks.every((t) => t.completed);
+    if (allDone) {
+      const finalProg = updateDailyAccountability(newProg, true, false, roadmap.mode === 'strict');
+      setProgress(finalProg);
+      saveProgress(finalProg);
+    } else {
+      setProgress(newProg);
+      saveProgress(newProg);
+    }
+  };
 
   const openNotifications = () => { setShowNotifications(true); hideNav(); };
   const closeNotifications = () => { setShowNotifications(false); showNav(); };
@@ -87,11 +123,16 @@ export default function HomePage() {
       >
         <div className="relative z-10 flex items-start justify-between">
           <div>
-            <p className="mb-1 text-sm font-bold" style={{ color: '#fff3eb' }}>
-              Kunlik streak
-            </p>
+            <div className="flex items-center gap-2 mb-1">
+              <p className="text-sm font-bold" style={{ color: '#fff3eb' }}>Kunlik streak</p>
+              {roadmap && (
+                <span className="rounded-full px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-white" style={{ background: roadmap.mode === 'strict' ? colors.error : colors.secondary }}>
+                  {roadmap.mode} mode
+                </span>
+              )}
+            </div>
             <h2 className="text-4xl font-black tracking-[-0.06em]" style={{ color: '#ffffff' }}>
-              {user?.streak || 0} kun
+              {progress?.streak || user?.streak || 0} kun
             </h2>
           </div>
 
@@ -134,14 +175,14 @@ export default function HomePage() {
             </h3>
           </div>
           <span className="text-xs font-bold" style={{ color: colors.onSurfaceVariant }}>
-            {featuredProgress}%
+            {progress ? `${progress.progress}%` : `${featuredProgress}%`}
           </span>
         </div>
 
         <div className="h-2 overflow-hidden rounded-full" style={{ background: colors.surfaceContainerHighest }}>
           <motion.div
             initial={{ width: 0 }}
-            animate={{ width: `${featuredProgress}%` }}
+            animate={{ width: `${progress ? progress.progress : featuredProgress}%` }}
             transition={{ duration: 0.45 }}
             className="h-full rounded-full"
             style={{ background: colors.primary }}
@@ -249,53 +290,85 @@ export default function HomePage() {
       >
         <div className="flex items-center justify-between">
           <h3 className="text-xl font-black tracking-[-0.04em]" style={{ color: colors.onSurface }}>
-            Kunlik vazifalar
+            {roadmap ? "Shaxsiy o'quv rejangiz" : "Kunlik vazifalar"}
           </h3>
-          <button
-            type="button"
-            onClick={() => window.dispatchEvent(new CustomEvent('fynex:navigate', { detail: 'courses' }))}
-            className="text-xs font-bold"
-            style={{ color: colors.primary }}
-          >
-            Hammasi
-          </button>
         </div>
 
-        {dailyChallenges.map((challenge, index) => (
-          <motion.div
-            key={challenge.id}
-            initial={{ opacity: 0, x: -16 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.26 + index * 0.05 }}
-            className="flex items-center gap-4 rounded-[24px] p-4"
-            style={{ background: colors.surfaceContainerLow }}
-          >
-            <div
-              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border"
-              style={{ background: colors.surfaceContainer, borderColor: `${colors.outlineVariant}33` }}
+        {roadmap && roadmap.dailyTasks[0] ? (
+          roadmap.dailyTasks[0].tasks.map((task, idx) => (
+            <motion.div
+              key={task.id}
+              initial={{ opacity: 0, x: -16 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.26 + idx * 0.05 }}
+              onClick={() => completeTask(0, idx)}
+              className="flex items-center gap-4 rounded-[24px] p-4 cursor-pointer"
+              style={{ background: task.completed ? colors.surfaceContainerHigh : colors.surfaceContainerLow, opacity: task.completed ? 0.6 : 1 }}
             >
-              <Play className="h-5 w-5" style={{ color: colors.onSurfaceVariant }} />
-            </div>
+              <div
+                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border transition-colors"
+                style={{ background: task.completed ? colors.primary : colors.surfaceContainer, borderColor: task.completed ? colors.primary : `${colors.outlineVariant}33` }}
+              >
+                {task.completed ? <CheckCircle2 className="h-5 w-5 text-white" /> : <Play className="h-5 w-5" style={{ color: colors.onSurfaceVariant }} />}
+              </div>
 
-            <div className="min-w-0 flex-1">
-              <h4 className="truncate text-sm font-bold" style={{ color: colors.onSurface }}>
-                {challenge.title}
-              </h4>
-              <p className="text-xs" style={{ color: colors.onSurfaceVariant }}>
-                +{challenge.xp} XP
-              </p>
-            </div>
+              <div className="min-w-0 flex-1">
+                <h4 className="truncate text-sm font-bold" style={{ color: colors.onSurface, textDecoration: task.completed ? 'line-through' : 'none' }}>
+                  {task.title}
+                </h4>
+                <p className="text-xs font-semibold" style={{ color: colors.onSurfaceVariant }}>
+                  {task.duration} daqiqa • {task.type}
+                </p>
+              </div>
 
-            <button
-              type="button"
-              onClick={() => window.dispatchEvent(new CustomEvent('fynex:navigate', { detail: 'courses' }))}
-              className="flex h-8 w-8 items-center justify-center rounded-full border transition-colors active:scale-95"
-              style={{ borderColor: colors.primary, color: colors.primary }}
+              {!task.completed && (
+                <button
+                  type="button"
+                  className="flex h-8 w-8 items-center justify-center rounded-full border transition-colors active:scale-95"
+                  style={{ borderColor: colors.primary, color: colors.primary }}
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+              )}
+            </motion.div>
+          ))
+        ) : (
+          dailyChallenges.map((challenge, index) => (
+            <motion.div
+              key={challenge.id}
+              initial={{ opacity: 0, x: -16 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.26 + index * 0.05 }}
+              className="flex items-center gap-4 rounded-[24px] p-4"
+              style={{ background: colors.surfaceContainerLow }}
             >
-              <ChevronRight className="h-4 w-4" />
-            </button>
-          </motion.div>
-        ))}
+              <div
+                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border"
+                style={{ background: colors.surfaceContainer, borderColor: `${colors.outlineVariant}33` }}
+              >
+                <Play className="h-5 w-5" style={{ color: colors.onSurfaceVariant }} />
+              </div>
+
+              <div className="min-w-0 flex-1">
+                <h4 className="truncate text-sm font-bold" style={{ color: colors.onSurface }}>
+                  {challenge.title}
+                </h4>
+                <p className="text-xs" style={{ color: colors.onSurfaceVariant }}>
+                  +{challenge.xp} XP
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => window.dispatchEvent(new CustomEvent('fynex:navigate', { detail: 'courses' }))}
+                className="flex h-8 w-8 items-center justify-center rounded-full border transition-colors active:scale-95"
+                style={{ borderColor: colors.primary, color: colors.primary }}
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </motion.div>
+          ))
+        )}
       </motion.section>
       {createPortal(
         <AnimatePresence>

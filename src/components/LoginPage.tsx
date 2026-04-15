@@ -151,9 +151,18 @@ export default function LoginPage() {
     setStep(allSteps[idx - 1]);
   };
 
-  const finish = () => {
+  const finish = async () => {
     setStep('loading');
+    
+    // Generate roadmap dynamically
+    const { generateRoadmap } = await import('../lib/roadmap');
+    const { loadProgress, saveProgress } = await import('../lib/progress');
+    const roadmap = generateRoadmap(ob as any);
+    const initialProgress = loadProgress();
+
     setTimeout(() => {
+      localStorage.setItem('fynex_roadmap', JSON.stringify(roadmap));
+      saveProgress(initialProgress);
       localStorage.setItem('fynex_onboarding', JSON.stringify(ob));
       localStorage.setItem('fynex_onboarding_completed', 'true');
       login(fullPhone, name.trim());
