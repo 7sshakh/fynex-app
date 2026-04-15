@@ -10,6 +10,11 @@
   ],
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/index.py" },
+    { "src": "/manifest\\.json", "dest": "/manifest.json" },
+    { "src": "/favicon\\.svg", "dest": "/favicon.svg" },
+    { "src": "/icon-192\\.svg", "dest": "/icon-192.svg" },
+    { "src": "/icon-512\\.svg", "dest": "/icon-512.svg" },
+    { "src": "/apple-touch-icon\\.png", "dest": "/apple-touch-icon.png" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
 }

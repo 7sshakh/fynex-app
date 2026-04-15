@@ -5,6 +5,7 @@ import { mockCourses, categories } from '../data/mockData';
 import { getLessonSteps } from '../data/lessonContent';
 import { useUser } from '../context/UserContext';
 import LessonPlayer from './LessonPlayer';
+import { hideNav, showNav } from './BottomNav';
 import { getPalette } from '../theme';
 
 type CourseIcon = typeof Globe;
@@ -58,10 +59,15 @@ export default function CoursesPage() {
 
   useEffect(() => {
     document.body.style.overflow = selectedCourse ? 'hidden' : '';
+    if (selectedCourse) hideNav(); else showNav();
     return () => {
       document.body.style.overflow = '';
     };
   }, [selectedCourse]);
+
+  useEffect(() => {
+    if (activeLesson) hideNav();
+  }, [activeLesson]);
 
   const startLesson = (courseId: string, lessonId: string) => {
     const course = mockCourses.find((item) => item.id === courseId);

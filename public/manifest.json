@@ -1,26 +1,40 @@
 {
-  "name": "Fynex",
+  "name": "Fynex 3.0 - Bepul Ta'lim",
   "short_name": "Fynex",
-  "description": "Onlayn ta'lim platformasi",
+  "description": "Ingliz tili, rus tili, matematika, fizika va dasturlashni bepul o'rganing",
   "start_url": "/",
+  "id": "/",
   "display": "standalone",
-  "background_color": "#0a0d09",
-  "theme_color": "#0a0d09",
+  "background_color": "#0e0e0e",
+  "theme_color": "#0e0e0e",
   "orientation": "portrait",
   "scope": "/",
   "lang": "uz",
+  "categories": ["education"],
   "icons": [
     {
       "src": "/icon-192.svg",
       "sizes": "192x192",
       "type": "image/svg+xml",
-      "purpose": "maskable any"
+      "purpose": "any"
     },
     {
       "src": "/icon-512.svg",
       "sizes": "512x512",
       "type": "image/svg+xml",
-      "purpose": "maskable any"
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
     }
   ]
 }

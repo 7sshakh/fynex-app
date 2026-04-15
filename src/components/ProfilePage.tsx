@@ -383,7 +383,7 @@ export default function ProfilePage() {
               </div>
 
               <div className="space-y-4">
-                <Field label="Ism" icon={User}>
+                <Field label="Ism" icon={User} primaryColor={colors.primary} textColor={colors.onSurface}>
                   <input
                     value={editName}
                     onChange={(event) => setEditName(event.target.value)}
@@ -393,7 +393,7 @@ export default function ProfilePage() {
                   />
                 </Field>
 
-                <Field label="Telefon" icon={Phone}>
+                <Field label="Telefon" icon={Phone} primaryColor={colors.primary} textColor={colors.onSurface}>
                   <input
                     value={editPhone}
                     onChange={(event) => setEditPhone(event.target.value)}
@@ -403,7 +403,7 @@ export default function ProfilePage() {
                   />
                 </Field>
 
-                <Field label="Email" icon={Mail}>
+                <Field label="Email" icon={Mail} primaryColor={colors.primary} textColor={colors.onSurface}>
                   <input
                     value={editEmail}
                     onChange={(event) => setEditEmail(event.target.value)}
@@ -413,7 +413,7 @@ export default function ProfilePage() {
                   />
                 </Field>
 
-                <Field label="Interfeys tili" icon={Globe}>
+                <Field label="Interfeys tili" icon={Globe} primaryColor={colors.primary} textColor={colors.onSurface}>
                   <div className="rounded-2xl px-4 py-3 text-sm" style={{ background: colors.surfaceContainerLow, color: colors.onSurfaceVariant }}>
                     O'zbek tili
                   </div>
@@ -487,16 +487,20 @@ function Field({
   label,
   icon: Icon,
   children,
+  primaryColor,
+  textColor,
 }: {
   label: string;
   icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
   children: React.ReactNode;
+  primaryColor: string;
+  textColor: string;
 }) {
   return (
     <div>
       <div className="mb-2 flex items-center gap-2">
-        <Icon className="h-4 w-4" style={{ color: colors.primary }} />
-        <span className="text-sm font-semibold" style={{ color: colors.onSurface }}>
+        <Icon className="h-4 w-4" style={{ color: primaryColor }} />
+        <span className="text-sm font-semibold" style={{ color: textColor }}>
           {label}
         </span>
       </div>

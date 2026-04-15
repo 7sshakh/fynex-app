@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Home, GraduationCap, BarChart3, User } from 'lucide-react';
 import { useUser } from '../context/UserContext';
 import { getPalette } from '../theme';
@@ -18,8 +19,28 @@ const tabs = [
 export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
   const { theme } = useUser();
   const colors = getPalette(theme);
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const show = (e as CustomEvent<boolean>).detail;
+      setVisible(show);
+    };
+    window.addEventListener('fynex:nav', handler);
+    return () => window.removeEventListener('fynex:nav', handler);
+  }, []);
+
   return (
-    <div className="bottom-nav-wrap" style={{ background: 'transparent' }}>
+    <AnimatePresence>
+      {visible && (
+    <motion.div
+      className="bottom-nav-wrap"
+      style={{ background: 'transparent' }}
+      initial={{ y: 100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      exit={{ y: 100, opacity: 0 }}
+      transition={{ type: 'spring', damping: 22, stiffness: 260 }}
+    >
       <div className="px-4 nav-safe">
         <div
           className="flex justify-around items-center py-2 px-2 rounded-full neon-shadow"
@@ -59,6 +80,15 @@ export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
           })}
         </div>
       </div>
-    </div>
+    </motion.div>
+      )}
+    </AnimatePresence>
   );
+}
+
+export function hideNav() {
+  window.dispatchEvent(new CustomEvent('fynex:nav', { detail: false }));
+}
+export function showNav() {
+  window.dispatchEvent(new CustomEvent('fynex:nav', { detail: true }));
 }
