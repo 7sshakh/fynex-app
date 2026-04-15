@@ -237,6 +237,38 @@ export default function ProfilePage() {
         </motion.section>
       )}
 
+      <motion.section
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.12 }}
+        className="mb-8"
+      >
+        <h4 className="mb-4 px-1 text-xs font-black uppercase tracking-[0.22em]" style={{ color: colors.onSurfaceVariant }}>
+          Sizning Yutuqlaringiz
+        </h4>
+        <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide px-1">
+          {[
+            { id: 1, icon: Flame, title: "Birinchi Qadam", desc: "Dastlabki dars", done: true, color: colors.tertiary },
+            { id: 2, icon: Zap, title: "Tezkor O'quvchi", desc: "1000 XP topildi", done: (user?.xp || 0) >= 1000, color: colors.primary },
+            { id: 3, icon: BookOpen, title: "Kitobxon", desc: "1 ta kurs", done: (user?.completedCourses.length || 0) >= 1, color: colors.secondary },
+            { id: 4, icon: Crown, title: "Chempion", desc: "Top 1 reyting", done: false, color: '#fbbf24' },
+          ].map((ach) => {
+            const AchIcon = ach.icon;
+            return (
+              <div key={ach.id} className="flex min-w-[120px] shrink-0 flex-col items-center gap-3 rounded-[24px] p-5 text-center transition-all" style={{ background: colors.surfaceContainerLow, opacity: ach.done ? 1 : 0.4 }}>
+                <div className="flex h-12 w-12 items-center justify-center rounded-full" style={{ background: `${ach.color}22` }}>
+                  <AchIcon className="h-6 w-6" style={{ color: ach.color }} />
+                </div>
+                <div>
+                  <h5 className="text-[11px] font-bold leading-tight" style={{ color: colors.onSurface }}>{ach.title}</h5>
+                  <p className="mt-1 text-[9px] font-semibold" style={{ color: colors.onSurfaceVariant }}>{ach.desc}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </motion.section>
+
       <section className="space-y-6">
         <h4 className="px-1 text-xs font-black uppercase tracking-[0.22em]" style={{ color: colors.onSurfaceVariant }}>
           Sozlamalar
