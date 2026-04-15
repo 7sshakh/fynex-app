@@ -61,12 +61,6 @@ export default function ProfilePage() {
       .slice(0, 2)
       .toUpperCase() || 'U';
 
-  const stats = [
-    { label: 'XP', value: user?.xp || 0, icon: Zap, accent: colors.primary },
-    { label: 'Tugallangan', value: user?.completedCourses.length || 0, icon: BookOpen, accent: colors.secondary },
-    { label: 'Streak', value: user?.streak || 0, icon: Flame, accent: colors.tertiary },
-  ];
-
   const settingsItems = [
     {
       icon: MessageCircle,
@@ -123,36 +117,41 @@ export default function ProfilePage() {
       <motion.section
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-6 flex items-center gap-5 rounded-[28px] p-6"
-        style={{ background: colors.surfaceContainer }}
+        className="mb-6 flex items-center gap-5 rounded-[24px] p-6 relative overflow-hidden group shadow-lg shadow-purple-900/10 cursor-pointer"
+        style={{ background: 'linear-gradient(135deg, #a855f7 0%, #7e22ce 100%)' }}
       >
-        <div className="relative">
-          <div className="rounded-full border-4 p-1" style={{ borderColor: `${colors.primary}22` }}>
+        <div className="absolute right-[-10%] top-[-50%] h-40 w-40 rounded-full bg-white/10 blur-xl group-hover:scale-125 transition-transform duration-700" />
+        <div className="absolute right-0 bottom-0 p-4 opacity-10">
+          <User className="h-28 w-28 text-white" />
+        </div>
+
+        <div className="relative z-10">
+          <div className="rounded-full border-2 p-1" style={{ borderColor: 'rgba(255,255,255,0.3)' }}>
             <div
-              className="flex h-20 w-20 items-center justify-center rounded-full text-xl font-black"
-              style={{ background: colors.surfaceContainerHighest, color: colors.primary }}
+              className="flex h-20 w-20 items-center justify-center rounded-full text-xl font-black shadow-inner"
+              style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff' }}
             >
               {initials}
             </div>
           </div>
           {user?.isPro && (
-            <div className="absolute -bottom-1 -right-1 rounded-full px-2 py-0.5 text-[10px] font-black" style={{ background: colors.primary, color: colors.onPrimary }}>
+            <div className="absolute -bottom-1 -right-1 rounded-full px-2 py-0.5 text-[10px] font-black shadow-md bg-yellow-400 text-yellow-950">
               PRO
             </div>
           )}
         </div>
 
-        <div className="min-w-0 flex-1">
-          <h2 className="truncate text-xl font-extrabold tracking-[-0.04em]" style={{ color: colors.onSurface }}>
+        <div className="relative z-10 min-w-0 flex-1">
+          <h2 className="truncate text-2xl font-black tracking-tight text-white leading-tight mb-1 drop-shadow-md">
             {user?.name || 'Foydalanuvchi'}
           </h2>
-          <p className="text-sm font-medium" style={{ color: colors.onSurfaceVariant }}>
+          <p className="text-xs font-semibold text-white/80 mb-3 uppercase tracking-widest">
             {user?.phone || '+998'}
           </p>
-          <div className="mt-2 inline-flex items-center gap-1.5 rounded-full px-3 py-1" style={{ background: colors.surfaceContainerHigh }}>
-            <span className="h-2 w-2 rounded-full" style={{ background: colors.primary }} />
-            <span className="text-[11px] font-bold" style={{ color: colors.primary }}>
-              {user?.isPro ? 'PRO foydalanuvchi' : 'Aktiv'}
+          <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 bg-white/20 backdrop-blur-sm shadow-sm ring-1 ring-white/30">
+            <span className="h-2 w-2 rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.8)]" />
+            <span className="text-[10px] font-black text-white uppercase tracking-wider">
+              {user?.isPro ? 'PRO faydalanuvchi' : 'Aktiv'}
             </span>
           </div>
         </div>
@@ -160,10 +159,9 @@ export default function ProfilePage() {
         <button
           type="button"
           onClick={() => setShowAccountSettings(true)}
-          className="flex h-10 w-10 items-center justify-center rounded-full"
-          style={{ background: colors.surfaceContainerHigh }}
+          className="relative z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/20 backdrop-blur-md shadow-inner shadow-white/20 hover:bg-white/30 transition-colors"
         >
-          <Settings className="h-5 w-5" style={{ color: colors.onSurfaceVariant }} />
+          <Settings className="h-5 w-5 text-white" />
         </button>
       </motion.section>
 
@@ -173,31 +171,54 @@ export default function ProfilePage() {
         transition={{ delay: 0.05 }}
         className="mb-6 grid grid-cols-2 gap-4"
       >
-        <div className="flex h-32 flex-col justify-between rounded-[28px] p-5" style={{ background: colors.surfaceContainerLow }}>
-          <Zap className="h-8 w-8" style={{ color: colors.primary }} />
-          <div>
-            <div className="text-2xl font-black tracking-[-0.05em]" style={{ color: colors.onSurface }}>
+        <div 
+          className="flex aspect-square flex-col justify-between rounded-[24px] p-5 relative overflow-hidden group shadow-lg shadow-yellow-900/10 cursor-default" 
+          style={{ background: 'linear-gradient(135deg, #eab308 0%, #ca8a04 100%)' }}
+        >
+          <div className="absolute right-[-10%] top-[-10%] h-32 w-32 rounded-full bg-white/10 blur-xl group-hover:scale-125 transition-transform duration-700" />
+          <div className="absolute right-0 bottom-0 p-2 opacity-15">
+            <Zap className="h-24 w-24 text-white" />
+          </div>
+          <div className="relative z-10 w-12 h-12 flex justify-center items-center rounded-full bg-white/20 backdrop-blur-md shadow-[inset_0_0_10px_rgba(255,255,255,0.3)]">
+            <Zap className="h-6 w-6 text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
+          </div>
+          <div className="relative z-10">
+            <div className="text-4xl font-black tracking-tight text-white drop-shadow-md">
               {user?.xp || 0}
             </div>
-            <div className="text-[11px] font-bold uppercase tracking-[0.18em]" style={{ color: colors.onSurfaceVariant }}>
+            <div className="text-[10px] font-black uppercase tracking-[0.16em] text-white/80 mt-1">
               Umumiy XP
             </div>
           </div>
         </div>
 
         <div className="grid grid-rows-2 gap-4">
-          {stats.slice(1).map((stat) => {
+          {[
+            { label: 'Tugallangan', value: user?.completedCourses.length || 0, icon: BookOpen, bg: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)' },
+            { label: 'Streak', value: user?.streak || 0, icon: Flame, bg: 'linear-gradient(135deg, #ea580c 0%, #c2410c 100%)' },
+          ].map((stat) => {
             const Icon = stat.icon;
             return (
-              <div key={stat.label} className="flex items-center gap-3 rounded-[24px] p-4" style={{ background: colors.surfaceContainerLow }}>
-                <Icon className="h-5 w-5" style={{ color: stat.accent }} />
-                <div>
-                  <div className="text-lg font-black leading-none" style={{ color: colors.onSurface }}>
-                    {stat.value}
-                  </div>
-                  <div className="text-[10px] font-bold" style={{ color: colors.onSurfaceVariant }}>
+              <div 
+                key={stat.label} 
+                className="flex items-center gap-4 rounded-[24px] p-4 relative overflow-hidden group shadow-sm cursor-default" 
+                style={{ background: stat.bg }}
+              >
+                <div className="absolute right-[-5%] top-[-10%] h-20 w-20 rounded-full bg-white/10 blur-sm group-hover:scale-125 transition-transform duration-700" />
+                <div className="absolute right-2 top-1/2 -translate-y-1/2 opacity-15">
+                  <Icon className="h-16 w-16 text-white" />
+                </div>
+                
+                <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-[18px] bg-black/15 shadow-inner backdrop-blur-sm">
+                  <Icon className="h-5 w-5 text-white" />
+                </div>
+                <div className="relative z-10 flex-1">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-white/70">
                     {stat.label}
-                  </div>
+                  </p>
+                  <p className="text-xl font-black text-white drop-shadow-md">
+                    {stat.value}
+                  </p>
                 </div>
               </div>
             );
@@ -210,29 +231,35 @@ export default function ProfilePage() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="relative mb-8 overflow-hidden rounded-[28px] p-6"
-          style={{ background: 'linear-gradient(135deg,#ff734a,#b92902)' }}
+          className="relative mb-8 overflow-hidden rounded-[24px] p-6 shadow-xl shadow-amber-900/20 group cursor-pointer"
+          style={{ background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' }}
+          onClick={() => setShowProModal(true)}
         >
-          <div className="relative z-10 flex items-end justify-between gap-4">
-            <div>
-              <h3 className="text-2xl font-black italic tracking-[-0.05em] text-white">PRO ga o'tish</h3>
-              <p className="mt-1 max-w-[220px] text-xs font-semibold text-white/80">
-                Barcha kurslar va qo'shimcha imkoniyatlar siz uchun ochiladi.
+          <div className="absolute right-[-10%] top-[-20%] h-48 w-48 rounded-full bg-white/20 blur-xl group-hover:scale-125 transition-transform duration-700" />
+          <div className="absolute right-[-5%] bottom-[-5%] p-4 opacity-20">
+            <motion.div animate={{ rotate: [0, 10, -10, 0] }} transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}>
+              <Crown className="h-32 w-32 text-white drop-shadow-2xl" />
+            </motion.div>
+          </div>
+
+          <div className="relative z-10 flex items-start justify-between gap-4">
+            <div className="max-w-[65%]">
+              <span className="inline-block px-2 py-0.5 rounded-full bg-white text-yellow-600 text-[10px] font-black uppercase tracking-widest mb-2 shadow-sm ring-2 ring-white/50">
+                Premium
+              </span>
+              <h3 className="text-2xl font-black tracking-tight text-white mb-2 leading-tight">Cheksizlikka o'tish</h3>
+              <p className="text-xs font-semibold text-white/90 leading-relaxed mb-5">
+                Barcha kurslar va imkoniyatlar bilan to'liq quvvatga chiqing.
               </p>
-              <div className="mt-4">
-                <span className="text-xl font-black text-white">9,999 UZS</span>
-                <span className="text-xs font-bold text-white/70"> /oy</span>
+              <div className="flex items-center gap-2">
+                <span className="text-2xl font-black text-white drop-shadow-md">9,999 UZS</span>
+                <span className="text-xs font-black text-white/70 uppercase">/oy</span>
               </div>
             </div>
 
-            <button
-              type="button"
-              onClick={() => setShowProModal(true)}
-              className="rounded-full bg-white px-5 py-2 text-sm font-black transition-transform active:scale-95"
-              style={{ color: colors.tertiary }}
-            >
-              Obuna bo'lish
-            </button>
+            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/20 backdrop-blur-md shadow-[inset_0_0_15px_rgba(255,255,255,0.4)]">
+              <ChevronRight className="h-6 w-6 text-white" />
+            </div>
           </div>
         </motion.section>
       )}

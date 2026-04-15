@@ -66,15 +66,8 @@ export default function HomePage() {
     ? Math.round(((user?.completedCourses.includes(featuredCourse.id) ? featuredCourse.lessons.length : 0) / featuredCourse.lessons.length) * 100)
     : 0;
 
-  const stats = [
-    { label: 'Bajarilgan', value: user?.completedCourses.length || 0, icon: BookOpen, tone: colors.primary },
-    { label: 'Reyting', value: '#0', icon: Trophy, tone: colors.tertiary },
-    { label: 'XP', value: user?.xp || 0, icon: Zap, tone: colors.secondary },
-  ];
-
   const weeklyBars = [42, 58, 34, 78, 45, 53, 100];
   const headerBg = theme === 'dark' ? 'rgba(14,14,14,0.88)' : 'rgba(255,255,255,0.92)';
-  const streakBg = theme === 'dark' ? 'linear-gradient(135deg,#ff734a,#ff5722)' : 'linear-gradient(135deg,#D62828,#B71C1C)';
 
   return (
     <div className="page-content min-h-full px-6 pb-8" style={{ background: colors.background }}>
@@ -118,45 +111,47 @@ export default function HomePage() {
         initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.05 }}
-        className="relative mb-6 overflow-hidden rounded-[28px] p-6 streak-glow"
-        style={{ background: streakBg }}
+        className="relative mb-6 overflow-hidden rounded-[24px] p-6 shadow-lg shadow-orange-900/10 cursor-pointer group"
+        style={{ background: 'linear-gradient(135deg, #ea580c 0%, #c2410c 100%)', color: '#ffffff' }}
       >
+        <div className="absolute right-[-10%] top-[-20%] h-40 w-40 rounded-full bg-white/10 blur-xl group-hover:scale-125 transition-transform duration-700" />
+        <div className="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity duration-700">
+          <Flame className="h-32 w-32" />
+        </div>
         <div className="relative z-10 flex items-start justify-between">
           <div>
-            <div className="flex items-center gap-2 mb-1">
-              <p className="text-sm font-bold" style={{ color: '#fff3eb' }}>Kunlik streak</p>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="rounded-full bg-white/20 px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-white backdrop-blur-md">
+                Kunlik streak
+              </span>
               {roadmap && (
-                <span className="rounded-full px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-white" style={{ background: roadmap.mode === 'strict' ? colors.error : colors.secondary }}>
+                <span className="rounded-full px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-white shadow-sm" style={{ background: roadmap.mode === 'strict' ? colors.error : colors.secondary }}>
                   {roadmap.mode} mode
                 </span>
               )}
             </div>
-            <h2 className="text-4xl font-black tracking-[-0.06em]" style={{ color: '#ffffff' }}>
+            <h2 className="text-4xl font-black tracking-tight" style={{ color: '#ffffff' }}>
               {progress?.streak || user?.streak || 0} kun
             </h2>
           </div>
 
-          <div className="rounded-[20px] p-3 shadow-inner shadow-white/20" style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.28)' }}>
+          <div className="rounded-full h-14 w-14 flex items-center justify-center bg-white/20 backdrop-blur-md shadow-inner shadow-white/30">
             <motion.div animate={{ scale: [1, 1.15, 1], rotate: [0, 4, -4, 0] }} transition={{ repeat: Infinity, duration: 1.5 }}>
-              <Flame className="h-10 w-10 drop-shadow-[0_0_12px_rgba(255,247,239,0.8)]" style={{ color: '#fff7ef' }} />
+              <Flame className="h-7 w-7 text-yellow-300 drop-shadow-[0_0_12px_rgba(253,224,71,0.8)]" />
             </motion.div>
           </div>
         </div>
 
-        <div className="relative z-10 mt-6 flex items-center justify-between border-t border-white/10 pt-4">
+        <div className="relative z-10 mt-5 flex items-center justify-between pt-4 border-t border-white/20">
           <div>
-            <span className="block text-[11px] font-semibold" style={{ color: 'rgba(255,255,255,0.72)' }}>
+            <span className="block text-[10px] font-black uppercase tracking-[0.1em] text-white/70">
               Jami XP
             </span>
-            <span className="text-lg font-black text-white">{user?.xp || 0}</span>
+            <span className="text-xl font-black text-white drop-shadow-md">{user?.xp || 0}</span>
           </div>
-          <div className="rounded-full bg-white px-4 py-1.5 text-[11px] font-black uppercase tracking-[0.24em]" style={{ color: theme === 'dark' ? colors.tertiary : colors.primary }}>
+          <div className="rounded-full bg-white px-5 py-2 text-[11px] font-black uppercase tracking-[0.2em] shadow-lg shadow-orange-900/40 text-orange-600">
             START
           </div>
-        </div>
-
-        <div className="pointer-events-none absolute -bottom-8 -right-8 text-[180px] opacity-10" style={{ color: '#ffffff' }}>
-          ↗
         </div>
       </motion.section>
 
@@ -164,45 +159,45 @@ export default function HomePage() {
         initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="mb-6 rounded-[28px] p-5"
-        style={{ background: colors.surfaceContainer }}
+        className="mb-6 rounded-[24px] p-6 relative overflow-hidden group cursor-pointer shadow-lg shadow-emerald-900/10"
+        style={{ background: 'linear-gradient(135deg, #059669 0%, #047857 100%)' }}
+        onClick={() => window.dispatchEvent(new CustomEvent('fynex:navigate', { detail: 'courses' }))}
       >
-        <div className="mb-4 flex items-end justify-between">
-          <div>
-            <span className="text-[10px] font-bold uppercase tracking-[0.28em]" style={{ color: colors.primary }}>
+        <div className="absolute right-[-10%] top-[-10%] h-32 w-32 rounded-full bg-white/10 blur-md group-hover:scale-125 transition-transform duration-700" />
+        <div className="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity duration-700">
+          <BookOpen className="h-28 w-28 text-white" />
+        </div>
+        
+        <div className="relative z-10 flex items-end justify-between mb-4">
+          <div className="max-w-[70%]">
+            <span className="inline-block px-2 py-0.5 rounded-full bg-white/20 text-[9px] font-black uppercase tracking-widest text-white backdrop-blur-sm mb-2 shadow-sm">
               Davom etish
             </span>
-            <h3 className="mt-1 text-xl font-extrabold tracking-[-0.04em]" style={{ color: colors.onSurface }}>
+            <h3 className="text-2xl font-black tracking-tight text-white leading-tight">
               {featuredCourse.title}
             </h3>
           </div>
-          <span className="text-xs font-bold" style={{ color: colors.onSurfaceVariant }}>
+          <span className="text-sm font-black text-white/90 drop-shadow-md bg-black/20 px-3 py-1 rounded-full">
             {progress ? `${progress.progress}%` : `${featuredProgress}%`}
           </span>
         </div>
 
-        <div className="h-2 overflow-hidden rounded-full" style={{ background: colors.surfaceContainerHighest }}>
+        <div className="relative z-10 h-2 overflow-hidden rounded-full bg-black/20 shadow-inner">
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: `${progress ? progress.progress : featuredProgress}%` }}
-            transition={{ duration: 0.45 }}
-            className="h-full rounded-full"
-            style={{ background: colors.primary }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="h-full rounded-full bg-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.5)]"
           />
         </div>
 
-        <div className="mt-4 flex items-center justify-between">
-          <p className="max-w-[70%] text-xs font-medium" style={{ color: colors.onSurfaceVariant }}>
+        <div className="relative z-10 mt-4 flex items-center justify-between">
+          <p className="max-w-[70%] text-xs font-semibold text-white/80 line-clamp-1">
             {featuredCourse.lessons[0]?.title || "Yangi darslar tayyor"}
           </p>
-          <button
-            type="button"
-            onClick={() => window.dispatchEvent(new CustomEvent('fynex:navigate', { detail: 'courses' }))}
-            className="rounded-full px-4 py-2 text-xs font-black uppercase transition-transform active:scale-95"
-            style={{ background: colors.primary, color: colors.onPrimary }}
-          >
-            Davom etish
-          </button>
+          <div className="rounded-full w-10 h-10 flex justify-center items-center backdrop-blur-md bg-white/20 hover:bg-white/30 transition-colors shadow-inner shadow-white/10">
+             <Play className="h-4 w-4 text-white ml-0.5" />
+          </div>
         </div>
       </motion.section>
 
@@ -213,37 +208,51 @@ export default function HomePage() {
         className="mb-6 grid grid-cols-2 gap-4"
       >
         <div
-          className="flex aspect-square flex-col justify-between rounded-[28px] p-5"
-          style={{ background: colors.surfaceContainerLow }}
+          className="flex aspect-square flex-col justify-between rounded-[24px] p-5 relative overflow-hidden group shadow-lg shadow-blue-900/10 cursor-pointer"
+          style={{ background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)' }}
         >
-          <BookOpen className="h-8 w-8" style={{ color: colors.primary }} />
-          <div>
-            <div className="text-3xl font-black tracking-[-0.06em]" style={{ color: colors.onSurface }}>
+          <div className="absolute right-[-10%] top-[-10%] h-24 w-24 rounded-full bg-white/10 blur-md group-hover:scale-125 transition-transform duration-700" />
+          <div className="absolute right-0 bottom-0 p-2 opacity-10">
+            <BookOpen className="h-24 w-24 text-white" />
+          </div>
+          <div className="relative z-10 w-12 h-12 flex justify-center items-center rounded-full bg-white/20 backdrop-blur-md shadow-inner shadow-white/30">
+             <BookOpen className="h-6 w-6 text-white" />
+          </div>
+          <div className="relative z-10">
+            <div className="text-4xl font-black tracking-tight text-white drop-shadow-md">
               {user?.completedCourses.length || 0}
             </div>
-            <div className="text-[11px] font-bold uppercase leading-tight tracking-[0.16em]" style={{ color: colors.onSurfaceVariant }}>
+            <div className="text-[10px] font-black uppercase tracking-[0.16em] text-white/80 mt-1">
               Yakunlangan kurslar
             </div>
           </div>
         </div>
 
         <div className="grid grid-rows-2 gap-4">
-          {stats.slice(1).map((stat) => {
+          {[
+            { label: 'Reyting', value: '#0', icon: Trophy, bg: 'linear-gradient(135deg, #d946ef 0%, #c026d3 100%)' },
+            { label: 'XP', value: user?.xp || 0, icon: Zap, bg: 'linear-gradient(135deg, #eab308 0%, #ca8a04 100%)' },
+          ].map((stat) => {
             const Icon = stat.icon;
             return (
               <div
                 key={stat.label}
-                className="flex items-center gap-3 rounded-[24px] p-4"
-                style={{ background: colors.surfaceContainerLow }}
+                className="flex items-center gap-4 rounded-[24px] p-4 relative overflow-hidden group shadow-sm cursor-default"
+                style={{ background: stat.bg }}
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-full" style={{ background: `${stat.tone}22` }}>
-                  <Icon className="h-5 w-5" style={{ color: stat.tone }} />
+                <div className="absolute right-[-5%] top-[-10%] h-20 w-20 rounded-full bg-white/10 blur-sm group-hover:scale-125 transition-transform duration-700" />
+                <div className="absolute right-2 top-1/2 -translate-y-1/2 opacity-15">
+                  <Icon className="h-16 w-16 text-white" />
                 </div>
-                <div>
-                  <p className="text-[11px] font-bold" style={{ color: colors.onSurfaceVariant }}>
+                
+                <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-[18px] bg-black/15 shadow-inner backdrop-blur-sm">
+                  <Icon className="h-5 w-5 text-white" />
+                </div>
+                <div className="relative z-10 flex-1">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-white/70">
                     {stat.label}
                   </p>
-                  <p className="text-lg font-black" style={{ color: colors.onSurface }}>
+                  <p className="text-xl font-black text-white drop-shadow-md">
                     {stat.value}
                   </p>
                 </div>
