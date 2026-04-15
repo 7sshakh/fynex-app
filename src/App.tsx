@@ -42,7 +42,7 @@ function AppContent() {
 
   return (
     <div className="app-shell">
-      <div ref={scrollRef} className="app-content" style={{ background: colors.background, minHeight: '100dvh' }}>
+      <div ref={scrollRef} className="app-content" style={{ background: colors.background }}>
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
