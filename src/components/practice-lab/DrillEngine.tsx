@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Check } from 'lucide-react';
 import { useUser } from '../../context/UserContext';
 import { getPalette } from '../../theme';
+import { quizData } from '../../data/quizData';
 
 export default function DrillEngine({ drill, onExit }: { drill: any; onExit: () => void }) {
   const { theme } = useUser();
@@ -14,13 +15,22 @@ export default function DrillEngine({ drill, onExit }: { drill: any; onExit: () 
   const [isWrong, setIsWrong] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
 
-  // MOCK QUESTIONS
-  const questions = [
-    { q: "Identify the incorrectly spelled word:", options: ["Accommodation", "Reccomend", "Separate", "Questionnaire"], ans: "Reccomend" },
-    { q: "What is an antonym for 'Obscure'?", options: ["Clear", "Hidden", "Vague", "Dark"], ans: "Clear" },
-    { q: "Which sentence is grammatically correct?", options: ["He don't like it.", "She goes to school everyday.", "They are playing good.", "I has been waiting."], ans: "She goes to school everyday." },
-    { q: "Choose the precise synonym for 'Abundant':", options: ["Scarce", "Plentiful", "Minimal", "Empty"], ans: "Plentiful" }
-  ];
+  // MOCK QUESTIONS (Dynamically sourced from external mockData based on random categories)
+  const [questions, setQuestions] = useState<any[]>([]);
+
+  useEffect(() => {
+    // Generate some random questions depending on logic
+    const allQuizzes = quizData.categories;
+    // Get random 5 questions from Mathematics or English
+    const targetCategory = drill.tag === 'Math' ? allQuizzes.find((c: any) => c.name === 'Matematika') : allQuizzes.find((c: any) => c.name.includes("Ingliz"));
+    
+    if (targetCategory && targetCategory.items.length) {
+      setQuestions(targetCategory.items.slice(0, 5));
+    } else {
+      // Fallback
+      setQuestions(allQuizzes[0].items.slice(0, 5));
+    }
+  }, [drill]);
 
   useEffect(() => {
     let timer: any;
@@ -40,7 +50,7 @@ export default function DrillEngine({ drill, onExit }: { drill: any; onExit: () 
   };
 
   const handleAnswer = (opt: string) => {
-    if (opt === questions[step].ans) {
+    if (opt === questions[step].answer) {
       setScore(s => s + 1);
       
       const nextBg = document.getElementById('drill-bg');
@@ -60,6 +70,8 @@ export default function DrillEngine({ drill, onExit }: { drill: any; onExit: () 
       setTimeout(() => setIsWrong(false), 500);
     }
   };
+
+  if (!questions.length) return null;
 
   return (
     <div id="drill-bg" className="flex flex-col h-full w-full transition-colors" style={{ background: colors.background }}>
@@ -85,11 +97,11 @@ export default function DrillEngine({ drill, onExit }: { drill: any; onExit: () 
               className="flex-1 flex flex-col justify-center"
             >
               <h2 className="text-2xl font-black mb-8 leading-tight text-center" style={{ color: colors.onSurface }}>
-                {questions[step].q}
+                {questions[step].question}
               </h2>
 
               <div className="space-y-3">
-                {questions[step].options.map((opt) => (
+                {questions[step].options.map((opt: string) => (
                   <button
                     key={opt}
                     onClick={() => handleAnswer(opt)}
