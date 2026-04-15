@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { UserProvider, useUser } from './context/UserContext';
-import { colors } from './theme';
+import { getPalette } from './theme';
 import LoginPage from './components/LoginPage';
 import BottomNav from './components/BottomNav';
 import HomePage from './components/HomePage';
@@ -19,7 +19,8 @@ const tabComponents: Record<TabType, React.FC> = {
 };
 
 function AppContent() {
-  const { isAuthenticated } = useUser();
+  const { isAuthenticated, theme } = useUser();
+  const colors = getPalette(theme);
   const [activeTab, setActiveTab] = useState<TabType>('home');
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -41,7 +42,7 @@ function AppContent() {
 
   return (
     <div className="app-shell">
-      <div ref={scrollRef} className="app-content" style={{ background: colors.background }}>
+      <div ref={scrollRef} className="app-content" style={{ background: colors.background, minHeight: '100dvh' }}>
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
