@@ -16,13 +16,13 @@ interface LessonPlayerProps {
 
 /* ───── theme tokens ───── */
 const light = {
-  bg: '#FFF3E0', surface: '#FFF0DC', card: '#FFFAF3', text: '#2C1810', sub: '#6D4C41',
+  bg: '#ffffff', surface: '#f5f5f5', card: '#ffffff', text: '#1a1a1a', sub: '#616161',
   primary: '#D62828', primaryGrad: 'linear-gradient(135deg,#D62828,#B71C1C)',
-  primaryBg: 'rgba(214,40,40,0.08)', progressTrack: '#FFDDB3',
+  primaryBg: 'rgba(214,40,40,0.08)', progressTrack: '#e0e0e0',
   correct: '#2E7D32', correctBg: 'rgba(46,125,50,0.08)', correctBorder: '#2E7D32',
   wrong: '#C62828', wrongBg: 'rgba(198,40,40,0.08)',
   accent: '#E65100', accentBg: 'rgba(230,81,0,0.1)',
-  headerBg: 'rgba(255,243,224,0.92)', border: 'rgba(44,24,16,0.06)',
+  headerBg: 'rgba(255,255,255,0.92)', border: 'rgba(0,0,0,0.06)',
   cardShadow: '0 2px 12px rgba(214,40,40,0.06)',
 };
 const dark = {

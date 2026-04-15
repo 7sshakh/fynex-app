@@ -89,7 +89,7 @@ export default function LeaderboardPage() {
         initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
         className="sticky top-0 z-20 -mx-6 mb-6 px-6 pb-4 pt-safe-top backdrop-blur-xl"
-        style={{ background: theme === 'dark' ? 'rgba(14,14,14,0.88)' : 'rgba(255,243,224,0.92)' }}
+        style={{ background: theme === 'dark' ? 'rgba(14,14,14,0.88)' : 'rgba(255,255,255,0.92)' }}
       >
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-full" style={{ background: colors.surfaceContainer }}>

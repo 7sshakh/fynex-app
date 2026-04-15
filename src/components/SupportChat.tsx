@@ -45,15 +45,15 @@ const darkTheme = {
   tgBg: 'rgba(59,130,246,0.12)', tgColor: '#60a5fa',
 };
 const lightTheme = {
-  bg: '#FFF3E0', headerBg: '#FFF0DC', headerBorder: '#FFDDB3',
+  bg: '#ffffff', headerBg: '#ffffff', headerBorder: '#e0e0e0',
   accent: '#D62828', accentGrad: 'linear-gradient(135deg,#D62828,#B71C1C)',
-  text: '#2C1810', subtext: '#D62828', backBg: '#FFE8C8', backColor: '#6D4C41',
+  text: '#1a1a1a', subtext: '#D62828', backBg: '#f5f5f5', backColor: '#616161',
   iconBg: 'linear-gradient(135deg,#D62828,#B71C1C)', iconColor: '#ffffff',
-  msgBg: '#FFF8ED', botBubble: '#FFFAF3', botText: '#2C1810', botTime: '#A1887F',
+  msgBg: '#fafafa', botBubble: '#f5f5f5', botText: '#1a1a1a', botTime: '#9e9e9e',
   userBubble: 'linear-gradient(135deg,#D62828,#B71C1C)', userText: '#ffffff', userTime: 'rgba(255,255,255,0.6)',
-  inputBg: '#FFF0DC', inputText: '#2C1810', inputBorder: '#FFDDB3',
+  inputBg: '#f5f5f5', inputText: '#1a1a1a', inputBorder: '#e0e0e0',
   sendActive: 'linear-gradient(135deg,#D62828,#B71C1C)', sendActiveColor: '#ffffff',
-  sendInactive: '#FFE8C8', sendInactiveColor: '#A1887F',
+  sendInactive: '#f5f5f5', sendInactiveColor: '#9e9e9e',
   tgBg: 'rgba(214,40,40,0.08)', tgColor: '#D62828',
 };
 
