@@ -69,7 +69,7 @@ export default function ProfilePage() {
 
   const settingsItems = [
     {
-      icon: Bell,
+      icon: MessageCircle,
       label: 'Bildirishnomalar',
       toggle: true,
       value: notificationsEnabled,
