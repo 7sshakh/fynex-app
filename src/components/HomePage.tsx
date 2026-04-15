@@ -136,8 +136,10 @@ export default function HomePage() {
             </h2>
           </div>
 
-          <div className="rounded-full p-3" style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.28)' }}>
-            <Flame className="h-10 w-10" style={{ color: '#fff7ef' }} />
+          <div className="rounded-[20px] p-3 shadow-inner shadow-white/20" style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.28)' }}>
+            <motion.div animate={{ scale: [1, 1.15, 1], rotate: [0, 4, -4, 0] }} transition={{ repeat: Infinity, duration: 1.5 }}>
+              <Flame className="h-10 w-10 drop-shadow-[0_0_12px_rgba(255,247,239,0.8)]" style={{ color: '#fff7ef' }} />
+            </motion.div>
           </div>
         </div>
 
@@ -256,25 +258,29 @@ export default function HomePage() {
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.15 }}
-        className="mb-8 overflow-hidden rounded-[24px] p-5 relative cursor-pointer shadow-lg shadow-rose-900/10"
-        style={{ background: 'linear-gradient(120deg, #be123c, #e11d48)', color: '#ffffff' }}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        className="mb-8 overflow-hidden rounded-[24px] p-6 relative cursor-pointer group"
+        style={{ background: 'linear-gradient(135deg, #e11d48 0%, #be123c 100%)', color: '#ffffff', boxShadow: '0 20px 40px -15px rgba(225, 29, 72, 0.5)' }}
         onClick={() => window.dispatchEvent(new CustomEvent('fynex:openPractice'))}
       >
-        <div className="absolute right-[-10%] top-[-10%] h-32 w-32 rounded-full bg-white/10" />
-        <div className="absolute bottom-[-10%] left-[-10%] h-24 w-24 rounded-full bg-white/20" />
+        <div className="absolute right-[-10%] top-[-20%] h-40 w-40 rounded-full bg-white/10 blur-xl group-hover:scale-125 transition-transform duration-700" />
+        <div className="absolute bottom-[-10%] left-[-10%] h-24 w-24 rounded-full bg-white/20 blur-md group-hover:translate-x-4 transition-transform duration-700" />
         <div className="relative z-10 flex items-center justify-between">
           <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="rounded-full bg-yellow-400 px-2 py-0.5 text-[8px] font-black uppercase tracking-wider text-black">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="rounded-full bg-yellow-400 px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-black shadow-lg shadow-yellow-400/30">
                 Hot 
               </span>
-              <p className="text-xs font-bold text-white/70 uppercase tracking-widest">Micro-Learning</p>
+              <p className="text-[10px] font-black text-white/70 uppercase tracking-[0.2em]">Micro-Learning</p>
             </div>
-            <h3 className="text-xl font-black tracking-tight" style={{ color: '#ffffff' }}>Practice Lab</h3>
-            <p className="mt-1 text-xs text-white/80 font-medium">5-minute daily smart drills</p>
+            <h3 className="text-2xl font-black tracking-tight" style={{ color: '#ffffff' }}>Practice Lab</h3>
+            <p className="mt-1 text-sm text-white/80 font-medium">5-minute daily smart drills</p>
           </div>
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm">
-            <Flame className="h-6 w-6 text-white" />
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/20 backdrop-blur-md shadow-inner shadow-white/30">
+            <motion.div animate={{ scale: [1, 1.2, 1], rotate: [0, 5, -5, 0] }} transition={{ repeat: Infinity, duration: 2 }}>
+              <Flame className="h-8 w-8 text-yellow-300 drop-shadow-[0_0_10px_rgba(253,224,71,0.8)]" />
+            </motion.div>
           </div>
         </div>
       </motion.section>
@@ -284,25 +290,29 @@ export default function HomePage() {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.2 }}
-        className="mb-8 overflow-hidden rounded-[24px] p-5 relative cursor-pointer shadow-xl shadow-indigo-900/10"
-        style={{ background: 'linear-gradient(120deg, #1e1b4b, #312e81)', color: '#ffffff' }}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        className="mb-8 overflow-hidden rounded-[24px] p-6 relative cursor-pointer group"
+        style={{ background: 'linear-gradient(135deg, #312e81 0%, #1e1b4b 100%)', color: '#ffffff', boxShadow: '0 20px 40px -15px rgba(49, 46, 129, 0.5)' }}
         onClick={() => window.dispatchEvent(new CustomEvent('fynex:openMockTests'))}
       >
-        <div className="absolute right-[-10%] top-[-20%] h-32 w-32 rounded-full bg-white/5" />
-        <div className="absolute bottom-[-10%] left-[-10%] h-24 w-24 rounded-full bg-white/10" />
+        <div className="absolute right-[-10%] top-[-20%] h-40 w-40 rounded-full bg-white/5 blur-xl group-hover:scale-125 transition-transform duration-700" />
+        <div className="absolute bottom-[-10%] left-[-10%] h-32 w-32 rounded-full bg-indigo-500/20 blur-md group-hover:translate-x-4 transition-transform duration-700" />
         <div className="relative z-10 flex items-center justify-between">
           <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="rounded-full bg-red-500 px-2 py-0.5 text-[8px] font-black uppercase tracking-wider text-white">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="rounded-full bg-blue-400 px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-black shadow-lg shadow-blue-400/30">
                 Yangi
               </span>
-              <p className="text-xs font-bold text-white/70 uppercase tracking-widest">Mock Tests</p>
+              <p className="text-[10px] font-black text-white/70 uppercase tracking-[0.2em]">Mock Tests</p>
             </div>
-            <h3 className="text-xl font-black tracking-tight" style={{ color: '#ffffff' }}>IELTS & SAT Testlar</h3>
-            <p className="mt-1 text-xs text-white/50 font-medium">Haqiqiy imtihon muhitini his eting</p>
+            <h3 className="text-2xl font-black tracking-tight" style={{ color: '#ffffff' }}>IELTS & SAT Testlar</h3>
+            <p className="mt-1 text-sm text-white/60 font-medium">Haqiqiy imtihon muhitini his eting</p>
           </div>
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 backdrop-blur-sm">
-            <GraduationCap className="h-6 w-6 text-white" />
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/10 backdrop-blur-md shadow-inner shadow-white/10">
+             <motion.div animate={{ y: [0, -4, 0] }} transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}>
+              <GraduationCap className="h-8 w-8 text-blue-200 drop-shadow-[0_0_10px_rgba(191,219,254,0.5)]" />
+             </motion.div>
           </div>
         </div>
       </motion.section>
@@ -311,29 +321,38 @@ export default function HomePage() {
         initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.18 }}
-        className="mb-6 rounded-[28px] p-6"
-        style={{ background: colors.surfaceContainer }}
+        className="mb-8 rounded-[28px] p-6 shadow-sm border"
+        style={{ background: colors.surfaceContainer, borderColor: `${colors.outlineVariant}33` }}
       >
         <div className="mb-6 flex items-center justify-between">
-          <h3 className="text-sm font-black uppercase tracking-[0.24em]" style={{ color: colors.onSurfaceVariant }}>
+          <h3 className="text-xs font-black uppercase tracking-[0.24em]" style={{ color: colors.onSurfaceVariant }}>
             Haftalik progress
           </h3>
-          <span className="text-xs font-bold" style={{ color: colors.primary }}>
+          <span className="text-xs font-black rounded-full px-3 py-1" style={{ color: colors.primary, background: `${colors.primary}1A` }}>
             +24% bugun
           </span>
         </div>
 
-        <div className="flex h-24 items-end gap-2">
+        <div className="flex h-28 items-end gap-2.5">
           {weeklyBars.map((value, index) => (
             <div
               key={index}
-              className="w-full rounded-t-md"
+              className="w-full rounded-t-lg relative group transition-all"
               style={{
                 height: `${value}%`,
-                background: index === weeklyBars.length - 1 ? colors.primary : colors.surfaceContainerHighest,
-                boxShadow: index === weeklyBars.length - 1 ? '0 -8px 16px rgba(195,255,46,0.2)' : 'none',
+                background: index === weeklyBars.length - 1 ? 'linear-gradient(180deg, ' + colors.primary + ' 0%, transparent 200%)' : colors.surfaceContainerHighest,
+                opacity: index === weeklyBars.length - 1 ? 1 : 0.6,
+                boxShadow: index === weeklyBars.length - 1 ? `0 -8px 20px ${colors.primary}40` : 'none',
               }}
-            />
+            >
+              {index === weeklyBars.length - 1 && (
+                <motion.div 
+                  className="absolute -top-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full" 
+                  style={{ background: colors.primary }}
+                  animate={{ opacity: [1, 0.2, 1] }} transition={{ repeat: Infinity, duration: 1.5 }}
+                />
+              )}
+            </div>
           ))}
         </div>
       </motion.section>
@@ -344,8 +363,8 @@ export default function HomePage() {
         transition={{ delay: 0.22 }}
         className="space-y-4"
       >
-        <div className="flex items-center justify-between">
-          <h3 className="text-xl font-black tracking-[-0.04em]" style={{ color: colors.onSurface }}>
+        <div className="flex items-center justify-between pl-2">
+          <h3 className="text-2xl font-black tracking-[-0.04em]" style={{ color: colors.onSurface }}>
             {roadmap ? "Shaxsiy o'quv rejangiz" : "Kunlik vazifalar"}
           </h3>
         </div>
@@ -357,34 +376,38 @@ export default function HomePage() {
               initial={{ opacity: 0, x: -16 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.26 + idx * 0.05 }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => completeTask(0, idx)}
-              className="flex items-center gap-4 rounded-[24px] p-4 cursor-pointer"
-              style={{ background: task.completed ? colors.surfaceContainerHigh : colors.surfaceContainerLow, opacity: task.completed ? 0.6 : 1 }}
+              className="flex items-center gap-5 rounded-[28px] p-5 cursor-pointer border shadow-sm transition-all"
+              style={{ 
+                background: task.completed ? colors.surfaceContainerHigh : colors.surfaceContainer, 
+                borderColor: task.completed ? `${colors.primary}55` : `${colors.outlineVariant}33`,
+                opacity: task.completed ? 0.7 : 1 
+              }}
             >
               <div
-                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border transition-colors"
-                style={{ background: task.completed ? colors.primary : colors.surfaceContainer, borderColor: task.completed ? colors.primary : `${colors.outlineVariant}33` }}
+                className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[18px] border transition-colors shadow-inner"
+                style={{ background: task.completed ? colors.primary : colors.surfaceContainerLow, borderColor: task.completed ? colors.primary : `${colors.outlineVariant}33` }}
               >
-                {task.completed ? <CheckCircle2 className="h-5 w-5 text-white" /> : <Play className="h-5 w-5" style={{ color: colors.onSurfaceVariant }} />}
+                {task.completed ? <CheckCircle2 className="h-6 w-6 text-white" /> : <Play className="h-6 w-6 ml-1" style={{ color: colors.primary }} />}
               </div>
 
               <div className="min-w-0 flex-1">
-                <h4 className="truncate text-sm font-bold" style={{ color: colors.onSurface, textDecoration: task.completed ? 'line-through' : 'none' }}>
+                <h4 className="truncate text-base font-bold mb-0.5" style={{ color: task.completed ? colors.onSurfaceVariant : colors.onSurface, textDecoration: task.completed ? 'line-through' : 'none' }}>
                   {task.title}
                 </h4>
-                <p className="text-xs font-semibold" style={{ color: colors.onSurfaceVariant }}>
+                <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: colors.primary }}>
                   {task.duration} daqiqa • {task.type}
                 </p>
               </div>
 
               {!task.completed && (
-                <button
-                  type="button"
-                  className="flex h-8 w-8 items-center justify-center rounded-full border transition-colors active:scale-95"
-                  style={{ borderColor: colors.primary, color: colors.primary }}
+                <div
+                  className="flex h-10 w-10 items-center justify-center rounded-full transition-colors"
+                  style={{ background: `${colors.primary}15` }}
                 >
-                  <ChevronRight className="h-4 w-4" />
-                </button>
+                  <ChevronRight className="h-5 w-5" style={{ color: colors.primary }} />
+                </div>
               )}
             </motion.div>
           ))
@@ -395,21 +418,22 @@ export default function HomePage() {
               initial={{ opacity: 0, x: -16 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.26 + index * 0.05 }}
-              className="flex items-center gap-4 rounded-[24px] p-4"
-              style={{ background: colors.surfaceContainerLow }}
+              whileTap={{ scale: 0.98 }}
+              className="flex items-center gap-5 rounded-[28px] p-5 shadow-sm border transition-shadow"
+              style={{ background: colors.surfaceContainer, borderColor: `${colors.outlineVariant}22` }}
             >
               <div
-                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border"
-                style={{ background: colors.surfaceContainer, borderColor: `${colors.outlineVariant}33` }}
+                className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[18px] shadow-sm"
+                style={{ background: colors.surfaceContainerHighest }}
               >
-                <Play className="h-5 w-5" style={{ color: colors.onSurfaceVariant }} />
+                <Play className="h-6 w-6 ml-1" style={{ color: colors.primary }} />
               </div>
 
               <div className="min-w-0 flex-1">
-                <h4 className="truncate text-sm font-bold" style={{ color: colors.onSurface }}>
+                <h4 className="truncate text-base font-bold mb-0.5" style={{ color: colors.onSurface }}>
                   {challenge.title}
                 </h4>
-                <p className="text-xs" style={{ color: colors.onSurfaceVariant }}>
+                <p className="text-xs font-black uppercase tracking-wider" style={{ color: colors.tertiary }}>
                   +{challenge.xp} XP
                 </p>
               </div>
@@ -417,10 +441,10 @@ export default function HomePage() {
               <button
                 type="button"
                 onClick={() => window.dispatchEvent(new CustomEvent('fynex:navigate', { detail: 'courses' }))}
-                className="flex h-8 w-8 items-center justify-center rounded-full border transition-colors active:scale-95"
-                style={{ borderColor: colors.primary, color: colors.primary }}
+                className="flex h-10 w-10 items-center justify-center rounded-full transition-transform active:scale-95"
+                style={{ background: `${colors.primary}11` }}
               >
-                <ChevronRight className="h-4 w-4" />
+                <ChevronRight className="h-5 w-5" style={{ color: colors.primary }} />
               </button>
             </motion.div>
           ))
