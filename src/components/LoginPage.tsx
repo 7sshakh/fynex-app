@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 import { useUser } from '../context/UserContext';
 
-type Step = 'phone' | 'otp' | 'name' | 'userType' | 'grade' | 'goal' | 'target' | 'summary';
+type Step = 'phone' | 'otp' | 'name' | 'userType' | 'grade' | 'goal' | 'target' | 'summary' | 'loading';
 
 interface OnboardingData {
   userType: 'school' | 'university' | 'applicant' | 'other' | '';
@@ -152,9 +152,12 @@ export default function LoginPage() {
   };
 
   const finish = () => {
-    localStorage.setItem('fynex_onboarding', JSON.stringify(ob));
-    localStorage.setItem('fynex_onboarding_completed', 'true');
-    login(fullPhone, name.trim());
+    setStep('loading');
+    setTimeout(() => {
+      localStorage.setItem('fynex_onboarding', JSON.stringify(ob));
+      localStorage.setItem('fynex_onboarding_completed', 'true');
+      login(fullPhone, name.trim());
+    }, 2800);
   };
 
   /* ── OTP helper ── */
@@ -448,11 +451,31 @@ export default function LoginPage() {
                 </motion.p>
               </motion.section>
             )}
+
+            {/* ═══ LOADING ═══ */}
+            {step === 'loading' && (
+              <motion.section key="loading" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex h-full flex-col items-center justify-center pb-20">
+                <motion.div
+                  animate={{ scale: [1, 1.15, 1], rotate: [0, 5, -5, 0] }}
+                  transition={{ repeat: Infinity, duration: 2.2, ease: 'easeInOut' }}
+                  className="mb-8 flex h-24 w-24 items-center justify-center rounded-[28px] shadow-[0_0_40px_rgba(195,255,46,0.15)]"
+                  style={{ background: 'linear-gradient(135deg, rgba(195,255,46,0.25), rgba(195,255,46,0.05))', border: '1px solid rgba(195,255,46,0.3)' }}
+                >
+                  <Rocket className="h-10 w-10 text-lime-300" />
+                </motion.div>
+                <h2 className="mb-2 text-center text-2xl font-black tracking-[-0.04em]">Siz uchun shaxsiy reja <br/> tuzmoqdamiz...</h2>
+                <div className="mt-4 flex gap-1.5">
+                  {[0, 1, 2].map((i) => (
+                    <motion.div key={i} animate={{ y: [0, -6, 0] }} transition={{ repeat: Infinity, duration: 0.6, delay: i * 0.1 }} className="h-2 w-2 rounded-full bg-lime-300" />
+                  ))}
+                </div>
+              </motion.section>
+            )}
           </AnimatePresence>
         </div>
 
         {/* ── BOTTOM BUTTON ── */}
-        {step !== 'otp' && (
+        {(step !== 'otp' && step !== 'loading') && (
           <div className="mx-auto mt-auto w-full max-w-md pt-6">
             <motion.button whileTap={{ scale: 0.985 }} onClick={goNext} disabled={!canNext} className="flex h-16 w-full items-center justify-center gap-2 rounded-full text-lg font-black transition-all disabled:opacity-40" style={btnGradient}>
               {step === 'summary' ? (<><span>O'qishni boshlash</span><Rocket className="h-5 w-5" /></>) : (<><span>Davom etish</span><ArrowRight className="h-5 w-5" /></>)}
