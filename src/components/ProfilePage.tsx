@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
-  Bell,
+  MessageCircle,
   ChevronRight,
   Crown,
   Globe,
@@ -109,7 +109,9 @@ export default function ProfilePage() {
         </h1>
 
         <div className="flex items-center gap-4">
-          <Bell className="h-5 w-5" style={{ color: colors.primary }} />
+          <button type="button" onClick={() => setShowSupportChat(true)} className="active:scale-95 transition-transform">
+            <MessageCircle className="h-5 w-5" style={{ color: colors.primary }} />
+          </button>
           <div className="flex h-8 w-8 items-center justify-center rounded-full" style={{ background: colors.surfaceContainer }}>
             <span className="text-xs font-black" style={{ color: colors.onSurface }}>
               {initials}

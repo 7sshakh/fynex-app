@@ -297,63 +297,65 @@ export default function HomePage() {
           </motion.div>
         ))}
       </motion.section>
-      <AnimatePresence>
-        {showNotifications && createPortal(
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[9999] flex flex-col"
-            style={{ background: colors.background }}
-          >
+      {createPortal(
+        <AnimatePresence>
+          {showNotifications && (
             <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ type: 'spring', damping: 24, stiffness: 280 }}
-              className="flex flex-col h-full"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[9999] flex flex-col"
+              style={{ background: colors.background }}
             >
-              <div
-                className="flex items-center justify-between px-6 pb-4 flex-shrink-0"
-                style={{ paddingTop: 'max(48px, calc(env(safe-area-inset-top) + 16px))' }}
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ type: 'spring', damping: 24, stiffness: 280 }}
+                className="flex flex-col h-full"
               >
-                <h2 className="text-lg font-black tracking-[-0.04em]" style={{ color: colors.primary }}>Bildirishnomalar</h2>
-                <button onClick={closeNotifications} className="flex h-10 w-10 items-center justify-center rounded-full" style={{ background: colors.surfaceContainer }}>
-                  <X className="h-5 w-5" style={{ color: colors.onSurfaceVariant }} />
-                </button>
-              </div>
-
-              <div className="flex-1 min-h-0 overflow-y-auto px-6 pb-8" style={{ overscrollBehavior: 'contain' }}>
-                <div className="space-y-3">
-                  {mockNotifications.map((n, i) => {
-                    const Icon = n.icon;
-                    return (
-                      <motion.div
-                        key={n.id}
-                        initial={{ opacity: 0, x: -16 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: i * 0.06 }}
-                        className="flex items-start gap-4 rounded-[24px] p-4"
-                        style={{ background: colors.surfaceContainer }}
-                      >
-                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl" style={{ background: `${n.accent}18` }}>
-                          <Icon className="h-5 w-5" style={{ color: n.accent }} />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="text-sm font-bold" style={{ color: colors.onSurface }}>{n.title}</p>
-                          <p className="mt-0.5 text-xs leading-relaxed" style={{ color: colors.onSurfaceVariant }}>{n.desc}</p>
-                          <p className="mt-1.5 text-[10px] font-semibold uppercase tracking-wider" style={{ color: colors.outline }}>{n.time}</p>
-                        </div>
-                      </motion.div>
-                    );
-                  })}
+                <div
+                  className="flex items-center justify-between px-6 pb-4 flex-shrink-0"
+                  style={{ paddingTop: 'max(48px, calc(env(safe-area-inset-top) + 16px))' }}
+                >
+                  <h2 className="text-lg font-black tracking-[-0.04em]" style={{ color: colors.primary }}>Bildirishnomalar</h2>
+                  <button onClick={closeNotifications} className="flex h-10 w-10 items-center justify-center rounded-full" style={{ background: colors.surfaceContainer }}>
+                    <X className="h-5 w-5" style={{ color: colors.onSurfaceVariant }} />
+                  </button>
                 </div>
-              </div>
+
+                <div className="flex-1 min-h-0 overflow-y-auto px-6 pb-8" style={{ overscrollBehavior: 'contain' }}>
+                  <div className="space-y-3">
+                    {mockNotifications.map((n, i) => {
+                      const Icon = n.icon;
+                      return (
+                        <motion.div
+                          key={n.id}
+                          initial={{ opacity: 0, x: -16 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: i * 0.06 }}
+                          className="flex items-start gap-4 rounded-[24px] p-4"
+                          style={{ background: colors.surfaceContainer }}
+                        >
+                          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl" style={{ background: `${n.accent}18` }}>
+                            <Icon className="h-5 w-5" style={{ color: n.accent }} />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <p className="text-sm font-bold" style={{ color: colors.onSurface }}>{n.title}</p>
+                            <p className="mt-0.5 text-xs leading-relaxed" style={{ color: colors.onSurfaceVariant }}>{n.desc}</p>
+                            <p className="mt-1.5 text-[10px] font-semibold uppercase tracking-wider" style={{ color: colors.outline }}>{n.time}</p>
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </motion.div>
             </motion.div>
-          </motion.div>,
-          document.body
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </div>
   );
 }
