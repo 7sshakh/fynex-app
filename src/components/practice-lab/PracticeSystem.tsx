@@ -39,11 +39,8 @@ export default function PracticeSystem({ onClose }: { onClose: () => void }) {
           Practice Lab
         </h2>
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1 bg-red-500/15 px-3 py-1.5 rounded-full text-red-500 font-black text-sm shadow-sm">
-            <motion.div animate={{ scale: [1, 1.25, 1], rotate: [0, 5, -5, 0] }} transition={{ repeat: Infinity, duration: 2 }}>
-              <Flame className="h-4 w-4 drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]" />
-            </motion.div>
-            {streak}
+          <div className="flex items-center gap-1 bg-red-500/10 px-3 py-1 rounded-full text-red-500 font-bold text-sm">
+            <Flame className="h-4 w-4" /> {streak}
           </div>
           <button onClick={onClose} className="rounded-full p-2 bg-white/5 active:scale-90 transition-transform">
             <X className="h-6 w-6" style={{ color: colors.onSurface }} />
@@ -76,13 +73,9 @@ export default function PracticeSystem({ onClose }: { onClose: () => void }) {
                       className="rounded-[24px] p-5 cursor-pointer relative overflow-hidden shadow-sm"
                       style={{ background: colors.surfaceContainerLowest, border: `1px solid ${colors.outlineVariant}33` }}
                     >
-                      <motion.div 
-                        className="absolute right-[-20%] top-[-20%] p-3 opacity-20"
-                        animate={{ scale: [1, 1.05, 1], rotate: [0, 2, -2, 0] }}
-                        transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-                      >
-                        <Icon className="h-32 w-32 drop-shadow-2xl" style={{ color: drill.color }} />
-                      </motion.div>
+                      <div className="absolute top-0 right-0 p-3 opacity-10">
+                        <Icon className="h-24 w-24" style={{ color: drill.color }} />
+                      </div>
                       <div className="relative z-10">
                         <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest mb-2" style={{ color: drill.color }}>
                           <span>{drill.tag}</span> • <span>{drill.time}</span>
