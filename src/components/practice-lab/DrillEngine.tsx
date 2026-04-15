@@ -21,14 +21,22 @@ export default function DrillEngine({ drill, onExit }: { drill: any; onExit: () 
   useEffect(() => {
     // Generate some random questions depending on logic
     const allQuizzes = quizData.categories;
-    // Get random 5 questions from Mathematics or English
-    const targetCategory = drill.tag === 'Math' ? allQuizzes.find((c: any) => c.name === 'Matematika') : allQuizzes.find((c: any) => c.name.includes("Ingliz"));
     
-    if (targetCategory && targetCategory.items.length) {
-      setQuestions(targetCategory.items.slice(0, 5));
+    // Choose randomly between Math, Physics, and English for general 'Mixed' or specific
+    let targetCategories = [];
+    if (drill.id === 'grammar') targetCategories = allQuizzes.filter((c:any) => c.name.includes("Ingliz") || c.name.includes("Rus"));
+    else if (drill.id === 'speed') targetCategories = allQuizzes.filter((c:any) => c.name === "Matematika" || c.name === "Dasturlash");
+    else targetCategories = allQuizzes;
+    
+    const randomCategory = targetCategories[Math.floor(Math.random() * targetCategories.length)];
+    
+    if (randomCategory && randomCategory.items.length) {
+      // Shuffle the items
+      let items = [...randomCategory.items].sort(() => 0.5 - Math.random());
+      // Set to 30 questions per drill, or slice if length is smaller
+      setQuestions(items.slice(0, 30));
     } else {
-      // Fallback
-      setQuestions(allQuizzes[0].items.slice(0, 5));
+      setQuestions(allQuizzes[0].items.slice(0, 30));
     }
   }, [drill]);
 

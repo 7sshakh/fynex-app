@@ -4,6 +4,7 @@ import { Clock, CheckCircle2, ChevronRight, ChevronLeft } from 'lucide-react';
 import { useUser } from '../../context/UserContext';
 import { getPalette } from '../../theme';
 import ResultScreen from './components/ResultScreen';
+import { quizData } from '../../data/quizData';
 
 export default function IELTSEngine({ type, onExit }: { type: string; onExit: () => void }) {
   const { theme } = useUser();
@@ -14,6 +15,16 @@ export default function IELTSEngine({ type, onExit }: { type: string; onExit: ()
   const [currentQIndex, setCurrentQIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [score, setScore] = useState<any>(null);
+  const [readingQuestions, setReadingQuestions] = useState<any[]>([]);
+
+  useEffect(() => {
+    const ieltsMock = quizData.categories.find((c: any) => c.name.includes("IELTS Mock"));
+    if (ieltsMock && ieltsMock.items) {
+      setReadingQuestions(ieltsMock.items);
+    } else {
+      setReadingQuestions([{ id: 'mock', question: 'No data', options: ['A', 'B', 'C'], answer: 'A' }]);
+    }
+  }, []);
 
   useEffect(() => {
     let timer: any;
@@ -95,16 +106,12 @@ export default function IELTSEngine({ type, onExit }: { type: string; onExit: ()
                 <i>Read the passage and answer the questions below.</i>
               </div>
 
-              {[
-                { q: "Modern AI is heavily based on Greek mythology.", opts: ['True', 'False', 'Not Given'] },
-                { q: "Classical philosophers described human thinking as mechanical.", opts: ['True', 'False', 'Not Given'] },
-                { q: "The term 'artificial intelligence' was coined in antiquity.", opts: ['True', 'False', 'Not Given'] }
-              ].map((item, idx) => (
+              {readingQuestions.map((item, idx) => (
                 <div key={idx} className={`space-y-4 mb-10 ${currentQIndex !== idx ? 'hidden' : 'block'}`}>
-                  <h3 className="font-bold mb-3" style={{ color: colors.onSurface }}>Question {idx + 1} of 3</h3>
-                  <p className="text-sm mb-4" style={{ color: colors.onSurfaceVariant }}>{item.q}</p>
+                  <h3 className="font-bold mb-3" style={{ color: colors.onSurface }}>Question {idx + 1} of {readingQuestions.length}</h3>
+                  <p className="text-sm mb-4" style={{ color: colors.onSurfaceVariant }}>{item.question}</p>
                   
-                  {item.opts.map((opt) => (
+                  {item.options.map((opt: string) => (
                     <button
                       key={opt}
                       onClick={() => setAnswers({ ...answers, [idx]: opt })}
@@ -127,8 +134,8 @@ export default function IELTSEngine({ type, onExit }: { type: string; onExit: ()
               <button disabled={currentQIndex === 0} onClick={() => setCurrentQIndex(p => Math.max(0, p - 1))} className="flex-1 py-3 rounded-[20px] flex justify-center border transition-opacity disabled:opacity-30" style={{ borderColor: `${colors.outlineVariant}44`, color: colors.onSurface }}>
                 <ChevronLeft />
               </button>
-              <button disabled={currentQIndex === 2 && !answers[2]} onClick={() => { if (currentQIndex < 2) setCurrentQIndex(p => p + 1); else finishTest(); }} className="flex-[3] py-3 rounded-[20px] flex justify-center font-bold items-center gap-2 transition-transform active:scale-95 disabled:opacity-50" style={{ background: colors.primary, color: colors.onPrimary }}>
-                {currentQIndex === 2 ? 'Finish Section' : 'Next'} {currentQIndex !== 2 && <ChevronRight className="h-4 w-4" />}
+              <button disabled={currentQIndex === readingQuestions.length - 1 && !answers[readingQuestions.length - 1]} onClick={() => { if (currentQIndex < readingQuestions.length - 1) setCurrentQIndex(p => p + 1); else finishTest(); }} className="flex-[3] py-3 rounded-[20px] flex justify-center font-bold items-center gap-2 transition-transform active:scale-95 disabled:opacity-50" style={{ background: colors.primary, color: colors.onPrimary }}>
+                {currentQIndex === readingQuestions.length - 1 ? 'Finish Section' : 'Next'} {currentQIndex !== readingQuestions.length - 1 && <ChevronRight className="h-4 w-4" />}
               </button>
             </div>
           </motion.div>

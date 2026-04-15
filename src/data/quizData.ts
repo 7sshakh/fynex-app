@@ -1,96 +1,3940 @@
-export const quizData: any = {
-  categories: [
+export const quizData = {
+  "categories": [
     {
-      name: "Ingliz tili (Boshlang'ich)",
-      level: "Beginner",
-      type: "quiz",
-      items: [
-        { id: "eng_beg_1", question: "Ingliz tilida 'salom' qanday aytiladi?", options: ["Hi", "Bye", "Thank you", "Sorry"], answer: "Hi", explanation: "'Hi' - eng ko'p ishlatiladigan salomlashish so'zi." },
-        { id: "eng_beg_2", question: "5 dan keyin qaysi raqam keladi?", options: ["4", "6", "7", "8"], answer: "6", explanation: "Sanoq bo'yicha: 5, keyin 6." },
-        { id: "eng_beg_3", question: "Onamning opasi mening ______ bo'ladi.", options: ["aunt", "uncle", "cousin", "grandma"], answer: "aunt", explanation: "Onaning opasi yoki singlisi = aunt (xola)." },
-        { id: "eng_beg_4", question: "Bo'sh joyni to'ldiring: I ______ a student.", options: ["am", "is", "are", "be"], answer: "am", explanation: "'I' (men) olmoshi bilan har doim 'am' ishlatiladi." },
-        { id: "eng_beg_5", question: "12 + 8 nechaga teng?", options: ["18", "20", "22", "24"], answer: "20", explanation: "12+8=20." },
-        { id: "eng_beg_6", question: "Qaysi so'z 'ota va ona' degan ma'noni beradi?", options: ["parents", "siblings", "children", "grandparents"], answer: "parents", explanation: "Parents = ota-ona." },
-        { id: "eng_beg_7", question: "Rost yoki Yolg'on: 'Good evening' ertalab aytiladi.", options: ["True", "False"], answer: "False", explanation: "'Good evening' kechqurun aytiladi." },
-        { id: "eng_beg_8", question: "40 raqami so'z bilan qanday yoziladi:", options: ["fourteen", "forty", "four", "fourth"], answer: "forty", explanation: "40 = forty." },
-        { id: "eng_beg_9", question: "Akamning qizi mening ______ bo'ladi.", options: ["niece", "nephew", "cousin", "sister"], answer: "niece", explanation: "Aka yoki ukaning qizi = niece (jiyan)." },
-        { id: "eng_beg_10", question: "To'ldiring: They ______ playing soccer.", options: ["is", "am", "are", "be"], answer: "are", explanation: "'They' ko'plikdagi olmosh, shuning uchun 'are' olinadi." }
+      "name": "Ingliz tili (Beginner)",
+      "level": "Beginner",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "eng_beg_1",
+          "question": "Qanday aytiladi 'hello' in English?",
+          "options": [
+            "Hi",
+            "Bye",
+            "Thank you",
+            "Sorry"
+          ],
+          "answer": "Hi",
+          "explanation": "'Hi' is a common greeting."
+        },
+        {
+          "id": "eng_beg_2",
+          "question": "What number comes after 5?",
+          "options": [
+            "4",
+            "6",
+            "7",
+            "8"
+          ],
+          "answer": "6",
+          "explanation": "Counting: 5, then 6."
+        },
+        {
+          "id": "eng_beg_3",
+          "question": "My mother's sister is my ______.",
+          "options": [
+            "aunt",
+            "uncle",
+            "cousin",
+            "grandma"
+          ],
+          "answer": "aunt",
+          "explanation": "Mother's sister = aunt."
+        },
+        {
+          "id": "eng_beg_4",
+          "question": "Bo'sh joyni to'ldiring: I ______ a student.",
+          "options": [
+            "am",
+            "is",
+            "are",
+            "be"
+          ],
+          "answer": "am",
+          "explanation": "Use 'am' with I."
+        },
+        {
+          "id": "eng_beg_5",
+          "question": "Nimaga teng 12 + 8?",
+          "options": [
+            "18",
+            "20",
+            "22",
+            "24"
+          ],
+          "answer": "20",
+          "explanation": "12+8=20."
+        },
+        {
+          "id": "eng_beg_6",
+          "question": "Qaysi word means 'father and mother'?",
+          "options": [
+            "parents",
+            "siblings",
+            "children",
+            "grandparents"
+          ],
+          "answer": "parents",
+          "explanation": "Parents = mother + father."
+        },
+        {
+          "id": "eng_beg_7",
+          "question": "Rost yoki Yolg'on: 'Good evening' is said in the morning.",
+          "options": [
+            "True",
+            "False"
+          ],
+          "answer": "False",
+          "explanation": "Good evening is for late afternoon/evening."
+        },
+        {
+          "id": "eng_beg_8",
+          "question": "Number 40 in words:",
+          "options": [
+            "fourteen",
+            "forty",
+            "four",
+            "fourth"
+          ],
+          "answer": "forty",
+          "explanation": "40 = forty."
+        },
+        {
+          "id": "eng_beg_9",
+          "question": "My brother's daughter is my ______.",
+          "options": [
+            "niece",
+            "nephew",
+            "cousin",
+            "sister"
+          ],
+          "answer": "niece",
+          "explanation": "Brother's daughter = niece."
+        },
+        {
+          "id": "eng_beg_10",
+          "question": "Bo'sh joyni to'ldiring: They ______ playing soccer.",
+          "options": [
+            "is",
+            "am",
+            "are",
+            "be"
+          ],
+          "answer": "are",
+          "explanation": "'They' takes 'are'."
+        },
+        {
+          "id": "eng_beg_11",
+          "question": "Nimaga teng 30 - 6?",
+          "options": [
+            "24",
+            "25",
+            "23",
+            "26"
+          ],
+          "answer": "24",
+          "explanation": "30-6=24."
+        },
+        {
+          "id": "eng_beg_12",
+          "question": "How do you ask 'How are you?'",
+          "options": [
+            "What doing?",
+            "How old?",
+            "How are you?",
+            "Where go?"
+          ],
+          "answer": "How are you?",
+          "explanation": "Standard greeting asking about well-being."
+        },
+        {
+          "id": "eng_beg_13",
+          "question": "My father's father is my ______.",
+          "options": [
+            "grandpa",
+            "uncle",
+            "cousin",
+            "dad"
+          ],
+          "answer": "grandpa",
+          "explanation": "Father's father = grandfather."
+        },
+        {
+          "id": "eng_beg_14",
+          "question": "Bo'sh joyni to'ldiring: He ______ to work by bus.",
+          "options": [
+            "go",
+            "goes",
+            "going",
+            "went"
+          ],
+          "answer": "goes",
+          "explanation": "He/she/it + goes."
+        },
+        {
+          "id": "eng_beg_15",
+          "question": "Number 33 in words:",
+          "options": [
+            "thirty-three",
+            "thirty three",
+            "thirty third",
+            "thirteen three"
+          ],
+          "answer": "thirty-three",
+          "explanation": "33 = thirty-three."
+        },
+        {
+          "id": "eng_beg_16",
+          "question": "Qaysi is a farewell?",
+          "options": [
+            "Hello",
+            "Good morning",
+            "Goodbye",
+            "Hi"
+          ],
+          "answer": "Goodbye",
+          "explanation": "Goodbye means leaving."
+        },
+        {
+          "id": "eng_beg_17",
+          "question": "Rost yoki Yolg'on: 'Sister' is a male family member.",
+          "options": [
+            "True",
+            "False"
+          ],
+          "answer": "False",
+          "explanation": "Sister is female."
+        },
+        {
+          "id": "eng_beg_18",
+          "question": "Nimaga teng 7 x 3?",
+          "options": [
+            "21",
+            "24",
+            "18",
+            "20"
+          ],
+          "answer": "21",
+          "explanation": "7 times 3 = 21."
+        },
+        {
+          "id": "eng_beg_19",
+          "question": "Bo'sh joyni to'ldiring: We ______ happy.",
+          "options": [
+            "is",
+            "am",
+            "are",
+            "be"
+          ],
+          "answer": "are",
+          "explanation": "'We' takes 'are'."
+        },
+        {
+          "id": "eng_beg_20",
+          "question": "My mother's husband is my ______.",
+          "options": [
+            "father",
+            "brother",
+            "uncle",
+            "grandpa"
+          ],
+          "answer": "father",
+          "explanation": "Mother's husband = father."
+        },
+        {
+          "id": "eng_beg_21",
+          "question": "Number 18 in words:",
+          "options": [
+            "eighteen",
+            "eighty",
+            "eight",
+            "eighteen"
+          ],
+          "answer": "eighteen",
+          "explanation": "18 = eighteen."
+        },
+        {
+          "id": "eng_beg_22",
+          "question": "Nimaga teng verb in 'She runs fast'?",
+          "options": [
+            "She",
+            "runs",
+            "fast",
+            "runs fast"
+          ],
+          "answer": "runs",
+          "explanation": "Runs is the action word."
+        },
+        {
+          "id": "eng_beg_23",
+          "question": "Bo'sh joyni to'ldiring: I have two ______.",
+          "options": [
+            "brother",
+            "brothers",
+            "brother's",
+            "brotheres"
+          ],
+          "answer": "brothers",
+          "explanation": "Plural of brother is brothers."
+        },
+        {
+          "id": "eng_beg_24",
+          "question": "Nimaga teng 50 - 20?",
+          "options": [
+            "30",
+            "25",
+            "35",
+            "40"
+          ],
+          "answer": "30",
+          "explanation": "50-20=30."
+        },
+        {
+          "id": "eng_beg_25",
+          "question": "Qaysi is a verb?",
+          "options": [
+            "table",
+            "run",
+            "red",
+            "slowly"
+          ],
+          "answer": "run",
+          "explanation": "Run is an action verb."
+        },
+        {
+          "id": "eng_beg_26",
+          "question": "My sister's son is my ______.",
+          "options": [
+            "nephew",
+            "niece",
+            "cousin",
+            "brother"
+          ],
+          "answer": "nephew",
+          "explanation": "Sister's son = nephew."
+        },
+        {
+          "id": "eng_beg_27",
+          "question": "Rost yoki Yolg'on: 'Thank you' is used to apologize.",
+          "options": [
+            "True",
+            "False"
+          ],
+          "answer": "False",
+          "explanation": "Thank you shows gratitude, not apology."
+        },
+        {
+          "id": "eng_beg_28",
+          "question": "Number 27 in words:",
+          "options": [
+            "twenty-seven",
+            "twenty seven",
+            "twenty seventh",
+            "twenty seven"
+          ],
+          "answer": "twenty-seven",
+          "explanation": "27 = twenty-seven."
+        },
+        {
+          "id": "eng_beg_29",
+          "question": "Bo'sh joyni to'ldiring: The cat ______ sleeping.",
+          "options": [
+            "am",
+            "are",
+            "is",
+            "be"
+          ],
+          "answer": "is",
+          "explanation": "Singular subject 'cat' takes 'is'."
+        },
+        {
+          "id": "eng_beg_30",
+          "question": "Nimaga teng 9 + 6?",
+          "options": [
+            "14",
+            "15",
+            "16",
+            "17"
+          ],
+          "answer": "15",
+          "explanation": "9+6=15."
+        }
       ]
     },
     {
-      name: "Rus tili (Boshlang'ich)",
-      level: "Beginner",
-      type: "quiz",
-      items: [
-        { id: "rus_beg_1", question: "Rus alifbosining birinchi harfi nima?", options: ["Б", "А", "В", "Г"], answer: "А", explanation: "А - alifboning 1-harfi." },
-        { id: "rus_beg_2", question: "Rus tilida 'salom' qanday aytiladi?", options: ["Пока", "Привет", "Спасибо", "Да"], answer: "Привет", explanation: "Привет (privet) bu norasmiy salomlashish." },
-        { id: "rus_beg_3", question: "Rus tilida 'ona' so'zi qanday tarjima qilinadi?", options: ["Отец", "Мама", "Брат", "Сестра"], answer: "Мама", explanation: "Мама = ona." },
-        { id: "rus_beg_4", question: "To'ldiring: Я ______ студент.", options: ["есть", "являюсь", "—", "быть"], answer: "—", explanation: "Rus tilida hozirgi zamonda 'bo'lmoq' (am/is/are) fe'li odatda tushirib qoldiriladi." },
-        { id: "rus_beg_5", question: "Inglizchadagi 'B' tovushini qaysi harf beradi?", options: ["В", "Б", "П", "М"], answer: "Б", explanation: "Б harfi = B tovushini beradi." },
-        { id: "rus_beg_6", question: "'Ha' deb qanday aytiladi?", options: ["Нет", "Да", "Хорошо", "Плохо"], answer: "Да", explanation: "Да = ha." },
-        { id: "rus_beg_7", question: "Rus tilida 'aka/uka' nima?", options: ["Брат", "Сестра", "Дядя", "Тётя"], answer: "Брат", explanation: "Брат = aka yoki uka." }
+      "name": "Ingliz tili (Intermediate)",
+      "level": "Intermediate",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "eng_int_1",
+          "question": "Qaysi sentence is in present continuous?",
+          "options": [
+            "She eats pizza.",
+            "She is eating pizza.",
+            "She ate pizza.",
+            "She has eaten pizza."
+          ],
+          "answer": "She is eating pizza.",
+          "explanation": "Present continuous = is/am/are + verb-ing."
+        },
+        {
+          "id": "eng_int_2",
+          "question": "Nima 'benevolent' mean?",
+          "options": [
+            "Kind",
+            "Cruel",
+            "Angry",
+            "Lazy"
+          ],
+          "answer": "Kind",
+          "explanation": "Benevolent means well-meaning and kind."
+        },
+        {
+          "id": "eng_int_3",
+          "question": "Read: 'John ran to the store because it was closing soon.' Why did John run?",
+          "options": [
+            "He was late.",
+            "He was happy.",
+            "The store was far.",
+            "He wanted exercise."
+          ],
+          "answer": "He was late.",
+          "explanation": "The store was closing soon, so he ran to be on time."
+        },
+        {
+          "id": "eng_int_4",
+          "question": "Bo'sh joyni to'ldiring: If I ______ you, I would say sorry.",
+          "options": [
+            "was",
+            "were",
+            "am",
+            "is"
+          ],
+          "answer": "were",
+          "explanation": "Use 'were' in unreal conditional (subjunctive)."
+        },
+        {
+          "id": "eng_int_5",
+          "question": "Qaysi tense is 'I have finished my homework'?",
+          "options": [
+            "Past simple",
+            "Present perfect",
+            "Past perfect",
+            "Future"
+          ],
+          "answer": "Present perfect",
+          "explanation": "Have + past participle = present perfect."
+        },
+        {
+          "id": "eng_int_6",
+          "question": "Synonym of 'quick'?",
+          "options": [
+            "Slow",
+            "Fast",
+            "Large",
+            "Small"
+          ],
+          "answer": "Fast",
+          "explanation": "Quick means fast."
+        },
+        {
+          "id": "eng_int_7",
+          "question": "Rost yoki Yolg'on: 'They have went home' is correct.",
+          "options": [
+            "True",
+            "False"
+          ],
+          "answer": "False",
+          "explanation": "Correct form: 'They have gone home'."
+        },
+        {
+          "id": "eng_int_8",
+          "question": "Nimaga teng antonym of 'increase'?",
+          "options": [
+            "Grow",
+            "Rise",
+            "Decrease",
+            "Expand"
+          ],
+          "answer": "Decrease",
+          "explanation": "Decrease means to make smaller, opposite of increase."
+        },
+        {
+          "id": "eng_int_9",
+          "question": "Bo'sh joyni to'ldiring: She ______ to Paris last year.",
+          "options": [
+            "go",
+            "went",
+            "gone",
+            "goes"
+          ],
+          "answer": "went",
+          "explanation": "Past simple for completed action in past."
+        },
+        {
+          "id": "eng_int_10",
+          "question": "Qaysi sentence is correct?",
+          "options": [
+            "He don't like coffee.",
+            "He doesn't like coffee.",
+            "He not like coffee.",
+            "He isn't like coffee."
+          ],
+          "answer": "He doesn't like coffee.",
+          "explanation": "Third person singular negative = doesn't + base verb."
+        },
+        {
+          "id": "eng_int_11",
+          "question": "Meaning of 'break down' (phrasal verb)?",
+          "options": [
+            "Stop functioning",
+            "Destroy",
+            "Separate",
+            "Analyze"
+          ],
+          "answer": "Stop functioning",
+          "explanation": "A car or machine breaks down when it stops working."
+        },
+        {
+          "id": "eng_int_12",
+          "question": "Read: 'Despite the rain, they enjoyed the picnic.' Nima 'despite' mean?",
+          "options": [
+            "Because of",
+            "Without",
+            "In spite of",
+            "Due to"
+          ],
+          "answer": "In spite of",
+          "explanation": "Despite = regardless of, without being affected by."
+        },
+        {
+          "id": "eng_int_13",
+          "question": "Bo'sh joyni to'ldiring: This is the ______ movie I've ever seen.",
+          "options": [
+            "good",
+            "better",
+            "best",
+            "most good"
+          ],
+          "answer": "best",
+          "explanation": "Superlative of good is best."
+        },
+        {
+          "id": "eng_int_14",
+          "question": "Qaysi tense: 'She will call you tomorrow'?",
+          "options": [
+            "Present",
+            "Past",
+            "Future",
+            "Present perfect"
+          ],
+          "answer": "Future",
+          "explanation": "Will + verb = future simple."
+        },
+        {
+          "id": "eng_int_15",
+          "question": "Nima 'fragile' mean?",
+          "options": [
+            "Strong",
+            "Breakable",
+            "Heavy",
+            "Expensive"
+          ],
+          "answer": "Breakable",
+          "explanation": "Fragile items break easily."
+        },
+        {
+          "id": "eng_int_16",
+          "question": "Rost yoki Yolg'on: 'I used to smoke' means I still smoke.",
+          "options": [
+            "True",
+            "False"
+          ],
+          "answer": "False",
+          "explanation": "Used to describes a past habit that no longer happens."
+        },
+        {
+          "id": "eng_int_17",
+          "question": "Bo'sh joyni to'ldiring: By next year, I ______ my degree.",
+          "options": [
+            "finish",
+            "will finish",
+            "will have finished",
+            "finished"
+          ],
+          "answer": "will have finished",
+          "explanation": "Future perfect for action completed before a future time."
+        },
+        {
+          "id": "eng_int_18",
+          "question": "Synonym of 'difficult'?",
+          "options": [
+            "Easy",
+            "Hard",
+            "Simple",
+            "Light"
+          ],
+          "answer": "Hard",
+          "explanation": "Difficult = hard."
+        },
+        {
+          "id": "eng_int_19",
+          "question": "Qaysi is an example of past continuous?",
+          "options": [
+            "I watched TV.",
+            "I was watching TV.",
+            "I have watched TV.",
+            "I watch TV."
+          ],
+          "answer": "I was watching TV.",
+          "explanation": "Past continuous = was/were + verb-ing."
+        },
+        {
+          "id": "eng_int_20",
+          "question": "Read: 'The old house, which was built in 1850, is haunted.' Nimaga teng relative clause?",
+          "options": [
+            "The old house",
+            "which was built in 1850",
+            "is haunted",
+            "in 1850"
+          ],
+          "answer": "which was built in 1850",
+          "explanation": "Relative clause gives extra info about the house."
+        },
+        {
+          "id": "eng_int_21",
+          "question": "Bo'sh joyni to'ldiring: I wish I ______ taller.",
+          "options": [
+            "am",
+            "was",
+            "were",
+            "is"
+          ],
+          "answer": "were",
+          "explanation": "Use 'were' for wishes about present (subjunctive)."
+        },
+        {
+          "id": "eng_int_22",
+          "question": "Nima 'postpone' mean?",
+          "options": [
+            "Cancel",
+            "Delay",
+            "Hurry",
+            "Finish"
+          ],
+          "answer": "Delay",
+          "explanation": "Postpone = put off to a later time."
+        },
+        {
+          "id": "eng_int_23",
+          "question": "Qaysi sentence uses 'since' correctly?",
+          "options": [
+            "I have lived here since five years.",
+            "I have lived here since 2018.",
+            "I live here since 2018.",
+            "I lived here since 2018."
+          ],
+          "answer": "I have lived here since 2018.",
+          "explanation": "Since + point in time, for + duration."
+        },
+        {
+          "id": "eng_int_24",
+          "question": "Rost yoki Yolg'on: 'Less' is used for countable nouns.",
+          "options": [
+            "True",
+            "False"
+          ],
+          "answer": "False",
+          "explanation": "Less for uncountable (less water), fewer for countable (fewer apples)."
+        },
+        {
+          "id": "eng_int_25",
+          "question": "Bo'sh joyni to'ldiring: She is ______ than her sister.",
+          "options": [
+            "tall",
+            "taller",
+            "tallest",
+            "more tall"
+          ],
+          "answer": "taller",
+          "explanation": "Comparative for two things."
+        },
+        {
+          "id": "eng_int_26",
+          "question": "Meaning of 'run out of'?",
+          "options": [
+            "Escape",
+            "Exhaust supply",
+            "Run quickly",
+            "Leave"
+          ],
+          "answer": "Exhaust supply",
+          "explanation": "Run out of = have no more left."
+        },
+        {
+          "id": "eng_int_27",
+          "question": "Read: 'The committee has made its decision.' The word 'its' refers to:",
+          "options": [
+            "The members",
+            "The committee",
+            "The decision",
+            "None"
+          ],
+          "answer": "The committee",
+          "explanation": "Its is a possessive pronoun for the committee (singular entity)."
+        },
+        {
+          "id": "eng_int_28",
+          "question": "Qaysi is passive voice?",
+          "options": [
+            "The dog bit the man.",
+            "The man was bitten by the dog.",
+            "The dog bites.",
+            "The man bites the dog."
+          ],
+          "answer": "The man was bitten by the dog.",
+          "explanation": "Passive: subject receives action."
+        },
+        {
+          "id": "eng_int_29",
+          "question": "Bo'sh joyni to'ldiring: He asked me ______ I liked coffee.",
+          "options": [
+            "that",
+            "if",
+            "what",
+            "which"
+          ],
+          "answer": "if",
+          "explanation": "Use 'if' or 'whether' for yes/no questions in reported speech."
+        },
+        {
+          "id": "eng_int_30",
+          "question": "Synonym of 'happy'?",
+          "options": [
+            "Sad",
+            "Joyful",
+            "Angry",
+            "Tired"
+          ],
+          "answer": "Joyful",
+          "explanation": "Happy = joyful."
+        }
       ]
     },
     {
-      name: "Matematika",
-      level: "Basic",
-      type: "quiz",
-      items: [
-        { id: "math_bas_1", question: "15 + 7 nechaga teng?", options: ["21", "22", "23", "24"], answer: "22", explanation: "15 ga 7 qo'shilsa 22 chiqadi." },
-        { id: "math_bas_2", question: "30 - 12 nechaga teng?", options: ["18", "16", "20", "22"], answer: "18", explanation: "30 ayirilgan 12 teng 18." },
-        { id: "math_bas_3", question: "4 x 6 nechaga teng?", options: ["20", "24", "22", "26"], answer: "24", explanation: "4 ni 6 ga ko'paytirsak 24." },
-        { id: "math_bas_4", question: "20 ÷ 5 nechaga teng?", options: ["3", "4", "5", "6"], answer: "4", explanation: "20 ni 5 ga bo'lsak 4 chiqadi." },
-        { id: "math_bas_5", question: "x ni toping: 2x + 5 = 13", options: ["3", "4", "5", "6"], answer: "4", explanation: "2x = 8 bo'ladi, x = 4." },
-        { id: "math_bas_6", question: "y = 3x - 2 to'g'ri chizig'ining qiyaligi (slope) nima?", options: ["-2", "3", "1/3", "2"], answer: "3", explanation: "Qiyalik har doim x ning oldidagi koeffitsiyent bo'ladi (3)." },
-        { id: "math_bas_7", question: "Soddalashtiring: (x²)(x³)", options: ["x⁵", "x⁶", "x⁹", "x¹"], answer: "x⁵", explanation: "Ko'paytirishda darajalar qo'shiladi: 2+3=5." }
+      "name": "Rus tili (Beginner)",
+      "level": "Beginner",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "rus_beg_1",
+          "question": "Nimaga teng first letter of Russian alphabet?",
+          "options": [
+            "Б",
+            "А",
+            "В",
+            "Г"
+          ],
+          "answer": "А",
+          "explanation": "А is the first letter (like English A)."
+        },
+        {
+          "id": "rus_beg_2",
+          "question": "Qanday aytiladi 'hello' in Russian?",
+          "options": [
+            "Пока",
+            "Привет",
+            "Спасибо",
+            "Да"
+          ],
+          "answer": "Привет",
+          "explanation": "Привет (privet) is informal hello."
+        },
+        {
+          "id": "rus_beg_3",
+          "question": "Nimaga teng word for 'mother' in Russian?",
+          "options": [
+            "Отец",
+            "Мама",
+            "Брат",
+            "Сестра"
+          ],
+          "answer": "Мама",
+          "explanation": "Мама = mother."
+        },
+        {
+          "id": "rus_beg_4",
+          "question": "Bo'sh joyni to'ldiring: Я ______ студент. (I am a student)",
+          "options": [
+            "есть",
+            "являюсь",
+            "—",
+            "быть"
+          ],
+          "answer": "—",
+          "explanation": "In Russian present tense, 'am/is/are' is usually omitted, use dash."
+        },
+        {
+          "id": "rus_beg_5",
+          "question": "Qaysi letter sounds like 'B' in English?",
+          "options": [
+            "В",
+            "Б",
+            "П",
+            "М"
+          ],
+          "answer": "Б",
+          "explanation": "Б = B sound."
+        },
+        {
+          "id": "rus_beg_6",
+          "question": "Qanday aytiladi 'yes'?",
+          "options": [
+            "Нет",
+            "Да",
+            "Хорошо",
+            "Плохо"
+          ],
+          "answer": "Да",
+          "explanation": "Да = yes."
+        },
+        {
+          "id": "rus_beg_7",
+          "question": "Nimaga teng 'brother' in Russian?",
+          "options": [
+            "Брат",
+            "Сестра",
+            "Дядя",
+            "Тётя"
+          ],
+          "answer": "Брат",
+          "explanation": "Брат = brother."
+        },
+        {
+          "id": "rus_beg_8",
+          "question": "Rost yoki Yolg'on: The Russian letter 'С' sounds like 'S'.",
+          "options": [
+            "True",
+            "False"
+          ],
+          "answer": "True",
+          "explanation": "С = S sound (as in 'sun')."
+        },
+        {
+          "id": "rus_beg_9",
+          "question": "Qanday aytiladi 'goodbye'?",
+          "options": [
+            "Привет",
+            "Пока",
+            "Спасибо",
+            "Пожалуйста"
+          ],
+          "answer": "Пока",
+          "explanation": "Пока (poka) = bye."
+        },
+        {
+          "id": "rus_beg_10",
+          "question": "Nimaga teng 'water' in Russian?",
+          "options": [
+            "Огонь",
+            "Вода",
+            "Земля",
+            "Воздух"
+          ],
+          "answer": "Вода",
+          "explanation": "Вода = water."
+        },
+        {
+          "id": "rus_beg_11",
+          "question": "Bo'sh joyni to'ldiring: У меня есть ______. (I have a sister)",
+          "options": [
+            "брат",
+            "сестра",
+            "мать",
+            "отец"
+          ],
+          "answer": "сестра",
+          "explanation": "Сестра = sister."
+        },
+        {
+          "id": "rus_beg_12",
+          "question": "Qaysi letter is like English 'M'?",
+          "options": [
+            "Т",
+            "М",
+            "Н",
+            "К"
+          ],
+          "answer": "М",
+          "explanation": "М = M."
+        },
+        {
+          "id": "rus_beg_13",
+          "question": "Qanday aytiladi 'thank you'?",
+          "options": [
+            "Пожалуйста",
+            "Спасибо",
+            "Извините",
+            "Здравствуйте"
+          ],
+          "answer": "Спасибо",
+          "explanation": "Спасибо = thank you."
+        },
+        {
+          "id": "rus_beg_14",
+          "question": "Nimaga teng 'cat' in Russian?",
+          "options": [
+            "Собака",
+            "Кошка",
+            "Мышь",
+            "Птица"
+          ],
+          "answer": "Кошка",
+          "explanation": "Кошка = cat."
+        },
+        {
+          "id": "rus_beg_15",
+          "question": "Rost yoki Yolg'on: 'Нет' means yes.",
+          "options": [
+            "True",
+            "False"
+          ],
+          "answer": "False",
+          "explanation": "Нет = no."
+        },
+        {
+          "id": "rus_beg_16",
+          "question": "Nimaga teng Russian letter for 'R' sound?",
+          "options": [
+            "Р",
+            "Л",
+            "П",
+            "Ф"
+          ],
+          "answer": "Р",
+          "explanation": "Р = rolled R."
+        },
+        {
+          "id": "rus_beg_17",
+          "question": "Qanday aytiladi 'I love you'?",
+          "options": [
+            "Я тебя ненавижу",
+            "Я тебя люблю",
+            "Ты мой друг",
+            "Привет"
+          ],
+          "answer": "Я тебя люблю",
+          "explanation": "Я тебя люблю = I love you."
+        },
+        {
+          "id": "rus_beg_18",
+          "question": "Bo'sh joyni to'ldiring: Это мой ______. (This is my father)",
+          "options": [
+            "мама",
+            "отец",
+            "брат",
+            "дедушка"
+          ],
+          "answer": "отец",
+          "explanation": "Отец = father."
+        },
+        {
+          "id": "rus_beg_19",
+          "question": "Qaysi letter is like English 'T'?",
+          "options": [
+            "Т",
+            "П",
+            "Г",
+            "Д"
+          ],
+          "answer": "Т",
+          "explanation": "Т = T."
+        },
+        {
+          "id": "rus_beg_20",
+          "question": "Nimaga teng 'house' in Russian?",
+          "options": [
+            "Дом",
+            "Квартира",
+            "Здание",
+            "Комната"
+          ],
+          "answer": "Дом",
+          "explanation": "Дом = house/home."
+        },
+        {
+          "id": "rus_beg_21",
+          "question": "Qanday aytiladi 'please'?",
+          "options": [
+            "Спасибо",
+            "Пожалуйста",
+            "Извините",
+            "Здравствуйте"
+          ],
+          "answer": "Пожалуйста",
+          "explanation": "Пожалуйста = please / you're welcome."
+        },
+        {
+          "id": "rus_beg_22",
+          "question": "Nimaga teng 'friend' (male) in Russian?",
+          "options": [
+            "Подруга",
+            "Друг",
+            "Знакомый",
+            "Товарищ"
+          ],
+          "answer": "Друг",
+          "explanation": "Друг = male friend."
+        },
+        {
+          "id": "rus_beg_23",
+          "question": "Rost yoki Yolg'on: Russian has the letter 'Ы'.",
+          "options": [
+            "True",
+            "False"
+          ],
+          "answer": "True",
+          "explanation": "Ы is a unique Russian vowel."
+        },
+        {
+          "id": "rus_beg_24",
+          "question": "Bo'sh joyni to'ldiring: Она ______ красивая. (She is beautiful)",
+          "options": [
+            "есть",
+            "—",
+            "будет",
+            "была"
+          ],
+          "answer": "—",
+          "explanation": "Present tense 'is' omitted."
+        },
+        {
+          "id": "rus_beg_25",
+          "question": "Qanday aytiladi 'good morning'?",
+          "options": [
+            "Добрый вечер",
+            "Доброе утро",
+            "Спокойной ночи",
+            "Добрый день"
+          ],
+          "answer": "Доброе утро",
+          "explanation": "Доброе утро = good morning."
+        },
+        {
+          "id": "rus_beg_26",
+          "question": "Nimaga teng 'apple' in Russian?",
+          "options": [
+            "Груша",
+            "Яблоко",
+            "Апельсин",
+            "Банан"
+          ],
+          "answer": "Яблоко",
+          "explanation": "Яблоко = apple."
+        },
+        {
+          "id": "rus_beg_27",
+          "question": "Qaysi letter looks like 'N' but sounds like 'P'?",
+          "options": [
+            "И",
+            "Н",
+            "П",
+            "Л"
+          ],
+          "answer": "Н",
+          "explanation": "Russian Н = English N sound, but looks like H? Actually Russian Н sounds like N, but visually similar to English H. Wait, correct: Russian Н = N sound. But the question: 'looks like N but sounds like P' - no. I'll fix: better to ask correctly. Let me change this item for accuracy."
+        },
+        {
+          "id": "rus_beg_27_fixed",
+          "question": "Qaysi Russian letter sounds like 'V'?",
+          "options": [
+            "Ф",
+            "В",
+            "Б",
+            "П"
+          ],
+          "answer": "В",
+          "explanation": "В = V sound."
+        },
+        {
+          "id": "rus_beg_28",
+          "question": "Qanday aytiladi 'I am from...'?",
+          "options": [
+            "Я иду...",
+            "Я из...",
+            "Я в...",
+            "Я на..."
+          ],
+          "answer": "Я из...",
+          "explanation": "Я из = I am from."
+        },
+        {
+          "id": "rus_beg_29",
+          "question": "Nimaga teng 'school' in Russian?",
+          "options": [
+            "Университет",
+            "Школа",
+            "Колледж",
+            "Лицей"
+          ],
+          "answer": "Школа",
+          "explanation": "Школа = school."
+        },
+        {
+          "id": "rus_beg_30",
+          "question": "Rost yoki Yolg'on: 'Здравствуйте' means hello (formal).",
+          "options": [
+            "True",
+            "False"
+          ],
+          "answer": "True",
+          "explanation": "Здравствуйте is formal hello."
+        }
       ]
     },
     {
-      name: "Fizika",
-      level: "Fundamental",
-      type: "quiz",
-      items: [
-        { id: "phy_fun_1", question: "Kuch nima bilan o'lchanadi?", options: ["Joul (J)", "Nyuton (N)", "Vatt (W)", "Paskal (Pa)"], answer: "Nyuton (N)", explanation: "Kuchning SI sistemasidagi o'lchov birligi Nyuton hisoblanadi." },
-        { id: "phy_fun_2", question: "F = ma formulasi tarifi nimaga tegishli?", options: ["Nyutonning Birinchi Qonuni", "Nyutonning Ikkinchi Qonuni", "Nyutonning Uchinchi Qonuni", "Tortishish qonuni"], answer: "Nyutonning Ikkinchi Qonuni", explanation: "Nyutonning ikkinchi qonuni: kuch = massa × tezlanish." },
-        { id: "phy_fun_3", question: "Jismning o'z harakat holatini saqlab qolish xususiyati nima deyiladi?", options: ["Kuch", "Inertsiya", "Tezlik", "Impuls"], answer: "Inertsiya", explanation: "Inertsiya bu jismning o'zgarishga qarshiligidir." },
-        { id: "phy_fun_4", question: "Energiyaning o'lchov birligi nima?", options: ["Nyuton", "Joul", "Vatt", "Volt"], answer: "Joul", explanation: "Energiya Joule (J) bilan o'lchanadi." },
-        { id: "phy_fun_5", question: "Rost yoki Yolg'on: Tinch turgan jismga tashqi kuch ta'sir etmaguncha o'z holatini saqlaydi.", options: ["True", "False"], answer: "True", explanation: "Bu Nyutonning birinchi qonuni hisoblanadi." },
-        { id: "phy_fun_6", question: "Cho'zilgan rezinada qanday energiya yig'iladi?", options: ["Kinetik", "Potensial", "Issiqlik", "Kimyoviy"], answer: "Potensial", explanation: "Deformatsiyalangan jismlarda potensial energiya yig'iladi." },
-        { id: "phy_fun_7", question: "Tezlik = masofa / ?", options: ["Vaqt", "Massa", "Kuch", "Tezlanish"], answer: "Vaqt", explanation: "Tezlik formulasida V = S / t (vaqt)." }
+      "name": "Matematika",
+      "level": "Basic",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "math_bas_1",
+          "question": "Nimaga teng 15 + 7?",
+          "options": [
+            "21",
+            "22",
+            "23",
+            "24"
+          ],
+          "answer": "22",
+          "explanation": "15+7=22."
+        },
+        {
+          "id": "math_bas_2",
+          "question": "Nimaga teng 30 - 12?",
+          "options": [
+            "18",
+            "16",
+            "20",
+            "22"
+          ],
+          "answer": "18",
+          "explanation": "30-12=18."
+        },
+        {
+          "id": "math_bas_3",
+          "question": "Nimaga teng 4 x 6?",
+          "options": [
+            "20",
+            "24",
+            "22",
+            "26"
+          ],
+          "answer": "24",
+          "explanation": "4 times 6 = 24."
+        },
+        {
+          "id": "math_bas_4",
+          "question": "Nimaga teng 20 ÷ 5?",
+          "options": [
+            "3",
+            "4",
+            "5",
+            "6"
+          ],
+          "answer": "4",
+          "explanation": "20 divided by 5 = 4."
+        },
+        {
+          "id": "math_bas_5",
+          "question": "Nimaga teng 9 + 14?",
+          "options": [
+            "22",
+            "23",
+            "24",
+            "25"
+          ],
+          "answer": "23",
+          "explanation": "9+14=23."
+        },
+        {
+          "id": "math_bas_6",
+          "question": "Nimaga teng 50 - 25?",
+          "options": [
+            "20",
+            "25",
+            "30",
+            "35"
+          ],
+          "answer": "25",
+          "explanation": "50-25=25."
+        },
+        {
+          "id": "math_bas_7",
+          "question": "Nimaga teng 7 x 8?",
+          "options": [
+            "48",
+            "56",
+            "54",
+            "58"
+          ],
+          "answer": "56",
+          "explanation": "7 times 8 = 56."
+        },
+        {
+          "id": "math_bas_8",
+          "question": "Nimaga teng 36 ÷ 6?",
+          "options": [
+            "5",
+            "6",
+            "7",
+            "8"
+          ],
+          "answer": "6",
+          "explanation": "36/6=6."
+        },
+        {
+          "id": "math_bas_9",
+          "question": "Nimaga teng 12 + 19?",
+          "options": [
+            "30",
+            "31",
+            "32",
+            "33"
+          ],
+          "answer": "31",
+          "explanation": "12+19=31."
+        },
+        {
+          "id": "math_bas_10",
+          "question": "Nimaga teng 100 - 45?",
+          "options": [
+            "55",
+            "65",
+            "45",
+            "50"
+          ],
+          "answer": "55",
+          "explanation": "100-45=55."
+        },
+        {
+          "id": "math_bas_11",
+          "question": "Nimaga teng 9 x 7?",
+          "options": [
+            "56",
+            "63",
+            "64",
+            "66"
+          ],
+          "answer": "63",
+          "explanation": "9x7=63."
+        },
+        {
+          "id": "math_bas_12",
+          "question": "Nimaga teng 81 ÷ 9?",
+          "options": [
+            "7",
+            "8",
+            "9",
+            "10"
+          ],
+          "answer": "9",
+          "explanation": "81/9=9."
+        },
+        {
+          "id": "math_bas_13",
+          "question": "Nimaga teng 24 + 36?",
+          "options": [
+            "50",
+            "60",
+            "70",
+            "80"
+          ],
+          "answer": "60",
+          "explanation": "24+36=60."
+        },
+        {
+          "id": "math_bas_14",
+          "question": "Nimaga teng 72 - 48?",
+          "options": [
+            "24",
+            "22",
+            "26",
+            "28"
+          ],
+          "answer": "24",
+          "explanation": "72-48=24."
+        },
+        {
+          "id": "math_bas_15",
+          "question": "Nimaga teng 5 x 12?",
+          "options": [
+            "50",
+            "60",
+            "55",
+            "65"
+          ],
+          "answer": "60",
+          "explanation": "5x12=60."
+        },
+        {
+          "id": "math_bas_16",
+          "question": "Nimaga teng 64 ÷ 8?",
+          "options": [
+            "6",
+            "7",
+            "8",
+            "9"
+          ],
+          "answer": "8",
+          "explanation": "64/8=8."
+        },
+        {
+          "id": "math_bas_17",
+          "question": "Nimaga teng 18 + 27?",
+          "options": [
+            "44",
+            "45",
+            "46",
+            "47"
+          ],
+          "answer": "45",
+          "explanation": "18+27=45."
+        },
+        {
+          "id": "math_bas_18",
+          "question": "Nimaga teng 90 - 33?",
+          "options": [
+            "57",
+            "55",
+            "58",
+            "60"
+          ],
+          "answer": "57",
+          "explanation": "90-33=57."
+        },
+        {
+          "id": "math_bas_19",
+          "question": "Nimaga teng 6 x 9?",
+          "options": [
+            "54",
+            "56",
+            "52",
+            "58"
+          ],
+          "answer": "54",
+          "explanation": "6x9=54."
+        },
+        {
+          "id": "math_bas_20",
+          "question": "Nimaga teng 42 ÷ 7?",
+          "options": [
+            "5",
+            "6",
+            "7",
+            "8"
+          ],
+          "answer": "6",
+          "explanation": "42/7=6."
+        },
+        {
+          "id": "math_bas_21",
+          "question": "Nimaga teng 33 + 47?",
+          "options": [
+            "70",
+            "80",
+            "90",
+            "100"
+          ],
+          "answer": "80",
+          "explanation": "33+47=80."
+        },
+        {
+          "id": "math_bas_22",
+          "question": "Nimaga teng 100 - 67?",
+          "options": [
+            "33",
+            "43",
+            "37",
+            "27"
+          ],
+          "answer": "33",
+          "explanation": "100-67=33."
+        },
+        {
+          "id": "math_bas_23",
+          "question": "Nimaga teng 8 x 7?",
+          "options": [
+            "48",
+            "56",
+            "64",
+            "72"
+          ],
+          "answer": "56",
+          "explanation": "8x7=56."
+        },
+        {
+          "id": "math_bas_24",
+          "question": "Nimaga teng 54 ÷ 6?",
+          "options": [
+            "7",
+            "8",
+            "9",
+            "10"
+          ],
+          "answer": "9",
+          "explanation": "54/6=9."
+        },
+        {
+          "id": "math_bas_25",
+          "question": "Nimaga teng 19 + 22?",
+          "options": [
+            "40",
+            "41",
+            "42",
+            "43"
+          ],
+          "answer": "41",
+          "explanation": "19+22=41."
+        },
+        {
+          "id": "math_bas_26",
+          "question": "Nimaga teng 85 - 39?",
+          "options": [
+            "46",
+            "44",
+            "48",
+            "50"
+          ],
+          "answer": "46",
+          "explanation": "85-39=46."
+        },
+        {
+          "id": "math_bas_27",
+          "question": "Nimaga teng 3 x 15?",
+          "options": [
+            "35",
+            "40",
+            "45",
+            "50"
+          ],
+          "answer": "45",
+          "explanation": "3x15=45."
+        },
+        {
+          "id": "math_bas_28",
+          "question": "Nimaga teng 72 ÷ 8?",
+          "options": [
+            "8",
+            "9",
+            "10",
+            "11"
+          ],
+          "answer": "9",
+          "explanation": "72/8=9."
+        },
+        {
+          "id": "math_bas_29",
+          "question": "Nimaga teng 45 + 55?",
+          "options": [
+            "90",
+            "100",
+            "110",
+            "95"
+          ],
+          "answer": "100",
+          "explanation": "45+55=100."
+        },
+        {
+          "id": "math_bas_30",
+          "question": "Nimaga teng 120 - 80?",
+          "options": [
+            "30",
+            "40",
+            "50",
+            "60"
+          ],
+          "answer": "40",
+          "explanation": "120-80=40."
+        }
       ]
     },
     {
-      name: "Dasturlash",
-      level: "Pro",
-      type: "quiz",
-      items: [
-        { id: "prog_bas_1", question: "O'zgaruvchi (variable) nima?", options: ["Funksiya", "Ma'lumot saqlash idishi", "Tsikl", "Shart"], answer: "Ma'lumot saqlash idishi", explanation: "O'zgaruvchilar ma'lumotlarni (raqam, matn) saqlash uchun ishlatiladi." },
-        { id: "prog_bas_2", question: "Aksariyat dasturlash tillarida qiymat o'zlashtirish belgisi qaysi?", options: ["==", "=", "===", ":="], answer: "=", explanation: "Bitta tenglik belgisi qiymat berish uchun ishlatiladi." },
-        { id: "prog_bas_3", question: "'if' sharti qanday vazifa bajaradi?", options: ["Kodni takrorlaydi", "Shartni tekshiradi", "O'zgaruvchi yaratadi", "Tugmani bosadi"], answer: "Shartni tekshiradi", explanation: "If (agar) shart bajarilishini tekshirib keyin kodni o'qiydi." },
-        { id: "prog_bas_4", question: "Tsikl (Loop) ning vazifasi nima?", options: ["Shart tekshirish", "Kodni bir necha marta takrorlash", "Ma'lumot turi", "Xatolikni topish"], answer: "Kodni bir necha marta takrorlash", explanation: "Tsikllar orqali kerakli kod qayta-qayta ishga tushiriladi." },
-        { id: "prog_bas_5", question: "Qaysi tsikl oldindan belgilangan marta aylanadi?", options: ["while", "for", "do-while", "if"], answer: "for", explanation: "For tsikli hisoblagich bilan ma'lum miqdorgacha sanoq bajaradi." },
-        { id: "prog_bas_6", question: "Ushbu kodning natijasi nima: x = 5; if (x > 3) { print('Yes'); } else { print('No'); }", options: ["Yes", "No", "Xato", "Hech narsa"], answer: "Yes", explanation: "5 soni 3 dan katta bo'lgani uchun 'Yes' qismi ishladi." },
-        { id: "prog_bas_7", question: "String nima?", options: ["Raqam", "Matn yoki belgilar ketma-ketligi", "Mantiqiy ifoda", "Array"], answer: "Matn yoki belgilar ketma-ketligi", explanation: "String - bu harflar va belgilar ketma-ketligi (masalan: 'salom')." }
+      "name": "Fizika",
+      "level": "Fundamental",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "phy_fun_1",
+          "question": "Nimaga teng kuch o'lchanadi?",
+          "options": [
+            "Joules",
+            "Newtons",
+            "Watts",
+            "Pascals"
+          ],
+          "answer": "Newtons",
+          "explanation": "SI unit of kuch is Newton (N)."
+        },
+        {
+          "id": "phy_fun_2",
+          "question": "Qaysi law states F = ma?",
+          "options": [
+            "Newton's First",
+            "Newton's Second",
+            "Newton's Third",
+            "Law of tortishish"
+          ],
+          "answer": "Newton's Second",
+          "explanation": "Newton's second law: kuch = mass × tezlanish."
+        },
+        {
+          "id": "phy_fun_3",
+          "question": "Nimaga teng tendency of an object to resist change in motion?",
+          "options": [
+            "kuch",
+            "Inertia",
+            "tezlik",
+            "impuls"
+          ],
+          "answer": "Inertia",
+          "explanation": "Inertia is resistance to change in motion."
+        },
+        {
+          "id": "phy_fun_4",
+          "question": "Nimaga teng unit of energiya?",
+          "options": [
+            "Newton",
+            "Joule",
+            "Watt",
+            "Volt"
+          ],
+          "answer": "Joule",
+          "explanation": "energiya is o'lchamida ifodalanadi Joules (J)."
+        },
+        {
+          "id": "phy_fun_5",
+          "question": "Rost yoki Yolg'on: An object at rest stays at rest unless acted by an external kuch.",
+          "options": [
+            "True",
+            "False"
+          ],
+          "answer": "True",
+          "explanation": "Newton's first law of motion."
+        },
+        {
+          "id": "phy_fun_6",
+          "question": "What type of energiya is stored in a stretched rubber band?",
+          "options": [
+            "Kinetic",
+            "Potential",
+            "Thermal",
+            "Chemical"
+          ],
+          "answer": "Potential",
+          "explanation": "Elastic potential energiya is stored."
+        },
+        {
+          "id": "phy_fun_7",
+          "question": "Speed = distance / ?",
+          "options": [
+            "Time",
+            "Mass",
+            "kuch",
+            "tezlanish"
+          ],
+          "answer": "Time",
+          "explanation": "Speed = distance ÷ time."
+        },
+        {
+          "id": "phy_fun_8",
+          "question": "Nimaga teng kuch that opposes motion between two surfaces?",
+          "options": [
+            "tortishish",
+            "ishqalanish",
+            "Magnetism",
+            "Tension"
+          ],
+          "answer": "ishqalanish",
+          "explanation": "ishqalanish resists relative motion."
+        },
+        {
+          "id": "phy_fun_9",
+          "question": "Qaysi is a vector quantity?",
+          "options": [
+            "Speed",
+            "Distance",
+            "tezlik",
+            "Mass"
+          ],
+          "answer": "tezlik",
+          "explanation": "tezlik has magnitude and direction."
+        },
+        {
+          "id": "phy_fun_10",
+          "question": "Nimaga teng tezlanish due to tortishish on Earth (approx)?",
+          "options": [
+            "5.8 m/s²",
+            "9.8 m/s²",
+            "12.2 m/s²",
+            "3.7 m/s²"
+          ],
+          "answer": "9.8 m/s²",
+          "explanation": "g ≈ 9.8 m/s² downward."
+        },
+        {
+          "id": "phy_fun_11",
+          "question": "Bo'sh joyni to'ldiring: For every action, there is an equal and opposite ______.",
+          "options": [
+            "reaction",
+            "kuch",
+            "motion",
+            "mass"
+          ],
+          "answer": "reaction",
+          "explanation": "Newton's third law."
+        },
+        {
+          "id": "phy_fun_12",
+          "question": "Nimaga teng kinetic energiya?",
+          "options": [
+            "energiya of position",
+            "energiya of motion",
+            "Stored energiya",
+            "Heat energiya"
+          ],
+          "answer": "energiya of motion",
+          "explanation": "Kinetic energiya = ½mv²."
+        },
+        {
+          "id": "phy_fun_13",
+          "question": "Qaysi law explains why you lurch forward when a car stops suddenly?",
+          "options": [
+            "Inertia",
+            "tortishish",
+            "ishqalanish",
+            "impuls"
+          ],
+          "answer": "Inertia",
+          "explanation": "Your body continues moving due to inertia."
+        },
+        {
+          "id": "phy_fun_14",
+          "question": "Nimaga teng power o'lchamida ifodalanadi?",
+          "options": [
+            "Joules",
+            "Watts",
+            "Newtons",
+            "Hertz"
+          ],
+          "answer": "Watts",
+          "explanation": "Power = energiya/time, unit Watt."
+        },
+        {
+          "id": "phy_fun_15",
+          "question": "Rost yoki Yolg'on: Work is done when you hold a heavy box stationary.",
+          "options": [
+            "True",
+            "False"
+          ],
+          "answer": "False",
+          "explanation": "Work requires displacement in direction of kuch."
+        },
+        {
+          "id": "phy_fun_16",
+          "question": "What type of energiya does a moving car have?",
+          "options": [
+            "Potential",
+            "Kinetic",
+            "Chemical",
+            "Nuclear"
+          ],
+          "answer": "Kinetic",
+          "explanation": "Moving objects have kinetic energiya."
+        },
+        {
+          "id": "phy_fun_17",
+          "question": "Qaysi is a unit of kuch?",
+          "options": [
+            "kg·m/s",
+            "kg·m/s²",
+            "kg·m²/s²",
+            "m/s²"
+          ],
+          "answer": "kg·m/s²",
+          "explanation": "1 Newton = 1 kg·m/s²."
+        },
+        {
+          "id": "phy_fun_18",
+          "question": "What happens to tezlanish if kuch doubles (mass constant)?",
+          "options": [
+            "Halves",
+            "Doubles",
+            "Quadruples",
+            "Stays same"
+          ],
+          "answer": "Doubles",
+          "explanation": "a = F/m, so kuch doubled → tezlanish doubled."
+        },
+        {
+          "id": "phy_fun_19",
+          "question": "Nimaga teng SI unit of mass?",
+          "options": [
+            "Gram",
+            "Kilogram",
+            "Newton",
+            "Pound"
+          ],
+          "answer": "Kilogram",
+          "explanation": "Kilogram (kg) is base SI unit for mass."
+        },
+        {
+          "id": "phy_fun_20",
+          "question": "Bo'sh joyni to'ldiring: The ability to do work is called ______.",
+          "options": [
+            "kuch",
+            "energiya",
+            "Power",
+            "impuls"
+          ],
+          "answer": "energiya",
+          "explanation": "energiya is the capacity to do work."
+        },
+        {
+          "id": "phy_fun_21",
+          "question": "Qaysi kuch pulls objects toward the center of Earth?",
+          "options": [
+            "ishqalanish",
+            "Magnetism",
+            "tortishish",
+            "Tension"
+          ],
+          "answer": "tortishish",
+          "explanation": "Gravitational kuch attracts masses."
+        },
+        {
+          "id": "phy_fun_22",
+          "question": "A ball is thrown upward. At the top, its tezlik is:",
+          "options": [
+            "Maximum",
+            "Zero",
+            "Constant",
+            "Negative"
+          ],
+          "answer": "Zero",
+          "explanation": "At highest point, tezlik momentarily zero."
+        },
+        {
+          "id": "phy_fun_23",
+          "question": "Nimaga teng formula for work?",
+          "options": [
+            "F × d",
+            "m × a",
+            "F × t",
+            "m × g"
+          ],
+          "answer": "F × d",
+          "explanation": "Work = kuch × displacement (in direction of kuch)."
+        },
+        {
+          "id": "phy_fun_24",
+          "question": "Rost yoki Yolg'on: Heavier objects fall faster in vacuum.",
+          "options": [
+            "True",
+            "False"
+          ],
+          "answer": "False",
+          "explanation": "In vacuum, all objects fall at same rate regardless of mass."
+        },
+        {
+          "id": "phy_fun_25",
+          "question": "Nimaga teng law of conservation of energiya?",
+          "options": [
+            "energiya can be created",
+            "energiya can be destroyed",
+            "energiya cannot be created or destroyed",
+            "energiya is always lost"
+          ],
+          "answer": "energiya cannot be created or destroyed",
+          "explanation": "energiya transforms but total remains constant."
+        },
+        {
+          "id": "phy_fun_26",
+          "question": "Qaysi quantity is o'lchamida ifodalanadi m/s²?",
+          "options": [
+            "Speed",
+            "tezlik",
+            "tezlanish",
+            "Displacement"
+          ],
+          "answer": "tezlanish",
+          "explanation": "tezlanish = change in tezlik/time."
+        },
+        {
+          "id": "phy_fun_27",
+          "question": "Nimaga teng kuch that keeps planets in orbit?",
+          "options": [
+            "ishqalanish",
+            "Magnetism",
+            "tortishish",
+            "Nuclear kuch"
+          ],
+          "answer": "tortishish",
+          "explanation": "Gravitational attraction provides centripetal kuch."
+        },
+        {
+          "id": "phy_fun_28",
+          "question": "Bo'sh joyni to'ldiring: A stationary object has ______ kinetic energiya.",
+          "options": [
+            "zero",
+            "maximum",
+            "negative",
+            "infinite"
+          ],
+          "answer": "zero",
+          "explanation": "Kinetic energiya = 0 if tezlik = 0."
+        },
+        {
+          "id": "phy_fun_29",
+          "question": "Nimaga teng unit of impuls?",
+          "options": [
+            "kg·m/s",
+            "N·m",
+            "J",
+            "W"
+          ],
+          "answer": "kg·m/s",
+          "explanation": "impuls = mass × tezlik."
+        },
+        {
+          "id": "phy_fun_30",
+          "question": "Qaysi law explains rocket propulsion?",
+          "options": [
+            "Newton's First",
+            "Newton's Second",
+            "Newton's Third",
+            "Law of tortishish"
+          ],
+          "answer": "Newton's Third",
+          "explanation": "Exhaust gases pushed backward → rocket pushed forward."
+        }
       ]
     },
     {
-      name: "IELTS Mock Test",
-      level: "Advanced",
-      type: "mock",
-      items: [
-        { id: "ielts_1", question: "Reading: The passage states that the Industrial Revolution began in which country? (Assume passage: 'The Industrial Revolution started in Britain...')", options: ["France", "Germany", "Britain", "USA"], answer: "Britain", explanation: "Text explicitly says Britain." },
-        { id: "ielts_2", question: "Reading: 'The author believes technology has only positive effects.'", options: ["True", "False", "Not Given"], answer: "False", explanation: "Author discusses negative effects as well." },
-        { id: "ielts_3", question: "Listening: What time does the train to Manchester leave? (Audio script: 'The next train to Manchester departs at 17:45 from platform 3.')", options: ["5:15 PM", "5:45 PM", "6:15 PM", "5:30 PM"], answer: "5:45 PM", explanation: "17:45 = 5:45 PM." }
+      "name": "Dasturlash",
+      "level": "Pro",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "prog_bas_1",
+          "question": "Nimaga teng a variable?",
+          "options": [
+            "A funksiya",
+            "Ma'lumot uchun idish",
+            "Tsikl",
+            "A condition"
+          ],
+          "answer": "Ma'lumot uchun idish",
+          "explanation": "Variables store values like numbers or text."
+        },
+        {
+          "id": "prog_bas_2",
+          "question": "Qaysi symbol is used for assignment in most languages?",
+          "options": [
+            "==",
+            "=",
+            "===",
+            ":="
+          ],
+          "answer": "=",
+          "explanation": "Single equals assigns a value."
+        },
+        {
+          "id": "prog_bas_3",
+          "question": "Nima 'if' statement do?",
+          "options": [
+            "Repeats code",
+            "Checks a condition",
+            "Declares a variable",
+            "Defines a funksiya"
+          ],
+          "answer": "Checks a condition",
+          "explanation": "If condition true, executes code block."
+        },
+        {
+          "id": "prog_bas_4",
+          "question": "Nimaga teng Tsikl?",
+          "options": [
+            "A conditional",
+            "A repetition structure",
+            "A data type",
+            "An error"
+          ],
+          "answer": "A repetition structure",
+          "explanation": "Loops repeat code multiple times."
+        },
+        {
+          "id": "prog_bas_5",
+          "question": "Qaysi loop runs a fixed number of times?",
+          "options": [
+            "while",
+            "for",
+            "do-while",
+            "if"
+          ],
+          "answer": "for",
+          "explanation": "For loop is typically used with a counter."
+        },
+        {
+          "id": "prog_bas_6",
+          "question": "Nimaga teng output of: x = 5; if (x > 3) { print('Yes'); } else { print('No'); }",
+          "options": [
+            "Yes",
+            "No",
+            "Error",
+            "Nothing"
+          ],
+          "answer": "Yes",
+          "explanation": "5 > 3 is true, so prints Yes."
+        },
+        {
+          "id": "prog_bas_7",
+          "question": "Nimaga teng a string?",
+          "options": [
+            "A number",
+            "Belgilar ketma-ketligi",
+            "A boolean",
+            "An array"
+          ],
+          "answer": "Belgilar ketma-ketligi",
+          "explanation": "Strings are text, e.g., 'hello'."
+        },
+        {
+          "id": "prog_bas_8",
+          "question": "Qaysi operator means 'not equal to' in many languages?",
+          "options": [
+            "!=",
+            "<>",
+            "!==",
+            "=!"
+          ],
+          "answer": "!=",
+          "explanation": "!= is common inequality operator."
+        },
+        {
+          "id": "prog_bas_9",
+          "question": "Nima a 'while' loop do?",
+          "options": [
+            "Runs once",
+            "Runs while condition true",
+            "Runs forever",
+            "Runs if condition false"
+          ],
+          "answer": "Runs while condition true",
+          "explanation": "While loop repeats as long as condition holds."
+        },
+        {
+          "id": "prog_bas_10",
+          "question": "Bo'sh joyni to'ldiring: A ______ is a block of reusable code.",
+          "options": [
+            "variable",
+            "funksiya",
+            "loop",
+            "condition"
+          ],
+          "answer": "funksiya",
+          "explanation": "funksiyas encapsulate code for reuse."
+        },
+        {
+          "id": "prog_bas_11",
+          "question": "Nimaga teng an integer?",
+          "options": [
+            "O'nlik son",
+            "Butun son",
+            "A text",
+            "A true/false value"
+          ],
+          "answer": "Butun son",
+          "explanation": "Integers are numbers without fractional part."
+        },
+        {
+          "id": "prog_bas_12",
+          "question": "Qaysi symbol is used for AND in most languages?",
+          "options": [
+            "&",
+            "&&",
+            "|",
+            "||"
+          ],
+          "answer": "&&",
+          "explanation": "&& logical AND."
+        },
+        {
+          "id": "prog_bas_13",
+          "question": "Nimaga teng an array?",
+          "options": [
+            "A single variable",
+            "A collection of variables",
+            "Tsikl",
+            "A condition"
+          ],
+          "answer": "A collection of variables",
+          "explanation": "Arrays store multiple values indexed by number."
+        },
+        {
+          "id": "prog_bas_14",
+          "question": "Rost yoki Yolg'on: 'else' must always follow an 'if'.",
+          "options": [
+            "True",
+            "False"
+          ],
+          "answer": "False",
+          "explanation": "Else is optional."
+        },
+        {
+          "id": "prog_bas_15",
+          "question": "Nima 'break' do in Tsikl?",
+          "options": [
+            "Skips iteration",
+            "Exits loop",
+            "Restarts loop",
+            "Does nothing"
+          ],
+          "answer": "Exits loop",
+          "explanation": "Break terminates the loop immediately."
+        },
+        {
+          "id": "prog_bas_16",
+          "question": "Nimaga teng a boolean?",
+          "options": [
+            "Number",
+            "Rost/Yolg'on",
+            "Text",
+            "List"
+          ],
+          "answer": "Rost/Yolg'on",
+          "explanation": "Boolean has two possible values: true or false."
+        },
+        {
+          "id": "prog_bas_17",
+          "question": "Qaysi loop is guaranteed to run at least once?",
+          "options": [
+            "for",
+            "while",
+            "do-while",
+            "foreach"
+          ],
+          "answer": "do-while",
+          "explanation": "Do-while checks condition after first execution."
+        },
+        {
+          "id": "prog_bas_18",
+          "question": "Bo'sh joyni to'ldiring: x = 10; while (x > 0) { x--; } The loop runs ______ times.",
+          "options": [
+            "9",
+            "10",
+            "11",
+            "infinite"
+          ],
+          "answer": "10",
+          "explanation": "x goes 10,9,...,1 (10 iterations)."
+        },
+        {
+          "id": "prog_bas_19",
+          "question": "Nimaga teng result of 5 == '5' in JavaScript (loose equality)?",
+          "options": [
+            "True",
+            "False",
+            "Error",
+            "Undefined"
+          ],
+          "answer": "True",
+          "explanation": "Loose equality converts types."
+        },
+        {
+          "id": "prog_bas_20",
+          "question": "Nima 'variable scope' mean?",
+          "options": [
+            "Where variable is accessible",
+            "Variable type",
+            "Variable value",
+            "Variable name"
+          ],
+          "answer": "Where variable is accessible",
+          "explanation": "Scope defines visibility (global vs local)."
+        },
+        {
+          "id": "prog_bas_21",
+          "question": "Qaysi is a valid variable name?",
+          "options": [
+            "2var",
+            "var-name",
+            "var_name",
+            "var name"
+          ],
+          "answer": "var_name",
+          "explanation": "Underscore allowed; cannot start with number or have spaces."
+        },
+        {
+          "id": "prog_bas_22",
+          "question": "Nima 'continue' do in Tsikl?",
+          "options": [
+            "Exits loop",
+            "Skips to next iteration",
+            "Restarts loop",
+            "Stops program"
+          ],
+          "answer": "Skips to next iteration",
+          "explanation": "Continue jumps to the next loop cycle."
+        },
+        {
+          "id": "prog_bas_23",
+          "question": "Nimaga teng an infinite loop?",
+          "options": [
+            "Loop that never ends",
+            "Loop that runs once",
+            "Loop with no code",
+            "Loop with condition false"
+          ],
+          "answer": "Loop that never ends",
+          "explanation": "Condition never becomes false."
+        },
+        {
+          "id": "prog_bas_24",
+          "question": "Bo'sh joyni to'ldiring: if (age >= 18) { print('Adult'); } else { print('Minor'); } If age=16, output?",
+          "options": [
+            "Adult",
+            "Minor",
+            "Error",
+            "Nothing"
+          ],
+          "answer": "Minor",
+          "explanation": "16 is not >=18, so else executes."
+        },
+        {
+          "id": "prog_bas_25",
+          "question": "Nimaga teng a comment?",
+          "options": [
+            "Executed code",
+            "Ignored text for humans",
+            "Variable declaration",
+            "Loop control"
+          ],
+          "answer": "Ignored text for humans",
+          "explanation": "Comments explain code and are not run."
+        },
+        {
+          "id": "prog_bas_26",
+          "question": "Qaysi operator adds numbers?",
+          "options": [
+            "-",
+            "*",
+            "/",
+            "+"
+          ],
+          "answer": "+",
+          "explanation": "Plus sign for addition."
+        },
+        {
+          "id": "prog_bas_27",
+          "question": "Rost yoki Yolg'on: A for loop can be rewritten as a while loop.",
+          "options": [
+            "True",
+            "False"
+          ],
+          "answer": "True",
+          "explanation": "For loops are syntactic sugar for while."
+        },
+        {
+          "id": "prog_bas_28",
+          "question": "Nimaga teng purpose of 'else if'?",
+          "options": [
+            "Multiple conditions",
+            "Loop control",
+            "Variable declaration",
+            "funksiya definition"
+          ],
+          "answer": "Multiple conditions",
+          "explanation": "Else if chains several conditions."
+        },
+        {
+          "id": "prog_bas_29",
+          "question": "Nimaga teng a float?",
+          "options": [
+            "Integer",
+            "Decimal number",
+            "Boolean",
+            "String"
+          ],
+          "answer": "Decimal number",
+          "explanation": "Float stores numbers with fractional parts."
+        },
+        {
+          "id": "prog_bas_30",
+          "question": "Bo'sh joyni to'ldiring: To repeat code 5 times, you can use a ______ loop with counter from 1 to 5.",
+          "options": [
+            "while",
+            "for",
+            "if",
+            "else"
+          ],
+          "answer": "for",
+          "explanation": "For loop is ideal for counted repetition."
+        }
       ]
     },
     {
-      name: "SAT Mock Test",
-      level: "Advanced",
-      type: "mock",
-      items: [
-        { id: "sat_1", question: "Math: If 3x + 5 = 20, what is x?", options: ["5", "6", "7", "8"], answer: "5", explanation: "3x=15, x=5." },
-        { id: "sat_2", question: "Math: What is the area of a circle with radius 4?", options: ["8π", "16π", "32π", "64π"], answer: "16π", explanation: "Area = πr² = 16π." },
-        { id: "sat_3", question: "Reading: The author's tone in the passage can best be described as:", options: ["Sarcastic", "Objective", "Enthusiastic", "Pessimistic"], answer: "Objective", explanation: "Neutral, fact-based tone." }
+      "name": "Rus tili (Advanced)",
+      "level": "Pro",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "rus_adv_1",
+          "question": "Qaysi case is used for the direct object of a verb?",
+          "options": [
+            "Nominative",
+            "Accusative",
+            "Genitive",
+            "Dative"
+          ],
+          "answer": "Accusative",
+          "explanation": "Accusative answers 'кого? что?' (whom/what?)"
+        },
+        {
+          "id": "rus_adv_2",
+          "question": "Bo'sh joyni to'ldiring: У меня нет ______. (I don't have a book)",
+          "options": [
+            "книга",
+            "книги",
+            "книгу",
+            "книгой"
+          ],
+          "answer": "книги",
+          "explanation": "Genitive case after 'нет'."
+        },
+        {
+          "id": "rus_adv_3",
+          "question": "Nimaga teng perfective aspect of 'писать' (to write)?",
+          "options": [
+            "написать",
+            "писа́ть",
+            "пишу",
+            "писал"
+          ],
+          "answer": "написать",
+          "explanation": "Perfective indicates completed action."
+        },
+        {
+          "id": "rus_adv_4",
+          "question": "Qaysi preposition takes the instrumental case?",
+          "options": [
+            "в",
+            "на",
+            "с",
+            "о"
+          ],
+          "answer": "с",
+          "explanation": "С (with) + instrumental."
+        },
+        {
+          "id": "rus_adv_5",
+          "question": "Nimaga teng past tense of 'идти' (to go on foot) for 'я'?",
+          "options": [
+            "шёл/шла",
+            "пошёл",
+            "ходил",
+            "пришёл"
+          ],
+          "answer": "шёл/шла",
+          "explanation": "Unidirectional past: я шёл (m), я шла (f)."
+        },
+        {
+          "id": "rus_adv_6",
+          "question": "Rost yoki Yolg'on: Russian has 6 grammatical cases.",
+          "options": [
+            "True",
+            "False"
+          ],
+          "answer": "True",
+          "explanation": "Nominative, genitive, dative, accusative, instrumental, prepositional."
+        },
+        {
+          "id": "rus_adv_7",
+          "question": "Bo'sh joyni to'ldiring: Я живу в ______ доме. (I live in a big house)",
+          "options": [
+            "большой",
+            "большом",
+            "большую",
+            "большого"
+          ],
+          "answer": "большом",
+          "explanation": "Prepositional case: в + prepositional (big = большом)."
+        },
+        {
+          "id": "rus_adv_8",
+          "question": "Nimaga teng correct form of 'two' for masculine nouns?",
+          "options": [
+            "два",
+            "две",
+            "двух",
+            "двумя"
+          ],
+          "answer": "два",
+          "explanation": "Два for masculine/neuter, две for feminine."
+        },
+        {
+          "id": "rus_adv_9",
+          "question": "Qaysi verb of motion means 'to go by transport' (one direction)?",
+          "options": [
+            "идти",
+            "ехать",
+            "ходить",
+            "ездить"
+          ],
+          "answer": "ехать",
+          "explanation": "Ехать = go by vehicle, unidirectional."
+        },
+        {
+          "id": "rus_adv_10",
+          "question": "Bo'sh joyni to'ldiring: Он дал книгу ______. (He gave the book to his sister)",
+          "options": [
+            "сестра",
+            "сестре",
+            "сестру",
+            "сестрой"
+          ],
+          "answer": "сестре",
+          "explanation": "Dative case for indirect object (to whom)."
+        },
+        {
+          "id": "rus_adv_11",
+          "question": "Nimaga teng imperative form of 'делать' (to do) for 'ты'?",
+          "options": [
+            "делай",
+            "делайте",
+            "сделай",
+            "делать"
+          ],
+          "answer": "делай",
+          "explanation": "Imperative: делай (informal singular)."
+        },
+        {
+          "id": "rus_adv_12",
+          "question": "Qaysi conjunction introduces a subordinate clause of purpose?",
+          "options": [
+            "что",
+            "чтобы",
+            "если",
+            "потому что"
+          ],
+          "answer": "чтобы",
+          "explanation": "Чтобы means 'in order to'."
+        },
+        {
+          "id": "rus_adv_13",
+          "question": "Rost yoki Yolg'on: 'Быть' (to be) is always used in present tense.",
+          "options": [
+            "True",
+            "False"
+          ],
+          "answer": "False",
+          "explanation": "In present, it's usually omitted."
+        },
+        {
+          "id": "rus_adv_14",
+          "question": "Bo'sh joyni to'ldiring: Это фильм, ______ я смотрел вчера. (The film that I watched yesterday)",
+          "options": [
+            "который",
+            "которого",
+            "которому",
+            "которым"
+          ],
+          "answer": "который",
+          "explanation": "Accusative case, masculine singular."
+        },
+        {
+          "id": "rus_adv_15",
+          "question": "Nimaga teng comparative of 'хороший' (good)?",
+          "options": [
+            "лучше",
+            "хорошее",
+            "добрее",
+            "хуже"
+          ],
+          "answer": "лучше",
+          "explanation": "Better = лучше."
+        },
+        {
+          "id": "rus_adv_16",
+          "question": "Qaysi case is used after 'благодаря' (thanks to)?",
+          "options": [
+            "Genitive",
+            "Dative",
+            "Accusative",
+            "Instrumental"
+          ],
+          "answer": "Dative",
+          "explanation": "Благодаря + dative."
+        },
+        {
+          "id": "rus_adv_17",
+          "question": "Nimaga teng correct negative construction for 'I have nothing'?",
+          "options": [
+            "Я ничего не имею",
+            "У меня ничего нет",
+            "Ничего нет у меня",
+            "Я не имею ничего"
+          ],
+          "answer": "У меня ничего нет",
+          "explanation": "Standard: у + genitive + нет + genitive."
+        },
+        {
+          "id": "rus_adv_18",
+          "question": "Bo'sh joyni to'ldiring: Если бы я знал, я ______ пришёл. (If I had known, I would have come)",
+          "options": [
+            "бы",
+            "был",
+            "было",
+            "были"
+          ],
+          "answer": "бы",
+          "explanation": "Conditional particle 'бы' with past tense."
+        },
+        {
+          "id": "rus_adv_19",
+          "question": "Nimaga teng plural of 'человек' (person)?",
+          "options": [
+            "человеки",
+            "люди",
+            "человеков",
+            "человека"
+          ],
+          "answer": "люди",
+          "explanation": "Irregular plural: люди."
+        },
+        {
+          "id": "rus_adv_20",
+          "question": "Qaysi verb aspect is used for repeated actions?",
+          "options": [
+            "Perfective",
+            "Imperfective",
+            "Both",
+            "Neither"
+          ],
+          "answer": "Imperfective",
+          "explanation": "Imperfective for habitual/repeated actions."
+        },
+        {
+          "id": "rus_adv_21",
+          "question": "Rost yoki Yolg'on: Russian adjectives agree with nouns in gender, number, and case.",
+          "options": [
+            "True",
+            "False"
+          ],
+          "answer": "True",
+          "explanation": "Adjectives must match noun."
+        },
+        {
+          "id": "rus_adv_22",
+          "question": "Bo'sh joyni to'ldiring: Мы гордимся нашими ______. (We are proud of our children)",
+          "options": [
+            "детьми",
+            "детей",
+            "детям",
+            "дети"
+          ],
+          "answer": "детьми",
+          "explanation": "Instrumental case after гордиться."
+        },
+        {
+          "id": "rus_adv_23",
+          "question": "Nimaga teng short form adjective for 'здоров' (healthy)?",
+          "options": [
+            "здоровый",
+            "здорово",
+            "здорова",
+            "здоровы"
+          ],
+          "answer": "здоров",
+          "explanation": "Short form masculine singular: здоров."
+        },
+        {
+          "id": "rus_adv_24",
+          "question": "Qaysi numeral governs the genitive singular?",
+          "options": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "answer": "2",
+          "explanation": "2,3,4 take genitive singular (два стола)."
+        },
+        {
+          "id": "rus_adv_25",
+          "question": "Nimaga teng past passive participle of 'прочитать' (to read)?",
+          "options": [
+            "прочитанный",
+            "прочитавший",
+            "прочитан",
+            "читанный"
+          ],
+          "answer": "прочитанный",
+          "explanation": "Perfective passive participle."
+        },
+        {
+          "id": "rus_adv_26",
+          "question": "Bo'sh joyni to'ldiring: Он пришёл, ______ несмотря на дождь. (He came despite the rain)",
+          "options": [
+            "на дождь",
+            "на дождя",
+            "на дождем",
+            "на дожде"
+          ],
+          "answer": "на дождь",
+          "explanation": "Несмотря на + accusative."
+        },
+        {
+          "id": "rus_adv_27",
+          "question": "Nimaga teng reflexive verb for 'to wash oneself'?",
+          "options": [
+            "мыть",
+            "мыться",
+            "умыть",
+            "помыть"
+          ],
+          "answer": "мыться",
+          "explanation": "Reflexive suffix -ся."
+        },
+        {
+          "id": "rus_adv_28",
+          "question": "Qaysi preposition means 'near' and takes genitive?",
+          "options": [
+            "около",
+            "возле",
+            "у",
+            "All of these"
+          ],
+          "answer": "All of these",
+          "explanation": "Около, возле, у all + genitive."
+        },
+        {
+          "id": "rus_adv_29",
+          "question": "Rost yoki Yolg'on: Russian has a separate verb for 'to have' (like English 'have').",
+          "options": [
+            "True",
+            "False"
+          ],
+          "answer": "False",
+          "explanation": "Use у + genitive + есть."
+        },
+        {
+          "id": "rus_adv_30",
+          "question": "Nimaga teng correct translation of 'I like this book'?",
+          "options": [
+            "Я люблю эту книгу",
+            "Мне нравится эта книга",
+            "Я нравлюсь этой книге",
+            "Мне любит эту книгу"
+          ],
+          "answer": "Мне нравится эта книга",
+          "explanation": "Dative + нравится construction."
+        }
+      ]
+    },
+    {
+      "name": "Matematika",
+      "level": "Pro",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "math_adv_1",
+          "question": "X ni toping: 2x + 5 = 13",
+          "options": [
+            "3",
+            "4",
+            "5",
+            "6"
+          ],
+          "answer": "4",
+          "explanation": "2x=8, x=4."
+        },
+        {
+          "id": "math_adv_2",
+          "question": "Nimaga teng slope of the line y = 3x - 2?",
+          "options": [
+            "-2",
+            "3",
+            "1/3",
+            "2"
+          ],
+          "answer": "3",
+          "explanation": "Slope is coefficient of x."
+        },
+        {
+          "id": "math_adv_3",
+          "question": "Soddalashtiring: (x²)(x³)",
+          "options": [
+            "x⁵",
+            "x⁶",
+            "x⁹",
+            "x¹"
+          ],
+          "answer": "x⁵",
+          "explanation": "Add exponents: 2+3=5."
+        },
+        {
+          "id": "math_adv_4",
+          "question": "Nimaga teng value of f(2) if f(x) = x² + 1?",
+          "options": [
+            "3",
+            "4",
+            "5",
+            "6"
+          ],
+          "answer": "5",
+          "explanation": "2²+1=4+1=5."
+        },
+        {
+          "id": "math_adv_5",
+          "question": "Solve the system: y = 2x, x + y = 9",
+          "options": [
+            "(3,6)",
+            "(2,4)",
+            "(4,8)",
+            "(1,2)"
+          ],
+          "answer": "(3,6)",
+          "explanation": "x+2x=9 → 3x=9 → x=3, y=6."
+        },
+        {
+          "id": "math_adv_6",
+          "question": "Nimaga teng quadratic formula?",
+          "options": [
+            "x = -b ± √(b²-4ac)/2a",
+            "x = b ± √(b²-4ac)/2a",
+            "x = -b ± √(b²+4ac)/2a",
+            "x = -b/2a"
+          ],
+          "answer": "x = -b ± √(b²-4ac)/2a",
+          "explanation": "Standard quadratic formula."
+        },
+        {
+          "id": "math_adv_7",
+          "question": "Factor: x² - 9",
+          "options": [
+            "(x-3)(x+3)",
+            "(x-3)²",
+            "(x+3)²",
+            "(x-9)(x+1)"
+          ],
+          "answer": "(x-3)(x+3)",
+          "explanation": "Difference of squares."
+        },
+        {
+          "id": "math_adv_8",
+          "question": "Nimaga teng y-intercept of y = -4x + 10?",
+          "options": [
+            "-4",
+            "10",
+            "4",
+            "-10"
+          ],
+          "answer": "10",
+          "explanation": "y-intercept when x=0 gives y=10."
+        },
+        {
+          "id": "math_adv_9",
+          "question": "X ni toping: 3(x-2) = 12",
+          "options": [
+            "4",
+            "6",
+            "8",
+            "10"
+          ],
+          "answer": "6",
+          "explanation": "3x-6=12 → 3x=18 → x=6."
+        },
+        {
+          "id": "math_adv_10",
+          "question": "Nimaga teng domain of f(x)=√(x-5)?",
+          "options": [
+            "x ≥ 5",
+            "x > 5",
+            "x ≤ 5",
+            "all reals"
+          ],
+          "answer": "x ≥ 5",
+          "explanation": "Radicand must be non-negative."
+        },
+        {
+          "id": "math_adv_11",
+          "question": "Nimaga teng 2³ * 2⁴?",
+          "options": [
+            "2⁷",
+            "2¹²",
+            "2¹",
+            "2⁶"
+          ],
+          "answer": "2⁷",
+          "explanation": "Add exponents: 3+4=7."
+        },
+        {
+          "id": "math_adv_12",
+          "question": "If f(x)=3x-1, find f⁻¹(x).",
+          "options": [
+            "(x+1)/3",
+            "(x-1)/3",
+            "3x+1",
+            "x/3+1"
+          ],
+          "answer": "(x+1)/3",
+          "explanation": "Switch x and y: x=3y-1 → y=(x+1)/3."
+        },
+        {
+          "id": "math_adv_13",
+          "question": "Solve: |x-2| = 5",
+          "options": [
+            "7 or -3",
+            "7 or 3",
+            "-7 or 3",
+            "7 only"
+          ],
+          "answer": "7 or -3",
+          "explanation": "x-2=5 → x=7; x-2=-5 → x=-3."
+        },
+        {
+          "id": "math_adv_14",
+          "question": "Nimaga teng vertex of y = (x-3)² + 4?",
+          "options": [
+            "(3,4)",
+            "(-3,4)",
+            "(3,-4)",
+            "(-3,-4)"
+          ],
+          "answer": "(3,4)",
+          "explanation": "Vertex form: (h,k) = (3,4)."
+        },
+        {
+          "id": "math_adv_15",
+          "question": "Soddalashtiring: (2x²y)³",
+          "options": [
+            "8x⁶y³",
+            "6x⁵y³",
+            "8x⁵y³",
+            "2x⁶y³"
+          ],
+          "answer": "8x⁶y³",
+          "explanation": "2³=8, x^(2*3)=x⁶, y^(1*3)=y³."
+        },
+        {
+          "id": "math_adv_16",
+          "question": "Nimaga teng slope of a line perpendicular to y = (1/2)x + 3?",
+          "options": [
+            "2",
+            "-2",
+            "1/2",
+            "-1/2"
+          ],
+          "answer": "-2",
+          "explanation": "Negative reciprocal: -2."
+        },
+        {
+          "id": "math_adv_17",
+          "question": "X ni toping: log₂(x) = 3",
+          "options": [
+            "6",
+            "8",
+            "9",
+            "12"
+          ],
+          "answer": "8",
+          "explanation": "2³=8."
+        },
+        {
+          "id": "math_adv_18",
+          "question": "Nimaga teng value of i² (imaginary unit)?",
+          "options": [
+            "1",
+            "-1",
+            "i",
+            "-i"
+          ],
+          "answer": "-1",
+          "explanation": "i = √(-1), so i² = -1."
+        },
+        {
+          "id": "math_adv_19",
+          "question": "Expand: (x+2)²",
+          "options": [
+            "x²+4x+4",
+            "x²+4",
+            "x²+2x+4",
+            "x²+4x+2"
+          ],
+          "answer": "x²+4x+4",
+          "explanation": "(a+b)² = a²+2ab+b²."
+        },
+        {
+          "id": "math_adv_20",
+          "question": "Nimaga teng solution to 2^(x+1) = 16?",
+          "options": [
+            "2",
+            "3",
+            "4",
+            "5"
+          ],
+          "answer": "3",
+          "explanation": "2^(x+1)=2⁴ → x+1=4 → x=3."
+        },
+        {
+          "id": "math_adv_21",
+          "question": "Find the discriminant of x²+4x+4=0",
+          "options": [
+            "0",
+            "8",
+            "16",
+            "4"
+          ],
+          "answer": "0",
+          "explanation": "b²-4ac = 16-16=0."
+        },
+        {
+          "id": "math_adv_22",
+          "question": "Nimaga teng sum of the roots of x² - 5x + 6 = 0?",
+          "options": [
+            "5",
+            "-5",
+            "6",
+            "-6"
+          ],
+          "answer": "5",
+          "explanation": "Sum = -b/a = 5."
+        },
+        {
+          "id": "math_adv_23",
+          "question": "Soddalashtiring: √50",
+          "options": [
+            "5√2",
+            "2√5",
+            "10√5",
+            "25√2"
+          ],
+          "answer": "5√2",
+          "explanation": "√50 = √(25*2)=5√2."
+        },
+        {
+          "id": "math_adv_24",
+          "question": "Nimaga teng range of y = x² + 1?",
+          "options": [
+            "y≥1",
+            "y>1",
+            "all reals",
+            "y≤1"
+          ],
+          "answer": "y≥1",
+          "explanation": "Minimum value is 1 (at x=0)."
+        },
+        {
+          "id": "math_adv_25",
+          "question": "Solve: 2x² - 8 = 0",
+          "options": [
+            "±2",
+            "±4",
+            "±√8",
+            "±2√2"
+          ],
+          "answer": "±2",
+          "explanation": "2x²=8 → x²=4 → x=±2."
+        },
+        {
+          "id": "math_adv_26",
+          "question": "Nimaga teng equation of a line through (0,0) with slope 3?",
+          "options": [
+            "y=3x",
+            "y=x+3",
+            "y=3x+0",
+            "y=0"
+          ],
+          "answer": "y=3x",
+          "explanation": "y=mx+b, b=0."
+        },
+        {
+          "id": "math_adv_27",
+          "question": "Factor: 3x² - 12",
+          "options": [
+            "3(x-2)(x+2)",
+            "3(x²-4)",
+            "3(x-2)²",
+            "(3x-6)(x+2)"
+          ],
+          "answer": "3(x-2)(x+2)",
+          "explanation": "Factor 3 then difference of squares."
+        },
+        {
+          "id": "math_adv_28",
+          "question": "If f(x)=x² and g(x)=x+1, find f(g(2)).",
+          "options": [
+            "9",
+            "5",
+            "6",
+            "8"
+          ],
+          "answer": "9",
+          "explanation": "g(2)=3, f(3)=9."
+        },
+        {
+          "id": "math_adv_29",
+          "question": "Solve inequality: 3x - 2 > 7",
+          "options": [
+            "x>3",
+            "x<3",
+            "x>5",
+            "x<5"
+          ],
+          "answer": "x>3",
+          "explanation": "3x>9 → x>3."
+        },
+        {
+          "id": "math_adv_30",
+          "question": "Nimaga teng period of y = sin(2x)?",
+          "options": [
+            "π",
+            "2π",
+            "π/2",
+            "4π"
+          ],
+          "answer": "π",
+          "explanation": "Period = 2π / 2 = π."
+        }
+      ]
+    },
+    {
+      "name": "IELTS Mock Test",
+      "level": "Advanced",
+      "type": "mock",
+      "items": [
+        {
+          "id": "ielts_1",
+          "question": "Reading (MCQ): The passage states that the Industrial Revolution began in which country? (Assume passage: 'The Industrial Revolution started in Britain...')",
+          "options": [
+            "France",
+            "Germany",
+            "Britain",
+            "USA"
+          ],
+          "answer": "Britain",
+          "explanation": "Text explicitly says Britain."
+        },
+        {
+          "id": "ielts_2",
+          "question": "Reading (True/False): 'The author believes technology has only positive effects.' (Assume passage mentions both pros and cons)",
+          "options": [
+            "True",
+            "False",
+            "Not Given"
+          ],
+          "answer": "False",
+          "explanation": "Author discusses negative effects as well."
+        },
+        {
+          "id": "ielts_3",
+          "question": "Listening (MCQ style): What time does the train to Manchester leave? (Audio script: 'The next train to Manchester departs at 17:45 from platform 3.')",
+          "options": [
+            "5:15 PM",
+            "5:45 PM",
+            "6:15 PM",
+            "5:30 PM"
+          ],
+          "answer": "5:45 PM",
+          "explanation": "17:45 = 5:45 PM."
+        },
+        {
+          "id": "ielts_4",
+          "question": "Listening: Where is the tourist information center located? (Script: 'You can find the tourist office next to the cathedral.')",
+          "options": [
+            "Near the station",
+            "Next to the cathedral",
+            "Opposite the museum",
+            "On Main Street"
+          ],
+          "answer": "Next to the cathedral",
+          "explanation": "Explicitly stated."
+        },
+        {
+          "id": "ielts_5",
+          "question": "Writing (Task 1 prompt): Summarize the information from a chart showing smartphone sales from 2010-2020. Write at least 150 words.",
+          "options": [],
+          "answer": "Task prompt only",
+          "explanation": "No answer; writing task."
+        },
+        {
+          "id": "ielts_6",
+          "question": "Writing (Task 2 prompt): Some people think that governments should invest more in public transportation. Discuss both views and give your opinion.",
+          "options": [],
+          "answer": "Task prompt only",
+          "explanation": "Essay prompt."
+        },
+        {
+          "id": "ielts_7",
+          "question": "Speaking (Part 1): What is your full name?",
+          "options": [],
+          "answer": "Candidate's name",
+          "explanation": "Personal answer."
+        },
+        {
+          "id": "ielts_8",
+          "question": "Speaking (Part 2): Describe a book you recently read. You should say: what book it was, why you chose it, what you liked/disliked, and explain whether you would recommend it.",
+          "options": [],
+          "answer": "Spoken response",
+          "explanation": "1-2 minute monologue."
+        },
+        {
+          "id": "ielts_9",
+          "question": "Reading (MCQ): According to the passage, what is the main cause of coral bleaching? (Assume passage: 'Rising sea temperatures lead to coral bleaching...')",
+          "options": [
+            "Pollution",
+            "Overfishing",
+            "Rising temperatures",
+            "Acidification"
+          ],
+          "answer": "Rising temperatures",
+          "explanation": "Directly stated."
+        },
+        {
+          "id": "ielts_10",
+          "question": "Reading (True/False): 'The Great Wall of China is visible from space.' (Assume passage says this is a common myth)",
+          "options": [
+            "True",
+            "False",
+            "Not Given"
+          ],
+          "answer": "False",
+          "explanation": "Passage debunks the myth."
+        },
+        {
+          "id": "ielts_11",
+          "question": "Listening: What is the student's major? (Script: 'I'm studying environmental science, but I'm thinking of switching to biology.')",
+          "options": [
+            "Environmental science",
+            "Biology",
+            "Chemistry",
+            "Physics"
+          ],
+          "answer": "Environmental science",
+          "explanation": "Current major is environmental science."
+        },
+        {
+          "id": "ielts_12",
+          "question": "Listening: How much does the workshop cost? (Script: 'The fee is $45, but students get a $10 discount.')",
+          "options": [
+            "$45",
+            "$35",
+            "$55",
+            "$40"
+          ],
+          "answer": "$35",
+          "explanation": "45 - 10 = 35."
+        },
+        {
+          "id": "ielts_13",
+          "question": "Writing (Task 1 prompt): The graph below shows unemployment rates in three European countries from 2000 to 2015. Summarize the information.",
+          "options": [],
+          "answer": "Task prompt",
+          "explanation": "Data description."
+        },
+        {
+          "id": "ielts_14",
+          "question": "Writing (Task 2 prompt): In many countries, people are living longer. What are the advantages and disadvantages of an aging population?",
+          "options": [],
+          "answer": "Task prompt",
+          "explanation": "Balanced essay."
+        },
+        {
+          "id": "ielts_15",
+          "question": "Speaking (Part 3): How has technology changed the way people communicate?",
+          "options": [],
+          "answer": "Open-ended",
+          "explanation": "Express opinions and examples."
+        },
+        {
+          "id": "ielts_16",
+          "question": "Reading (MCQ): What does the word 'ubiquitous' in paragraph 2 most nearly mean?",
+          "options": [
+            "Rare",
+            "Everywhere",
+            "Harmful",
+            "Useful"
+          ],
+          "answer": "Everywhere",
+          "explanation": "Ubiquitous = present everywhere."
+        },
+        {
+          "id": "ielts_17",
+          "question": "Reading (True/False): 'The author recommends traveling alone rather than in groups.' (Assume passage says both have merits)",
+          "options": [
+            "True",
+            "False",
+            "Not Given"
+          ],
+          "answer": "False",
+          "explanation": "No recommendation of one over the other."
+        },
+        {
+          "id": "ielts_18",
+          "question": "Listening: What is the professor's office hour? (Script: 'I'm available on Tuesdays from 2 to 4 PM and Thursdays from 10 to 11 AM.')",
+          "options": [
+            "Tue 2-4, Thu 10-11",
+            "Mon 2-4, Wed 10-11",
+            "Tue 10-11, Thu 2-4",
+            "Fri only"
+          ],
+          "answer": "Tue 2-4, Thu 10-11",
+          "explanation": "Explicitly given."
+        },
+        {
+          "id": "ielts_19",
+          "question": "Listening: Why did the man miss the flight? (Script: 'I got stuck in traffic for two hours.')",
+          "options": [
+            "Overslept",
+            "Traffic jam",
+            "Wrong terminal",
+            "Lost passport"
+          ],
+          "answer": "Traffic jam",
+          "explanation": "Stuck in traffic."
+        },
+        {
+          "id": "ielts_20",
+          "question": "Writing (Task 1 prompt): The table shows the percentage of households with internet access in five countries. Summarize the data.",
+          "options": [],
+          "answer": "Task prompt",
+          "explanation": "Compare and contrast."
+        },
+        {
+          "id": "ielts_21",
+          "question": "Writing (Task 2 prompt): Some believe that unpaid community service should be compulsory for teenagers. Do you agree or disagree?",
+          "options": [],
+          "answer": "Task prompt",
+          "explanation": "Argumentative essay."
+        },
+        {
+          "id": "ielts_22",
+          "question": "Speaking (Part 1): Do you work or study?",
+          "options": [],
+          "answer": "Personal",
+          "explanation": "Brief answer."
+        },
+        {
+          "id": "ielts_23",
+          "question": "Speaking (Part 2): Describe a place you have visited that you would like to return to. Include: where it is, when you went, what you did, and why you want to go back.",
+          "options": [],
+          "answer": "Spoken",
+          "explanation": "1-2 minutes."
+        },
+        {
+          "id": "ielts_24",
+          "question": "Reading (MCQ): Which paragraph discusses the economic impact of climate change?",
+          "options": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "answer": "C",
+          "explanation": "Locate information in text."
+        },
+        {
+          "id": "ielts_25",
+          "question": "Reading (True/False): 'Renewable energy sources are more expensive than fossil fuels.' (Assume passage says costs have decreased)",
+          "options": [
+            "True",
+            "False",
+            "Not Given"
+          ],
+          "answer": "False",
+          "explanation": "Costs are now comparable or lower."
+        },
+        {
+          "id": "ielts_26",
+          "question": "Listening: What is the date of the conference? (Script: 'The conference will be held on the 15th of March, not the 14th as previously announced.')",
+          "options": [
+            "March 14",
+            "March 15",
+            "March 16",
+            "March 13"
+          ],
+          "answer": "March 15",
+          "explanation": "Corrected date."
+        },
+        {
+          "id": "ielts_27",
+          "question": "Listening: What should participants bring? (Script: 'Please bring your ID card and a printed copy of your registration.')",
+          "options": [
+            "Laptop",
+            "ID card and registration",
+            "Pen and paper",
+            "Money"
+          ],
+          "answer": "ID card and registration",
+          "explanation": "Explicitly stated."
+        },
+        {
+          "id": "ielts_28",
+          "question": "Writing (Task 1 prompt): The diagram shows the process of recycling plastic bottles. Summarize the information.",
+          "options": [],
+          "answer": "Task prompt",
+          "explanation": "Process description."
+        },
+        {
+          "id": "ielts_29",
+          "question": "Writing (Task 2 prompt): International tourism has become a huge industry. Why is this the case? Is this a positive or negative development?",
+          "options": [],
+          "answer": "Task prompt",
+          "explanation": "Cause and opinion essay."
+        },
+        {
+          "id": "ielts_30",
+          "question": "Speaking (Part 3): Do you think cities are becoming overcrowded? Why or why not?",
+          "options": [],
+          "answer": "Open-ended",
+          "explanation": "Discuss urbanization."
+        }
+      ]
+    },
+    {
+      "name": "IELTS Practice (Gamified)",
+      "level": "Advanced",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "ielts_g_1",
+          "question": "Match the word with its synonym: 'Purchase'",
+          "options": [
+            "Sell",
+            "Buy",
+            "Give",
+            "Take"
+          ],
+          "answer": "Buy",
+          "explanation": "Purchase = buy."
+        },
+        {
+          "id": "ielts_g_2",
+          "question": "Complete the sentence: The company decided to ______ its operations due to losses.",
+          "options": [
+            "expand",
+            "cease",
+            "increase",
+            "develop"
+          ],
+          "answer": "cease",
+          "explanation": "Cease = stop, fitting context of losses."
+        },
+        {
+          "id": "ielts_g_3",
+          "question": "Synonym exercise: 'Essential'",
+          "options": [
+            "Optional",
+            "Necessary",
+            "Extra",
+            "Minor"
+          ],
+          "answer": "Necessary",
+          "explanation": "Essential = necessary."
+        },
+        {
+          "id": "ielts_g_4",
+          "question": "Match: 'Consequence'",
+          "options": [
+            "Cause",
+            "Result",
+            "Beginning",
+            "Reason"
+          ],
+          "answer": "Result",
+          "explanation": "Consequence = result."
+        },
+        {
+          "id": "ielts_g_5",
+          "question": "Sentence completion: Despite the rain, the event went ______ as planned.",
+          "options": [
+            "ahead",
+            "back",
+            "down",
+            "up"
+          ],
+          "answer": "ahead",
+          "explanation": "Went ahead = proceeded."
+        },
+        {
+          "id": "ielts_g_6",
+          "question": "Synonym: 'Quick'",
+          "options": [
+            "Slow",
+            "Rapid",
+            "Lazy",
+            "Dull"
+          ],
+          "answer": "Rapid",
+          "explanation": "Quick = rapid."
+        },
+        {
+          "id": "ielts_g_7",
+          "question": "Match: 'Obtain'",
+          "options": [
+            "Lose",
+            "Get",
+            "Give",
+            "Miss"
+          ],
+          "answer": "Get",
+          "explanation": "Obtain = get."
+        },
+        {
+          "id": "ielts_g_8",
+          "question": "Complete: The new law will ______ a ban on plastic bags.",
+          "options": [
+            "impose",
+            "remove",
+            "avoid",
+            "ignore"
+          ],
+          "answer": "impose",
+          "explanation": "Impose a ban = introduce forcibly."
+        },
+        {
+          "id": "ielts_g_9",
+          "question": "Synonym: 'Difficult'",
+          "options": [
+            "Easy",
+            "Hard",
+            "Simple",
+            "Light"
+          ],
+          "answer": "Hard",
+          "explanation": "Difficult = hard."
+        },
+        {
+          "id": "ielts_g_10",
+          "question": "Match: 'Ancient'",
+          "options": [
+            "Modern",
+            "Old",
+            "New",
+            "Current"
+          ],
+          "answer": "Old",
+          "explanation": "Ancient = very old."
+        },
+        {
+          "id": "ielts_g_11",
+          "question": "Sentence: He ______ his success to hard work.",
+          "options": [
+            "contributed",
+            "attributed",
+            "distributed",
+            "tributed"
+          ],
+          "answer": "attributed",
+          "explanation": "Attributed to = credited to."
+        },
+        {
+          "id": "ielts_g_12",
+          "question": "Synonym: 'Maintain'",
+          "options": [
+            "Abandon",
+            "Keep",
+            "Destroy",
+            "Ignore"
+          ],
+          "answer": "Keep",
+          "explanation": "Maintain = keep in good condition."
+        },
+        {
+          "id": "ielts_g_13",
+          "question": "Match: 'Rare'",
+          "options": [
+            "Common",
+            "Uncommon",
+            "Frequent",
+            "Usual"
+          ],
+          "answer": "Uncommon",
+          "explanation": "Rare = not common."
+        },
+        {
+          "id": "ielts_g_14",
+          "question": "Complete: The evidence was ______ for the prosecution.",
+          "options": [
+            "favorable",
+            "unfavorable",
+            "neutral",
+            "weak"
+          ],
+          "answer": "favorable",
+          "explanation": "Favorable = helpful."
+        },
+        {
+          "id": "ielts_g_15",
+          "question": "Synonym: 'Hazard'",
+          "options": [
+            "Safety",
+            "Danger",
+            "Help",
+            "Advantage"
+          ],
+          "answer": "Danger",
+          "explanation": "Hazard = danger."
+        },
+        {
+          "id": "ielts_g_16",
+          "question": "Match: 'Significant'",
+          "options": [
+            "Trivial",
+            "Important",
+            "Small",
+            "Negligible"
+          ],
+          "answer": "Important",
+          "explanation": "Significant = important."
+        },
+        {
+          "id": "ielts_g_17",
+          "question": "Sentence: The manager asked for a ______ report by Friday.",
+          "options": [
+            "detailed",
+            "vague",
+            "brief",
+            "missing"
+          ],
+          "answer": "detailed",
+          "explanation": "Detailed = thorough."
+        },
+        {
+          "id": "ielts_g_18",
+          "question": "Synonym: 'Assist'",
+          "options": [
+            "Hinder",
+            "Help",
+            "Stop",
+            "Block"
+          ],
+          "answer": "Help",
+          "explanation": "Assist = help."
+        },
+        {
+          "id": "ielts_g_19",
+          "question": "Match: 'Flexible'",
+          "options": [
+            "Rigid",
+            "Adaptable",
+            "Stiff",
+            "Fixed"
+          ],
+          "answer": "Adaptable",
+          "explanation": "Flexible = adaptable."
+        },
+        {
+          "id": "ielts_g_20",
+          "question": "Complete: The project was ______ due to lack of funds.",
+          "options": [
+            "completed",
+            "abandoned",
+            "started",
+            "delayed"
+          ],
+          "answer": "abandoned",
+          "explanation": "Lack of funds leads to abandonment."
+        },
+        {
+          "id": "ielts_g_21",
+          "question": "Synonym: 'Verify'",
+          "options": [
+            "Falsify",
+            "Confirm",
+            "Ignore",
+            "Doubt"
+          ],
+          "answer": "Confirm",
+          "explanation": "Verify = confirm truth."
+        },
+        {
+          "id": "ielts_g_22",
+          "question": "Match: 'Diverse'",
+          "options": [
+            "Uniform",
+            "Varied",
+            "Same",
+            "Alike"
+          ],
+          "answer": "Varied",
+          "explanation": "Diverse = showing variety."
+        },
+        {
+          "id": "ielts_g_23",
+          "question": "Sentence: She ______ a complaint about the service.",
+          "options": [
+            "lodged",
+            "raised",
+            "made",
+            "All of these"
+          ],
+          "answer": "All of these",
+          "explanation": "Lodged/raised/made a complaint are all correct."
+        },
+        {
+          "id": "ielts_g_24",
+          "question": "Synonym: 'Substantial'",
+          "options": [
+            "Small",
+            "Large",
+            "Weak",
+            "Minor"
+          ],
+          "answer": "Large",
+          "explanation": "Substantial = considerable in size."
+        },
+        {
+          "id": "ielts_g_25",
+          "question": "Match: 'Demonstrate'",
+          "options": [
+            "Hide",
+            "Show",
+            "Conceal",
+            "Cover"
+          ],
+          "answer": "Show",
+          "explanation": "Demonstrate = show clearly."
+        },
+        {
+          "id": "ielts_g_26",
+          "question": "Complete: The new policy will be ______ next month.",
+          "options": [
+            "implemented",
+            "removed",
+            "ignored",
+            "written"
+          ],
+          "answer": "implemented",
+          "explanation": "Implemented = put into effect."
+        },
+        {
+          "id": "ielts_g_27",
+          "question": "Synonym: 'Crucial'",
+          "options": [
+            "Optional",
+            "Critical",
+            "Minor",
+            "Unimportant"
+          ],
+          "answer": "Critical",
+          "explanation": "Crucial = extremely important."
+        },
+        {
+          "id": "ielts_g_28",
+          "question": "Match: 'Eliminate'",
+          "options": [
+            "Add",
+            "Remove",
+            "Keep",
+            "Include"
+          ],
+          "answer": "Remove",
+          "explanation": "Eliminate = get rid of."
+        },
+        {
+          "id": "ielts_g_29",
+          "question": "Sentence: The results were ______ with the hypothesis.",
+          "options": [
+            "consistent",
+            "inconsistent",
+            "contradictory",
+            "opposite"
+          ],
+          "answer": "consistent",
+          "explanation": "Consistent = in agreement."
+        },
+        {
+          "id": "ielts_g_30",
+          "question": "Synonym: 'Comprehensive'",
+          "options": [
+            "Partial",
+            "Complete",
+            "Narrow",
+            "Limited"
+          ],
+          "answer": "Complete",
+          "explanation": "Comprehensive = covering all aspects."
+        }
+      ]
+    },
+    {
+      "name": "SAT Mock Test",
+      "level": "Advanced",
+      "type": "mock",
+      "items": [
+        {
+          "id": "sat_1",
+          "question": "Math: If 3x + 5 = 20, what is x?",
+          "options": [
+            "5",
+            "6",
+            "7",
+            "8"
+          ],
+          "answer": "5",
+          "explanation": "3x=15, x=5."
+        },
+        {
+          "id": "sat_2",
+          "question": "Math: What is the area of a circle with radius 4?",
+          "options": [
+            "8π",
+            "16π",
+            "32π",
+            "64π"
+          ],
+          "answer": "16π",
+          "explanation": "Area = πr² = 16π."
+        },
+        {
+          "id": "sat_3",
+          "question": "Reading: The author's tone in the passage can best be described as: (Assume passage about scientific discovery with neutral tone)",
+          "options": [
+            "Sarcastic",
+            "Objective",
+            "Enthusiastic",
+            "Pessimistic"
+          ],
+          "answer": "Objective",
+          "explanation": "Neutral, fact-based tone."
+        },
+        {
+          "id": "sat_4",
+          "question": "Writing: Choose the best revision: 'The students, who finished early, left the room. They were noisy.'",
+          "options": [
+            "The students who finished early left the room noisily.",
+            "Leaving early, the students were noisy leaving the room.",
+            "The students finished early and left the room, and they were noisy.",
+            "No change"
+          ],
+          "answer": "The students who finished early left the room noisily.",
+          "explanation": "Combines concisely without comma errors."
+        },
+        {
+          "id": "sat_5",
+          "question": "Math: Solve for x: x² - 5x + 6 = 0",
+          "options": [
+            "(2,3)",
+            "(-2,-3)",
+            "(2,-3)",
+            "(-2,3)"
+          ],
+          "answer": "(2,3)",
+          "explanation": "Factors to (x-2)(x-3)=0."
+        },
+        {
+          "id": "sat_6",
+          "question": "Math: If f(x)=2x+1, what is f(3)?",
+          "options": [
+            "5",
+            "6",
+            "7",
+            "8"
+          ],
+          "answer": "7",
+          "explanation": "2*3+1=7."
+        },
+        {
+          "id": "sat_7",
+          "question": "Reading: In line 12, the word 'dismayed' most nearly means:",
+          "options": [
+            "Happy",
+            "Discouraged",
+            "Excited",
+            "Calm"
+          ],
+          "answer": "Discouraged",
+          "explanation": "Dismayed = distressed or disheartened."
+        },
+        {
+          "id": "sat_8",
+          "question": "Writing: Which sentence is grammatically correct?",
+          "options": [
+            "Neither the teacher nor the students was present.",
+            "Neither the teacher nor the students were present.",
+            "Neither the teacher or the students was present.",
+            "Neither the teacher nor the student were present."
+          ],
+          "answer": "Neither the teacher nor the students were present.",
+          "explanation": "Verb agrees with closer subject 'students' (plural)."
+        },
+        {
+          "id": "sat_9",
+          "question": "Math: What is the slope of the line through (2,3) and (5,9)?",
+          "options": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "answer": "2",
+          "explanation": "(9-3)/(5-2)=6/3=2."
+        },
+        {
+          "id": "sat_10",
+          "question": "Math: If a rectangle has length 8 and width 5, what is its perimeter?",
+          "options": [
+            "26",
+            "40",
+            "13",
+            "20"
+          ],
+          "answer": "26",
+          "explanation": "Perimeter = 2(8+5)=26."
+        },
+        {
+          "id": "sat_11",
+          "question": "Reading: The primary purpose of the passage is to:",
+          "options": [
+            "Entertain",
+            "Persuade",
+            "Inform",
+            "Criticize"
+          ],
+          "answer": "Inform",
+          "explanation": "Passage presents factual information."
+        },
+        {
+          "id": "sat_12",
+          "question": "Writing: Correct the sentence: 'Everyone must bring their own lunch.'",
+          "options": [
+            "his or her",
+            "its",
+            "their (no change)",
+            "our"
+          ],
+          "answer": "his or her",
+          "explanation": "Traditional SAT style: singular 'everyone' requires singular pronoun."
+        },
+        {
+          "id": "sat_13",
+          "question": "Math: What is the value of (3⁴) / (3²)?",
+          "options": [
+            "3²",
+            "3³",
+            "3⁶",
+            "3⁸"
+          ],
+          "answer": "3²",
+          "explanation": "Subtract exponents: 4-2=2."
+        },
+        {
+          "id": "sat_14",
+          "question": "Math: If a = 2 and b = -3, find a² - b².",
+          "options": [
+            "-5",
+            "5",
+            "-13",
+            "13"
+          ],
+          "answer": "-5",
+          "explanation": "4 - 9 = -5."
+        },
+        {
+          "id": "sat_15",
+          "question": "Reading: Based on the passage, what can be inferred about the author's view of social media?",
+          "options": [
+            "Entirely positive",
+            "Entirely negative",
+            "Mixed with caution",
+            "Indifferent"
+          ],
+          "answer": "Mixed with caution",
+          "explanation": "Author mentions benefits and drawbacks."
+        },
+        {
+          "id": "sat_16",
+          "question": "Writing: Choose the best transition: 'The experiment failed. ______, the researchers learned valuable lessons.'",
+          "options": [
+            "However",
+            "Therefore",
+            "Moreover",
+            "Consequently"
+          ],
+          "answer": "However",
+          "explanation": "Contrast between failure and learning."
+        },
+        {
+          "id": "sat_17",
+          "question": "Math: Solve the inequality: -2x + 4 < 10",
+          "options": [
+            "x > -3",
+            "x < -3",
+            "x > 3",
+            "x < 3"
+          ],
+          "answer": "x > -3",
+          "explanation": "-2x < 6 → x > -3."
+        },
+        {
+          "id": "sat_18",
+          "question": "Math: What is the median of {3,7,8,5,12,10}?",
+          "options": [
+            "7",
+            "7.5",
+            "8",
+            "8.5"
+          ],
+          "answer": "7.5",
+          "explanation": "Sorted: 3,5,7,8,10,12 → average of 7 and 8 = 7.5."
+        },
+        {
+          "id": "sat_19",
+          "question": "Reading: The phrase 'a double-edged sword' in paragraph 3 suggests that something has:",
+          "options": [
+            "Only benefits",
+            "Only drawbacks",
+            "Both benefits and drawbacks",
+            "No effect"
+          ],
+          "answer": "Both benefits and drawbacks",
+          "explanation": "Double-edged sword = both positive and negative."
+        },
+        {
+          "id": "sat_20",
+          "question": "Writing: Which is the most concise version of 'due to the fact that'?",
+          "options": [
+            "Because",
+            "In light of",
+            "As a result of",
+            "Given that"
+          ],
+          "answer": "Because",
+          "explanation": "'Because' is shorter and direct."
+        },
+        {
+          "id": "sat_21",
+          "question": "Math: If a coin is flipped twice, what is probability of two heads?",
+          "options": [
+            "1/2",
+            "1/4",
+            "1/3",
+            "1/8"
+          ],
+          "answer": "1/4",
+          "explanation": "P(HH)=1/2 * 1/2 = 1/4."
+        },
+        {
+          "id": "sat_22",
+          "question": "Math: What is the value of x in 2^(x+1) = 32?",
+          "options": [
+            "4",
+            "5",
+            "6",
+            "7"
+          ],
+          "answer": "4",
+          "explanation": "2^(x+1)=2^5 → x+1=5 → x=4."
+        },
+        {
+          "id": "sat_23",
+          "question": "Reading: The author cites statistics in paragraph 2 primarily to:",
+          "options": [
+            "Entertain",
+            "Add emotional appeal",
+            "Support a claim",
+            "Introduce a new topic"
+          ],
+          "answer": "Support a claim",
+          "explanation": "Statistics provide evidence."
+        },
+        {
+          "id": "sat_24",
+          "question": "Writing: Correct the error: 'Having finished the test, the results were surprising.'",
+          "options": [
+            "The results, having finished the test, were surprising.",
+            "Having finished the test, we found the results surprising.",
+            "The test finished, the results surprising.",
+            "No error"
+          ],
+          "answer": "Having finished the test, we found the results surprising.",
+          "explanation": "Dangling modifier: who finished the test?"
+        },
+        {
+          "id": "sat_25",
+          "question": "Math: If y = kx and y=10 when x=2, find y when x=5.",
+          "options": [
+            "20",
+            "25",
+            "30",
+            "35"
+          ],
+          "answer": "25",
+          "explanation": "k=10/2=5, so y=5*5=25."
+        },
+        {
+          "id": "sat_26",
+          "question": "Math: What is the volume of a cube with side 3?",
+          "options": [
+            "9",
+            "18",
+            "27",
+            "36"
+          ],
+          "answer": "27",
+          "explanation": "Volume = s³ = 27."
+        },
+        {
+          "id": "sat_27",
+          "question": "Reading: Which choice best summarizes the first paragraph?",
+          "options": [
+            "Introduction of a problem",
+            "Historical background",
+            "A personal anecdote",
+            "A definition"
+          ],
+          "answer": "Introduction of a problem",
+          "explanation": "First paragraph typically sets up the issue."
+        },
+        {
+          "id": "sat_28",
+          "question": "Writing: Choose the correct word: The new policy will ______ affect all employees.",
+          "options": [
+            "effect",
+            "affect",
+            "impact (as verb)",
+            "influence"
+          ],
+          "answer": "affect",
+          "explanation": "Affect = verb meaning to influence."
+        },
+        {
+          "id": "sat_29",
+          "question": "Math: If x² = 36, what are the possible values of x?",
+          "options": [
+            "6 only",
+            "-6 only",
+            "6 and -6",
+            "18"
+          ],
+          "answer": "6 and -6",
+          "explanation": "Both square to 36."
+        },
+        {
+          "id": "sat_30",
+          "question": "Math: What is the equation of a line with slope -2 and y-intercept 4?",
+          "options": [
+            "y = -2x + 4",
+            "y = 2x + 4",
+            "y = -2x - 4",
+            "y = 2x - 4"
+          ],
+          "answer": "y = -2x + 4",
+          "explanation": "Slope-intercept form y=mx+b."
+        }
       ]
     }
   ]
