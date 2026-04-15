@@ -29,9 +29,16 @@ export default function IELTSEngine({ type, onExit }: { type: string; onExit: ()
     // Math basic AI simulate logic
     const baseScore = Math.random() * 3 + 5.5; // 5.5 - 8.5
     const scoreVal = baseScore.toFixed(1);
+    const isFull = type === 'ielts-full';
+
     setScore({
       overall: scoreVal,
-      breakdown: { reading: scoreVal, listening: scoreVal, writing: (baseScore - 0.5).toFixed(1), speaking: scoreVal },
+      breakdown: { 
+        reading: type === 'ielts-reading' || isFull ? scoreVal : '--', 
+        listening: type === 'ielts-listening' || isFull ? scoreVal : '--', 
+        writing: type === 'ielts-writing' || isFull ? (baseScore - 0.5).toFixed(1) : '--', 
+        speaking: type === 'ielts-speaking' || isFull ? scoreVal : '--' 
+      },
       feedback: {
         strengths: ['Grammar control', 'Task achievement'],
         weaknesses: ['Vocabulary range', 'Lexical resource'],
@@ -73,7 +80,7 @@ export default function IELTSEngine({ type, onExit }: { type: string; onExit: ()
 
         {testPhase === 'running' && (
           <motion.div key="running" initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col h-full">
-            <div className="flex items-center justify-between px-5 py-4 border-b" style={{ borderColor: `${colors.outlineVariant}44` }}>
+            <div className="flex items-center justify-between px-5 pb-4 border-b shadow-sm" style={{ paddingTop: 'max(env(safe-area-inset-top), 16px)', borderColor: `${colors.outlineVariant}44` }}>
               <div className="flex items-center gap-2">
                 <Clock className="h-5 w-5" style={{ color: colors.primary }} />
                 <span className="font-mono text-xl font-bold" style={{ color: colors.onSurface }}>{formatTime(timeLeft)}</span>
@@ -83,39 +90,45 @@ export default function IELTSEngine({ type, onExit }: { type: string; onExit: ()
 
             <div className="flex-1 overflow-y-auto p-5">
               <div className="mb-6 p-5 rounded-[20px] text-sm leading-relaxed" style={{ background: colors.surfaceContainerLow, color: colors.onSurface }}>
-                <b>Passage 1:</b> The history of the artificial intelligence dates back to antiquity, with myths, stories and rumors of artificial beings endowed with intelligence or consciousness by master craftsmen. The roots of modern AI can be traced to classical philosophers' attempts to describe the process of human thinking as the mechanical manipulation of symbols.
+                <b>Passage 1:</b> The history of artificial intelligence dates back to antiquity, with myths, stories and rumors of artificial beings endowed with intelligence or consciousness by master craftsmen. The roots of modern AI can be traced to classical philosophers' attempts to describe the process of human thinking as the mechanical manipulation of symbols.
                 <br/><br/>
-                <i>Read the passage and select true or false.</i>
+                <i>Read the passage and answer the questions below.</i>
               </div>
 
-              <div className="space-y-4">
-                <h3 className="font-bold mb-3" style={{ color: colors.onSurface }}>Question {currentQIndex + 1}</h3>
-                <p className="text-sm mb-4" style={{ color: colors.onSurfaceVariant }}>Modern AI is heavily based on Greek mythology and symbols manipulation.</p>
-                
-                {['True', 'False', 'Not Given'].map((opt) => (
-                  <button
-                    key={opt}
-                    onClick={() => setAnswers({ ...answers, [currentQIndex]: opt })}
-                    className="w-full text-left px-5 py-4 rounded-[16px] border transition-colors flex items-center justify-between"
-                    style={{ 
-                      background: answers[currentQIndex] === opt ? `${colors.primary}11` : 'transparent',
-                      borderColor: answers[currentQIndex] === opt ? colors.primary : `${colors.outlineVariant}55`,
-                      color: colors.onSurface
-                    }}
-                  >
-                    <span className="font-semibold text-sm">{opt}</span>
-                    {answers[currentQIndex] === opt && <CheckCircle2 className="h-5 w-5" style={{ color: colors.primary }} />}
-                  </button>
-                ))}
-              </div>
+              {[
+                { q: "Modern AI is heavily based on Greek mythology.", opts: ['True', 'False', 'Not Given'] },
+                { q: "Classical philosophers described human thinking as mechanical.", opts: ['True', 'False', 'Not Given'] },
+                { q: "The term 'artificial intelligence' was coined in antiquity.", opts: ['True', 'False', 'Not Given'] }
+              ].map((item, idx) => (
+                <div key={idx} className={`space-y-4 mb-10 ${currentQIndex !== idx ? 'hidden' : 'block'}`}>
+                  <h3 className="font-bold mb-3" style={{ color: colors.onSurface }}>Question {idx + 1} of 3</h3>
+                  <p className="text-sm mb-4" style={{ color: colors.onSurfaceVariant }}>{item.q}</p>
+                  
+                  {item.opts.map((opt) => (
+                    <button
+                      key={opt}
+                      onClick={() => setAnswers({ ...answers, [idx]: opt })}
+                      className="w-full text-left px-5 py-4 rounded-[16px] border transition-colors flex items-center justify-between"
+                      style={{ 
+                        background: answers[idx] === opt ? `${colors.primary}11` : 'transparent',
+                        borderColor: answers[idx] === opt ? colors.primary : `${colors.outlineVariant}55`,
+                        color: colors.onSurface
+                      }}
+                    >
+                      <span className="font-semibold text-sm">{opt}</span>
+                      {answers[idx] === opt && <CheckCircle2 className="h-5 w-5" style={{ color: colors.primary }} />}
+                    </button>
+                  ))}
+                </div>
+              ))}
             </div>
 
             <div className="p-5 flex gap-4 border-t" style={{ borderColor: `${colors.outlineVariant}44` }}>
-              <button disabled={currentQIndex === 0} onClick={() => setCurrentQIndex(p => Math.max(0, p - 1))} className="flex-1 py-3 rounded-full flex justify-center border" style={{ borderColor: `${colors.outlineVariant}44`, color: colors.onSurface }}>
+              <button disabled={currentQIndex === 0} onClick={() => setCurrentQIndex(p => Math.max(0, p - 1))} className="flex-1 py-3 rounded-[20px] flex justify-center border transition-opacity disabled:opacity-30" style={{ borderColor: `${colors.outlineVariant}44`, color: colors.onSurface }}>
                 <ChevronLeft />
               </button>
-              <button onClick={() => setCurrentQIndex(p => p + 1)} className="flex-[3] py-3 rounded-full flex justify-center font-bold items-center gap-2" style={{ background: colors.primary, color: colors.onPrimary }}>
-                Next <ChevronRight className="h-4 w-4" />
+              <button disabled={currentQIndex === 2 && !answers[2]} onClick={() => { if (currentQIndex < 2) setCurrentQIndex(p => p + 1); else finishTest(); }} className="flex-[3] py-3 rounded-[20px] flex justify-center font-bold items-center gap-2 transition-transform active:scale-95 disabled:opacity-50" style={{ background: colors.primary, color: colors.onPrimary }}>
+                {currentQIndex === 2 ? 'Finish Section' : 'Next'} {currentQIndex !== 2 && <ChevronRight className="h-4 w-4" />}
               </button>
             </div>
           </motion.div>

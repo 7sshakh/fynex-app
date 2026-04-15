@@ -32,7 +32,7 @@ export default function MockTestSystem({ onClose }: { onClose: () => void }) {
       className="fixed inset-0 z-[99999] overflow-y-auto"
       style={{ background: UI_BG }}
     >
-      <div className="flex h-16 items-center justify-between px-5 sticky top-0 z-50 backdrop-blur-md" style={{ background: `${UI_BG}e6` }}>
+      <div className="flex items-center justify-between px-5 pb-4 sticky top-0 z-50 backdrop-blur-md" style={{ paddingTop: 'max(env(safe-area-inset-top), 16px)', background: `${UI_BG}e6` }}>
         <h2 className="text-xl font-black" style={{ color: colors.onSurface }}>Mock Tests</h2>
         <button onClick={onClose} className="rounded-full p-2 bg-white/5 active:scale-90 transition-transform">
           <X className="h-6 w-6" style={{ color: colors.onSurface }} />

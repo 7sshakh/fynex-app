@@ -251,6 +251,34 @@ export default function HomePage() {
         </div>
       </motion.section>
 
+      {/* DRILLS AND PRACTICE LAB */}
+      <motion.section
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.15 }}
+        className="mb-8 overflow-hidden rounded-[24px] p-5 relative cursor-pointer shadow-lg shadow-rose-900/10"
+        style={{ background: 'linear-gradient(120deg, #be123c, #e11d48)', color: '#ffffff' }}
+        onClick={() => window.dispatchEvent(new CustomEvent('fynex:openPractice'))}
+      >
+        <div className="absolute right-[-10%] top-[-10%] h-32 w-32 rounded-full bg-white/10" />
+        <div className="absolute bottom-[-10%] left-[-10%] h-24 w-24 rounded-full bg-white/20" />
+        <div className="relative z-10 flex items-center justify-between">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="rounded-full bg-yellow-400 px-2 py-0.5 text-[8px] font-black uppercase tracking-wider text-black">
+                Hot 
+              </span>
+              <p className="text-xs font-bold text-white/70 uppercase tracking-widest">Micro-Learning</p>
+            </div>
+            <h3 className="text-xl font-black tracking-tight" style={{ color: '#ffffff' }}>Practice Lab</h3>
+            <p className="mt-1 text-xs text-white/80 font-medium">5-minute daily smart drills</p>
+          </div>
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm">
+            <Flame className="h-6 w-6 text-white" />
+          </div>
+        </div>
+      </motion.section>
+
       {/* IELTS / SAT MOCK EXAMS */}
       <motion.section
         initial={{ opacity: 0, scale: 0.95 }}

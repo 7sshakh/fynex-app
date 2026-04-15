@@ -19,12 +19,14 @@ const tabComponents: Record<TabType, React.FC> = {
 };
 
 import MockTestSystem from './components/mock-tests/MockTestSystem';
+import PracticeSystem from './components/practice-lab/PracticeSystem';
 
 function AppContent() {
   const { isAuthenticated, theme } = useUser();
   const colors = getPalette(theme);
   const [activeTab, setActiveTab] = useState<TabType>('home');
   const [showMockTests, setShowMockTests] = useState(false);
+  const [showPracticeLab, setShowPracticeLab] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -37,12 +39,15 @@ function AppContent() {
       if (customEvent.detail) setActiveTab(customEvent.detail);
     };
     const handleOpenMocks = () => setShowMockTests(true);
+    const handleOpenPractice = () => setShowPracticeLab(true);
     
     window.addEventListener('fynex:navigate', handleNavigate);
     window.addEventListener('fynex:openMockTests', handleOpenMocks);
+    window.addEventListener('fynex:openPractice', handleOpenPractice);
     return () => {
       window.removeEventListener('fynex:navigate', handleNavigate);
       window.removeEventListener('fynex:openMockTests', handleOpenMocks);
+      window.removeEventListener('fynex:openPractice', handleOpenPractice);
     };
   }, []);
 
@@ -69,6 +74,7 @@ function AppContent() {
       
       <AnimatePresence>
         {showMockTests && <MockTestSystem onClose={() => setShowMockTests(false)} />}
+        {showPracticeLab && <PracticeSystem onClose={() => setShowPracticeLab(false)} />}
       </AnimatePresence>
     </div>
   );
