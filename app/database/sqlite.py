@@ -870,6 +870,19 @@ class Database:
             )
             """
         )
+        await self.connection.execute(
+            """
+            CREATE TABLE IF NOT EXISTS otp_codes (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                phone_number TEXT NOT NULL,
+                telegram_id INTEGER,
+                code TEXT NOT NULL,
+                is_used INTEGER NOT NULL DEFAULT 0,
+                created_at TEXT NOT NULL,
+                expires_at TEXT NOT NULL
+            )
+            """
+        )
         await self._run_migrations()
         await self.seed_lessons()
         await self.seed_admin_settings()
@@ -1155,6 +1168,7 @@ class Database:
             "exam_sessions",
             "exam_security_events",
             "certificates",
+            "otp_codes",
         ]
         for table in tables:
             column = "user_id" if table != "exam_module_results" else None
@@ -1164,8 +1178,72 @@ class Database:
                     (user_id,),
                 )
                 continue
+            if table == "otp_codes":
+                user = await self.get_user_by_id(user_id)
+                if user and user["phone_number"]:
+                    await self.connection.execute("DELETE FROM otp_codes WHERE phone_number = ?", (user["phone_number"],))
+                continue
             await self.connection.execute(f"DELETE FROM {table} WHERE {column} = ?", (user_id,))
         await self.connection.commit()
+
+    async def save_otp_code(self, phone_number: str, code: str, telegram_id: int | None = None, ttl_seconds: int = 120) -> None:
+        assert self.connection is not None
+        now = datetime.utcnow()
+        expires_at = now + timedelta(seconds=max(30, ttl_seconds))
+        await self.connection.execute(
+            """
+            UPDATE otp_codes
+            SET is_used = 1
+            WHERE phone_number = ? AND is_used = 0
+            """,
+            (phone_number,),
+        )
+        await self.connection.execute(
+            """
+            INSERT INTO otp_codes (phone_number, telegram_id, code, is_used, created_at, expires_at)
+            VALUES (?, ?, ?, 0, ?, ?)
+            """,
+            (
+                phone_number,
+                telegram_id,
+                code,
+                now.isoformat(timespec="seconds"),
+                expires_at.isoformat(timespec="seconds"),
+            ),
+        )
+        await self.connection.commit()
+
+    async def verify_otp_code(self, phone_number: str, code: str) -> tuple[bool, str]:
+        assert self.connection is not None
+        cursor = await self.connection.execute(
+            """
+            SELECT id, code, expires_at, is_used
+            FROM otp_codes
+            WHERE phone_number = ?
+            ORDER BY id DESC
+            LIMIT 1
+            """,
+            (phone_number,),
+        )
+        row = await cursor.fetchone()
+        if row is None:
+            return False, "not_found"
+        if int(row["is_used"] or 0) == 1:
+            return False, "used"
+        try:
+            expires_at = datetime.fromisoformat(str(row["expires_at"]))
+        except ValueError:
+            return False, "expired"
+        if datetime.utcnow() > expires_at:
+            return False, "expired"
+        if str(row["code"]) != code:
+            return False, "invalid"
+        await self.connection.execute(
+            "UPDATE otp_codes SET is_used = 1 WHERE id = ?",
+            (int(row["id"]),),
+        )
+        await self.connection.commit()
+        return True, "ok"
 
     async def update_user_free_time(self, user_id: int, free_time: str) -> None:
         assert self.connection is not None

@@ -3,7 +3,6 @@ from __future__ import annotations
 import json
 import os
 import re
-import time
 import urllib.parse
 import urllib.request
 from contextlib import asynccontextmanager
@@ -247,7 +246,6 @@ class OTPVerifyPayload(BaseModel):
 
 
 _CHAT_STORE_PATH = "/tmp/fynex_chat.json"
-_OTP_STORE_PATH = "/tmp/fynex_otp.json"
 
 
 def _load_chat_store() -> dict:
@@ -260,19 +258,6 @@ def _load_chat_store() -> dict:
 
 def _save_chat_store(data: dict) -> None:
     with open(_CHAT_STORE_PATH, "w") as f:
-        json.dump(data, f)
-
-
-def _load_otp_store() -> dict:
-    try:
-        with open(_OTP_STORE_PATH, "r") as f:
-            return json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
-        return {}
-
-
-def _save_otp_store(data: dict) -> None:
-    with open(_OTP_STORE_PATH, "w") as f:
         json.dump(data, f)
 
 
@@ -790,9 +775,7 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
         if not re.fullmatch(r"\+998\d{9}", phone):
             raise HTTPException(status_code=400, detail="Phone must match +998XXXXXXXXX")
         code = f"{int.from_bytes(os.urandom(2), 'big') % 900000 + 100000:06d}"
-        store = _load_otp_store()
-        store[phone] = {"code": code, "created_at": int(time.time())}
-        _save_otp_store(store)
+        await db.save_otp_code(phone, code, payload.telegram_id, ttl_seconds=120)
 
         token = os.getenv("DATA_BOT_TOKEN", "").strip() or os.getenv("BOT_TOKEN", "").strip()
         sent = False
@@ -810,19 +793,8 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
         code = payload.code.strip()
         if code == "123456":
             return {"ok": True, "demo": True}
-        store = _load_otp_store()
-        row = store.get(phone)
-        if not row:
-            return {"ok": False, "reason": "not_found"}
-        created_at = int(row.get("created_at") or 0)
-        now = int(time.time())
-        if now - created_at > 120:
-            return {"ok": False, "reason": "expired"}
-        if row.get("code") != code:
-            return {"ok": False, "reason": "invalid"}
-        store.pop(phone, None)
-        _save_otp_store(store)
-        return {"ok": True, "demo": False}
+        ok, reason = await db.verify_otp_code(phone, code)
+        return {"ok": ok, "reason": reason, "demo": False}
 
     @app.get("/api/app/bootstrap")
     async def app_bootstrap(
