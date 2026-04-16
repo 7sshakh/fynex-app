@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Bell, BookOpen, ChevronRight, Flame, Play, Trophy, X, Zap, CheckCircle2, Gift, TrendingUp, Megaphone, GraduationCap } from 'lucide-react';
@@ -8,6 +8,20 @@ import { hideNav, showNav } from './BottomNav';
 import { getPalette } from '../theme';
 import { Roadmap } from '../lib/roadmap';
 import { ProgressData, markTaskComplete, updateDailyAccountability, saveProgress } from '../lib/progress';
+import AIMentorPanel from './AIMentorPanel';
+import {
+  AchievementPopup,
+  DailyFact,
+  ExamCountdown,
+  FocusTimerWidget,
+  MoodSensor,
+  QuickFlashButton,
+  SleepGuard,
+  SmartBreakOverlay,
+  WeeklyReport,
+  YesterdayRecap,
+} from './features/HomeWidgets';
+import { checkTimeBasedAchievements, loadFeatures, updateFeatures, weekKey } from '../lib/featureStore';
 
 const mockNotifications = [
   { id: '1', icon: Gift, title: 'Fynex 3.0 yangilandi!', desc: 'Yangi kurslar va yaxshilangan dizayn sizni kutmoqda.', time: 'Bugun', accent: '#c3ff2e' },
@@ -20,6 +34,24 @@ export default function HomePage() {
   const { user, theme } = useUser();
   const colors = getPalette(theme);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showAiMentor, setShowAiMentor] = useState(false);
+  const [showMood, setShowMood] = useState(false);
+  const [showBreak, setShowBreak] = useState(false);
+  const [showSleepGuard, setShowSleepGuard] = useState(false);
+  const [hideWeeklyReport, setHideWeeklyReport] = useState(false);
+  const [hideYesterdayRecap, setHideYesterdayRecap] = useState(false);
+  const [achievementToast, setAchievementToast] = useState<{ title: string; icon: string } | null>(null);
+  const [focusOnly, setFocusOnly] = useState<boolean>(() => localStorage.getItem('fynex_focus_only') === 'true');
+  const [focusSubjects, setFocusSubjects] = useState<string[]>(() => {
+    try {
+      const raw = localStorage.getItem('fynex_focus_subjects');
+      if (!raw) return ['english'];
+      const parsed = JSON.parse(raw) as string[];
+      return parsed.length ? parsed : ['english'];
+    } catch {
+      return ['english'];
+    }
+  });
   
   const [roadmap, setRoadmap] = useState<Roadmap | null>(null);
   const [progress, setProgress] = useState<ProgressData | null>(null);
@@ -29,6 +61,50 @@ export default function HomePage() {
     if (r) setRoadmap(JSON.parse(r));
     const p = localStorage.getItem('fynex_progress');
     if (p) setProgress(JSON.parse(p));
+  }, []);
+
+  useEffect(() => {
+    const features = loadFeatures();
+    const today = new Date().toISOString().slice(0, 10);
+    setHideWeeklyReport(features.weeklyReportDismissed === weekKey());
+    setHideYesterdayRecap(features.yesterdayDismissed === today);
+
+    if (!features.mood.setAt || features.mood.setAt !== today) {
+      const id = window.setTimeout(() => setShowMood(true), 850);
+      return () => window.clearTimeout(id);
+    }
+    return undefined;
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('fynex_focus_only', String(focusOnly));
+    localStorage.setItem('fynex_focus_subjects', JSON.stringify(focusSubjects));
+    window.dispatchEvent(
+      new CustomEvent('fynex:focus-settings', {
+        detail: { focusOnly, focusSubjects },
+      }),
+    );
+  }, [focusOnly, focusSubjects]);
+
+  useEffect(() => {
+    const ach = checkTimeBasedAchievements();
+    if (ach) {
+      setAchievementToast({ title: ach.title, icon: ach.icon });
+    }
+  }, []);
+
+  useEffect(() => {
+    const tick = window.setInterval(() => {
+      const now = new Date();
+      if (now.getHours() >= 23 && now.getMinutes() >= 35) {
+        setShowSleepGuard(true);
+      }
+      const lastBreak = loadFeatures().lastBreakTime;
+      if (Date.now() - lastBreak > 35 * 60 * 1000) {
+        setShowBreak(true);
+      }
+    }, 15000);
+    return () => window.clearInterval(tick);
   }, []);
 
   const completeTask = (dayIdx: number, taskIdx: number) => {
@@ -61,6 +137,14 @@ export default function HomePage() {
   const firstName = user?.name?.trim().split(/\s+/)[0] || 'User';
   const featuredCourse =
     mockCourses.find((course) => !user?.completedCourses.includes(course.id)) ?? mockCourses[0];
+
+  const adaptiveRecommendations = useMemo(() => {
+    const focusSet = new Set(focusSubjects);
+    const list = mockCourses
+      .filter((course) => !focusOnly || focusSet.has(course.category))
+      .slice(0, 3);
+    return list;
+  }, [focusOnly, focusSubjects]);
 
   const featuredProgress = featuredCourse
     ? Math.round(((user?.completedCourses.includes(featuredCourse.id) ? featuredCourse.lessons.length : 0) / featuredCourse.lessons.length) * 100)
@@ -200,6 +284,123 @@ export default function HomePage() {
           </button>
         </div>
       </motion.section>
+
+      <DailyFact />
+      {!hideYesterdayRecap && (
+        <YesterdayRecap
+          onDismiss={() => {
+            updateFeatures((s) => ({ ...s, yesterdayDismissed: new Date().toISOString().slice(0, 10) }));
+            setHideYesterdayRecap(true);
+          }}
+        />
+      )}
+      {!hideWeeklyReport && (
+        <WeeklyReport
+          onDismiss={() => {
+            updateFeatures((s) => ({ ...s, weeklyReportDismissed: weekKey() }));
+            setHideWeeklyReport(true);
+          }}
+        />
+      )}
+
+      <motion.section
+        initial={{ opacity: 0, y: 18 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.12 }}
+        className="mb-6 rounded-[28px] p-5"
+        style={{ background: colors.surfaceContainer }}
+      >
+        <div className="mb-4 flex items-center justify-between">
+          <h3 className="text-sm font-black uppercase tracking-[0.24em]" style={{ color: colors.primary }}>
+            Focus Path
+          </h3>
+          <button
+            onClick={() => setFocusOnly((current) => !current)}
+            className="rounded-full px-3 py-1 text-[11px] font-black uppercase"
+            style={{
+              background: focusOnly ? `${colors.primary}22` : colors.surfaceContainerHighest,
+              color: focusOnly ? colors.primary : colors.onSurfaceVariant,
+            }}
+          >
+            {focusOnly ? 'Faqat kerakli fanlar' : 'Barcha fanlar'}
+          </button>
+        </div>
+
+        <div className="mb-4 flex flex-wrap gap-2">
+          {[
+            { id: 'english', label: 'Ingliz' },
+            { id: 'math', label: 'Matematika' },
+            { id: 'programming', label: 'Dasturlash' },
+            { id: 'russian', label: 'Rus tili' },
+            { id: 'physics', label: 'Fizika' },
+            { id: 'logic', label: 'Mantiq' },
+          ].map((item) => {
+            const active = focusSubjects.includes(item.id);
+            return (
+              <button
+                key={item.id}
+                onClick={() => {
+                  setFocusSubjects((current) => {
+                    if (active) {
+                      const next = current.filter((id) => id !== item.id);
+                      return next.length ? next : ['english'];
+                    }
+                    return [...current, item.id];
+                  });
+                }}
+                className="rounded-full px-3 py-1.5 text-xs font-bold"
+                style={{
+                  background: active ? colors.primary : colors.surfaceContainerLow,
+                  color: active ? colors.onPrimary : colors.onSurfaceVariant,
+                }}
+              >
+                {item.label}
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="space-y-2">
+          {adaptiveRecommendations.map((course) => (
+            <div key={course.id} className="flex items-center justify-between rounded-2xl px-3 py-2" style={{ background: colors.surfaceContainerLow }}>
+              <div>
+                <p className="text-sm font-bold" style={{ color: colors.onSurface }}>{course.title}</p>
+                <p className="text-xs" style={{ color: colors.onSurfaceVariant }}>{course.description}</p>
+              </div>
+              <button
+                className="rounded-full px-3 py-1.5 text-xs font-black uppercase"
+                style={{ background: `${colors.primary}22`, color: colors.primary }}
+                onClick={() => window.dispatchEvent(new CustomEvent('fynex:navigate', { detail: 'courses' }))}
+              >
+                Ochish
+              </button>
+            </div>
+          ))}
+        </div>
+      </motion.section>
+
+      <motion.section
+        initial={{ opacity: 0, y: 18 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.14 }}
+        className="mb-6 overflow-hidden rounded-[24px] p-5 cursor-pointer"
+        style={{ background: 'linear-gradient(120deg, #0f172a, #1d4ed8)', color: '#ffffff' }}
+        onClick={() => setShowAiMentor(true)}
+      >
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-[10px] font-black uppercase tracking-[0.24em] text-blue-200/80">AI Mentor</p>
+            <h3 className="mt-1 text-xl font-black">Aniq fan bo'yicha tez yordam</h3>
+            <p className="mt-1 text-xs text-blue-100/70">Mavzudan chiqmaydi, faqat siz tanlagan yo'nalishda yordam beradi.</p>
+          </div>
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/15">
+            <Gift className="h-6 w-6 text-white" />
+          </div>
+        </div>
+      </motion.section>
+
+      <QuickFlashButton />
+      <FocusTimerWidget />
 
       {/* DRILLS AND PRACTICE LAB */}
       <motion.section
@@ -484,6 +685,37 @@ export default function HomePage() {
         </AnimatePresence>,
         document.body
       )}
+
+      <AnimatePresence>
+        {showMood && <MoodSensor onClose={() => setShowMood(false)} />}
+        {showBreak && (
+          <SmartBreakOverlay
+            onClose={() => {
+              setShowBreak(false);
+              updateFeatures((s) => ({ ...s, lastBreakTime: Date.now() }));
+            }}
+          />
+        )}
+        {showSleepGuard && (
+          <SleepGuard
+            onContinue={() => setShowSleepGuard(false)}
+            onSleep={() => {
+              setShowSleepGuard(false);
+              updateFeatures((s) => ({ ...s, lastBreakTime: Date.now() }));
+            }}
+          />
+        )}
+        {achievementToast && (
+          <AchievementPopup
+            title={achievementToast.title}
+            icon={achievementToast.icon}
+            onClose={() => setAchievementToast(null)}
+          />
+        )}
+      </AnimatePresence>
+
+      <ExamCountdown />
+      <AIMentorPanel isOpen={showAiMentor} onClose={() => setShowAiMentor(false)} />
     </div>
   );
 }

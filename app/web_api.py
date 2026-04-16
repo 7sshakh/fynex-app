@@ -1210,6 +1210,8 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
             "1. Faqat Fynex platformasi va ta'lim bilan bog'liq savollarga javob ber.\n"
             "2. Agar foydalanuvchi Fynex bilan UMUMAN bog'liq bo'lmagan savol bersa (masalan: ob-havo, siyosat, shaxsiy maslahat, boshqa ilovalar), "
             "JAVOB BERMA. Buning o'rniga muloyimlik bilan ayt: 'Men faqat Fynex platformasi bo'yicha yordam bera olaman. Fynex bilan bog'liq savolingiz bo'lsa, bemalol yozing!'\n"
+            "2.1. 18+ yoki erotik mazmundagi savollarga umuman javob bermagin. "
+            "Qisqa va muloyim rad javobi berib, suhbatni ta'lim mavzusiga qaytar.\n"
             "3. 'Javob bera olmayman' kabi salbiy iboralarni ishlatma.\n"
             "4. Javoblar qisqa, aniq va do'stona bo'lsin. O'zbek tilida javob ber.\n"
             "5. Foydalanuvchi operator/admin bilan bog'lanishni xohlasa, 'Qo'shimcha yordam kerak bo'lsa, Telegram orqali murojaat qiling yoki xabar qoldiring' de. HECH QACHON konkret username yoki akkaunt nomi aytma.\n"
@@ -1222,6 +1224,8 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
 
         def fallback_answer(text: str) -> str:
             text_l = text.lower()
+            if re.search(r"\b(sex|porn|xxx|nude|erotik|эрот|18\+|onlyfans|intim)\b", text_l, re.I):
+                return "Bu mavzuda yordam bera olmayman. Ta'lim va dars bo'yicha savol bering, mamnuniyat bilan yordam beraman."
             if "kod" in text_l or "sms" in text_l:
                 return "SMS kodi kechiksa, ilovani yopib qayta oching, internetni tekshiring va 1-2 daqiqa kuting. Baribir kelmasa, qayta yuborish tugmasini bosing."
             if "login" in text_l or "kirish" in text_l or "ro'yxat" in text_l:

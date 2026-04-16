@@ -15,6 +15,17 @@ export default function CoursesPage() {
   const colors = getPalette(theme);
   const [activeCategory, setActiveCategory] = useState('all');
   const [query, setQuery] = useState('');
+  const [focusOnly, setFocusOnly] = useState<boolean>(() => localStorage.getItem('fynex_focus_only') === 'true');
+  const [focusSubjects, setFocusSubjects] = useState<string[]>(() => {
+    try {
+      const raw = localStorage.getItem('fynex_focus_subjects');
+      if (!raw) return ['english'];
+      const parsed = JSON.parse(raw) as string[];
+      return parsed.length ? parsed : ['english'];
+    } catch {
+      return ['english'];
+    }
+  });
   const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
   const [startedLessons, setStartedLessons] = useState<string[]>([]);
   const [activeLesson, setActiveLesson] = useState<{ id: string; title: string; courseId: string } | null>(null);
@@ -48,6 +59,7 @@ export default function CoursesPage() {
 
   const filteredCourses = useMemo(() => {
     return mockCourses.filter((course) => {
+      if (focusOnly && !focusSubjects.includes(course.category)) return false;
       const categoryMatch = activeCategory === 'all' || course.category === activeCategory;
       const queryMatch =
         !query.trim() ||
@@ -55,7 +67,7 @@ export default function CoursesPage() {
         course.description.toLowerCase().includes(query.toLowerCase());
       return categoryMatch && queryMatch;
     });
-  }, [activeCategory, query]);
+  }, [activeCategory, query, focusOnly, focusSubjects]);
 
   useEffect(() => {
     document.body.style.overflow = selectedCourse ? 'hidden' : '';
@@ -68,6 +80,17 @@ export default function CoursesPage() {
   useEffect(() => {
     if (activeLesson) hideNav();
   }, [activeLesson]);
+
+  useEffect(() => {
+    const handler = (event: Event) => {
+      const custom = event as CustomEvent<{ focusOnly: boolean; focusSubjects: string[] }>;
+      if (!custom.detail) return;
+      setFocusOnly(custom.detail.focusOnly);
+      setFocusSubjects(custom.detail.focusSubjects || []);
+    };
+    window.addEventListener('fynex:focus-settings', handler);
+    return () => window.removeEventListener('fynex:focus-settings', handler);
+  }, []);
 
   const startLesson = (courseId: string, lessonId: string) => {
     const course = mockCourses.find((item) => item.id === courseId);
@@ -129,6 +152,11 @@ export default function CoursesPage() {
           <p className="mb-1 text-sm font-medium" style={{ color: colors.onSurfaceVariant }}>
             O‘rganishni boshlang
           </p>
+          {focusOnly && (
+            <p className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: colors.primary }}>
+              Focus mode: {focusSubjects.map((item) => item.toUpperCase()).join(' • ')}
+            </p>
+          )}
         </div>
 
         <label className="relative block">
