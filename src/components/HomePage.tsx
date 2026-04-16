@@ -162,40 +162,39 @@ export default function HomePage() {
       <AnimatePresence>
         {showFactBanner && (
           <motion.section
-            initial={{ opacity: 0, scale: 0.95, y: 10 }}
+            initial={{ opacity: 0, scale: 0.96, y: 8 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, height: 0, marginBottom: 0, padding: 0 }}
-            transition={{ duration: 0.3 }}
-            className="mb-6 relative overflow-hidden rounded-[28px] p-6 shadow-xl shadow-cyan-900/10"
-            style={{ background: 'linear-gradient(135deg, #0891b2, #164e63)', color: '#ffffff' }}
+            exit={{ opacity: 0, scale: 0.96, height: 0, marginBottom: 0, padding: 0 }}
+            transition={{ duration: 0.25 }}
+            className="mb-6 relative overflow-hidden rounded-[24px] p-5 border"
+            style={{ 
+              background: 'linear-gradient(135deg, rgba(8,145,178,0.12), rgba(22,78,99,0.04))', 
+              borderColor: 'rgba(8,145,178,0.2)' 
+            }}
           >
-            <div className="absolute top-0 right-0 p-4 z-20">
+            <div className="absolute top-0 right-0 p-3 z-20">
               <button 
                 onClick={() => setShowFactBanner(false)}
-                className="rounded-full bg-white/10 p-1.5 backdrop-blur hover:bg-white/20 transition-colors"
+                className="rounded-full p-1.5 transition-colors hover:bg-cyan-500/10 active:scale-95"
               >
-                <X className="h-4 w-4 text-white/80" />
+                <X className="h-4 w-4 text-cyan-400/60" />
               </button>
             </div>
             
-            <div className="absolute right-[-10%] top-[-20%] h-40 w-40 rounded-full bg-cyan-400/20 blur-2xl pointer-events-none" />
-            <div className="absolute left-[-10%] bottom-[-20%] h-32 w-32 rounded-full bg-cyan-300/10 blur-2xl pointer-events-none" />
-            
-            <div className="relative z-10 flex flex-col items-start">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="rounded-full bg-cyan-300 px-2 py-0.5 text-[9px] font-black uppercase tracking-widest text-cyan-950">
-                  Quick Fact
-                </span>
-                <Clock className="w-3.5 h-3.5 text-cyan-200" />
+            <div className="relative z-10 flex gap-4">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[18px]" style={{ background: 'linear-gradient(135deg, rgba(8,145,178,0.2), rgba(8,145,178,0.05))' }}>
+                <Clock className="w-6 h-6 text-cyan-300" />
               </div>
               
-              <h3 className="mb-2 text-2xl font-black tracking-[-0.04em] leading-tight text-white drop-shadow-md">
-                O'rganish uchun 2 soat shart emas!
-              </h3>
-              
-              <p className="text-[13px] leading-[1.6] text-cyan-50 font-medium">
-                O'quv markazlaridagi zerikarli 2 soatlik darslarni unuting. Fynex bilan navbatda turganda, avtobusda yoki ovqatlanish paytida — atigi <b className="text-white">5 daqiqada</b> yangi bilim oling. Biz bilan har bir daqiqa IELTS natijangizga ishlaydi.
-              </p>
+              <div className="flex flex-col pr-6">
+                <h3 className="mb-1 text-[15px] font-bold tracking-tight text-cyan-50">
+                  Vaqtingizni qadrlaymiz 🤍
+                </h3>
+                
+                <p className="text-[12px] leading-[1.6] text-cyan-100/70 font-medium tracking-wide">
+                  Miya uzoq darsdan ko'ra, kuniga faqat <b className="text-cyan-300 font-bold">5 daqiqalik</b> qisqa mashqlarni <b className="text-cyan-300 font-bold">3 barobar</b> yaxshiroq eslab qoladi. Fynex bilan charchoqsiz, qahva ichib yoki yo'lda ketayotib ham, doimiy o'sishga erishasiz.
+                </p>
+              </div>
             </div>
           </motion.section>
         )}
