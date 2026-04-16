@@ -4,17 +4,20 @@ import {
   ArrowLeft, ArrowRight, Rocket, BrainCircuit,
   GraduationCap, BookOpen, Target, Users,
   Languages, Code2, TrendingUp,
-  Globe, MapPin, User, CheckCircle2,
+  MapPin, User, CheckCircle2, Building2
 } from 'lucide-react';
 import { useUser } from '../context/UserContext';
 
-type Step = 'phone' | 'otp' | 'name' | 'userType' | 'grade' | 'goal' | 'target' | 'summary' | 'loading';
+type Step = 'phone' | 'otp' | 'name' | 'userType' | 'grade' | 'subject' | 'offlineCourse' | 'centerPicker' | 'centerDuration' | 'level' | 'advice' | 'summary' | 'loading';
 
 interface OnboardingData {
   userType: 'school' | 'university' | 'applicant' | 'other' | '';
   grade: '1-4' | '5-8' | '9' | '10' | '11' | '';
-  goal: 'university' | 'english' | 'programming' | 'school' | '';
-  target: { type: 'local' | 'abroad' | ''; university: string };
+  subject: string;
+  offlineCourse: 'no_fynex' | 'plan_to_go' | 'currently_going' | '';
+  centerName: string;
+  centerDuration: string;
+  currentLevel: string;
 }
 
 const USER_TYPES = [
@@ -32,23 +35,47 @@ const GRADES = [
   { id: '11' as const, label: '11-sinf' },
 ];
 
-const GOALS = [
-  { id: 'university' as const, label: "Imtihonlardan o'tish", icon: GraduationCap, desc: 'Universitetga kirish' },
-  { id: 'english' as const, label: "Ingliz tilini o'rganish", icon: Languages, desc: 'IELTS / General English' },
-  { id: 'programming' as const, label: "Dasturlashni o'rganish", icon: Code2, desc: 'IT sohasida ishlash' },
-  { id: 'school' as const, label: 'Maktab natijalarini yaxshilash', icon: TrendingUp, desc: 'Baholarni oshirish' },
+const SUBJECTS = [
+  { id: 'english', label: "Ingliz tili (IELTS / General)", icon: Languages, desc: "Chet tili, xorijga ketish" },
+  { id: 'programming', label: "Dasturlash", icon: Code2, desc: "IT va texnologiyalar" },
+  { id: 'russian', label: "Rus tili", icon: Languages, desc: "Muloqot va biznes uchun" },
+  { id: 'math', label: "Matematika", icon: TrendingUp, desc: "Aniq fanlar va imtihonlar" },
 ];
 
-const ABROAD_UNIS = ['Harvard', 'MIT', 'Stanford', 'Oxford', 'Cambridge'];
-const LOCAL_UNIS = [
-  'Toshkent Davlat Universiteti', 'INHA University Tashkent', 'Webster University',
-  'Turin Politexnika Universiteti', 'Toshkent Tibbiyot Akademiyasi', 'Toshkent Moliya Instituti',
+const OFFLINE_CHOICES = [
+  { id: 'no_fynex' as const, label: "Yo'q, faqat Fynex", icon: Rocket, desc: "Noldan Fynex yordamida o'rganaman" },
+  { id: 'plan_to_go' as const, label: "Endi boraman", icon: MapPin, desc: "Yaxshi joy qidiryapman" },
+  { id: 'currently_going' as const, label: "Hozirda boraman", icon: Building2, desc: "O'quv markazida o'qiyman" },
+];
+
+const CENTERS = [
+  { id: 'Inter Nation', name: 'Inter Nation', colors: ['#D60000', '#FF3B30'] },
+  { id: 'Cambridge', name: 'Cambridge', colors: ['#002B5E', '#0055A4'] },
+  { id: 'Master IELTS', name: 'Master IELTS', colors: ['#FACC15', '#CA8A04'] },
+  { id: 'Everest School', name: 'Everest School', colors: ['#10B981', '#059669'] },
+  { id: 'Registan', name: 'Registan LC', colors: ['#EF4444', '#DC2626'] },
+];
+
+const DURATIONS = [
+  { id: '<1', label: "1 oydan kam" },
+  { id: '1-3', label: "1—3 oy" },
+  { id: '3-6', label: "3—6 oy" },
+  { id: '6+', label: "6 oydan ko'p" },
+];
+
+const LEVELS = [
+  { id: 'Beginner', label: 'Beginner (Noldan)' },
+  { id: 'Elementary', label: 'Elementary (A1-A2)' },
+  { id: 'Pre-Intermediate', label: 'Pre-Intermediate (B1)' },
+  { id: 'Intermediate', label: 'Intermediate (B1+)' },
+  { id: 'Upper-Intermediate', label: 'Upper-Inter (B2)' },
+  { id: 'Advanced', label: 'Advanced / IELTS (C1+)' },
 ];
 
 const LABELS: Record<string, Record<string, string>> = {
   userType: { school: "Maktab o'quvchisi", university: 'Talaba', applicant: 'Abituriyent', other: 'Boshqa' },
-  goal: { university: "Imtihonlardan o'tish", english: "Ingliz tili (IELTS)", programming: "Dasturlash", school: "Maktab natijalari" },
   grade: { '1-4': '1–4 sinf', '5-8': '5–8 sinf', '9': '9-sinf', '10': '10-sinf', '11': '11-sinf' },
+  subject: { english: "Ingliz tili", programming: "Dasturlash", russian: "Rus tili", math: "Matematika" },
 };
 
 export default function LoginPage() {
@@ -59,8 +86,8 @@ export default function LoginPage() {
   const [name, setName] = useState('');
   const [otpStatus, setOtpStatus] = useState<'idle' | 'checking' | 'success' | 'error'>('idle');
   const [otpAttempt, setOtpAttempt] = useState(0);
-  const [customUni, setCustomUni] = useState('');
-  const [ob, setOb] = useState<OnboardingData>({ userType: '', grade: '', goal: '', target: { type: '', university: '' } });
+  const [searchCenter, setSearchCenter] = useState('');
+  const [ob, setOb] = useState<OnboardingData>({ userType: '', grade: '', subject: '', offlineCourse: '', centerName: '', centerDuration: '', currentLevel: '' });
 
   const phoneRef = useRef<HTMLInputElement | null>(null);
   const nameRef = useRef<HTMLInputElement | null>(null);
@@ -71,11 +98,21 @@ export default function LoginPage() {
   const allSteps = useMemo<Step[]>(() => {
     const s: Step[] = ['phone', 'otp', 'name', 'userType'];
     if (ob.userType === 'school') s.push('grade');
-    s.push('goal');
-    if (ob.goal === 'university') s.push('target');
+    s.push('subject');
+    
+    if (ob.subject === 'english') {
+      s.push('offlineCourse');
+      if (ob.offlineCourse === 'currently_going') {
+        s.push('centerPicker', 'centerDuration', 'level');
+      } else if (ob.offlineCourse === 'plan_to_go') {
+        s.push('level');
+      }
+      s.push('advice');
+    }
+    
     s.push('summary');
     return s;
-  }, [ob.userType, ob.goal]);
+  }, [ob]);
 
   const idx = allSteps.indexOf(step);
   const isOnboarding = idx >= 3;
@@ -107,8 +144,12 @@ export default function LoginPage() {
       case 'name': return name.trim().length >= 2;
       case 'userType': return !!ob.userType;
       case 'grade': return !!ob.grade;
-      case 'goal': return !!ob.goal;
-      case 'target': return !!ob.target.type && !!ob.target.university;
+      case 'subject': return !!ob.subject;
+      case 'offlineCourse': return !!ob.offlineCourse;
+      case 'centerPicker': return !!ob.centerName;
+      case 'centerDuration': return !!ob.centerDuration;
+      case 'level': return !!ob.currentLevel;
+      case 'advice': return true;
       case 'summary': return true;
       default: return false;
     }
@@ -351,17 +392,17 @@ export default function LoginPage() {
               </motion.section>
             )}
 
-            {/* ═══ GOAL ═══ */}
-            {step === 'goal' && (
-              <motion.section key="goal" {...slide} className="flex flex-col">
-                <h2 className="mb-2 text-3xl font-black tracking-[-0.04em]">{displayName}, Fynex sizga nima uchun kerak? 🎯</h2>
-                <p className="mb-8 text-sm text-white/60">Asosiy maqsadingizni tanlang</p>
+            {/* ═══ SUBJECT (formerly Goal) ═══ */}
+            {step === 'subject' && (
+              <motion.section key="subject" {...slide} className="flex flex-col">
+                <h2 className="mb-2 text-3xl font-black tracking-[-0.04em]">{displayName}, nimani o'rganmoqchisiz? 🎯</h2>
+                <p className="mb-8 text-sm text-white/60">Fynex orqali qaysi fanni kuchaytiramiz?</p>
                 <div className="flex flex-col gap-3">
-                  {GOALS.map((g) => {
+                  {SUBJECTS.map((g) => {
                     const Icon = g.icon;
-                    const sel = ob.goal === g.id;
+                    const sel = ob.subject === g.id;
                     return (
-                      <motion.button key={g.id} whileTap={{ scale: 0.98 }} onClick={() => setOb((d) => ({ ...d, goal: g.id, target: g.id !== 'university' ? { type: '', university: '' } : d.target }))} className="flex items-center gap-4 rounded-[20px] border px-5 py-4 text-left transition-all" style={selRow(sel)}>
+                      <motion.button key={g.id} whileTap={{ scale: 0.98 }} onClick={() => setOb((d) => ({ ...d, subject: g.id, offlineCourse: '', centerName: '', centerDuration: '', currentLevel: '' }))} className="flex items-center gap-4 rounded-[20px] border px-5 py-4 text-left transition-all" style={selRow(sel)}>
                         <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl" style={{ background: sel ? 'linear-gradient(135deg, rgba(195,255,46,0.3), rgba(195,255,46,0.1))' : 'rgba(255,255,255,0.06)' }}>
                           <Icon className="h-6 w-6" style={{ color: sel ? '#c3ff2e' : 'rgba(255,255,255,0.45)' }} />
                         </div>
@@ -376,50 +417,130 @@ export default function LoginPage() {
               </motion.section>
             )}
 
-            {/* ═══ TARGET ═══ */}
-            {step === 'target' && (
-              <motion.section key="target" {...slide} className="flex flex-col">
-                <h2 className="mb-2 text-3xl font-black tracking-[-0.04em]">{displayName}, qayerda o'qimoqchisiz? 🌍</h2>
-                <p className="mb-6 text-sm text-white/60">Universitetingizni tanlang</p>
-
-                <div className="mb-6 flex gap-3">
-                  {([{ id: 'local' as const, label: "O'zbekiston", icon: MapPin }, { id: 'abroad' as const, label: 'Xorijda', icon: Globe }]).map((o) => { const Icon = o.icon; const sel = ob.target.type === o.id; return (
-                    <motion.button key={o.id} whileTap={{ scale: 0.97 }} onClick={() => { setOb((d) => ({ ...d, target: { type: o.id, university: '' } })); setCustomUni(''); }} className="flex flex-1 items-center justify-center gap-2 rounded-2xl border py-4 font-bold transition-all" style={{ background: sel ? 'linear-gradient(135deg, rgba(195,255,46,0.16), rgba(195,255,46,0.04))' : 'rgba(255,255,255,0.04)', borderColor: sel ? 'rgba(195,255,46,0.5)' : 'rgba(255,255,255,0.08)', color: sel ? '#c3ff2e' : 'rgba(255,255,255,0.7)' }}>
-                      <Icon className="h-5 w-5" />{o.label}
-                    </motion.button>
-                  ); })}
+            {/* ═══ OFFLINE COURSE ═══ */}
+            {step === 'offlineCourse' && (
+              <motion.section key="offlineCourse" {...slide} className="flex flex-col">
+                <h2 className="mb-2 text-3xl font-black tracking-[-0.04em]">{displayName}, ingliz tili kursiga borasizmi? 🏫</h2>
+                <p className="mb-8 text-sm text-white/60">Ofline ta'lim markaziga borishingizni belgilang</p>
+                <div className="flex flex-col gap-3">
+                  {OFFLINE_CHOICES.map((c) => {
+                    const Icon = c.icon;
+                    const sel = ob.offlineCourse === c.id;
+                    return (
+                      <motion.button key={c.id} whileTap={{ scale: 0.98 }} onClick={() => setOb((d) => ({ ...d, offlineCourse: c.id, centerName: '', centerDuration: '', currentLevel: '' }))} className="flex items-center gap-4 rounded-[20px] border px-5 py-4 text-left transition-all" style={selRow(sel)}>
+                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl" style={{ background: sel ? 'linear-gradient(135deg, rgba(195,255,46,0.3), rgba(195,255,46,0.1))' : 'rgba(255,255,255,0.06)' }}>
+                          <Icon className="h-6 w-6" style={{ color: sel ? '#c3ff2e' : 'rgba(255,255,255,0.45)' }} />
+                        </div>
+                        <div>
+                          <div className="text-[15px] font-bold" style={{ color: sel ? '#c3ff2e' : 'rgba(255,255,255,0.9)' }}>{c.label}</div>
+                          <div className="mt-0.5 text-[12px] text-white/40">{c.desc}</div>
+                        </div>
+                      </motion.button>
+                    );
+                  })}
                 </div>
+              </motion.section>
+            )}
 
-                {ob.target.type && (
-                  <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.24 }} className="flex flex-col gap-2">
-                    {ob.target.type === 'abroad' && (
-                      <>
-                        <div className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-white/40">Mashhur universitetlar</div>
-                        <div className="flex flex-wrap gap-2 mb-3">
-                          {ABROAD_UNIS.map((u) => { const sel = ob.target.university === u; return (
-                            <motion.button key={u} whileTap={{ scale: 0.95 }} onClick={() => setOb((d) => ({ ...d, target: { ...d.target, university: u } }))} className="rounded-full border px-4 py-2 text-sm font-semibold transition-all" style={{ background: sel ? 'linear-gradient(135deg, #c3ff2e, #b2ed12)' : 'rgba(255,255,255,0.04)', borderColor: sel ? 'rgba(195,255,46,0.5)' : 'rgba(255,255,255,0.1)', color: sel ? '#0a0d09' : 'rgba(255,255,255,0.75)' }}>
-                              {u}
-                            </motion.button>
-                          ); })}
+            {/* ═══ CENTER PICKER ═══ */}
+            {step === 'centerPicker' && (
+              <motion.section key="centerPicker" {...slide} className="flex flex-col flex-1 h-full min-h-0 overflow-hidden">
+                <h2 className="mb-2 text-3xl font-black tracking-[-0.04em]">Qaysi o'quv markazida? 📍</h2>
+                <p className="mb-4 text-sm text-white/60">O'quv markazingizni tanlang yoki qidiring</p>
+                
+                <div className="mb-4 shrink-0">
+                  <input type="text" value={searchCenter} onChange={(e) => setSearchCenter(e.target.value)} placeholder="Markaz nomini yozing..." className="w-full rounded-2xl border border-white/10 bg-white/[0.05] px-4 py-3.5 text-sm font-medium focus:border-lime-300/40 focus:outline-none" />
+                </div>
+                
+                <div className="flex-1 overflow-y-auto space-y-3 pb-4 scrollbar-hide">
+                  {CENTERS.filter((c) => c.name.toLowerCase().includes(searchCenter.toLowerCase())).map((c) => {
+                    const sel = ob.centerName === c.name;
+                    return (
+                      <motion.button key={c.id} whileTap={{ scale: 0.98 }} onClick={() => setOb((d) => ({ ...d, centerName: c.name }))} className="flex items-center w-full gap-4 rounded-[20px] border px-4 py-3.5 transition-all text-left" style={selRow(sel)}>
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl font-black text-xl italic" style={{ background: `linear-gradient(135deg, ${c.colors[0]}, ${c.colors[1]})` }}>
+                          {c.name[0]}
                         </div>
-                        <div className="mb-1 text-xs font-bold uppercase tracking-[0.18em] text-white/40">Yoki boshqa</div>
-                        <div className="flex gap-2">
-                          <input type="text" value={customUni} onChange={(e) => setCustomUni(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && customUni.trim()) { e.preventDefault(); setOb((d) => ({ ...d, target: { ...d.target, university: customUni.trim() } })); } }} placeholder="Universitet nomi..." className="flex-1 rounded-2xl border border-white/10 bg-black/25 px-4 py-3 text-sm font-medium text-white placeholder:text-white/25 focus:border-lime-300/35 focus:outline-none" />
-                          <motion.button whileTap={{ scale: 0.95 }} onClick={() => { if (customUni.trim()) setOb((d) => ({ ...d, target: { ...d.target, university: customUni.trim() } })); }} disabled={!customUni.trim()} className="rounded-2xl px-4 py-3 text-sm font-bold transition-all disabled:opacity-30" style={{ background: 'linear-gradient(135deg, rgba(195,255,46,0.2), rgba(195,255,46,0.08))', color: '#c3ff2e', border: '1px solid rgba(195,255,46,0.2)' }}>OK</motion.button>
-                        </div>
-                      </>
-                    )}
-                    {ob.target.type === 'local' && (
-                      <>
-                        <div className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-white/40">Universitetni tanlang</div>
-                        {LOCAL_UNIS.map((u) => { const sel = ob.target.university === u; return (
-                          <motion.button key={u} whileTap={{ scale: 0.98 }} onClick={() => setOb((d) => ({ ...d, target: { ...d.target, university: u } }))} className="rounded-[18px] border px-5 py-3.5 text-left text-sm font-semibold transition-all" style={selRow(sel)}>
-                            {u}
-                          </motion.button>
-                        ); })}
-                      </>
-                    )}
-                  </motion.div>
+                        <span className="text-[15px] font-bold" style={{ color: sel ? '#c3ff2e' : 'rgba(255,255,255,0.9)' }}>{c.name}</span>
+                      </motion.button>
+                    );
+                  })}
+                  {searchCenter.length > 2 && !CENTERS.find(c => c.name.toLowerCase() === searchCenter.trim().toLowerCase()) && (
+                    <motion.button whileTap={{ scale: 0.98 }} onClick={() => setOb((d) => ({ ...d, centerName: searchCenter.trim() }))} className="flex items-center w-full gap-4 rounded-[20px] border border-white/20 px-4 py-3.5 transition-all text-left bg-white/[0.02]" style={selRow(ob.centerName === searchCenter.trim())}>
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl font-bold bg-white/10 text-white">
+                        +
+                      </div>
+                      <span className="text-[15px] font-bold">"{searchCenter}" qo'shish</span>
+                    </motion.button>
+                  )}
+                </div>
+              </motion.section>
+            )}
+
+            {/* ═══ CENTER DURATION ═══ */}
+            {step === 'centerDuration' && (
+              <motion.section key="centerDuration" {...slide} className="flex flex-col">
+                <h2 className="mb-2 text-3xl font-black tracking-[-0.04em]">{ob.centerName} ga qanchadan beri borasiz? ⏳</h2>
+                <p className="mb-8 text-sm text-white/60">Taxminiy o'qiyotgan vaqtingizni belgilang</p>
+                <div className="grid grid-cols-2 gap-3">
+                  {DURATIONS.map((dur) => {
+                    const sel = ob.centerDuration === dur.id;
+                    return (
+                      <motion.button key={dur.id} whileTap={{ scale: 0.96 }} onClick={() => setOb((d) => ({ ...d, centerDuration: dur.id }))} className="flex items-center justify-center rounded-[20px] border px-3 py-5 text-center font-bold transition-all" style={selRow(sel)}>
+                        <span style={{ color: sel ? '#c3ff2e' : 'rgba(255,255,255,0.85)' }}>{dur.label}</span>
+                      </motion.button>
+                    );
+                  })}
+                </div>
+              </motion.section>
+            )}
+
+            {/* ═══ LEVEL ═══ */}
+            {step === 'level' && (
+              <motion.section key="level" {...slide} className="flex flex-col flex-1 min-h-0">
+                <h2 className="mb-2 text-3xl font-black tracking-[-0.04em]">Ingliz tilini qaysi darajada bilasiz? 📈</h2>
+                <p className="mb-6 text-sm text-white/60">Boshlash nuqtani aniqlab olamiz</p>
+                <div className="flex flex-col gap-2.5 overflow-y-auto pb-4 scrollbar-hide">
+                  {LEVELS.map((lvl) => {
+                    const sel = ob.currentLevel === lvl.label;
+                    return (
+                      <motion.button key={lvl.id} whileTap={{ scale: 0.98 }} onClick={() => setOb((d) => ({ ...d, currentLevel: lvl.label }))} className="rounded-[18px] border px-5 py-4 text-left text-[15px] font-bold transition-all" style={selRow(sel)}>
+                        <span style={{ color: sel ? '#c3ff2e' : 'rgba(255,255,255,0.85)' }}>{lvl.label}</span>
+                      </motion.button>
+                    );
+                  })}
+                </div>
+              </motion.section>
+            )}
+
+            {/* ═══ ADVICE ═══ */}
+            {step === 'advice' && (
+              <motion.section key="advice" {...slide} className="flex flex-col">
+                <div className="mb-6">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-3xl" style={{ background: 'linear-gradient(135deg, rgba(195,255,46,0.2), rgba(195,255,46,0.05))' }}>
+                    <BookOpen className="h-8 w-8 text-lime-300" />
+                  </div>
+                </div>
+                <h2 className="mb-3 text-3xl font-black tracking-[-0.04em]">Siz uchun maslahat ✨</h2>
+                
+                {ob.offlineCourse === 'no_fynex' && (
+                  <div className="rounded-[24px] border border-white/10 bg-white/[0.04] p-5 text-sm leading-relaxed text-white/80">
+                    Siz uchun to'g'ri tanlov! Ingliz tilini mutlaqo bepul, interaktiv usulda Fynex orqali <b>Beginner</b> darajasidan boshlashni tavsiya qilamiz. Noldan o'rganish uchun ilovamizda barchasi yetarli.
+                  </div>
+                )}
+                
+                {ob.offlineCourse === 'plan_to_go' && (
+                  <div className="rounded-[24px] border border-lime-300/20 bg-lime-300/[0.04] p-5 text-sm leading-relaxed text-white/80">
+                    Faqatgina ilovadan foydalangandan ko'ra sifatli oflayn ta'lim markazini ham tanlash 2 barobar tez natija beradi!<br/><br/>
+                    <b>Tavsiyamiz:</b> Tez yechim va ishonchli natija qidirayotgan bo'lsangiz <b>Master IELTS</b> (oylik narxi ~1.5 mln so'm gacha) markazini yoki <b>Inter Nation</b> ni tavsiya etamiz.<br/><br/>
+                    Darslaringizdan tashqari Fynexning interaktiv darsliklarida xotirani charxlab borishingiz mumkin!
+                  </div>
+                )}
+
+                {ob.offlineCourse === 'currently_going' && (
+                  <div className="rounded-[24px] border border-white/10 bg-white/[0.04] p-5 text-sm leading-relaxed text-white/80">
+                    Siz hozirda <b>{ob.centerName}</b> o'quv markazida <b>{ob.currentLevel}</b> darajasida ta'lim olmoqdasiz ({ob.centerDuration} vaqt mobaynida).<br/><br/>
+                    Zo'r! Sizga qo'shimcha o'sish uchun <b>Fynexdagi Practice Lab</b> va <b>Mock Testlarni</b> qamrab oluvchi yuqori level darslarini tavsiya qilamiz. Hozir o'tayotgan mavzularingizni ilovada mashq qilib mustahkamlang!
+                  </div>
                 )}
               </motion.section>
             )}
@@ -440,8 +561,8 @@ export default function LoginPage() {
                   {[
                     { icon: User, label: 'Foydalanuvchi turi', value: LABELS.userType[ob.userType] || '—' },
                     ...(ob.grade ? [{ icon: BookOpen, label: 'Sinf', value: LABELS.grade[ob.grade] || '—' }] : []),
-                    { icon: Target, label: 'Maqsad', value: LABELS.goal[ob.goal] || '—' },
-                    ...(ob.target.university ? [{ icon: MapPin, label: 'Universitet', value: `${ob.target.university} (${ob.target.type === 'abroad' ? 'Xorij' : "O'zbekiston"})` }] : []),
+                    { icon: Target, label: 'Tanlangan fan', value: LABELS.subject[ob.subject] || '—' },
+                    ...(ob.centerName ? [{ icon: Building2, label: 'Markaz', value: ob.centerName }] : []),
                   ].map((item, i, arr) => {
                     const Icon = item.icon;
                     return (
