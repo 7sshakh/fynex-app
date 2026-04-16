@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
-  ArrowLeft, ArrowRight, Rocket, BrainCircuit,
+  ArrowLeft, ArrowRight, Rocket,
   GraduationCap, BookOpen, Target, Users,
   Languages, Code2, TrendingUp,
-  MapPin, User, CheckCircle2, Building2
+  MapPin, User, CheckCircle2, Building2,
+  Atom, FlaskConical, Globe2, History
 } from 'lucide-react';
 import { useUser } from '../context/UserContext';
 
@@ -37,9 +38,13 @@ const GRADES = [
 
 const SUBJECTS = [
   { id: 'english', label: "Ingliz tili (IELTS / General)", icon: Languages, desc: "Chet tili, xorijga ketish" },
-  { id: 'programming', label: "Dasturlash", icon: Code2, desc: "IT va texnologiyalar" },
   { id: 'russian', label: "Rus tili", icon: Languages, desc: "Muloqot va biznes uchun" },
+  { id: 'programming', label: "Dasturlash (IT)", icon: Code2, desc: "IT va texnologiyalar" },
   { id: 'math', label: "Matematika", icon: TrendingUp, desc: "Aniq fanlar va imtihonlar" },
+  { id: 'physics', label: "Fizika", icon: Atom, desc: "Mexanika, elektr, optika" },
+  { id: 'chemistry', label: "Kimyo", icon: FlaskConical, desc: "Organik va anorganik" },
+  { id: 'biology', label: "Biologiya", icon: Globe2, desc: "Tibbiyot va tabiatshunoslik" },
+  { id: 'history', label: "Tarix", icon: History, desc: "Jahon va O'zbekiston tarixi" },
 ];
 
 const OFFLINE_CHOICES = [
@@ -50,10 +55,17 @@ const OFFLINE_CHOICES = [
 
 const CENTERS = [
   { id: 'Inter Nation', name: 'Inter Nation', colors: ['#D60000', '#FF3B30'] },
-  { id: 'Cambridge', name: 'Cambridge', colors: ['#002B5E', '#0055A4'] },
+  { id: 'Cambridge', name: 'Cambridge LC', colors: ['#002B5E', '#0055A4'] },
   { id: 'Master IELTS', name: 'Master IELTS', colors: ['#FACC15', '#CA8A04'] },
   { id: 'Everest School', name: 'Everest School', colors: ['#10B981', '#059669'] },
   { id: 'Registan', name: 'Registan LC', colors: ['#EF4444', '#DC2626'] },
+  { id: 'ELC', name: 'ELC (English Learning)', colors: ['#6366F1', '#4F46E5'] },
+  { id: 'Najot Talim', name: "Najot Ta'lim", colors: ['#14B8A6', '#0D9488'] },
+  { id: 'PDP Academy', name: 'PDP Academy', colors: ['#F97316', '#EA580C'] },
+  { id: 'Mohirdev', name: 'Mohirdev', colors: ['#8B5CF6', '#7C3AED'] },
+  { id: 'Westminster', name: 'Westminster IU', colors: ['#0EA5E9', '#0284C7'] },
+  { id: 'Berlitz', name: 'Berlitz', colors: ['#EC4899', '#DB2777'] },
+  { id: 'British Council', name: 'British Council', colors: ['#1E3A8A', '#1E40AF'] },
 ];
 
 const DURATIONS = [
@@ -75,8 +87,15 @@ const LEVELS = [
 const LABELS: Record<string, Record<string, string>> = {
   userType: { school: "Maktab o'quvchisi", university: 'Talaba', applicant: 'Abituriyent', other: 'Boshqa' },
   grade: { '1-4': '1–4 sinf', '5-8': '5–8 sinf', '9': '9-sinf', '10': '10-sinf', '11': '11-sinf' },
-  subject: { english: "Ingliz tili", programming: "Dasturlash", russian: "Rus tili", math: "Matematika" },
+  subject: { english: "Ingliz tili", programming: "Dasturlash", russian: "Rus tili", math: "Matematika", physics: "Fizika", chemistry: "Kimyo", biology: "Biologiya", history: "Tarix" },
 };
+
+const LOADING_STEPS = [
+  "Ma'lumotlaringiz tahlil qilinmoqda...",
+  "Sizga mos darslar tanlanmoqda...",
+  "Shaxsiy reja tuzilmoqda...",
+  "Deyarli tayyor...",
+];
 
 export default function LoginPage() {
   const { login } = useUser();
@@ -87,6 +106,7 @@ export default function LoginPage() {
   const [otpStatus, setOtpStatus] = useState<'idle' | 'checking' | 'success' | 'error'>('idle');
   const [otpAttempt, setOtpAttempt] = useState(0);
   const [searchCenter, setSearchCenter] = useState('');
+  const [loadingStep, setLoadingStep] = useState(0);
   const [ob, setOb] = useState<OnboardingData>({ userType: '', grade: '', subject: '', offlineCourse: '', centerName: '', centerDuration: '', currentLevel: '' });
 
   const phoneRef = useRef<HTMLInputElement | null>(null);
@@ -194,6 +214,11 @@ export default function LoginPage() {
 
   const finish = async () => {
     setStep('loading');
+    setLoadingStep(0);
+    
+    // Animate loading steps
+    const stepTimers = [700, 1400, 2100];
+    stepTimers.forEach((ms, i) => setTimeout(() => setLoadingStep(i + 1), ms));
     
     // Generate roadmap dynamically
     const { generateRoadmap } = await import('../lib/roadmap');
@@ -207,7 +232,7 @@ export default function LoginPage() {
       localStorage.setItem('fynex_onboarding', JSON.stringify(ob));
       localStorage.setItem('fynex_onboarding_completed', 'true');
       login(fullPhone, name.trim());
-    }, 2800);
+    }, 3200);
   };
 
   /* ── OTP helper ── */
@@ -584,24 +609,93 @@ export default function LoginPage() {
 
             {/* ═══ LOADING ═══ */}
             {step === 'loading' && (
-              <motion.section key="loading" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex h-full flex-col items-center justify-center pb-20">
-                <motion.div
-                  animate={{ scale: [1, 1.05, 1] }}
-                  transition={{ repeat: Infinity, duration: 1.5, ease: 'easeInOut' }}
-                  className="relative mb-8 flex h-24 w-24 items-center justify-center rounded-[28px] shadow-[0_0_40px_rgba(195,255,46,0.15)]"
-                  style={{ background: 'linear-gradient(135deg, rgba(195,255,46,0.25), rgba(195,255,46,0.05))', border: '1px solid rgba(195,255,46,0.3)', overflow: 'hidden' }}
-                >
-                  <motion.div 
-                    className="absolute inset-0 z-0 bg-gradient-to-b from-transparent via-lime-300/30 to-transparent"
-                    animate={{ y: ['-100%', '200%'] }}
-                    transition={{ repeat: Infinity, duration: 2, ease: 'linear' }}
+              <motion.section key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex h-full flex-col items-center justify-center pb-20">
+                {/* Orbital rings animation */}
+                <div className="relative mb-10 flex h-36 w-36 items-center justify-center">
+                  {/* Outer ring */}
+                  <motion.div
+                    className="absolute inset-0 rounded-full border-2"
+                    style={{ borderColor: 'rgba(195,255,46,0.15)', borderTopColor: 'rgba(195,255,46,0.6)' }}
+                    animate={{ rotate: 360 }}
+                    transition={{ repeat: Infinity, duration: 3, ease: 'linear' }}
                   />
-                  <BrainCircuit className="z-10 h-10 w-10 text-lime-300" />
-                </motion.div>
-                <h2 className="mb-2 text-center text-2xl font-black tracking-[-0.04em]">Siz uchun shaxsiy reja <br/> tuzmoqdamiz...</h2>
-                <div className="mt-4 flex gap-1.5">
-                  {[0, 1, 2].map((i) => (
-                    <motion.div key={i} animate={{ y: [0, -6, 0] }} transition={{ repeat: Infinity, duration: 0.6, delay: i * 0.1 }} className="h-2 w-2 rounded-full bg-lime-300" />
+                  {/* Middle ring */}
+                  <motion.div
+                    className="absolute inset-3 rounded-full border-2"
+                    style={{ borderColor: 'rgba(195,255,46,0.08)', borderRightColor: 'rgba(195,255,46,0.4)' }}
+                    animate={{ rotate: -360 }}
+                    transition={{ repeat: Infinity, duration: 2.2, ease: 'linear' }}
+                  />
+                  {/* Inner ring */}
+                  <motion.div
+                    className="absolute inset-6 rounded-full border"
+                    style={{ borderColor: 'rgba(195,255,46,0.06)', borderBottomColor: 'rgba(195,255,46,0.3)' }}
+                    animate={{ rotate: 360 }}
+                    transition={{ repeat: Infinity, duration: 1.6, ease: 'linear' }}
+                  />
+                  {/* Center glow */}
+                  <motion.div
+                    className="absolute inset-10 rounded-full"
+                    style={{ background: 'radial-gradient(circle, rgba(195,255,46,0.2), transparent)' }}
+                    animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
+                    transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+                  />
+                  {/* Center Fynex icon */}
+                  <motion.div
+                    className="relative z-10 flex h-14 w-14 items-center justify-center rounded-2xl"
+                    style={{ background: 'linear-gradient(135deg, rgba(195,255,46,0.2), rgba(195,255,46,0.05))', border: '1px solid rgba(195,255,46,0.25)' }}
+                    animate={{ scale: [1, 1.06, 1] }}
+                    transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
+                  >
+                    <div className="h-8 w-8" style={{ background: 'linear-gradient(145deg, #e0ff7a, #c3ff2e, #a8e600)', clipPath: 'polygon(20% 0%, 82% 0%, 60% 44%, 78% 44%, 56% 100%, 0% 100%, 26% 42%, 8% 42%)' }} />
+                  </motion.div>
+                  {/* Orbiting dots */}
+                  {[0, 1, 2, 3].map((i) => (
+                    <motion.div
+                      key={i}
+                      className="absolute h-2 w-2 rounded-full bg-lime-300"
+                      style={{ top: '50%', left: '50%', marginTop: -4, marginLeft: -4 }}
+                      animate={{
+                        x: [Math.cos((i * Math.PI) / 2) * 60, Math.cos((i * Math.PI) / 2 + Math.PI * 2) * 60],
+                        y: [Math.sin((i * Math.PI) / 2) * 60, Math.sin((i * Math.PI) / 2 + Math.PI * 2) * 60],
+                        opacity: [0.3, 0.9, 0.3],
+                        scale: [0.6, 1.2, 0.6],
+                      }}
+                      transition={{ repeat: Infinity, duration: 3, delay: i * 0.3, ease: 'linear' }}
+                    />
+                  ))}
+                </div>
+
+                <h2 className="mb-3 text-center text-2xl font-black tracking-[-0.04em]">
+                  {displayName}, siz uchun<br/>shaxsiy reja tuzilmoqda
+                </h2>
+
+                {/* Loading steps */}
+                <div className="mt-4 flex flex-col gap-2 w-full max-w-xs">
+                  {LOADING_STEPS.map((text, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, x: -12 }}
+                      animate={{ opacity: loadingStep >= i ? 1 : 0.2, x: loadingStep >= i ? 0 : -12 }}
+                      transition={{ duration: 0.4 }}
+                      className="flex items-center gap-3"
+                    >
+                      <motion.div
+                        className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
+                        style={{ background: loadingStep >= i ? 'rgba(195,255,46,0.2)' : 'rgba(255,255,255,0.05)', border: `1px solid ${loadingStep >= i ? 'rgba(195,255,46,0.4)' : 'rgba(255,255,255,0.08)'}` }}
+                      >
+                        {loadingStep > i ? (
+                          <CheckCircle2 className="h-3.5 w-3.5 text-lime-300" />
+                        ) : loadingStep === i ? (
+                          <motion.div className="h-2 w-2 rounded-full bg-lime-300" animate={{ scale: [1, 1.4, 1] }} transition={{ repeat: Infinity, duration: 0.8 }} />
+                        ) : (
+                          <div className="h-1.5 w-1.5 rounded-full bg-white/20" />
+                        )}
+                      </motion.div>
+                      <span className="text-[13px] font-medium" style={{ color: loadingStep >= i ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.25)' }}>
+                        {text}
+                      </span>
+                    </motion.div>
                   ))}
                 </div>
               </motion.section>
