@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Bell, BookOpen, ChevronRight, Flame, Play, Trophy, X, Zap, CheckCircle2, Gift, TrendingUp, Megaphone, GraduationCap } from 'lucide-react';
+import { Bell, BookOpen, ChevronRight, Flame, Play, Trophy, X, Zap, CheckCircle2, Gift, TrendingUp, Megaphone, GraduationCap, Clock } from 'lucide-react';
 import { useUser } from '../context/UserContext';
 import { mockCourses, dailyChallenges } from '../data/mockData';
 import { hideNav, showNav } from './BottomNav';
@@ -23,6 +23,7 @@ export default function HomePage() {
   
   const [roadmap, setRoadmap] = useState<Roadmap | null>(null);
   const [progress, setProgress] = useState<ProgressData | null>(null);
+  const [showFactBanner, setShowFactBanner] = useState(true);
 
   useEffect(() => {
     const r = localStorage.getItem('fynex_roadmap');
@@ -157,6 +158,48 @@ export default function HomePage() {
           ↗
         </div>
       </motion.section>
+
+      <AnimatePresence>
+        {showFactBanner && (
+          <motion.section
+            initial={{ opacity: 0, scale: 0.95, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, height: 0, marginBottom: 0, padding: 0 }}
+            transition={{ duration: 0.3 }}
+            className="mb-6 relative overflow-hidden rounded-[28px] p-6 shadow-xl shadow-cyan-900/10"
+            style={{ background: 'linear-gradient(135deg, #0891b2, #164e63)', color: '#ffffff' }}
+          >
+            <div className="absolute top-0 right-0 p-4 z-20">
+              <button 
+                onClick={() => setShowFactBanner(false)}
+                className="rounded-full bg-white/10 p-1.5 backdrop-blur hover:bg-white/20 transition-colors"
+              >
+                <X className="h-4 w-4 text-white/80" />
+              </button>
+            </div>
+            
+            <div className="absolute right-[-10%] top-[-20%] h-40 w-40 rounded-full bg-cyan-400/20 blur-2xl pointer-events-none" />
+            <div className="absolute left-[-10%] bottom-[-20%] h-32 w-32 rounded-full bg-cyan-300/10 blur-2xl pointer-events-none" />
+            
+            <div className="relative z-10 flex flex-col items-start">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="rounded-full bg-cyan-300 px-2 py-0.5 text-[9px] font-black uppercase tracking-widest text-cyan-950">
+                  Quick Fact
+                </span>
+                <Clock className="w-3.5 h-3.5 text-cyan-200" />
+              </div>
+              
+              <h3 className="mb-2 text-2xl font-black tracking-[-0.04em] leading-tight text-white drop-shadow-md">
+                O'rganish uchun 2 soat shart emas!
+              </h3>
+              
+              <p className="text-[13px] leading-[1.6] text-cyan-50 font-medium">
+                O'quv markazlaridagi zerikarli 2 soatlik darslarni unuting. Fynex bilan navbatda turganda, avtobusda yoki ovqatlanish paytida — atigi <b className="text-white">5 daqiqada</b> yangi bilim oling. Biz bilan har bir daqiqa IELTS natijangizga ishlaydi.
+              </p>
+            </div>
+          </motion.section>
+        )}
+      </AnimatePresence>
 
       <motion.section
         initial={{ opacity: 0, y: 18 }}
