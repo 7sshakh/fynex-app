@@ -22,6 +22,7 @@ import {
 import { useUser } from '../context/UserContext';
 import SupportChat from './SupportChat';
 import { getPalette } from '../theme';
+import AdminPanel from './AdminPanel';
 
 export default function ProfilePage() {
   const {
@@ -41,6 +42,7 @@ export default function ProfilePage() {
   const [showProModal, setShowProModal] = useState(false);
   const [showSupportChat, setShowSupportChat] = useState(false);
   const [showAccountSettings, setShowAccountSettings] = useState(false);
+  const [showAdminPanel, setShowAdminPanel] = useState(false);
   const [editName, setEditName] = useState(user?.name || '');
   const [editPhone, setEditPhone] = useState(user?.phone || '');
   const [editEmail, setEditEmail] = useState(user?.email || '');
@@ -60,6 +62,11 @@ export default function ProfilePage() {
       .join('')
       .slice(0, 2)
       .toUpperCase() || 'U';
+
+  const isAdmin = Boolean(
+    (user?.telegramId && user.telegramId === 6997553667) ||
+    localStorage.getItem('fynex_admin_override') === 'true'
+  );
 
   const stats = [
     { label: 'XP', value: user?.xp || 0, icon: Zap, accent: colors.primary },
@@ -95,6 +102,21 @@ export default function ProfilePage() {
       onClick: () => window.alert('Maxfiylik siyosati alohida sahifa sifatida keyingi bosqichda ulanadi.'),
     },
   ];
+
+  useEffect(() => {
+    const lock = showSupportChat || showAccountSettings || showProModal || showAdminPanel;
+    if (lock) {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    };
+  }, [showSupportChat, showAccountSettings, showProModal, showAdminPanel]);
 
   return (
     <div className="page-content min-h-full px-6 pb-8" style={{ background: colors.background }}>
@@ -318,6 +340,24 @@ export default function ProfilePage() {
               </button>
             );
           })}
+          {isAdmin && (
+            <button
+              type="button"
+              onClick={() => setShowAdminPanel(true)}
+              className="flex w-full items-center justify-between rounded-[24px] p-4 text-left"
+              style={{ background: colors.surfaceContainerLow }}
+            >
+              <div className="flex items-center gap-4">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full" style={{ background: colors.surfaceBright }}>
+                  <Shield className="h-5 w-5" style={{ color: colors.primary }} />
+                </div>
+                <span className="text-sm font-semibold" style={{ color: colors.onSurface }}>
+                  Admin panel
+                </span>
+              </div>
+              <ChevronRight className="h-4 w-4" style={{ color: colors.onSurfaceVariant }} />
+            </button>
+          )}
         </div>
 
         <button
@@ -332,6 +372,7 @@ export default function ProfilePage() {
       </section>
 
       <SupportChat isOpen={showSupportChat} onClose={() => setShowSupportChat(false)} />
+      <AdminPanel isOpen={showAdminPanel} onClose={() => setShowAdminPanel(false)} />
 
       <AnimatePresence>
         {showProModal && (

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Atom, BookOpen, Calculator, Check, Code, Globe, Lock, LockKeyhole, Play, Search, Sparkles, X, Zap } from 'lucide-react';
+import { Atom, BookOpen, Calculator, Check, Clock3, Code, Globe, Lock, LockKeyhole, Play, Search, Sparkles, Star, X, Zap } from 'lucide-react';
 import { mockCourses, categories } from '../data/mockData';
 import { getLessonSteps } from '../data/lessonContent';
 import { useUser } from '../context/UserContext';
@@ -15,15 +15,15 @@ export default function CoursesPage() {
   const colors = getPalette(theme);
   const [activeCategory, setActiveCategory] = useState('all');
   const [query, setQuery] = useState('');
-  const [focusOnly, setFocusOnly] = useState<boolean>(() => localStorage.getItem('fynex_focus_only') === 'true');
-  const [focusSubjects, setFocusSubjects] = useState<string[]>(() => {
+  const [sortMode, setSortMode] = useState<'recommended' | 'shortest' | 'xp'>('recommended');
+  const [favorites, setFavorites] = useState<string[]>(() => {
     try {
-      const raw = localStorage.getItem('fynex_focus_subjects');
-      if (!raw) return ['english'];
+      const raw = localStorage.getItem('fynex_favorite_courses');
+      if (!raw) return [];
       const parsed = JSON.parse(raw) as string[];
-      return parsed.length ? parsed : ['english'];
+      return Array.isArray(parsed) ? parsed : [];
     } catch {
-      return ['english'];
+      return [];
     }
   });
   const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
@@ -58,8 +58,7 @@ export default function CoursesPage() {
   };
 
   const filteredCourses = useMemo(() => {
-    return mockCourses.filter((course) => {
-      if (focusOnly && !focusSubjects.includes(course.category)) return false;
+    const filtered = mockCourses.filter((course) => {
       const categoryMatch = activeCategory === 'all' || course.category === activeCategory;
       const queryMatch =
         !query.trim() ||
@@ -67,7 +66,22 @@ export default function CoursesPage() {
         course.description.toLowerCase().includes(query.toLowerCase());
       return categoryMatch && queryMatch;
     });
-  }, [activeCategory, query, focusOnly, focusSubjects]);
+    if (sortMode === 'shortest') {
+      return [...filtered].sort((a, b) => {
+        const aMin = a.lessons.reduce((sum, lesson) => sum + lesson.duration, 0);
+        const bMin = b.lessons.reduce((sum, lesson) => sum + lesson.duration, 0);
+        return aMin - bMin;
+      });
+    }
+    if (sortMode === 'xp') {
+      return [...filtered].sort((a, b) => b.totalXp - a.totalXp);
+    }
+    return [...filtered].sort((a, b) => {
+      const aFav = favorites.includes(a.id) ? 1 : 0;
+      const bFav = favorites.includes(b.id) ? 1 : 0;
+      return bFav - aFav;
+    });
+  }, [activeCategory, query, sortMode, favorites]);
 
   useEffect(() => {
     document.body.style.overflow = selectedCourse ? 'hidden' : '';
@@ -82,15 +96,8 @@ export default function CoursesPage() {
   }, [activeLesson]);
 
   useEffect(() => {
-    const handler = (event: Event) => {
-      const custom = event as CustomEvent<{ focusOnly: boolean; focusSubjects: string[] }>;
-      if (!custom.detail) return;
-      setFocusOnly(custom.detail.focusOnly);
-      setFocusSubjects(custom.detail.focusSubjects || []);
-    };
-    window.addEventListener('fynex:focus-settings', handler);
-    return () => window.removeEventListener('fynex:focus-settings', handler);
-  }, []);
+    localStorage.setItem('fynex_favorite_courses', JSON.stringify(favorites));
+  }, [favorites]);
 
   const startLesson = (courseId: string, lessonId: string) => {
     const course = mockCourses.find((item) => item.id === courseId);
@@ -152,11 +159,6 @@ export default function CoursesPage() {
           <p className="mb-1 text-sm font-medium" style={{ color: colors.onSurfaceVariant }}>
             O‘rganishni boshlang
           </p>
-          {focusOnly && (
-            <p className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: colors.primary }}>
-              Focus mode: {focusSubjects.map((item) => item.toUpperCase()).join(' • ')}
-            </p>
-          )}
         </div>
 
         <label className="relative block">
@@ -196,6 +198,31 @@ export default function CoursesPage() {
             );
           })}
         </div>
+      </section>
+
+      <section className="mb-6 flex gap-2 overflow-x-auto scrollbar-hide">
+        {[
+          { id: 'recommended', label: 'Tavsiya', icon: Star },
+          { id: 'shortest', label: 'Tez boshlash', icon: Clock3 },
+          { id: 'xp', label: 'Ko‘p XP', icon: Zap },
+        ].map((item) => {
+          const Icon = item.icon;
+          const active = sortMode === item.id;
+          return (
+            <button
+              key={item.id}
+              onClick={() => setSortMode(item.id as 'recommended' | 'shortest' | 'xp')}
+              className="flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-black"
+              style={{
+                background: active ? `${colors.primary}22` : colors.surfaceContainerLow,
+                color: active ? colors.primary : colors.onSurfaceVariant,
+              }}
+            >
+              <Icon className="h-3.5 w-3.5" />
+              {item.label}
+            </button>
+          );
+        })}
       </section>
 
       <section className="space-y-5">
@@ -246,6 +273,16 @@ export default function CoursesPage() {
                     </span>
                   </div>
                 </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setFavorites((current) => current.includes(course.id) ? current.filter((id) => id !== course.id) : [...current, course.id]);
+                  }}
+                  className="rounded-full p-2"
+                  style={{ background: favorites.includes(course.id) ? `${colors.primary}20` : colors.surfaceContainerHighest }}
+                >
+                  <Star className="h-4 w-4" style={{ color: favorites.includes(course.id) ? colors.primary : colors.onSurfaceVariant, fill: favorites.includes(course.id) ? colors.primary : 'none' }} />
+                </button>
               </div>
 
               <p className="mb-4 text-sm leading-6" style={{ color: colors.onSurfaceVariant }}>

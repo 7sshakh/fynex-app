@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Bell, BookOpen, ChevronRight, Flame, Play, Trophy, X, Zap, CheckCircle2, Gift, TrendingUp, Megaphone, GraduationCap } from 'lucide-react';
+import { Bell, BookOpen, Brain, ChevronRight, Flame, Play, Trophy, X, Zap, CheckCircle2, Gift, TrendingUp, Megaphone, GraduationCap } from 'lucide-react';
 import { useUser } from '../context/UserContext';
 import { mockCourses, dailyChallenges } from '../data/mockData';
 import { hideNav, showNav } from './BottomNav';
@@ -41,17 +41,8 @@ export default function HomePage() {
   const [hideWeeklyReport, setHideWeeklyReport] = useState(false);
   const [hideYesterdayRecap, setHideYesterdayRecap] = useState(false);
   const [achievementToast, setAchievementToast] = useState<{ title: string; icon: string } | null>(null);
-  const [focusOnly, setFocusOnly] = useState<boolean>(() => localStorage.getItem('fynex_focus_only') === 'true');
-  const [focusSubjects, setFocusSubjects] = useState<string[]>(() => {
-    try {
-      const raw = localStorage.getItem('fynex_focus_subjects');
-      if (!raw) return ['english'];
-      const parsed = JSON.parse(raw) as string[];
-      return parsed.length ? parsed : ['english'];
-    } catch {
-      return ['english'];
-    }
-  });
+  const [quickFlashOpen, setQuickFlashOpen] = useState(false);
+  const [focusTimerOpen, setFocusTimerOpen] = useState(false);
   
   const [roadmap, setRoadmap] = useState<Roadmap | null>(null);
   const [progress, setProgress] = useState<ProgressData | null>(null);
@@ -77,14 +68,28 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('fynex_focus_only', String(focusOnly));
-    localStorage.setItem('fynex_focus_subjects', JSON.stringify(focusSubjects));
-    window.dispatchEvent(
-      new CustomEvent('fynex:focus-settings', {
-        detail: { focusOnly, focusSubjects },
-      }),
-    );
-  }, [focusOnly, focusSubjects]);
+    const hasOverlayOpen =
+      showMood ||
+      showBreak ||
+      showSleepGuard ||
+      showNotifications ||
+      showAiMentor ||
+      quickFlashOpen ||
+      focusTimerOpen;
+    if (hasOverlayOpen) {
+      hideNav();
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      showNav();
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    };
+  }, [showMood, showBreak, showSleepGuard, showNotifications, showAiMentor, quickFlashOpen, focusTimerOpen]);
 
   useEffect(() => {
     const ach = checkTimeBasedAchievements();
@@ -138,13 +143,7 @@ export default function HomePage() {
   const featuredCourse =
     mockCourses.find((course) => !user?.completedCourses.includes(course.id)) ?? mockCourses[0];
 
-  const adaptiveRecommendations = useMemo(() => {
-    const focusSet = new Set(focusSubjects);
-    const list = mockCourses
-      .filter((course) => !focusOnly || focusSet.has(course.category))
-      .slice(0, 3);
-    return list;
-  }, [focusOnly, focusSubjects]);
+  const adaptiveRecommendations = useMemo(() => mockCourses.slice(0, 3), []);
 
   const featuredProgress = featuredCourse
     ? Math.round(((user?.completedCourses.includes(featuredCourse.id) ? featuredCourse.lessons.length : 0) / featuredCourse.lessons.length) * 100)
@@ -184,15 +183,26 @@ export default function HomePage() {
           </div>
         </div>
 
-        <button
-          type="button"
-          onClick={openNotifications}
-          className="relative flex h-10 w-10 items-center justify-center rounded-full transition-opacity hover:opacity-80"
-          style={{ background: colors.surfaceContainer }}
-        >
-          <Bell className="h-5 w-5" style={{ color: colors.primary }} />
-          <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2" style={{ background: colors.tertiary, borderColor: colors.background }} />
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setShowAiMentor(true)}
+            className="flex items-center gap-1.5 rounded-full px-2.5 py-2 transition-opacity hover:opacity-80"
+            style={{ background: `${colors.primary}20`, color: colors.primary }}
+          >
+            <Brain className="h-4 w-4" />
+            <span className="text-[11px] font-black uppercase">AI Mentor</span>
+          </button>
+          <button
+            type="button"
+            onClick={openNotifications}
+            className="relative flex h-10 w-10 items-center justify-center rounded-full transition-opacity hover:opacity-80"
+            style={{ background: colors.surfaceContainer }}
+          >
+            <Bell className="h-5 w-5" style={{ color: colors.primary }} />
+            <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2" style={{ background: colors.tertiary, borderColor: colors.background }} />
+          </button>
+        </div>
       </motion.header>
 
       <motion.section
@@ -310,56 +320,9 @@ export default function HomePage() {
         className="mb-6 rounded-[28px] p-5"
         style={{ background: colors.surfaceContainer }}
       >
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-sm font-black uppercase tracking-[0.24em]" style={{ color: colors.primary }}>
-            Focus Path
-          </h3>
-          <button
-            onClick={() => setFocusOnly((current) => !current)}
-            className="rounded-full px-3 py-1 text-[11px] font-black uppercase"
-            style={{
-              background: focusOnly ? `${colors.primary}22` : colors.surfaceContainerHighest,
-              color: focusOnly ? colors.primary : colors.onSurfaceVariant,
-            }}
-          >
-            {focusOnly ? 'Faqat kerakli fanlar' : 'Barcha fanlar'}
-          </button>
-        </div>
-
-        <div className="mb-4 flex flex-wrap gap-2">
-          {[
-            { id: 'english', label: 'Ingliz' },
-            { id: 'math', label: 'Matematika' },
-            { id: 'programming', label: 'Dasturlash' },
-            { id: 'russian', label: 'Rus tili' },
-            { id: 'physics', label: 'Fizika' },
-            { id: 'logic', label: 'Mantiq' },
-          ].map((item) => {
-            const active = focusSubjects.includes(item.id);
-            return (
-              <button
-                key={item.id}
-                onClick={() => {
-                  setFocusSubjects((current) => {
-                    if (active) {
-                      const next = current.filter((id) => id !== item.id);
-                      return next.length ? next : ['english'];
-                    }
-                    return [...current, item.id];
-                  });
-                }}
-                className="rounded-full px-3 py-1.5 text-xs font-bold"
-                style={{
-                  background: active ? colors.primary : colors.surfaceContainerLow,
-                  color: active ? colors.onPrimary : colors.onSurfaceVariant,
-                }}
-              >
-                {item.label}
-              </button>
-            );
-          })}
-        </div>
-
+        <h3 className="mb-3 text-sm font-black uppercase tracking-[0.24em]" style={{ color: colors.primary }}>
+          Siz uchun tavsiya
+        </h3>
         <div className="space-y-2">
           {adaptiveRecommendations.map((course) => (
             <div key={course.id} className="flex items-center justify-between rounded-2xl px-3 py-2" style={{ background: colors.surfaceContainerLow }}>
@@ -379,28 +342,8 @@ export default function HomePage() {
         </div>
       </motion.section>
 
-      <motion.section
-        initial={{ opacity: 0, y: 18 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.14 }}
-        className="mb-6 overflow-hidden rounded-[24px] p-5 cursor-pointer"
-        style={{ background: 'linear-gradient(120deg, #0f172a, #1d4ed8)', color: '#ffffff' }}
-        onClick={() => setShowAiMentor(true)}
-      >
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-[10px] font-black uppercase tracking-[0.24em] text-blue-200/80">AI Mentor</p>
-            <h3 className="mt-1 text-xl font-black">Aniq fan bo'yicha tez yordam</h3>
-            <p className="mt-1 text-xs text-blue-100/70">Mavzudan chiqmaydi, faqat siz tanlagan yo'nalishda yordam beradi.</p>
-          </div>
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/15">
-            <Gift className="h-6 w-6 text-white" />
-          </div>
-        </div>
-      </motion.section>
-
-      <QuickFlashButton />
-      <FocusTimerWidget />
+      <QuickFlashButton onOpenChange={setQuickFlashOpen} />
+      <FocusTimerWidget onOpenChange={setFocusTimerOpen} />
 
       {/* DRILLS AND PRACTICE LAB */}
       <motion.section

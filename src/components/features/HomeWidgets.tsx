@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { getPalette } from '../../theme';
 import { useUser } from '../../context/UserContext';
+import { hideNav, showNav } from '../BottomNav';
 import {
   loadFeatures, saveFeatures, updateFeatures, todayKey,
   DAILY_FACTS, type Mood, type FeatureState
@@ -37,15 +38,15 @@ export function MoodSensor({ onClose }: { onClose: () => void }) {
   return (
     <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[9998] flex items-end justify-center"
+      className="fixed inset-0 z-[10030] flex items-end justify-center"
       style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(8px)' }}
       onClick={onClose}
     >
       <motion.div
         initial={{ y: 200, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 200, opacity: 0 }}
         transition={{ type: 'spring', damping: 28, stiffness: 300 }}
-        className="w-full max-w-md rounded-t-[32px] border-t border-white/10 p-6 pb-10"
-        style={{ background: colors.surfaceContainer }}
+        className="w-full max-w-md rounded-t-[32px] border-t border-white/10 p-6"
+        style={{ background: colors.surfaceContainer, paddingBottom: 'max(24px, calc(env(safe-area-inset-bottom) + 16px))' }}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-1 flex justify-center">
@@ -177,7 +178,7 @@ const QUICK_WORDS = [
   { en: 'Elaborate', uz: "Batafsil" }, { en: 'Fundamental', uz: "Asosiy" },
 ];
 
-export function QuickFlashButton() {
+export function QuickFlashButton({ onOpenChange }: { onOpenChange?: (open: boolean) => void }) {
   const { theme } = useUser();
   const colors = getPalette(theme);
   const [isOpen, setIsOpen] = useState(false);
@@ -197,6 +198,13 @@ export function QuickFlashButton() {
     }, 1000);
     return () => clearInterval(interval);
   }, [isOpen, finished]);
+
+  useEffect(() => {
+    onOpenChange?.(isOpen);
+    if (isOpen) hideNav();
+    else showNav();
+    return () => showNav();
+  }, [isOpen, onOpenChange]);
 
   const nextWord = () => {
     setFlipped(false);
@@ -235,7 +243,7 @@ export function QuickFlashButton() {
         {isOpen && (
           <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[9999] flex flex-col items-center justify-center"
+            className="fixed inset-0 z-[10020] flex flex-col items-center justify-center"
             style={{ background: colors.background }}
           >
             <button onClick={() => setIsOpen(false)} className="absolute right-5 top-12 rounded-full p-2" style={{ background: colors.surfaceContainer }}>
@@ -393,13 +401,14 @@ export function ExamCountdown() {
 // ═══════════════════════════════════════════════════════════
 // 6. FOCUS TIMER — Pomodoro
 // ═══════════════════════════════════════════════════════════
-export function FocusTimerWidget() {
+export function FocusTimerWidget({ onOpenChange }: { onOpenChange?: (open: boolean) => void }) {
   const { theme } = useUser();
   const colors = getPalette(theme);
   const [isActive, setIsActive] = useState(false);
   const [minutes, setMinutes] = useState(25);
   const [seconds, setSeconds] = useState(0);
   const [isBreak, setIsBreak] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (!isActive) return;
@@ -425,51 +434,103 @@ export function FocusTimerWidget() {
     ? ((5 * 60 - (minutes * 60 + seconds)) / (5 * 60)) * 100
     : ((25 * 60 - (minutes * 60 + seconds)) / (25 * 60)) * 100;
 
+  useEffect(() => {
+    onOpenChange?.(open);
+    if (open) hideNav();
+    else showNav();
+    return () => showNav();
+  }, [open, onOpenChange]);
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-      className="mb-6 rounded-[24px] border p-5"
-      style={{
-        background: isBreak ? 'linear-gradient(135deg, rgba(52,211,153,0.08), rgba(52,211,153,0.02))' : `linear-gradient(135deg, ${colors.primary}12, ${colors.primary}04)`,
-        borderColor: isBreak ? 'rgba(52,211,153,0.2)' : `${colors.primary}33`,
-      }}
-    >
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl" style={{ background: isBreak ? 'rgba(52,211,153,0.2)' : `${colors.primary}22` }}>
-            {isBreak ? <Coffee className="h-5 w-5 text-emerald-400" /> : <Timer className="h-5 w-5" style={{ color: colors.primary }} />}
-          </div>
-          <div>
-            <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: isBreak ? '#34d399' : colors.primary }}>
-              {isBreak ? 'Tanaffus' : 'Fokus rejimi'}
-            </span>
-            <div className="text-2xl font-black tabular-nums" style={{ color: colors.onSurface }}>
-              {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
-            </div>
-          </div>
+    <>
+      <motion.button
+        whileTap={{ scale: 0.97 }}
+        onClick={() => setOpen(true)}
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-6 flex w-full items-center gap-4 rounded-[24px] border px-5 py-4 text-left"
+        style={{
+          background: isBreak ? 'linear-gradient(135deg, rgba(52,211,153,0.08), rgba(52,211,153,0.02))' : `linear-gradient(135deg, ${colors.primary}12, ${colors.primary}04)`,
+          borderColor: isBreak ? 'rgba(52,211,153,0.2)' : `${colors.primary}33`,
+        }}
+      >
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl" style={{ background: isBreak ? 'rgba(52,211,153,0.2)' : `${colors.primary}22` }}>
+          {isBreak ? <Coffee className="h-5 w-5 text-emerald-400" /> : <Timer className="h-5 w-5" style={{ color: colors.primary }} />}
         </div>
-        <motion.button
-          whileTap={{ scale: 0.92 }}
-          onClick={() => {
-            if (!isActive) { setMinutes(25); setSeconds(0); setIsBreak(false); }
-            setIsActive(!isActive);
-          }}
-          className="rounded-full px-5 py-2.5 text-sm font-black"
-          style={isActive ? { background: 'rgba(255,255,255,0.08)', color: colors.onSurfaceVariant } : { background: colors.primary, color: colors.onPrimary }}
-        >
-          {isActive ? 'To\'xtatish' : 'Boshlash'}
-        </motion.button>
-      </div>
-      {isActive && (
-        <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-white/[0.06]">
+        <div>
+          <h3 className="text-[14px] font-black" style={{ color: colors.onSurface }}>Focus Mode</h3>
+          <p className="mt-0.5 text-[12px]" style={{ color: colors.onSurfaceVariant }}>To'liq ekran fokus taymeri</p>
+        </div>
+        <ChevronRight className="ml-auto h-5 w-5" style={{ color: colors.onSurfaceVariant }} />
+      </motion.button>
+
+      <AnimatePresence>
+        {open && (
           <motion.div
-            className="h-full rounded-full"
-            style={{ background: isBreak ? '#34d399' : colors.primary, width: `${progress}%` }}
-            transition={{ duration: 0.5 }}
-          />
-        </div>
-      )}
-    </motion.div>
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[10020] flex flex-col"
+            style={{ background: colors.background }}
+          >
+            <div
+              className="px-5 pb-4"
+              style={{
+                paddingTop: 'max(48px, calc(env(safe-area-inset-top) + 16px))',
+                background: 'rgba(0,0,0,0.18)',
+                borderBottom: `1px solid ${colors.outlineVariant}33`,
+              }}
+            >
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-black" style={{ color: colors.onSurface }}>Focus Mode</h3>
+                <button onClick={() => setOpen(false)} className="rounded-full px-3 py-1 text-sm font-bold" style={{ background: colors.surfaceContainer, color: colors.onSurfaceVariant }}>
+                  Yopish
+                </button>
+              </div>
+            </div>
+
+            <div className="flex flex-1 flex-col items-center justify-center px-8">
+              <motion.div animate={{ scale: isActive ? [1, 1.04, 1] : 1 }} transition={{ repeat: isActive ? Infinity : 0, duration: 1.4 }} className="mb-8 flex h-52 w-52 items-center justify-center rounded-full border-2" style={{ borderColor: `${colors.primary}55`, background: `${colors.primary}10` }}>
+                <div className="text-center">
+                  <p className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: colors.onSurfaceVariant }}>{isBreak ? 'Tanaffus' : 'Fokus'}</p>
+                  <p className="mt-2 text-5xl font-black tabular-nums" style={{ color: colors.onSurface }}>
+                    {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
+                  </p>
+                </div>
+              </motion.div>
+
+              <div className="mb-6 h-2 w-full max-w-md overflow-hidden rounded-full bg-white/[0.08]">
+                <motion.div className="h-full rounded-full" style={{ background: isBreak ? '#34d399' : colors.primary, width: `${progress}%` }} transition={{ duration: 0.4 }} />
+              </div>
+
+              <div className="flex w-full max-w-md gap-3">
+                <button
+                  onClick={() => {
+                    setIsActive((current) => !current);
+                  }}
+                  className="flex-1 rounded-full py-4 text-base font-black"
+                  style={{ background: colors.primary, color: colors.onPrimary }}
+                >
+                  {isActive ? "To'xtatish" : 'Boshlash'}
+                </button>
+                <button
+                  onClick={() => {
+                    setIsActive(false);
+                    setIsBreak(false);
+                    setMinutes(25);
+                    setSeconds(0);
+                  }}
+                  className="flex-1 rounded-full py-4 text-base font-black"
+                  style={{ background: colors.surfaceContainer, color: colors.onSurfaceVariant }}
+                >
+                  Reset
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
 

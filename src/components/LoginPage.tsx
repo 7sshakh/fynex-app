@@ -105,6 +105,7 @@ export default function LoginPage() {
   const [name, setName] = useState('');
   const [otpStatus, setOtpStatus] = useState<'idle' | 'checking' | 'success' | 'error'>('idle');
   const [otpAttempt, setOtpAttempt] = useState(0);
+  const [resendSec, setResendSec] = useState(45);
   const [searchCenter, setSearchCenter] = useState('');
   const [loadingStep, setLoadingStep] = useState(0);
   const [ob, setOb] = useState<OnboardingData>({ userType: '', grade: '', subject: '', offlineCourse: '', centerName: '', centerDuration: '', currentLevel: '' });
@@ -156,6 +157,15 @@ export default function LoginPage() {
     if (otpCode.length === 6) goOtp();
   }, [otpCode, otpStatus, step]);
 
+  useEffect(() => {
+    if (step !== 'otp') return;
+    if (resendSec <= 0) return;
+    const timer = window.setInterval(() => {
+      setResendSec((current) => (current > 0 ? current - 1 : 0));
+    }, 1000);
+    return () => window.clearInterval(timer);
+  }, [step, resendSec]);
+
   /* ── can proceed? ── */
   const canNext = useMemo(() => {
     switch (step) {
@@ -179,6 +189,7 @@ export default function LoginPage() {
   const goPhone = () => {
     if (phone.length !== 9) return;
     (document.activeElement as HTMLElement | null)?.blur?.();
+    setResendSec(45);
     setTimeout(() => setStep('otp'), 180);
   };
 
@@ -210,6 +221,14 @@ export default function LoginPage() {
     if (idx <= 0) return;
     if (step === 'otp') setOtpStatus('idle');
     setStep(allSteps[idx - 1]);
+  };
+
+  const resendCode = () => {
+    if (resendSec > 0) return;
+    setOtpCode('');
+    setOtpStatus('idle');
+    setResendSec(45);
+    otpRef.current?.focus();
   };
 
   const finish = async () => {
@@ -350,6 +369,20 @@ export default function LoginPage() {
                   </motion.div>
                   <div className="h-1 w-full overflow-hidden rounded-full bg-white/[0.06]">
                     <motion.div className="h-full rounded-full" style={{ background: otpStatus === 'success' ? '#4ade80' : otpStatus === 'error' ? '#f87171' : 'linear-gradient(90deg, #c3ff2e, #b2ed12)' }} initial={false} animate={{ width: `${(otpCode.length / 6) * 100}%` }} transition={{ duration: 0.2 }} />
+                  </div>
+                  <div className="mt-3 flex items-center justify-between">
+                    <p className="text-xs" style={{ color: 'rgba(255,255,255,0.52)' }}>Urinish: {otpAttempt}</p>
+                    <button
+                      type="button"
+                      onClick={resendCode}
+                      className="rounded-full px-3 py-1 text-xs font-black"
+                      style={{
+                        background: resendSec > 0 ? 'rgba(255,255,255,0.06)' : 'rgba(195,255,46,0.2)',
+                        color: resendSec > 0 ? 'rgba(255,255,255,0.48)' : '#c3ff2e',
+                      }}
+                    >
+                      {resendSec > 0 ? `Qayta yuborish ${resendSec}s` : 'Kodni qayta yuborish'}
+                    </button>
                   </div>
                 </div>
                 <motion.div initial={false} animate={{ opacity: otpStatus === 'idle' ? 0 : 1, y: otpStatus === 'idle' ? 8 : 0 }} className="mt-auto pt-8 text-center text-sm font-medium text-white/65 min-h-6">
