@@ -155,6 +155,52 @@ export default function HomePage() {
         </div>
       </motion.section>
 
+      <motion.section
+        initial={{ opacity: 0, y: 18 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="mb-6 rounded-[28px] p-5"
+        style={{ background: colors.surfaceContainer }}
+      >
+        <div className="mb-4 flex items-end justify-between">
+          <div>
+            <span className="text-[10px] font-bold uppercase tracking-[0.28em]" style={{ color: colors.primary }}>
+              Davom etish
+            </span>
+            <h3 className="mt-1 text-xl font-extrabold tracking-[-0.04em]" style={{ color: colors.onSurface }}>
+              {featuredCourse.title}
+            </h3>
+          </div>
+          <span className="text-xs font-bold" style={{ color: colors.onSurfaceVariant }}>
+            {progress ? `${progress.progress}%` : `${featuredProgress}%`}
+          </span>
+        </div>
+
+        <div className="h-2 overflow-hidden rounded-full" style={{ background: colors.surfaceContainerHighest }}>
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: `${progress ? progress.progress : featuredProgress}%` }}
+            transition={{ duration: 0.45 }}
+            className="h-full rounded-full"
+            style={{ background: colors.primary }}
+          />
+        </div>
+
+        <div className="mt-4 flex items-center justify-between">
+          <p className="max-w-[70%] text-xs font-medium" style={{ color: colors.onSurfaceVariant }}>
+            {featuredCourse.lessons[0]?.title || "Yangi darslar tayyor"}
+          </p>
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new CustomEvent('fynex:navigate', { detail: 'courses' }))}
+            className="rounded-full px-4 py-2 text-xs font-black uppercase transition-transform active:scale-95"
+            style={{ background: colors.primary, color: colors.onPrimary }}
+          >
+            Davom etish
+          </button>
+        </div>
+      </motion.section>
+
       {/* DRILLS AND PRACTICE LAB */}
       <motion.section
         initial={{ opacity: 0, x: -20 }}
@@ -214,52 +260,6 @@ export default function HomePage() {
       <motion.section
         initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-        className="mb-6 rounded-[28px] p-5"
-        style={{ background: colors.surfaceContainer }}
-      >
-        <div className="mb-4 flex items-end justify-between">
-          <div>
-            <span className="text-[10px] font-bold uppercase tracking-[0.28em]" style={{ color: colors.primary }}>
-              Davom etish
-            </span>
-            <h3 className="mt-1 text-xl font-extrabold tracking-[-0.04em]" style={{ color: colors.onSurface }}>
-              {featuredCourse.title}
-            </h3>
-          </div>
-          <span className="text-xs font-bold" style={{ color: colors.onSurfaceVariant }}>
-            {progress ? `${progress.progress}%` : `${featuredProgress}%`}
-          </span>
-        </div>
-
-        <div className="h-2 overflow-hidden rounded-full" style={{ background: colors.surfaceContainerHighest }}>
-          <motion.div
-            initial={{ width: 0 }}
-            animate={{ width: `${progress ? progress.progress : featuredProgress}%` }}
-            transition={{ duration: 0.45 }}
-            className="h-full rounded-full"
-            style={{ background: colors.primary }}
-          />
-        </div>
-
-        <div className="mt-4 flex items-center justify-between">
-          <p className="max-w-[70%] text-xs font-medium" style={{ color: colors.onSurfaceVariant }}>
-            {featuredCourse.lessons[0]?.title || "Yangi darslar tayyor"}
-          </p>
-          <button
-            type="button"
-            onClick={() => window.dispatchEvent(new CustomEvent('fynex:navigate', { detail: 'courses' }))}
-            className="rounded-full px-4 py-2 text-xs font-black uppercase transition-transform active:scale-95"
-            style={{ background: colors.primary, color: colors.onPrimary }}
-          >
-            Davom etish
-          </button>
-        </div>
-      </motion.section>
-
-      <motion.section
-        initial={{ opacity: 0, y: 18 }}
-        animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.22 }}
         className="mb-6 grid grid-cols-2 gap-4"
       >
@@ -309,7 +309,7 @@ export default function HomePage() {
       <motion.section
         initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.18 }}
+        transition={{ delay: 0.25 }}
         className="mb-6 rounded-[28px] p-6"
         style={{ background: colors.surfaceContainer }}
       >
@@ -340,7 +340,7 @@ export default function HomePage() {
       <motion.section
         initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.22 }}
+        transition={{ delay: 0.28 }}
         className="space-y-4"
       >
         <div className="flex items-center justify-between">
