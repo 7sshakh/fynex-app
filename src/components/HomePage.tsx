@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Bell, BookOpen, Brain, ChevronRight, Flame, Play, Trophy, X, Zap, CheckCircle2, Gift, TrendingUp, Megaphone, GraduationCap } from 'lucide-react';
@@ -11,11 +11,7 @@ import { ProgressData, markTaskComplete, updateDailyAccountability, saveProgress
 import AIMentorPanel from './AIMentorPanel';
 import {
   AchievementPopup,
-  DailyFact,
-  ExamCountdown,
-  FocusTimerWidget,
   MoodSensor,
-  QuickFlashButton,
   SleepGuard,
   SmartBreakOverlay,
   WeeklyReport,
@@ -41,8 +37,6 @@ export default function HomePage() {
   const [hideWeeklyReport, setHideWeeklyReport] = useState(false);
   const [hideYesterdayRecap, setHideYesterdayRecap] = useState(false);
   const [achievementToast, setAchievementToast] = useState<{ title: string; icon: string } | null>(null);
-  const [quickFlashOpen, setQuickFlashOpen] = useState(false);
-  const [focusTimerOpen, setFocusTimerOpen] = useState(false);
   
   const [roadmap, setRoadmap] = useState<Roadmap | null>(null);
   const [progress, setProgress] = useState<ProgressData | null>(null);
@@ -73,9 +67,7 @@ export default function HomePage() {
       showBreak ||
       showSleepGuard ||
       showNotifications ||
-      showAiMentor ||
-      quickFlashOpen ||
-      focusTimerOpen;
+      showAiMentor;
     if (hasOverlayOpen) {
       hideNav();
       document.body.style.overflow = 'hidden';
@@ -89,7 +81,7 @@ export default function HomePage() {
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
     };
-  }, [showMood, showBreak, showSleepGuard, showNotifications, showAiMentor, quickFlashOpen, focusTimerOpen]);
+  }, [showMood, showBreak, showSleepGuard, showNotifications, showAiMentor]);
 
   useEffect(() => {
     const ach = checkTimeBasedAchievements();
@@ -140,14 +132,16 @@ export default function HomePage() {
   const closeNotifications = () => { setShowNotifications(false); showNav(); };
 
   const firstName = user?.name?.trim().split(/\s+/)[0] || 'User';
-  const featuredCourse =
-    mockCourses.find((course) => !user?.completedCourses.includes(course.id)) ?? mockCourses[0];
-
-  const adaptiveRecommendations = useMemo(() => mockCourses.slice(0, 3), []);
+  const featuredCourse = mockCourses.find((course) => course.id === '1') ?? mockCourses[0];
 
   const featuredProgress = featuredCourse
     ? Math.round(((user?.completedCourses.includes(featuredCourse.id) ? featuredCourse.lessons.length : 0) / featuredCourse.lessons.length) * 100)
     : 0;
+
+  const openEnglishBeginner = () => {
+    localStorage.setItem('fynex_open_course_id', '1');
+    window.dispatchEvent(new CustomEvent('fynex:navigate', { detail: 'courses' }));
+  };
 
   const stats = [
     { label: 'Bajarilgan', value: user?.completedCourses.length || 0, icon: BookOpen, tone: colors.primary },
@@ -239,9 +233,14 @@ export default function HomePage() {
             </span>
             <span className="text-lg font-black text-white">{user?.xp || 0}</span>
           </div>
-          <div className="rounded-full bg-white px-4 py-1.5 text-[11px] font-black uppercase tracking-[0.24em]" style={{ color: theme === 'dark' ? colors.tertiary : colors.primary }}>
+          <button
+            type="button"
+            onClick={openEnglishBeginner}
+            className="rounded-full bg-white px-4 py-1.5 text-[11px] font-black uppercase tracking-[0.24em] transition-transform active:scale-95"
+            style={{ color: theme === 'dark' ? colors.tertiary : colors.primary }}
+          >
             START
-          </div>
+          </button>
         </div>
 
         <div className="pointer-events-none absolute -bottom-8 -right-8 text-[180px] opacity-10" style={{ color: '#ffffff' }}>
@@ -286,7 +285,7 @@ export default function HomePage() {
           </p>
           <button
             type="button"
-            onClick={() => window.dispatchEvent(new CustomEvent('fynex:navigate', { detail: 'courses' }))}
+            onClick={openEnglishBeginner}
             className="rounded-full px-4 py-2 text-xs font-black uppercase transition-transform active:scale-95"
             style={{ background: colors.primary, color: colors.onPrimary }}
           >
@@ -295,7 +294,6 @@ export default function HomePage() {
         </div>
       </motion.section>
 
-      <DailyFact />
       {!hideYesterdayRecap && (
         <YesterdayRecap
           onDismiss={() => {
@@ -312,38 +310,6 @@ export default function HomePage() {
           }}
         />
       )}
-
-      <motion.section
-        initial={{ opacity: 0, y: 18 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.12 }}
-        className="mb-6 rounded-[28px] p-5"
-        style={{ background: colors.surfaceContainer }}
-      >
-        <h3 className="mb-3 text-sm font-black uppercase tracking-[0.24em]" style={{ color: colors.primary }}>
-          Siz uchun tavsiya
-        </h3>
-        <div className="space-y-2">
-          {adaptiveRecommendations.map((course) => (
-            <div key={course.id} className="flex items-center justify-between rounded-2xl px-3 py-2" style={{ background: colors.surfaceContainerLow }}>
-              <div>
-                <p className="text-sm font-bold" style={{ color: colors.onSurface }}>{course.title}</p>
-                <p className="text-xs" style={{ color: colors.onSurfaceVariant }}>{course.description}</p>
-              </div>
-              <button
-                className="rounded-full px-3 py-1.5 text-xs font-black uppercase"
-                style={{ background: `${colors.primary}22`, color: colors.primary }}
-                onClick={() => window.dispatchEvent(new CustomEvent('fynex:navigate', { detail: 'courses' }))}
-              >
-                Ochish
-              </button>
-            </div>
-          ))}
-        </div>
-      </motion.section>
-
-      <QuickFlashButton onOpenChange={setQuickFlashOpen} />
-      <FocusTimerWidget onOpenChange={setFocusTimerOpen} />
 
       {/* DRILLS AND PRACTICE LAB */}
       <motion.section
@@ -657,7 +623,6 @@ export default function HomePage() {
         )}
       </AnimatePresence>
 
-      <ExamCountdown />
       <AIMentorPanel isOpen={showAiMentor} onClose={() => setShowAiMentor(false)} />
     </div>
   );

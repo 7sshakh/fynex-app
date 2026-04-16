@@ -43,6 +43,7 @@ export default function ProfilePage() {
   const [showSupportChat, setShowSupportChat] = useState(false);
   const [showAccountSettings, setShowAccountSettings] = useState(false);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
+  const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
   const [editName, setEditName] = useState(user?.name || '');
   const [editPhone, setEditPhone] = useState(user?.phone || '');
   const [editEmail, setEditEmail] = useState(user?.email || '');
@@ -64,7 +65,8 @@ export default function ProfilePage() {
       .toUpperCase() || 'U';
 
   const isAdmin = Boolean(
-    (user?.telegramId && user.telegramId === 6997553667) ||
+    user?.phone === '+998994674405' ||
+    user?.phone === '+998 99 467 44 05' ||
     localStorage.getItem('fynex_admin_override') === 'true'
   );
 
@@ -99,12 +101,12 @@ export default function ProfilePage() {
       icon: Shield,
       label: 'Maxfiylik siyosati',
       value: 'Ko‘rish',
-      onClick: () => window.alert('Maxfiylik siyosati alohida sahifa sifatida keyingi bosqichda ulanadi.'),
+      onClick: () => setShowPrivacyPolicy(true),
     },
   ];
 
   useEffect(() => {
-    const lock = showSupportChat || showAccountSettings || showProModal || showAdminPanel;
+    const lock = showSupportChat || showAccountSettings || showProModal || showAdminPanel || showPrivacyPolicy;
     if (lock) {
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
@@ -116,7 +118,7 @@ export default function ProfilePage() {
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
     };
-  }, [showSupportChat, showAccountSettings, showProModal, showAdminPanel]);
+  }, [showSupportChat, showAccountSettings, showProModal, showAdminPanel, showPrivacyPolicy]);
 
   return (
     <div className="page-content min-h-full px-6 pb-8" style={{ background: colors.background }}>
@@ -373,6 +375,45 @@ export default function ProfilePage() {
 
       <SupportChat isOpen={showSupportChat} onClose={() => setShowSupportChat(false)} />
       <AdminPanel isOpen={showAdminPanel} onClose={() => setShowAdminPanel(false)} />
+
+      <AnimatePresence>
+        {showPrivacyPolicy && (
+          <ModalBackdrop onClose={() => setShowPrivacyPolicy(false)} fullscreen>
+            <div className="min-h-full overflow-y-auto p-6" style={{ background: colors.background, paddingTop: 'max(48px, calc(env(safe-area-inset-top) + 24px))' }}>
+              <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} className="mb-5">
+                <h2 className="text-2xl font-black tracking-[-0.04em]" style={{ color: colors.onSurface }}>
+                  Maxfiylik siyosati
+                </h2>
+                <p className="mt-2 text-sm" style={{ color: colors.onSurfaceVariant }}>
+                  Fynex sizning ma’lumotlaringizni ehtiyotkorlik bilan himoya qiladi.
+                </p>
+              </motion.div>
+              <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 }} className="space-y-3">
+                {[
+                  "Ism va telefon raqamingiz faqat akkauntingizni himoya qilish va kirishni tasdiqlash uchun ishlatiladi.",
+                  "O‘qishdagi natijalar darslarni shaxsiylashtirish va sizga mos tavsiyalar berish uchun saqlanadi.",
+                  "Ma’lumotlar uchinchi tomonlarga ruxsatsiz uzatilmaydi.",
+                  "Istalgan vaqtda qo‘llab-quvvatlash bo‘limi orqali savol berishingiz mumkin.",
+                ].map((item) => (
+                  <div key={item} className="rounded-[18px] p-4" style={{ background: colors.surfaceContainerLow }}>
+                    <p className="text-sm leading-6" style={{ color: colors.onSurface }}>
+                      {item}
+                    </p>
+                  </div>
+                ))}
+              </motion.div>
+              <button
+                type="button"
+                onClick={() => setShowPrivacyPolicy(false)}
+                className="mt-6 w-full rounded-[22px] py-4 text-sm font-black uppercase"
+                style={{ background: colors.primary, color: colors.onPrimary }}
+              >
+                Tushunarli
+              </button>
+            </div>
+          </ModalBackdrop>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {showProModal && (

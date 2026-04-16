@@ -1,12 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowLeft, Brain, Copy, Send, Sparkles } from 'lucide-react';
+import { ArrowLeft, Brain, Send, Sparkles } from 'lucide-react';
 import { useUser } from '../context/UserContext';
 import { getPalette } from '../theme';
-
-type Subject = 'english' | 'math' | 'programming' | 'russian' | 'physics' | 'logic';
-type CoachMode = 'quick' | 'deep' | 'practice';
 
 type AiMessage = {
   id: string;
@@ -15,47 +12,11 @@ type AiMessage = {
   ts: number;
 };
 
-const SUBJECT_LABEL: Record<Subject, string> = {
-  english: 'Ingliz tili',
-  math: 'Matematika',
-  programming: 'Dasturlash',
-  russian: 'Rus tili',
-  physics: 'Fizika',
-  logic: 'Mantiq',
-};
-
-const QUICK_PROMPTS: Record<Subject, string[]> = {
-  english: [
-    "Present Perfect ni oddiy tilda tushuntir",
-    "Speaking uchun 5 ta kuchli ibora ber",
-    "Bugun 10 daqiqalik English plan tuz",
-  ],
-  math: [
-    "Kasrlarni qo'shishni sodda tushuntir",
-    'Kvadrat tenglama uchun mini yo\'riqnoma ber',
-    "Bugun 3 ta oson masala ber",
-  ],
-  programming: [
-    "Python if-else ni misol bilan tushuntir",
-    'Bugun 15 daqiqalik coding mashq ber',
-    'Funksiya va o\'zgaruvchi farqini ayt',
-  ],
-  russian: [
-    'Rus tilida kunlik 5 ta ibora ber',
-    "Glagol zamonlarini qisqa tushuntir",
-    'A1 uchun bugungi mini dars ber',
-  ],
-  physics: [
-    "Nyuton 2-qonunini oddiy misolda tushuntir",
-    "Bugun 10 daqiqalik fizika takrorlash ber",
-    'Tezlik va tezlanish farqi nima?',
-  ],
-  logic: [
-    "Bugun 3 ta mantiqiy savol ber",
-    'Pattern topish bo\'yicha mini trening ber',
-    'Mantiqni kuchaytirish usullarini ayt',
-  ],
-};
+const QUICK_PROMPTS = [
+  "Present Perfect ni oddiy tilda tushuntir",
+  "Speaking uchun 5 ta kuchli ibora ber",
+  "Bugun 10 daqiqalik English plan tuz",
+];
 
 const E18_BLOCK = /\b(sex|porn|xxx|nude|erotik|эрот|18\+|onlyfans|intim)\b/i;
 
@@ -69,8 +30,6 @@ export default function AIMentorPanel({ isOpen, onClose }: Props) {
   const { theme } = useUser();
   const colors = getPalette(theme);
 
-  const [subject, setSubject] = useState<Subject>('english');
-  const [mode, setMode] = useState<CoachMode>('quick');
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<AiMessage[]>([]);
   const [sending, setSending] = useState(false);
@@ -109,12 +68,6 @@ export default function AIMentorPanel({ isOpen, onClose }: Props) {
     listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: 'smooth' });
   }, [isOpen, messages, storageKey]);
 
-  const modeInstruction = useMemo(() => {
-    if (mode === 'quick') return "Javobni maksimal 5 qatorda, juda qisqa ber.";
-    if (mode === 'deep') return "Javobni bosqichma-bosqich, lekin sodda qilib ber.";
-    return "Javobni amaliy mashq va mini topshiriq bilan ber.";
-  }, [mode]);
-
   const sendMessage = async (textRaw?: string) => {
     const text = (textRaw ?? input).trim();
     if (!text || sending) return;
@@ -133,10 +86,10 @@ export default function AIMentorPanel({ isOpen, onClose }: Props) {
     setSending(true);
     if (!textRaw) setInput('');
 
-    const combinedPrompt = `[Fan: ${SUBJECT_LABEL[subject]}]\n[Uslub: ${mode}]\n${modeInstruction}\n${text}`;
+    const combinedPrompt = `[Fan: Learning]\n[Uslub: aniq, foydali, qisqa]\n${text}`;
 
     try {
-      const response = await fetch('/api/chat/ai-respond', {
+      const response = await fetch('/api/mentor/respond', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -204,45 +157,6 @@ export default function AIMentorPanel({ isOpen, onClose }: Props) {
                 </p>
               </div>
             </div>
-            <button
-              onClick={() => navigator.clipboard?.writeText(messages.map((m) => `${m.role === 'user' ? 'Siz' : 'AI'}: ${m.text}`).join('\n\n'))}
-              className="flex h-10 w-10 items-center justify-center rounded-full"
-              style={{ background: colors.surfaceContainer }}
-            >
-              <Copy className="h-4 w-4" style={{ color: colors.onSurfaceVariant }} />
-            </button>
-          </div>
-
-          <div className="mb-2 flex gap-2 overflow-x-auto scrollbar-hide pb-1">
-            {(Object.keys(SUBJECT_LABEL) as Subject[]).map((item) => (
-              <button
-                key={item}
-                onClick={() => setSubject(item)}
-                className="shrink-0 rounded-full px-3 py-1.5 text-xs font-black"
-                style={{
-                  background: subject === item ? colors.primary : colors.surfaceContainer,
-                  color: subject === item ? colors.onPrimary : colors.onSurfaceVariant,
-                }}
-              >
-                {SUBJECT_LABEL[item]}
-              </button>
-            ))}
-          </div>
-
-          <div className="flex gap-2">
-            {(['quick', 'deep', 'practice'] as CoachMode[]).map((item) => (
-              <button
-                key={item}
-                onClick={() => setMode(item)}
-                className="rounded-full px-3 py-1.5 text-[11px] font-bold uppercase"
-                style={{
-                  background: mode === item ? `${colors.primary}22` : colors.surfaceContainerLow,
-                  color: mode === item ? colors.primary : colors.onSurfaceVariant,
-                }}
-              >
-                {item}
-              </button>
-            ))}
           </div>
         </div>
 
@@ -279,7 +193,7 @@ export default function AIMentorPanel({ isOpen, onClose }: Props) {
 
         <div className="px-4 pb-safe py-3" style={{ background: theme === 'dark' ? 'rgba(14,14,14,0.94)' : 'rgba(255,255,255,0.96)', borderTop: `1px solid ${colors.outlineVariant}33` }}>
           <div className="mb-2 flex gap-2 overflow-x-auto scrollbar-hide">
-            {QUICK_PROMPTS[subject].map((prompt) => (
+            {QUICK_PROMPTS.map((prompt) => (
               <button
                 key={prompt}
                 onClick={() => sendMessage(prompt)}

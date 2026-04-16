@@ -4,8 +4,7 @@ import {
   ArrowLeft, ArrowRight, Rocket,
   GraduationCap, BookOpen, Target, Users,
   Languages, Code2, TrendingUp,
-  MapPin, User, CheckCircle2, Building2,
-  Atom, FlaskConical, Globe2, History
+  MapPin, User, CheckCircle2, Building2
 } from 'lucide-react';
 import { useUser } from '../context/UserContext';
 
@@ -41,10 +40,6 @@ const SUBJECTS = [
   { id: 'russian', label: "Rus tili", icon: Languages, desc: "Muloqot va biznes uchun" },
   { id: 'programming', label: "Dasturlash (IT)", icon: Code2, desc: "IT va texnologiyalar" },
   { id: 'math', label: "Matematika", icon: TrendingUp, desc: "Aniq fanlar va imtihonlar" },
-  { id: 'physics', label: "Fizika", icon: Atom, desc: "Mexanika, elektr, optika" },
-  { id: 'chemistry', label: "Kimyo", icon: FlaskConical, desc: "Organik va anorganik" },
-  { id: 'biology', label: "Biologiya", icon: Globe2, desc: "Tibbiyot va tabiatshunoslik" },
-  { id: 'history', label: "Tarix", icon: History, desc: "Jahon va O'zbekiston tarixi" },
 ];
 
 const OFFLINE_CHOICES = [
@@ -151,12 +146,6 @@ export default function LoginPage() {
     return () => clearTimeout(t);
   }, [step]);
 
-  /* ── OTP auto-submit ── */
-  useEffect(() => {
-    if (step !== 'otp' || otpStatus !== 'idle') return;
-    if (otpCode.length === 6) goOtp();
-  }, [otpCode, otpStatus, step]);
-
   useEffect(() => {
     if (step !== 'otp') return;
     if (resendSec <= 0) return;
@@ -186,18 +175,34 @@ export default function LoginPage() {
   }, [step, phone, name, ob]);
 
   /* ── navigation ── */
-  const goPhone = () => {
+  const goPhone = async () => {
     if (phone.length !== 9) return;
     (document.activeElement as HTMLElement | null)?.blur?.();
+    try {
+      const telegramId = (window as any)?.Telegram?.WebApp?.initDataUnsafe?.user?.id ?? null;
+      await fetch('/api/auth/request-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone_number: fullPhone, telegram_id: telegramId }),
+      });
+    } catch {
+      // demo OTP fallback will still work
+    }
     setResendSec(45);
     setTimeout(() => setStep('otp'), 180);
   };
 
-  const goOtp = () => {
+  const goOtp = async () => {
     if (otpCode.length !== 6) return;
     setOtpStatus('checking');
-    setTimeout(() => {
-      if (otpCode === '123456') {
+    try {
+      const resp = await fetch('/api/auth/verify-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone_number: fullPhone, code: otpCode }),
+      });
+      const data = await resp.json();
+      if (data?.ok) {
         setOtpStatus('success');
         setTimeout(() => { setOtpStatus('idle'); setStep('name'); }, 900);
       } else {
@@ -205,7 +210,11 @@ export default function LoginPage() {
         setOtpAttempt((a) => a + 1);
         setTimeout(() => { setOtpCode(''); setOtpStatus('idle'); otpRef.current?.focus(); }, 900);
       }
-    }, 450);
+    } catch {
+      setOtpStatus('error');
+      setOtpAttempt((a) => a + 1);
+      setTimeout(() => { setOtpCode(''); setOtpStatus('idle'); otpRef.current?.focus(); }, 900);
+    }
   };
 
   const goNext = () => {
@@ -223,12 +232,28 @@ export default function LoginPage() {
     setStep(allSteps[idx - 1]);
   };
 
-  const resendCode = () => {
+  const resendCode = async () => {
     if (resendSec > 0) return;
     setOtpCode('');
     setOtpStatus('idle');
+    try {
+      const telegramId = (window as any)?.Telegram?.WebApp?.initDataUnsafe?.user?.id ?? null;
+      await fetch('/api/auth/request-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone_number: fullPhone, telegram_id: telegramId }),
+      });
+    } catch {
+      // demo OTP fallback will still work
+    }
     setResendSec(45);
     otpRef.current?.focus();
+  };
+
+  const getOtpBotLink = () => {
+    const digits = phone.replace(/\D/g, '');
+    const payload = digits ? `otp_998${digits}` : 'start';
+    return `https://t.me/FynexEduBot?start=${encodeURIComponent(payload)}`;
   };
 
   const finish = async () => {
@@ -382,6 +407,29 @@ export default function LoginPage() {
                       }}
                     >
                       {resendSec > 0 ? `Qayta yuborish ${resendSec}s` : 'Kodni qayta yuborish'}
+                    </button>
+                  </div>
+                  <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                    <a
+                      href={getOtpBotLink()}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center justify-center gap-2 rounded-full px-4 py-2.5 text-xs font-black"
+                      style={{ background: 'rgba(59,130,246,0.18)', color: '#60a5fa' }}
+                    >
+                      <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0h-.056zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
+                      </svg>
+                      Kodni Telegramdan oling
+                    </a>
+                    <button
+                      type="button"
+                      onClick={goOtp}
+                      disabled={otpCode.length !== 6 || otpStatus === 'checking'}
+                      className="rounded-full px-4 py-2.5 text-xs font-black disabled:opacity-50"
+                      style={{ background: 'rgba(195,255,46,0.18)', color: '#c3ff2e' }}
+                    >
+                      Kodni tasdiqlash
                     </button>
                   </div>
                 </div>

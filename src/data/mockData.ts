@@ -120,6 +120,83 @@ export const mockCourses: Course[] = [
   }
 ];
 
+const LESSON_TEMPLATES: Record<string, string[]> = {
+  english: [
+    "Salomlashuv va tanishuv",
+    "Kundalik fe'llar",
+    "Present Simple amaliyoti",
+    "So'z birikmalari",
+    "Listening mini-dialog",
+    "Speaking mini-practice",
+    "Reading short text",
+    "Grammar booster",
+    "Vocab challenge",
+    "Revision + test",
+  ],
+  russian: [
+    "Ruscha kundalik iboralar",
+    "Fe'llar va zamonlar",
+    "Muloqot darsi",
+    "Lug'at amaliyoti",
+    "Tinglab tushunish",
+    "Gap tuzish",
+    "Qisqa matn tahlili",
+    "Dialog mashqi",
+    "Xatolarni tuzatish",
+    "Nazorat darsi",
+  ],
+  math: [
+    "Arifmetika tezkor mashq",
+    "Kasrlar bilan ishlash",
+    "Tenglamalar asoslari",
+    "Foiz va nisbat",
+    "Funksiya kirish",
+    "Grafik tushunchasi",
+    "Masala yechish texnikasi",
+    "Mantiqiy hisoblash",
+    "Aralash test",
+    "Yakuniy takrorlash",
+  ],
+  physics: [
+    "Mexanika kirish",
+    "Tezlik va tezlanish",
+    "Kuch va massa",
+    "Energiya turlari",
+    "Issiqlik jarayonlari",
+    "Elektr asoslari",
+    "Tok va qarshilik",
+    "To'lqinlar",
+    "Optika kirish",
+    "Yakuniy nazorat",
+  ],
+  programming: [
+    "Python sintaksisi",
+    "O'zgaruvchilar amaliyoti",
+    "Shart operatorlari",
+    "Sikllar",
+    "Funksiyalar",
+    "List va dict",
+    "String bilan ishlash",
+    "Mini loyiha 1",
+    "Xatolarni topish",
+    "Yakuniy mini loyiha",
+  ],
+};
+
+for (const course of mockCourses) {
+  if (course.lessons.length >= 10) continue;
+  const template = LESSON_TEMPLATES[course.category] || LESSON_TEMPLATES.english;
+  const nextIndex = course.lessons.length;
+  for (let i = nextIndex; i < 10; i += 1) {
+    course.lessons.push({
+      id: `${course.id}-x${i + 1}`,
+      title: template[i] || `${course.title} — Dars ${i + 1}`,
+      duration: 20 + ((i % 4) * 5),
+      completed: false,
+    });
+  }
+}
+
 export const mockLeaderboard: LeaderboardEntry[] = [];
 
 export const currentUser: User = {

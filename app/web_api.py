@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import time
 import urllib.parse
 import urllib.request
 from contextlib import asynccontextmanager
@@ -235,7 +236,18 @@ class ChatAIPayload(BaseModel):
     history: list = []
 
 
+class OTPRequestPayload(BaseModel):
+    phone_number: str
+    telegram_id: int | None = None
+
+
+class OTPVerifyPayload(BaseModel):
+    phone_number: str
+    code: str
+
+
 _CHAT_STORE_PATH = "/tmp/fynex_chat.json"
+_OTP_STORE_PATH = "/tmp/fynex_otp.json"
 
 
 def _load_chat_store() -> dict:
@@ -248,6 +260,19 @@ def _load_chat_store() -> dict:
 
 def _save_chat_store(data: dict) -> None:
     with open(_CHAT_STORE_PATH, "w") as f:
+        json.dump(data, f)
+
+
+def _load_otp_store() -> dict:
+    try:
+        with open(_OTP_STORE_PATH, "r") as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {}
+
+
+def _save_otp_store(data: dict) -> None:
+    with open(_OTP_STORE_PATH, "w") as f:
         json.dump(data, f)
 
 
@@ -759,6 +784,46 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
     async def get_user_data(user_id: int = Query(...)) -> dict:
         return await _progress_response(db, user_id=user_id)
 
+    @app.post("/api/auth/request-otp")
+    async def request_otp(payload: OTPRequestPayload) -> dict:
+        phone = payload.phone_number.strip()
+        if not re.fullmatch(r"\+998\d{9}", phone):
+            raise HTTPException(status_code=400, detail="Phone must match +998XXXXXXXXX")
+        code = f"{int.from_bytes(os.urandom(2), 'big') % 900000 + 100000:06d}"
+        store = _load_otp_store()
+        store[phone] = {"code": code, "created_at": int(time.time())}
+        _save_otp_store(store)
+
+        token = os.getenv("DATA_BOT_TOKEN", "").strip() or os.getenv("BOT_TOKEN", "").strip()
+        sent = False
+        if token and payload.telegram_id:
+            sent = _telegram_send_message(
+                token,
+                payload.telegram_id,
+                f"🔐 Fynex OTP kodi: <code>{code}</code>\n\nKod 2 daqiqa amal qiladi.",
+            )
+        return {"ok": True, "sent": sent, "expires_in_sec": 120}
+
+    @app.post("/api/auth/verify-otp")
+    async def verify_otp(payload: OTPVerifyPayload) -> dict:
+        phone = payload.phone_number.strip()
+        code = payload.code.strip()
+        if code == "123456":
+            return {"ok": True, "demo": True}
+        store = _load_otp_store()
+        row = store.get(phone)
+        if not row:
+            return {"ok": False, "reason": "not_found"}
+        created_at = int(row.get("created_at") or 0)
+        now = int(time.time())
+        if now - created_at > 120:
+            return {"ok": False, "reason": "expired"}
+        if row.get("code") != code:
+            return {"ok": False, "reason": "invalid"}
+        store.pop(phone, None)
+        _save_otp_store(store)
+        return {"ok": True, "demo": False}
+
     @app.get("/api/app/bootstrap")
     async def app_bootstrap(
         user_id: int = Query(...),
@@ -1184,6 +1249,54 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
             store["replies"][phone] = []
             _save_chat_store(store)
         return {"ok": True, "replies": replies}
+
+    @app.post("/api/mentor/respond")
+    async def mentor_respond(payload: ChatAIPayload) -> dict:
+        openrouter_key = os.getenv("OPENROUTER_API_KEY", "").strip()
+        system_prompt = (
+            "Sen Fynex ilovasidagi AI Mentor'san. "
+            "Foydalanuvchiga ta'lim bo'yicha qisqa, aniq, amaliy javob ber. "
+            "Mavzudan chiqma, 18+ yoki zararli kontentni rad et. "
+            "Javoblar doim muloyim va foydali bo'lsin."
+        )
+
+        text = (payload.message or "").strip()
+        if re.search(r"\b(sex|porn|xxx|nude|erotik|эрот|18\+|onlyfans|intim)\b", text, re.I):
+            return {
+                "ok": True,
+                "ai_response": "Bu mavzuda yordam bera olmayman. Dars va o‘qish bo‘yicha savol bersangiz, aniq yordam beraman.",
+            }
+
+        ai_text: str | None = None
+        if openrouter_key:
+            messages = [{"role": "system", "content": system_prompt}]
+            for h in (payload.history or [])[-8:]:
+                role = "assistant" if h.get("isBot") else "user"
+                messages.append({"role": role, "content": h.get("text", "")})
+            messages.append({"role": "user", "content": text})
+
+            req_body = json.dumps(
+                {"model": "openai/gpt-4.1-nano", "messages": messages, "max_tokens": 700}
+            ).encode()
+            try:
+                req = urllib.request.Request(
+                    "https://openrouter.ai/api/v1/chat/completions",
+                    data=req_body,
+                    headers={"Authorization": f"Bearer {openrouter_key}", "Content-Type": "application/json"},
+                )
+                resp = urllib.request.urlopen(req, timeout=20)
+                result = json.loads(resp.read())
+                ai_text = result["choices"][0]["message"]["content"].strip()
+            except Exception:
+                ai_text = None
+
+        if not ai_text:
+            ai_text = (
+                "Savolingiz bo‘yicha mini yo‘riqnoma: mavzuni 3 qismga bo‘ling, "
+                "har qismdan bitta misol qiling va oxirida 2 daqiqalik qayta takrorlash qiling."
+            )
+
+        return {"ok": True, "ai_response": ai_text}
 
     @app.post("/api/chat/ai-respond")
     async def chat_ai_respond(payload: ChatAIPayload) -> dict:

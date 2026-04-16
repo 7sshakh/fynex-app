@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Atom, BookOpen, Calculator, Check, Clock3, Code, Globe, Lock, LockKeyhole, Play, Search, Sparkles, Star, X, Zap } from 'lucide-react';
+import { Atom, BookOpen, Calculator, Check, Clock3, Code, Globe, Lock, LockKeyhole, Play, Sparkles, Star, X, Zap } from 'lucide-react';
 import { mockCourses, categories } from '../data/mockData';
 import { getLessonSteps } from '../data/lessonContent';
 import { useUser } from '../context/UserContext';
@@ -14,7 +14,6 @@ export default function CoursesPage() {
   const { user, updateXp, completeCourse, theme } = useUser();
   const colors = getPalette(theme);
   const [activeCategory, setActiveCategory] = useState('all');
-  const [query, setQuery] = useState('');
   const [sortMode, setSortMode] = useState<'recommended' | 'shortest' | 'xp'>('recommended');
   const [favorites, setFavorites] = useState<string[]>(() => {
     try {
@@ -60,11 +59,7 @@ export default function CoursesPage() {
   const filteredCourses = useMemo(() => {
     const filtered = mockCourses.filter((course) => {
       const categoryMatch = activeCategory === 'all' || course.category === activeCategory;
-      const queryMatch =
-        !query.trim() ||
-        course.title.toLowerCase().includes(query.toLowerCase()) ||
-        course.description.toLowerCase().includes(query.toLowerCase());
-      return categoryMatch && queryMatch;
+      return categoryMatch;
     });
     if (sortMode === 'shortest') {
       return [...filtered].sort((a, b) => {
@@ -81,7 +76,7 @@ export default function CoursesPage() {
       const bFav = favorites.includes(b.id) ? 1 : 0;
       return bFav - aFav;
     });
-  }, [activeCategory, query, sortMode, favorites]);
+  }, [activeCategory, sortMode, favorites]);
 
   useEffect(() => {
     document.body.style.overflow = selectedCourse ? 'hidden' : '';
@@ -94,6 +89,15 @@ export default function CoursesPage() {
   useEffect(() => {
     if (activeLesson) hideNav();
   }, [activeLesson]);
+
+  useEffect(() => {
+    const openCourseId = localStorage.getItem('fynex_open_course_id');
+    if (openCourseId) {
+      const exists = mockCourses.some((course) => course.id === openCourseId);
+      if (exists) setSelectedCourseId(openCourseId);
+      localStorage.removeItem('fynex_open_course_id');
+    }
+  }, []);
 
   useEffect(() => {
     localStorage.setItem('fynex_favorite_courses', JSON.stringify(favorites));
@@ -161,21 +165,6 @@ export default function CoursesPage() {
           </p>
         </div>
 
-        <label className="relative block">
-          <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2" style={{ color: colors.onSurfaceVariant }} />
-          <input
-            type="text"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Kurslarni izlash..."
-            className="w-full rounded-2xl border-b-2 px-12 py-4 text-sm focus:outline-none"
-            style={{
-              background: colors.surfaceContainerLowest,
-              color: colors.onSurface,
-              borderColor: 'transparent',
-            }}
-          />
-        </label>
       </motion.header>
 
       <section className="-mx-6 mb-6 overflow-x-auto px-6 scrollbar-hide">

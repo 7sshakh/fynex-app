@@ -34,6 +34,12 @@ function AppContent() {
   }, [activeTab]);
 
   useEffect(() => {
+    if (isAuthenticated) {
+      setActiveTab('home');
+    }
+  }, [isAuthenticated]);
+
+  useEffect(() => {
     const handleNavigate = (event: Event) => {
       const customEvent = event as CustomEvent<TabType>;
       if (customEvent.detail) setActiveTab(customEvent.detail);
