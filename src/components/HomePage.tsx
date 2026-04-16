@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Bell, BookOpen, ChevronRight, Flame, Play, Trophy, X, Zap, CheckCircle2, Gift, TrendingUp, Megaphone, GraduationCap, Clock, Sparkles } from 'lucide-react';
+import { Bell, BookOpen, ChevronRight, Flame, Play, Trophy, X, Zap, CheckCircle2, Gift, TrendingUp, Megaphone, GraduationCap } from 'lucide-react';
 import { useUser } from '../context/UserContext';
 import { mockCourses, dailyChallenges } from '../data/mockData';
 import { hideNav, showNav } from './BottomNav';
@@ -23,7 +23,6 @@ export default function HomePage() {
   
   const [roadmap, setRoadmap] = useState<Roadmap | null>(null);
   const [progress, setProgress] = useState<ProgressData | null>(null);
-  const [showFactBanner, setShowFactBanner] = useState(true);
 
   useEffect(() => {
     const r = localStorage.getItem('fynex_roadmap');
@@ -95,11 +94,8 @@ export default function HomePage() {
             </span>
           </div>
           <div>
-            <span className="block text-[10px] font-semibold uppercase tracking-[0.22em]" style={{ color: colors.onSurfaceVariant }}>
-              FYNEX
-            </span>
-            <h1 className="text-lg font-black italic tracking-[-0.04em]" style={{ color: colors.primary }}>
-              Salom, {firstName}
+            <h1 className="text-xl font-black italic tracking-[-0.04em]" style={{ color: colors.primary }}>
+              {firstName}
             </h1>
           </div>
         </div>
@@ -159,53 +155,66 @@ export default function HomePage() {
         </div>
       </motion.section>
 
-      <AnimatePresence>
-        {showFactBanner && (
-          <motion.section
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            className="mb-6 relative overflow-hidden rounded-[24px] p-5 border"
-            style={{ 
-              background: 'linear-gradient(135deg, rgba(251,191,36,0.08), rgba(251,191,36,0.02))', 
-              borderColor: 'rgba(251,191,36,0.25)',
-              boxShadow: '0 8px 32px rgba(251,191,36,0.05)'
-            }}
-          >
-            <div className="absolute top-0 right-0 p-3">
-              <button 
-                onClick={() => setShowFactBanner(false)}
-                className="rounded-full p-1.5 transition-colors hover:bg-amber-500/10 active:scale-90"
-              >
-                <X className="h-4 w-4 text-amber-500/40" />
-              </button>
+      {/* DRILLS AND PRACTICE LAB */}
+      <motion.section
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.15 }}
+        className="mb-6 overflow-hidden rounded-[24px] p-5 relative cursor-pointer shadow-lg shadow-rose-900/10"
+        style={{ background: 'linear-gradient(120deg, #be123c, #e11d48)', color: '#ffffff' }}
+        onClick={() => window.dispatchEvent(new CustomEvent('fynex:openPractice'))}
+      >
+        <div className="absolute right-[-10%] top-[-10%] h-32 w-32 rounded-full bg-white/10" />
+        <div className="absolute bottom-[-10%] left-[-10%] h-24 w-24 rounded-full bg-white/20" />
+        <div className="relative z-10 flex items-center justify-between">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="rounded-full bg-yellow-400 px-2 py-0.5 text-[8px] font-black uppercase tracking-wider text-black">
+                Hot 
+              </span>
+              <p className="text-xs font-bold text-white/70 uppercase tracking-widest">Micro-Learning</p>
             </div>
-            
-            <div className="flex gap-4 items-start">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl" style={{ background: 'linear-gradient(135deg, #fbbf24, #d97706)', boxShadow: '0 4px 12px rgba(251,191,36,0.3)' }}>
-                <Sparkles className="w-5 h-5 text-white" />
-              </div>
-              
-              <div className="flex flex-col pr-4">
-                <div className="flex items-center gap-2 mb-1">
-                  <h3 className="text-[14px] font-black uppercase tracking-widest text-amber-500">
-                    Kichik sirni bilasizmi?
-                  </h3>
-                </div>
-                
-                <p className="text-[13px] leading-[1.6] text-white/80 font-medium">
-                  Miya uzoq darsdan ko'ra, kuniga faqat <span className="text-amber-400 font-bold">5 daqiqalik</span> qisqa mashqlarni <span className="text-amber-400 font-bold">3 barobar</span> yaxshiroq eslab qoladi. Siz bilan har bir soniyani qadrlaymiz.
-                </p>
-              </div>
+            <h3 className="text-xl font-black tracking-tight" style={{ color: '#ffffff' }}>Practice Lab</h3>
+            <p className="mt-1 text-xs text-white/80 font-medium">5-minute daily smart drills</p>
+          </div>
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm">
+            <Flame className="h-6 w-6 text-white" />
+          </div>
+        </div>
+      </motion.section>
+
+      {/* IELTS / SAT MOCK EXAMS */}
+      <motion.section
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.18 }}
+        className="mb-8 overflow-hidden rounded-[24px] p-5 relative cursor-pointer shadow-xl shadow-indigo-900/10"
+        style={{ background: 'linear-gradient(120deg, #1e1b4b, #312e81)', color: '#ffffff' }}
+        onClick={() => window.dispatchEvent(new CustomEvent('fynex:openMockTests'))}
+      >
+        <div className="absolute right-[-10%] top-[-20%] h-32 w-32 rounded-full bg-white/5" />
+        <div className="absolute bottom-[-10%] left-[-10%] h-24 w-24 rounded-full bg-white/10" />
+        <div className="relative z-10 flex items-center justify-between">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="rounded-full bg-red-500 px-2 py-0.5 text-[8px] font-black uppercase tracking-wider text-white">
+                Yangi
+              </span>
+              <p className="text-xs font-bold text-white/70 uppercase tracking-widest">Mock Tests</p>
             </div>
-          </motion.section>
-        )}
-      </AnimatePresence>
+            <h3 className="text-xl font-black tracking-tight" style={{ color: '#ffffff' }}>IELTS & SAT Testlar</h3>
+            <p className="mt-1 text-xs text-white/50 font-medium">Haqiqiy imtihon muhitini his eting</p>
+          </div>
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 backdrop-blur-sm">
+            <GraduationCap className="h-6 w-6 text-white" />
+          </div>
+        </div>
+      </motion.section>
 
       <motion.section
         initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
+        transition={{ delay: 0.2 }}
         className="mb-6 rounded-[28px] p-5"
         style={{ background: colors.surfaceContainer }}
       >
@@ -251,7 +260,7 @@ export default function HomePage() {
       <motion.section
         initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.14 }}
+        transition={{ delay: 0.22 }}
         className="mb-6 grid grid-cols-2 gap-4"
       >
         <div
@@ -295,61 +304,7 @@ export default function HomePage() {
         </div>
       </motion.section>
 
-      {/* DRILLS AND PRACTICE LAB */}
-      <motion.section
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.15 }}
-        className="mb-8 overflow-hidden rounded-[24px] p-5 relative cursor-pointer shadow-lg shadow-rose-900/10"
-        style={{ background: 'linear-gradient(120deg, #be123c, #e11d48)', color: '#ffffff' }}
-        onClick={() => window.dispatchEvent(new CustomEvent('fynex:openPractice'))}
-      >
-        <div className="absolute right-[-10%] top-[-10%] h-32 w-32 rounded-full bg-white/10" />
-        <div className="absolute bottom-[-10%] left-[-10%] h-24 w-24 rounded-full bg-white/20" />
-        <div className="relative z-10 flex items-center justify-between">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="rounded-full bg-yellow-400 px-2 py-0.5 text-[8px] font-black uppercase tracking-wider text-black">
-                Hot 
-              </span>
-              <p className="text-xs font-bold text-white/70 uppercase tracking-widest">Micro-Learning</p>
-            </div>
-            <h3 className="text-xl font-black tracking-tight" style={{ color: '#ffffff' }}>Practice Lab</h3>
-            <p className="mt-1 text-xs text-white/80 font-medium">5-minute daily smart drills</p>
-          </div>
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm">
-            <Flame className="h-6 w-6 text-white" />
-          </div>
-        </div>
-      </motion.section>
 
-      {/* IELTS / SAT MOCK EXAMS */}
-      <motion.section
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.2 }}
-        className="mb-8 overflow-hidden rounded-[24px] p-5 relative cursor-pointer shadow-xl shadow-indigo-900/10"
-        style={{ background: 'linear-gradient(120deg, #1e1b4b, #312e81)', color: '#ffffff' }}
-        onClick={() => window.dispatchEvent(new CustomEvent('fynex:openMockTests'))}
-      >
-        <div className="absolute right-[-10%] top-[-20%] h-32 w-32 rounded-full bg-white/5" />
-        <div className="absolute bottom-[-10%] left-[-10%] h-24 w-24 rounded-full bg-white/10" />
-        <div className="relative z-10 flex items-center justify-between">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="rounded-full bg-red-500 px-2 py-0.5 text-[8px] font-black uppercase tracking-wider text-white">
-                Yangi
-              </span>
-              <p className="text-xs font-bold text-white/70 uppercase tracking-widest">Mock Tests</p>
-            </div>
-            <h3 className="text-xl font-black tracking-tight" style={{ color: '#ffffff' }}>IELTS & SAT Testlar</h3>
-            <p className="mt-1 text-xs text-white/50 font-medium">Haqiqiy imtihon muhitini his eting</p>
-          </div>
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 backdrop-blur-sm">
-            <GraduationCap className="h-6 w-6 text-white" />
-          </div>
-        </div>
-      </motion.section>
 
       <motion.section
         initial={{ opacity: 0, y: 18 }}
