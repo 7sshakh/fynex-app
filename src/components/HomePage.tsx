@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Bell, BookOpen, ChevronRight, Flame, Play, Trophy, X, Zap, CheckCircle2, Gift, TrendingUp, Megaphone, GraduationCap, Clock } from 'lucide-react';
+import { Bell, BookOpen, ChevronRight, Flame, Play, Trophy, X, Zap, CheckCircle2, Gift, TrendingUp, Megaphone, GraduationCap, Clock, Sparkles } from 'lucide-react';
 import { useUser } from '../context/UserContext';
 import { mockCourses, dailyChallenges } from '../data/mockData';
 import { hideNav, showNav } from './BottomNav';
@@ -162,37 +162,39 @@ export default function HomePage() {
       <AnimatePresence>
         {showFactBanner && (
           <motion.section
-            initial={{ opacity: 0, scale: 0.96, y: 8 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.96, height: 0, marginBottom: 0, padding: 0 }}
-            transition={{ duration: 0.25 }}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95 }}
             className="mb-6 relative overflow-hidden rounded-[24px] p-5 border"
             style={{ 
-              background: 'linear-gradient(135deg, rgba(8,145,178,0.12), rgba(22,78,99,0.04))', 
-              borderColor: 'rgba(8,145,178,0.2)' 
+              background: 'linear-gradient(135deg, rgba(251,191,36,0.08), rgba(251,191,36,0.02))', 
+              borderColor: 'rgba(251,191,36,0.25)',
+              boxShadow: '0 8px 32px rgba(251,191,36,0.05)'
             }}
           >
-            <div className="absolute top-0 right-0 p-3 z-20">
+            <div className="absolute top-0 right-0 p-3">
               <button 
                 onClick={() => setShowFactBanner(false)}
-                className="rounded-full p-1.5 transition-colors hover:bg-cyan-500/10 active:scale-95"
+                className="rounded-full p-1.5 transition-colors hover:bg-amber-500/10 active:scale-90"
               >
-                <X className="h-4 w-4 text-cyan-400/60" />
+                <X className="h-4 w-4 text-amber-500/40" />
               </button>
             </div>
             
-            <div className="relative z-10 flex gap-4">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[18px]" style={{ background: 'linear-gradient(135deg, rgba(8,145,178,0.2), rgba(8,145,178,0.05))' }}>
-                <Clock className="w-6 h-6 text-cyan-300" />
+            <div className="flex gap-4 items-start">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl" style={{ background: 'linear-gradient(135deg, #fbbf24, #d97706)', boxShadow: '0 4px 12px rgba(251,191,36,0.3)' }}>
+                <Sparkles className="w-5 h-5 text-white" />
               </div>
               
-              <div className="flex flex-col pr-6">
-                <h3 className="mb-1 text-[15px] font-bold tracking-tight text-cyan-50">
-                  Vaqtingizni qadrlaymiz 🤍
-                </h3>
+              <div className="flex flex-col pr-4">
+                <div className="flex items-center gap-2 mb-1">
+                  <h3 className="text-[14px] font-black uppercase tracking-widest text-amber-500">
+                    Kichik sirni bilasizmi?
+                  </h3>
+                </div>
                 
-                <p className="text-[12px] leading-[1.6] text-cyan-100/70 font-medium tracking-wide">
-                  Miya uzoq darsdan ko'ra, kuniga faqat <b className="text-cyan-300 font-bold">5 daqiqalik</b> qisqa mashqlarni <b className="text-cyan-300 font-bold">3 barobar</b> yaxshiroq eslab qoladi. Fynex bilan charchoqsiz, qahva ichib yoki yo'lda ketayotib ham, doimiy o'sishga erishasiz.
+                <p className="text-[13px] leading-[1.6] text-white/80 font-medium">
+                  Miya uzoq darsdan ko'ra, kuniga faqat <span className="text-amber-400 font-bold">5 daqiqalik</span> qisqa mashqlarni <span className="text-amber-400 font-bold">3 barobar</span> yaxshiroq eslab qoladi. Siz bilan har bir soniyani qadrlaymiz.
                 </p>
               </div>
             </div>
