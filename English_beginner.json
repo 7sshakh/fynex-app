@@ -1,0 +1,3388 @@
+{
+  "course": "English Beginner",
+  "lessons": [
+    {
+      "lesson_id": 1,
+      "title": "Greetings",
+      "topics": [
+        {
+          "type": "vocabulary",
+          "items": [
+            {
+              "word": "Hello",
+              "translation_uz": "Salom",
+              "example": "Hello, my friend.",
+              "example_uz": "Salom, do'stim."
+            },
+            {
+              "word": "Hi",
+              "translation_uz": "Salom",
+              "example": "Hi, how are you?",
+              "example_uz": "Salom, qalaysiz?"
+            },
+            {
+              "word": "Good morning",
+              "translation_uz": "Xayrli tong",
+              "example": "Good morning, teacher.",
+              "example_uz": "Xayrli tong, o'qituvchi."
+            },
+            {
+              "word": "Good evening",
+              "translation_uz": "Xayrli kech",
+              "example": "Good evening, mom.",
+              "example_uz": "Xayrli kech, ona."
+            },
+            {
+              "word": "Goodbye",
+              "translation_uz": "Xayr",
+              "example": "Goodbye, see you later.",
+              "example_uz": "Xayr, keyin ko'rishguncha."
+            },
+            {
+              "word": "See you",
+              "translation_uz": "Ko'rishguncha",
+              "example": "See you tomorrow.",
+              "example_uz": "Ertagacha ko'rishguncha."
+            }
+          ]
+        },
+        {
+          "type": "mini_lesson",
+          "content": "Use 'Hello' and 'Hi' anytime. Use 'Good morning' before 12 PM. 'Good evening' after 6 PM. Say 'Goodbye' when leaving.",
+          "content_uz": "'Hello' va 'Hi' ni istalgan vaqt ishlating. 'Good morning' – 12 dan oldin. 'Good evening' – 18:00 dan keyin. Ketayotganda 'Goodbye' ayting."
+        },
+        {
+          "type": "quiz",
+          "questions": [
+            {
+              "question": "How do you say 'Salom' in English?",
+              "question_uz": "Ingliz tilida 'Salom' qanday aytiladi?",
+              "options": [
+                "Goodbye",
+                "Hello",
+                "Night",
+                "Morning"
+              ],
+              "answer": "Hello"
+            },
+            {
+              "question": "What do you say in the morning?",
+              "question_uz": "Ertalab nima deysiz?",
+              "options": [
+                "Good night",
+                "Goodbye",
+                "Good morning",
+                "See you"
+              ],
+              "answer": "Good morning"
+            },
+            {
+              "question": "What does 'Goodbye' mean?",
+              "question_uz": "'Goodbye' nimani anglatadi?",
+              "options": [
+                "Salom",
+                "Xayr",
+                "Kechqurun",
+                "Ertaga"
+              ],
+              "answer": "Xayr"
+            },
+            {
+              "question": "Which is informal?",
+              "question_uz": "Qaysi biri norasmiy?",
+              "options": [
+                "Good morning",
+                "Good evening",
+                "Hi",
+                "Goodbye"
+              ],
+              "answer": "Hi"
+            },
+            {
+              "question": "Say 'Xayrli kech' in English.",
+              "question_uz": "'Xayrli kech' ingliz tilida qanday?",
+              "options": [
+                "Good night",
+                "Good evening",
+                "Hello",
+                "Good morning"
+              ],
+              "answer": "Good evening"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": 2,
+      "title": "Introducing Yourself",
+      "topics": [
+        {
+          "type": "vocabulary",
+          "items": [
+            {
+              "word": "My name is",
+              "translation_uz": "Mening ismim",
+              "example": "My name is John.",
+              "example_uz": "Mening ismim Jon."
+            },
+            {
+              "word": "I am",
+              "translation_uz": "Men",
+              "example": "I am a student.",
+              "example_uz": "Men talabaman."
+            },
+            {
+              "word": "What is your name?",
+              "translation_uz": "Ismingiz nima?",
+              "example": "What is your name?",
+              "example_uz": "Ismingiz nima?"
+            },
+            {
+              "word": "Nice to meet you",
+              "translation_uz": "Tanishganimdan xursandman",
+              "example": "Nice to meet you, Ali.",
+              "example_uz": "Tanishganimdan xursandman, Ali."
+            },
+            {
+              "word": "I am from",
+              "translation_uz": "Men ...danman",
+              "example": "I am from Tashkent.",
+              "example_uz": "Men Toshkentdanman."
+            }
+          ]
+        },
+        {
+          "type": "mini_lesson",
+          "content": "To introduce yourself: say 'My name is ___' or 'I am ___'. Ask 'What is your name?' To be polite, say 'Nice to meet you'.",
+          "content_uz": "O'zingizni tanishtirish uchun: 'My name is ___' yoki 'I am ___' deb ayting. 'What is your name?' deb so'rang. Xushmuomalalik uchun 'Nice to meet you' deb ayting."
+        },
+        {
+          "type": "quiz",
+          "questions": [
+            {
+              "question": "How to say 'Mening ismim Maryam'?",
+              "question_uz": "'Mening ismim Maryam' ingliz tilida?",
+              "options": [
+                "I am Maryam",
+                "My name is Maryam",
+                "She is Maryam",
+                "You are Maryam"
+              ],
+              "answer": "My name is Maryam"
+            },
+            {
+              "question": "What do you ask for someone's name?",
+              "question_uz": "Biror kishining ismini so'rash uchun nima deysiz?",
+              "options": [
+                "How are you?",
+                "What is your name?",
+                "Where are you from?",
+                "How old are you?"
+              ],
+              "answer": "What is your name?"
+            },
+            {
+              "question": "What does 'Nice to meet you' mean?",
+              "question_uz": "'Nice to meet you' nimani anglatadi?",
+              "options": [
+                "Yaxshi ko'rishdik",
+                "Tanishganimdan xursandman",
+                "Qalaysiz",
+                "Xayr"
+              ],
+              "answer": "Tanishganimdan xursandman"
+            },
+            {
+              "question": "Which is correct?",
+              "question_uz": "Qaysi biri to'g'ri?",
+              "options": [
+                "I name is John",
+                "My name John",
+                "My name is John",
+                "Name my John"
+              ],
+              "answer": "My name is John"
+            },
+            {
+              "question": "Say 'Men Buxorodanman'.",
+              "question_uz": "'Men Buxorodanman' deb ayting.",
+              "options": [
+                "I am Bukhara",
+                "I from Bukhara",
+                "I am from Bukhara",
+                "My from Bukhara"
+              ],
+              "answer": "I am from Bukhara"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": 3,
+      "title": "Numbers 1–10",
+      "topics": [
+        {
+          "type": "vocabulary",
+          "items": [
+            {
+              "word": "One",
+              "translation_uz": "Bir",
+              "example": "I have one brother.",
+              "example_uz": "Mening bir akam bor."
+            },
+            {
+              "word": "Two",
+              "translation_uz": "Ikki",
+              "example": "Two apples.",
+              "example_uz": "Ikki olma."
+            },
+            {
+              "word": "Three",
+              "translation_uz": "Uch",
+              "example": "Three cats.",
+              "example_uz": "Uch mushuk."
+            },
+            {
+              "word": "Four",
+              "translation_uz": "To'rt",
+              "example": "Four chairs.",
+              "example_uz": "To'rt stul."
+            },
+            {
+              "word": "Five",
+              "translation_uz": "Besh",
+              "example": "Five pens.",
+              "example_uz": "Besh qalam."
+            },
+            {
+              "word": "Six",
+              "translation_uz": "Olti",
+              "example": "Six books.",
+              "example_uz": "Olti kitob."
+            },
+            {
+              "word": "Seven",
+              "translation_uz": "Yetti",
+              "example": "Seven days.",
+              "example_uz": "Yetti kun."
+            },
+            {
+              "word": "Eight",
+              "translation_uz": "Sakkiz",
+              "example": "Eight eggs.",
+              "example_uz": "Sakkiz tuxum."
+            },
+            {
+              "word": "Nine",
+              "translation_uz": "To'qqiz",
+              "example": "Nine balls.",
+              "example_uz": "To'qqiz to'p."
+            },
+            {
+              "word": "Ten",
+              "translation_uz": "O'n",
+              "example": "Ten fingers.",
+              "example_uz": "O'n barmoq."
+            }
+          ]
+        },
+        {
+          "type": "mini_lesson",
+          "content": "Numbers 1-10: one, two, three, four, five, six, seven, eight, nine, ten. Practice counting objects around you.",
+          "content_uz": "1-10 raqamlari: bir, ikki, uch, to'rt, besh, olti, yetti, sakkiz, to'qqiz, o'n. Atrofingizdagi narsalarni sanashni mashq qiling."
+        },
+        {
+          "type": "quiz",
+          "questions": [
+            {
+              "question": "What is 5 in English?",
+              "question_uz": "5 ingliz tilida nima?",
+              "options": [
+                "Five",
+                "Six",
+                "Four",
+                "Seven"
+              ],
+              "answer": "Five"
+            },
+            {
+              "question": "How do you say 'sakkiz'?",
+              "question_uz": "'Sakkiz' ingliz tilida?",
+              "options": [
+                "Seven",
+                "Eight",
+                "Nine",
+                "Six"
+              ],
+              "answer": "Eight"
+            },
+            {
+              "question": "Three + two = ?",
+              "question_uz": "Uch + ikki = ?",
+              "options": [
+                "Four",
+                "Five",
+                "Six",
+                "Seven"
+              ],
+              "answer": "Five"
+            },
+            {
+              "question": "Which number is 'ten'?",
+              "question_uz": "Qaysi raqam 'ten'?",
+              "options": [
+                "9",
+                "8",
+                "10",
+                "7"
+              ],
+              "answer": "10"
+            },
+            {
+              "question": "Spell '4'",
+              "question_uz": "4 ni harflab yozing",
+              "options": [
+                "Five",
+                "Three",
+                "Four",
+                "Two"
+              ],
+              "answer": "Four"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": 4,
+      "title": "Numbers 11–20",
+      "topics": [
+        {
+          "type": "vocabulary",
+          "items": [
+            {
+              "word": "Eleven",
+              "translation_uz": "O'n bir",
+              "example": "Eleven students.",
+              "example_uz": "O'n bir talaba."
+            },
+            {
+              "word": "Twelve",
+              "translation_uz": "O'n ikki",
+              "example": "Twelve months.",
+              "example_uz": "O'n ikki oy."
+            },
+            {
+              "word": "Thirteen",
+              "translation_uz": "O'n uch",
+              "example": "Thirteen years old.",
+              "example_uz": "O'n uch yosh."
+            },
+            {
+              "word": "Fourteen",
+              "translation_uz": "O'n to'rt",
+              "example": "Fourteen days.",
+              "example_uz": "O'n to'rt kun."
+            },
+            {
+              "word": "Fifteen",
+              "translation_uz": "O'n besh",
+              "example": "Fifteen minutes.",
+              "example_uz": "O'n besh daqiqa."
+            },
+            {
+              "word": "Sixteen",
+              "translation_uz": "O'n olti",
+              "example": "Sixteen candles.",
+              "example_uz": "O'n olti sham."
+            },
+            {
+              "word": "Seventeen",
+              "translation_uz": "O'n yetti",
+              "example": "Seventeen birds.",
+              "example_uz": "O'n yetti qush."
+            },
+            {
+              "word": "Eighteen",
+              "translation_uz": "O'n sakkiz",
+              "example": "Eighteen flowers.",
+              "example_uz": "O'n sakkiz gul."
+            },
+            {
+              "word": "Nineteen",
+              "translation_uz": "O'n to'qqiz",
+              "example": "Nineteen cars.",
+              "example_uz": "O'n to'qqiz mashina."
+            },
+            {
+              "word": "Twenty",
+              "translation_uz": "Yigirma",
+              "example": "Twenty people.",
+              "example_uz": "Yigirma kishi."
+            }
+          ]
+        },
+        {
+          "type": "mini_lesson",
+          "content": "Numbers 11-20: eleven, twelve, thirteen, fourteen, fifteen, sixteen, seventeen, eighteen, nineteen, twenty. Notice 'teen' at the end for 13-19.",
+          "content_uz": "11-20 raqamlari: eleven, twelve, thirteen, fourteen, fifteen, sixteen, seventeen, eighteen, nineteen, twenty. 13-19 da oxirida 'teen' qo'shimchasi bor."
+        },
+        {
+          "type": "quiz",
+          "questions": [
+            {
+              "question": "What is 20?",
+              "question_uz": "20 nima?",
+              "options": [
+                "Twelve",
+                "Twenty",
+                "Eighteen",
+                "Nineteen"
+              ],
+              "answer": "Twenty"
+            },
+            {
+              "question": "How do you say 'o'n sakkiz'?",
+              "question_uz": "'O'n sakkiz' ingliz tilida?",
+              "options": [
+                "Eighteen",
+                "Eighty",
+                "Eight",
+                "Nineteen"
+              ],
+              "answer": "Eighteen"
+            },
+            {
+              "question": "What number is 'fifteen'?",
+              "question_uz": "'Fifteen' qaysi raqam?",
+              "options": [
+                "14",
+                "16",
+                "15",
+                "13"
+              ],
+              "answer": "15"
+            },
+            {
+              "question": "Which has 'teen'?",
+              "question_uz": "Qaysi birida 'teen' bor?",
+              "options": [
+                "Twenty",
+                "Twelve",
+                "Thirteen",
+                "Eleven"
+              ],
+              "answer": "Thirteen"
+            },
+            {
+              "question": "Spell '12'",
+              "question_uz": "12 ni harflab yozing",
+              "options": [
+                "Twelve",
+                "Twenty",
+                "Twelfth",
+                "Two"
+              ],
+              "answer": "Twelve"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": 5,
+      "title": "Family Members",
+      "topics": [
+        {
+          "type": "vocabulary",
+          "items": [
+            {
+              "word": "Mother",
+              "translation_uz": "Ona",
+              "example": "My mother cooks well.",
+              "example_uz": "Onam yaxshi ovqat pishiradi."
+            },
+            {
+              "word": "Father",
+              "translation_uz": "Ota",
+              "example": "My father works.",
+              "example_uz": "Dadam ishlaydi."
+            },
+            {
+              "word": "Brother",
+              "translation_uz": "Aka/uka",
+              "example": "I have one brother.",
+              "example_uz": "Mening bir akam bor."
+            },
+            {
+              "word": "Sister",
+              "translation_uz": "Opa/singil",
+              "example": "My sister is young.",
+              "example_uz": "Singlim yosh."
+            },
+            {
+              "word": "Grandmother",
+              "translation_uz": "Buvi",
+              "example": "Grandmother tells stories.",
+              "example_uz": "Buvi ertak aytadi."
+            },
+            {
+              "word": "Grandfather",
+              "translation_uz": "Bobo",
+              "example": "Grandfather is old.",
+              "example_uz": "Bobom keksa."
+            },
+            {
+              "word": "Parents",
+              "translation_uz": "Ota-ona",
+              "example": "My parents love me.",
+              "example_uz": "Ota-onam meni sevadi."
+            }
+          ]
+        },
+        {
+          "type": "mini_lesson",
+          "content": "Family words: mother, father, brother, sister, grandmother, grandfather. Use 'my' before them: my mother, my brother.",
+          "content_uz": "Oila so'zlari: mother, father, brother, sister, grandmother, grandfather. Ulardan oldin 'my' qo'llang: my mother, my brother."
+        },
+        {
+          "type": "quiz",
+          "questions": [
+            {
+              "question": "What is 'ona' in English?",
+              "question_uz": "'Ona' ingliz tilida nima?",
+              "options": [
+                "Father",
+                "Mother",
+                "Sister",
+                "Brother"
+              ],
+              "answer": "Mother"
+            },
+            {
+              "question": "Who is 'grandfather'?",
+              "question_uz": "'Grandfather' kim?",
+              "options": [
+                "Bobo",
+                "Buvi",
+                "Ota",
+                "Aka"
+              ],
+              "answer": "Bobo"
+            },
+            {
+              "question": "Say 'Mening singlim'",
+              "question_uz": "'Mening singlim' deb ayting",
+              "options": [
+                "My brother",
+                "My sister",
+                "My mother",
+                "My father"
+              ],
+              "answer": "My sister"
+            },
+            {
+              "question": "What does 'parents' mean?",
+              "question_uz": "'Parents' nimani anglatadi?",
+              "options": [
+                "Farzandlar",
+                "Ota-ona",
+                "Do'stlar",
+                "Qarindoshlar"
+              ],
+              "answer": "Ota-ona"
+            },
+            {
+              "question": "My father + my mother = ?",
+              "question_uz": "My father + my mother = ?",
+              "options": [
+                "Siblings",
+                "Parents",
+                "Children",
+                "Grandparents"
+              ],
+              "answer": "Parents"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": 6,
+      "title": "Basic Verbs: eat, go, come",
+      "topics": [
+        {
+          "type": "vocabulary",
+          "items": [
+            {
+              "word": "Eat",
+              "translation_uz": "Yemoq",
+              "example": "I eat an apple.",
+              "example_uz": "Men olma yeyman."
+            },
+            {
+              "word": "Go",
+              "translation_uz": "Bormoq",
+              "example": "I go to school.",
+              "example_uz": "Men maktabga boraman."
+            },
+            {
+              "word": "Come",
+              "translation_uz": "Kelmoq",
+              "example": "Come here, please.",
+              "example_uz": "Bu yerga keling, iltimos."
+            },
+            {
+              "word": "Drink",
+              "translation_uz": "Ichmoq",
+              "example": "I drink water.",
+              "example_uz": "Men suv ichaman."
+            },
+            {
+              "word": "Sleep",
+              "translation_uz": "Uxlamoq",
+              "example": "I sleep at night.",
+              "example_uz": "Men kechasi uxlayman."
+            }
+          ]
+        },
+        {
+          "type": "mini_lesson",
+          "content": "Verbs are action words. 'I eat' means you eat. 'You go' means you go. 'Come here' = kel bu yerga.",
+          "content_uz": "Fe'llar harakat so'zlari. 'I eat' – men yeyman. 'You go' – sen borasan. 'Come here' – kel bu yerga."
+        },
+        {
+          "type": "quiz",
+          "questions": [
+            {
+              "question": "What does 'eat' mean?",
+              "question_uz": "'Eat' nimani anglatadi?",
+              "options": [
+                "Ichmoq",
+                "Yemoq",
+                "Uxlamoq",
+                "Bormoq"
+              ],
+              "answer": "Yemoq"
+            },
+            {
+              "question": "How to say 'Men maktabga boraman'?",
+              "question_uz": "'Men maktabga boraman' ingliz tilida?",
+              "options": [
+                "I come to school",
+                "I eat school",
+                "I go to school",
+                "I sleep school"
+              ],
+              "answer": "I go to school"
+            },
+            {
+              "question": "What is 'kelmoq'?",
+              "question_uz": "'Kelmoq' ingliz tilida?",
+              "options": [
+                "Go",
+                "Come",
+                "Eat",
+                "Drink"
+              ],
+              "answer": "Come"
+            },
+            {
+              "question": "Which is an action?",
+              "question_uz": "Qaysi biri harakat?",
+              "options": [
+                "Apple",
+                "Sleep",
+                "School",
+                "Water"
+              ],
+              "answer": "Sleep"
+            },
+            {
+              "question": "Translate: 'Men suv ichaman'.",
+              "question_uz": "'Men suv ichaman' tarjimasi?",
+              "options": [
+                "I eat water",
+                "I drink water",
+                "I go water",
+                "I sleep water"
+              ],
+              "answer": "I drink water"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": 7,
+      "title": "Daily Activities",
+      "topics": [
+        {
+          "type": "vocabulary",
+          "items": [
+            {
+              "word": "Wake up",
+              "translation_uz": "Uyg'onmoq",
+              "example": "I wake up at 7 AM.",
+              "example_uz": "Men ertalab 7 da uyg'onaman."
+            },
+            {
+              "word": "Get dressed",
+              "translation_uz": "Kiyinmoq",
+              "example": "I get dressed quickly.",
+              "example_uz": "Men tez kiyinaman."
+            },
+            {
+              "word": "Eat breakfast",
+              "translation_uz": "Nonushta qilmoq",
+              "example": "I eat breakfast at 8.",
+              "example_uz": "Men nonushtani 8 da qilaman."
+            },
+            {
+              "word": "Go to work",
+              "translation_uz": "Ishga bormoq",
+              "example": "I go to work by bus.",
+              "example_uz": "Men ishga avtobusda boraman."
+            },
+            {
+              "word": "Study",
+              "translation_uz": "O'qimoq",
+              "example": "I study English.",
+              "example_uz": "Men ingliz tilini o'rganaman."
+            },
+            {
+              "word": "Come home",
+              "translation_uz": "Uyga kelmoq",
+              "example": "I come home at 6 PM.",
+              "example_uz": "Men uyga kechki 6 da kelaman."
+            },
+            {
+              "word": "Sleep",
+              "translation_uz": "Uxlamoq",
+              "example": "I sleep at 10 PM.",
+              "example_uz": "Men 10 da uxlayman."
+            }
+          ]
+        },
+        {
+          "type": "mini_lesson",
+          "content": "Daily activities: wake up → get dressed → eat breakfast → go to work/study → come home → sleep. Use 'I' before each verb.",
+          "content_uz": "Kundalik ishlar: wake up → get dressed → eat breakfast → go to work/study → come home → sleep. Har bir fe'ldan oldin 'I' qo'llang."
+        },
+        {
+          "type": "quiz",
+          "questions": [
+            {
+              "question": "What do you do first in the morning?",
+              "question_uz": "Ertalab birinchi nima qilasiz?",
+              "options": [
+                "Sleep",
+                "Wake up",
+                "Go to work",
+                "Eat breakfast"
+              ],
+              "answer": "Wake up"
+            },
+            {
+              "question": "Say 'Men nonushta qilaman'",
+              "question_uz": "'Men nonushta qilaman' ingliz tilida?",
+              "options": [
+                "I eat lunch",
+                "I eat dinner",
+                "I eat breakfast",
+                "I eat food"
+              ],
+              "answer": "I eat breakfast"
+            },
+            {
+              "question": "What does 'come home' mean?",
+              "question_uz": "'Come home' nimani anglatadi?",
+              "options": [
+                "Uydan ketmoq",
+                "Uyga kelmoq",
+                "Ishga bormoq",
+                "Uxlash"
+              ],
+              "answer": "Uyga kelmoq"
+            },
+            {
+              "question": "Which is a daily activity?",
+              "question_uz": "Qaysi biri kundalik ish?",
+              "options": [
+                "Fly",
+                "Study",
+                "Sing",
+                "Jump"
+              ],
+              "answer": "Study"
+            },
+            {
+              "question": "I ___ at 10 PM.",
+              "question_uz": "Men 10 da ___",
+              "options": [
+                "wake up",
+                "sleep",
+                "eat",
+                "go"
+              ],
+              "answer": "sleep"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": 8,
+      "title": "Colors",
+      "topics": [
+        {
+          "type": "vocabulary",
+          "items": [
+            {
+              "word": "Red",
+              "translation_uz": "Qizil",
+              "example": "The apple is red.",
+              "example_uz": "Olma qizil."
+            },
+            {
+              "word": "Blue",
+              "translation_uz": "Ko'k",
+              "example": "The sky is blue.",
+              "example_uz": "Osmon ko'k."
+            },
+            {
+              "word": "Yellow",
+              "translation_uz": "Sariq",
+              "example": "The sun is yellow.",
+              "example_uz": "Quyosh sariq."
+            },
+            {
+              "word": "Green",
+              "translation_uz": "Yashil",
+              "example": "Grass is green.",
+              "example_uz": "Maysa yashil."
+            },
+            {
+              "word": "Black",
+              "translation_uz": "Qora",
+              "example": "My bag is black.",
+              "example_uz": "Mening sumkam qora."
+            },
+            {
+              "word": "White",
+              "translation_uz": "Oq",
+              "example": "Snow is white.",
+              "example_uz": "Qor oq."
+            },
+            {
+              "word": "Pink",
+              "translation_uz": "Pushti",
+              "example": "Flowers are pink.",
+              "example_uz": "Gullar pushti."
+            }
+          ]
+        },
+        {
+          "type": "mini_lesson",
+          "content": "Colors describe things. Say: 'The ___ is (color)'. Example: The car is red.",
+          "content_uz": "Ranglar narsalarni tasvirlaydi. 'The ___ is (rang)' deb ayting. Misol: Mashina qizil."
+        },
+        {
+          "type": "quiz",
+          "questions": [
+            {
+              "question": "What color is the sun?",
+              "question_uz": "Quyosh qanday rang?",
+              "options": [
+                "Blue",
+                "Yellow",
+                "Red",
+                "Green"
+              ],
+              "answer": "Yellow"
+            },
+            {
+              "question": "How do you say 'qora'?",
+              "question_uz": "'Qora' ingliz tilida?",
+              "options": [
+                "White",
+                "Black",
+                "Pink",
+                "Blue"
+              ],
+              "answer": "Black"
+            },
+            {
+              "question": "Grass is ___",
+              "question_uz": "Maysa ___",
+              "options": [
+                "red",
+                "green",
+                "blue",
+                "yellow"
+              ],
+              "answer": "green"
+            },
+            {
+              "question": "What color is snow?",
+              "question_uz": "Qor qanday rang?",
+              "options": [
+                "Black",
+                "White",
+                "Pink",
+                "Red"
+              ],
+              "answer": "White"
+            },
+            {
+              "question": "Translate: 'Mening ko'ylagim pushti'",
+              "question_uz": "Tarjimasi: 'My shirt is pink'",
+              "options": [
+                "Mening ko'ylagim qizil",
+                "Mening ko'ylagim pushti",
+                "Mening ko'ylagim oq",
+                "Mening ko'ylagim sariq"
+              ],
+              "answer": "Mening ko'ylagim pushti"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": 9,
+      "title": "Days of the Week",
+      "topics": [
+        {
+          "type": "vocabulary",
+          "items": [
+            {
+              "word": "Monday",
+              "translation_uz": "Dushanba",
+              "example": "I work on Monday.",
+              "example_uz": "Men dushanba kuni ishlayman."
+            },
+            {
+              "word": "Tuesday",
+              "translation_uz": "Seshanba",
+              "example": "Tuesday is my favorite.",
+              "example_uz": "Seshanba mening sevimli kunim."
+            },
+            {
+              "word": "Wednesday",
+              "translation_uz": "Chorshanba",
+              "example": "We meet Wednesday.",
+              "example_uz": "Biz chorshanba kuni uchrashamiz."
+            },
+            {
+              "word": "Thursday",
+              "translation_uz": "Payshanba",
+              "example": "Thursday is rainy.",
+              "example_uz": "Payshanba yomg'irli."
+            },
+            {
+              "word": "Friday",
+              "translation_uz": "Juma",
+              "example": "Friday is holiday.",
+              "example_uz": "Juma dam olish kuni."
+            },
+            {
+              "word": "Saturday",
+              "translation_uz": "Shanba",
+              "example": "I sleep on Saturday.",
+              "example_uz": "Shanba kuni uxlayman."
+            },
+            {
+              "word": "Sunday",
+              "translation_uz": "Yakshanba",
+              "example": "Sunday is family day.",
+              "example_uz": "Yakshanba oila kuni."
+            }
+          ]
+        },
+        {
+          "type": "mini_lesson",
+          "content": "Week starts on Monday. Use 'on' before days: on Monday, on Sunday.",
+          "content_uz": "Hafta dushanbadan boshlanadi. Kunlardan oldin 'on' ishlating: on Monday, on Sunday."
+        },
+        {
+          "type": "quiz",
+          "questions": [
+            {
+              "question": "What is the first day of the week?",
+              "question_uz": "Haftaning birinchi kuni?",
+              "options": [
+                "Sunday",
+                "Monday",
+                "Friday",
+                "Saturday"
+              ],
+              "answer": "Monday"
+            },
+            {
+              "question": "How to say 'Juma' in English?",
+              "question_uz": "'Juma' ingliz tilida?",
+              "options": [
+                "Friday",
+                "Thursday",
+                "Wednesday",
+                "Tuesday"
+              ],
+              "answer": "Friday"
+            },
+            {
+              "question": "Which day is after Thursday?",
+              "question_uz": "Payshanbadan keyingi kun?",
+              "options": [
+                "Wednesday",
+                "Friday",
+                "Saturday",
+                "Tuesday"
+              ],
+              "answer": "Friday"
+            },
+            {
+              "question": "Translate: 'Yakshanba kuni'",
+              "question_uz": "Tarjimasi: 'on Sunday'",
+              "options": [
+                "shanba kuni",
+                "dushanba kuni",
+                "yakshanba kuni",
+                "seshanba kuni"
+              ],
+              "answer": "yakshanba kuni"
+            },
+            {
+              "question": "Weekend days are ___",
+              "question_uz": "Hafta oxiri kunlari ___",
+              "options": [
+                "Monday, Tuesday",
+                "Saturday, Sunday",
+                "Wednesday, Thursday",
+                "Friday only"
+              ],
+              "answer": "Saturday, Sunday"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": 10,
+      "title": "Months of the Year",
+      "topics": [
+        {
+          "type": "vocabulary",
+          "items": [
+            {
+              "word": "January",
+              "translation_uz": "Yanvar",
+              "example": "New Year in January.",
+              "example_uz": "Yangi yil yanvarda."
+            },
+            {
+              "word": "February",
+              "translation_uz": "Fevral",
+              "example": "February is cold.",
+              "example_uz": "Fevral sovuq."
+            },
+            {
+              "word": "March",
+              "translation_uz": "Mart",
+              "example": "Spring starts in March.",
+              "example_uz": "Bahor martda boshlanadi."
+            },
+            {
+              "word": "April",
+              "translation_uz": "Aprel",
+              "example": "April has rain.",
+              "example_uz": "Aprel yomg'irli."
+            },
+            {
+              "word": "May",
+              "translation_uz": "May",
+              "example": "Flowers in May.",
+              "example_uz": "Mayda gullar."
+            },
+            {
+              "word": "June",
+              "translation_uz": "Iyun",
+              "example": "June is hot.",
+              "example_uz": "Iyun issiq."
+            },
+            {
+              "word": "July",
+              "translation_uz": "Iyul",
+              "example": "July summer holiday.",
+              "example_uz": "Iyul yozgi ta'til."
+            },
+            {
+              "word": "August",
+              "translation_uz": "Avgust",
+              "example": "August is sunny.",
+              "example_uz": "Avgust quyoshli."
+            },
+            {
+              "word": "September",
+              "translation_uz": "Sentyabr",
+              "example": "School in September.",
+              "example_uz": "Maktab sentyabrda."
+            },
+            {
+              "word": "October",
+              "translation_uz": "Oktyabr",
+              "example": "October is cool.",
+              "example_uz": "Oktyabr salqin."
+            },
+            {
+              "word": "November",
+              "translation_uz": "Noyabr",
+              "example": "November windy.",
+              "example_uz": "Noyabr shamolli."
+            },
+            {
+              "word": "December",
+              "translation_uz": "Dekabr",
+              "example": "December snow.",
+              "example_uz": "Dekabr qor."
+            }
+          ]
+        },
+        {
+          "type": "mini_lesson",
+          "content": "12 months: January to December. Use 'in' before months: in January, in May.",
+          "content_uz": "12 oy: Yanvardan Dekabrgacha. Oylardan oldin 'in' ishlating: in January, in May."
+        },
+        {
+          "type": "quiz",
+          "questions": [
+            {
+              "question": "Which month starts the year?",
+              "question_uz": "Yilni qaysi oy boshlaydi?",
+              "options": [
+                "December",
+                "January",
+                "February",
+                "March"
+              ],
+              "answer": "January"
+            },
+            {
+              "question": "How to say 'May' in Uzbek?",
+              "question_uz": "'May' o'zbek tilida?",
+              "options": [
+                "Mart",
+                "May",
+                "Aprel",
+                "Iyun"
+              ],
+              "answer": "May"
+            },
+            {
+              "question": "What month is after July?",
+              "question_uz": "Iyuldan keyingi oy?",
+              "options": [
+                "June",
+                "August",
+                "September",
+                "October"
+              ],
+              "answer": "August"
+            },
+            {
+              "question": "Translate: 'sentyabrda'",
+              "question_uz": "Tarjimasi: 'in September'",
+              "options": [
+                "oktyabrda",
+                "noyabrda",
+                "sentyabrda",
+                "dekabrda"
+              ],
+              "answer": "sentyabrda"
+            },
+            {
+              "question": "Winter months are ___",
+              "question_uz": "Qish oylari ___",
+              "options": [
+                "June, July, August",
+                "December, January, February",
+                "March, April, May",
+                "September, October, November"
+              ],
+              "answer": "December, January, February"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": 11,
+      "title": "Time (Basic)",
+      "topics": [
+        {
+          "type": "vocabulary",
+          "items": [
+            {
+              "word": "What time is it?",
+              "translation_uz": "Soat necha?",
+              "example": "What time is it? - It's 3 o'clock.",
+              "example_uz": "Soat necha? - Soat 3."
+            },
+            {
+              "word": "O'clock",
+              "translation_uz": "Soat (aniq)",
+              "example": "It's 5 o'clock.",
+              "example_uz": "Soat 5."
+            },
+            {
+              "word": "Morning",
+              "translation_uz": "Ertalab",
+              "example": "I wake up in the morning.",
+              "example_uz": "Men ertalab uyg'onaman."
+            },
+            {
+              "word": "Afternoon",
+              "translation_uz": "Kunduz",
+              "example": "I eat lunch in the afternoon.",
+              "example_uz": "Men kunduz tushlik qilaman."
+            },
+            {
+              "word": "Evening",
+              "translation_uz": "Kechqurun",
+              "example": "I watch TV in the evening.",
+              "example_uz": "Men kechqurun televizor ko'raman."
+            },
+            {
+              "word": "Night",
+              "translation_uz": "Tun",
+              "example": "I sleep at night.",
+              "example_uz": "Men tunda uxlayman."
+            }
+          ]
+        },
+        {
+          "type": "mini_lesson",
+          "content": "To ask time: 'What time is it?' Answer: 'It's ___ o'clock'. Use 'in the' for parts of day: in the morning, in the evening.",
+          "content_uz": "Vaqtni so'rash uchun: 'What time is it?' Javob: 'It's ___ o'clock'. Kunning qismlari uchun 'in the' ishlating: in the morning, in the evening."
+        },
+        {
+          "type": "quiz",
+          "questions": [
+            {
+              "question": "How to ask 'Soat necha?'",
+              "question_uz": "'Soat necha?' ingliz tilida?",
+              "options": [
+                "What time is it?",
+                "How old are you?",
+                "Where is the clock?",
+                "When is time?"
+              ],
+              "answer": "What time is it?"
+            },
+            {
+              "question": "What does 'It's 7 o'clock' mean?",
+              "question_uz": "'It's 7 o'clock' nimani anglatadi?",
+              "options": [
+                "Soat 6",
+                "Soat 8",
+                "Soat 7",
+                "Soat 7:30"
+              ],
+              "answer": "Soat 7"
+            },
+            {
+              "question": "Say 'kechqurun'",
+              "question_uz": "'Kechqurun' ingliz tilida?",
+              "options": [
+                "Morning",
+                "Afternoon",
+                "Evening",
+                "Night"
+              ],
+              "answer": "Evening"
+            },
+            {
+              "question": "I sleep at ___",
+              "question_uz": "Men ___ uxlayman",
+              "options": [
+                "morning",
+                "afternoon",
+                "night",
+                "evening"
+              ],
+              "answer": "night"
+            },
+            {
+              "question": "Which is correct?",
+              "question_uz": "Qaysi biri to'g'ri?",
+              "options": [
+                "in morning",
+                "in the morning",
+                "on morning",
+                "at morning"
+              ],
+              "answer": "in the morning"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": 12,
+      "title": "Food & Drinks",
+      "topics": [
+        {
+          "type": "vocabulary",
+          "items": [
+            {
+              "word": "Apple",
+              "translation_uz": "Olma",
+              "example": "I eat an apple.",
+              "example_uz": "Men olma yeyman."
+            },
+            {
+              "word": "Bread",
+              "translation_uz": "Non",
+              "example": "Bread is tasty.",
+              "example_uz": "Non mazali."
+            },
+            {
+              "word": "Milk",
+              "translation_uz": "Sut",
+              "example": "I drink milk.",
+              "example_uz": "Men sut ichaman."
+            },
+            {
+              "word": "Water",
+              "translation_uz": "Suv",
+              "example": "Water is healthy.",
+              "example_uz": "Suv foydali."
+            },
+            {
+              "word": "Rice",
+              "translation_uz": "Guruch",
+              "example": "I like rice.",
+              "example_uz": "Men guruchni yaxshi ko'raman."
+            },
+            {
+              "word": "Chicken",
+              "translation_uz": "Tovuq go'shti",
+              "example": "Chicken is delicious.",
+              "example_uz": "Tovuq go'shti mazali."
+            },
+            {
+              "word": "Tea",
+              "translation_uz": "Choy",
+              "example": "Tea is hot.",
+              "example_uz": "Choy issiq."
+            }
+          ]
+        },
+        {
+          "type": "mini_lesson",
+          "content": "Use 'eat' for food, 'drink' for drinks. Say 'I like ___' to express preference.",
+          "content_uz": "Ovqat uchun 'eat', ichimlik uchun 'drink' ishlating. Istakni bildirish uchun 'I like ___' deb ayting."
+        },
+        {
+          "type": "quiz",
+          "questions": [
+            {
+              "question": "What do you drink?",
+              "question_uz": "Nima ichasiz?",
+              "options": [
+                "Apple",
+                "Bread",
+                "Milk",
+                "Rice"
+              ],
+              "answer": "Milk"
+            },
+            {
+              "question": "How to say 'tovuq go'shti'?",
+              "question_uz": "'Tovuq go'shti' ingliz tilida?",
+              "options": [
+                "Fish",
+                "Chicken",
+                "Meat",
+                "Rice"
+              ],
+              "answer": "Chicken"
+            },
+            {
+              "question": "I eat ___",
+              "question_uz": "Men ___ yeyman",
+              "options": [
+                "water",
+                "tea",
+                "bread",
+                "milk"
+              ],
+              "answer": "bread"
+            },
+            {
+              "question": "Translate: 'Suv foydali'",
+              "question_uz": "Tarjimasi: 'Water is healthy'",
+              "options": [
+                "Suv mazali",
+                "Suv issiq",
+                "Suv foydali",
+                "Suv sovuq"
+              ],
+              "answer": "Suv foydali"
+            },
+            {
+              "question": "Which is a drink?",
+              "question_uz": "Qaysi biri ichimlik?",
+              "options": [
+                "Rice",
+                "Chicken",
+                "Tea",
+                "Apple"
+              ],
+              "answer": "Tea"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": 13,
+      "title": "Classroom Objects",
+      "topics": [
+        {
+          "type": "vocabulary",
+          "items": [
+            {
+              "word": "Pen",
+              "translation_uz": "Ruchka",
+              "example": "I have a pen.",
+              "example_uz": "Mening ruchkam bor."
+            },
+            {
+              "word": "Book",
+              "translation_uz": "Kitob",
+              "example": "The book is on the desk.",
+              "example_uz": "Kitob stol ustida."
+            },
+            {
+              "word": "Desk",
+              "translation_uz": "Stol",
+              "example": "My desk is clean.",
+              "example_uz": "Mening stolim toza."
+            },
+            {
+              "word": "Chair",
+              "translation_uz": "Stul",
+              "example": "Sit on the chair.",
+              "example_uz": "Stulga o'tir."
+            },
+            {
+              "word": "Pencil",
+              "translation_uz": "Qalam",
+              "example": "I write with a pencil.",
+              "example_uz": "Men qalam bilan yozaman."
+            },
+            {
+              "word": "Notebook",
+              "translation_uz": "Daftar",
+              "example": "Open your notebook.",
+              "example_uz": "Daftaringizni oching."
+            }
+          ]
+        },
+        {
+          "type": "mini_lesson",
+          "content": "Classroom objects: pen, book, desk, chair, pencil, notebook. Use 'a' before singular nouns: a pen, a book.",
+          "content_uz": "Sinf jihozlari: pen, book, desk, chair, pencil, notebook. Birlik otlardan oldin 'a' ishlating: a pen, a book."
+        },
+        {
+          "type": "quiz",
+          "questions": [
+            {
+              "question": "What do you write with?",
+              "question_uz": "Nima bilan yozasiz?",
+              "options": [
+                "Book",
+                "Pen",
+                "Desk",
+                "Chair"
+              ],
+              "answer": "Pen"
+            },
+            {
+              "question": "How to say 'daftar'?",
+              "question_uz": "'Daftar' ingliz tilida?",
+              "options": [
+                "Book",
+                "Notebook",
+                "Pencil",
+                "Desk"
+              ],
+              "answer": "Notebook"
+            },
+            {
+              "question": "You sit on a ___",
+              "question_uz": "Siz ___ o'tirasiz",
+              "options": [
+                "desk",
+                "chair",
+                "book",
+                "pen"
+              ],
+              "answer": "chair"
+            },
+            {
+              "question": "Translate: 'Kitob stol ustida'",
+              "question_uz": "Tarjimasi: 'The book is on the desk'",
+              "options": [
+                "Kitob stul ustida",
+                "Kitob stol ustida",
+                "Kitob sumkada",
+                "Kitob yerda"
+              ],
+              "answer": "Kitob stol ustida"
+            },
+            {
+              "question": "Which is used for writing?",
+              "question_uz": "Yozish uchun nima ishlatiladi?",
+              "options": [
+                "Chair",
+                "Pencil",
+                "Desk",
+                "Notebook"
+              ],
+              "answer": "Pencil"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": 14,
+      "title": "Jobs",
+      "topics": [
+        {
+          "type": "vocabulary",
+          "items": [
+            {
+              "word": "Teacher",
+              "translation_uz": "O'qituvchi",
+              "example": "My mother is a teacher.",
+              "example_uz": "Onam o'qituvchi."
+            },
+            {
+              "word": "Doctor",
+              "translation_uz": "Shifokor",
+              "example": "The doctor helps sick people.",
+              "example_uz": "Shifokor bemorlarga yordam beradi."
+            },
+            {
+              "word": "Student",
+              "translation_uz": "Talaba/o'quvchi",
+              "example": "I am a student.",
+              "example_uz": "Men talabaman."
+            },
+            {
+              "word": "Engineer",
+              "translation_uz": "Muhandis",
+              "example": "My father is an engineer.",
+              "example_uz": "Dadam muhandis."
+            },
+            {
+              "word": "Driver",
+              "translation_uz": "Haydovchi",
+              "example": "He is a bus driver.",
+              "example_uz": "U avtobus haydovchisi."
+            },
+            {
+              "word": "Cook",
+              "translation_uz": "Oshpaz",
+              "example": "She is a good cook.",
+              "example_uz": "U yaxshi oshpaz."
+            }
+          ]
+        },
+        {
+          "type": "mini_lesson",
+          "content": "To say your job: 'I am a ___'. Use 'a' for jobs: a teacher, a doctor. For engineer, say 'an engineer' because 'engineer' starts with a vowel sound.",
+          "content_uz": "Kasbingizni aytish uchun: 'I am a ___'. Kasblar bilan 'a' ishlating: a teacher, a doctor. 'Engineer' uchun 'an engineer' deymiz, chunki 'e' unlisi bilan boshlanadi."
+        },
+        {
+          "type": "quiz",
+          "questions": [
+            {
+              "question": "Who helps sick people?",
+              "question_uz": "Kasal odamlarga kim yordam beradi?",
+              "options": [
+                "Teacher",
+                "Doctor",
+                "Driver",
+                "Cook"
+              ],
+              "answer": "Doctor"
+            },
+            {
+              "question": "How to say 'muhandis'?",
+              "question_uz": "'Muhandis' ingliz tilida?",
+              "options": [
+                "Engineer",
+                "Teacher",
+                "Student",
+                "Driver"
+              ],
+              "answer": "Engineer"
+            },
+            {
+              "question": "I am ___ student.",
+              "question_uz": "Men ___ talabaman.",
+              "options": [
+                "a",
+                "an",
+                "the",
+                "none"
+              ],
+              "answer": "a"
+            },
+            {
+              "question": "Translate: 'U oshpaz'",
+              "question_uz": "Tarjimasi: 'She is a cook'",
+              "options": [
+                "U haydovchi",
+                "U oshpaz",
+                "U o'qituvchi",
+                "U shifokor"
+              ],
+              "answer": "U oshpaz"
+            },
+            {
+              "question": "Which job uses 'an'?",
+              "question_uz": "Qaysi kasb bilan 'an' ishlatiladi?",
+              "options": [
+                "Doctor",
+                "Teacher",
+                "Engineer",
+                "Driver"
+              ],
+              "answer": "Engineer"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": 15,
+      "title": "Places (Home, School)",
+      "topics": [
+        {
+          "type": "vocabulary",
+          "items": [
+            {
+              "word": "Home",
+              "translation_uz": "Uy",
+              "example": "I go home at 5 PM.",
+              "example_uz": "Men uyga 5 da boraman."
+            },
+            {
+              "word": "School",
+              "translation_uz": "Maktab",
+              "example": "School starts at 8 AM.",
+              "example_uz": "Maktab 8 da boshlanadi."
+            },
+            {
+              "word": "Park",
+              "translation_uz": "Bog'",
+              "example": "I play in the park.",
+              "example_uz": "Men bog'da o'ynayman."
+            },
+            {
+              "word": "Hospital",
+              "translation_uz": "Kasalxona",
+              "example": "He works in a hospital.",
+              "example_uz": "U kasalxonada ishlaydi."
+            },
+            {
+              "word": "Shop",
+              "translation_uz": "Do'kon",
+              "example": "I buy milk at the shop.",
+              "example_uz": "Men sutni do'kondan sotib olaman."
+            },
+            {
+              "word": "Restaurant",
+              "translation_uz": "Restoran",
+              "example": "We eat at a restaurant.",
+              "example_uz": "Biz restoranda ovqatlanamiz."
+            }
+          ]
+        },
+        {
+          "type": "mini_lesson",
+          "content": "Use 'at' for places: at home, at school. Use 'to' with go: go to school, go to the park.",
+          "content_uz": "Joylar bilan 'at' ishlating: at home, at school. 'Go' bilan 'to' ishlating: go to school, go to the park."
+        },
+        {
+          "type": "quiz",
+          "questions": [
+            {
+              "question": "Where do you study?",
+              "question_uz": "Qayerda o'qiysiz?",
+              "options": [
+                "Hospital",
+                "School",
+                "Park",
+                "Shop"
+              ],
+              "answer": "School"
+            },
+            {
+              "question": "How to say 'kasalxona'?",
+              "question_uz": "'Kasalxona' ingliz tilida?",
+              "options": [
+                "Home",
+                "Hospital",
+                "Restaurant",
+                "Park"
+              ],
+              "answer": "Hospital"
+            },
+            {
+              "question": "I go ___ home.",
+              "question_uz": "Men ___ uyga boraman.",
+              "options": [
+                "to",
+                "at",
+                "in",
+                "on"
+              ],
+              "answer": "to"
+            },
+            {
+              "question": "Translate: 'U restoranda ishlaydi'",
+              "question_uz": "Tarjimasi: 'He works in a restaurant'",
+              "options": [
+                "U maktabda ishlaydi",
+                "U restoranda ishlaydi",
+                "U do'konda ishlaydi",
+                "U kasalxonada ishlaydi"
+              ],
+              "answer": "U restoranda ishlaydi"
+            },
+            {
+              "question": "Which place has swings?",
+              "question_uz": "Qaysi joyda belanchak bor?",
+              "options": [
+                "Hospital",
+                "School",
+                "Park",
+                "Shop"
+              ],
+              "answer": "Park"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": 16,
+      "title": "Simple Questions (What, Where)",
+      "topics": [
+        {
+          "type": "vocabulary",
+          "items": [
+            {
+              "word": "What",
+              "translation_uz": "Nima",
+              "example": "What is this?",
+              "example_uz": "Bu nima?"
+            },
+            {
+              "word": "Where",
+              "translation_uz": "Qayerda",
+              "example": "Where is my book?",
+              "example_uz": "Mening kitobim qayerda?"
+            },
+            {
+              "word": "This",
+              "translation_uz": "Bu",
+              "example": "This is a pen.",
+              "example_uz": "Bu ruchka."
+            },
+            {
+              "word": "That",
+              "translation_uz": "U (uzoq)",
+              "example": "That is a car.",
+              "example_uz": "U mashina."
+            },
+            {
+              "word": "Answer",
+              "translation_uz": "Javob",
+              "example": "Give me an answer.",
+              "example_uz": "Menga javob bering."
+            }
+          ]
+        },
+        {
+          "type": "mini_lesson",
+          "content": "Use 'What' to ask about things. Use 'Where' to ask about place. Structure: What/Where + is + this/that?",
+          "content_uz": "Narsalar haqida so'rash uchun 'What' ishlating. Joy haqida so'rash uchun 'Where' ishlating. Tuzilish: What/Where + is + this/that?"
+        },
+        {
+          "type": "quiz",
+          "questions": [
+            {
+              "question": "Ask about an object: 'Bu nima?'",
+              "question_uz": "Narsa haqida so'rang: 'What is this?'",
+              "options": [
+                "Where is this?",
+                "What is this?",
+                "What is that?",
+                "Where is that?"
+              ],
+              "answer": "What is this?"
+            },
+            {
+              "question": "Ask about place: 'Kitob qayerda?'",
+              "question_uz": "Joy haqida so'rang: 'Where is the book?'",
+              "options": [
+                "What is the book?",
+                "Where is the book?",
+                "Who is the book?",
+                "When is the book?"
+              ],
+              "answer": "Where is the book?"
+            },
+            {
+              "question": "What does 'that' mean?",
+              "question_uz": "'That' nimani anglatadi?",
+              "options": [
+                "Bu (yaqin)",
+                "U (uzoq)",
+                "Shu",
+                "Mana bu"
+              ],
+              "answer": "U (uzoq)"
+            },
+            {
+              "question": "Translate: 'Bu ruchka'",
+              "question_uz": "Tarjimasi: 'This is a pen'",
+              "options": [
+                "That is a pen",
+                "This is a pen",
+                "This is a book",
+                "That is a book"
+              ],
+              "answer": "This is a pen"
+            },
+            {
+              "question": "Complete: '___ is my school?'",
+              "question_uz": "To'ldiring: '___ is my school?' (joy)",
+              "options": [
+                "What",
+                "Where",
+                "Who",
+                "How"
+              ],
+              "answer": "Where"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": 17,
+      "title": "Yes/No Answers",
+      "topics": [
+        {
+          "type": "vocabulary",
+          "items": [
+            {
+              "word": "Yes",
+              "translation_uz": "Ha",
+              "example": "Yes, I like it.",
+              "example_uz": "Ha, menga yoqadi."
+            },
+            {
+              "word": "No",
+              "translation_uz": "Yo'q",
+              "example": "No, I don't want.",
+              "example_uz": "Yo'q, xohlamayman."
+            },
+            {
+              "word": "Do you",
+              "translation_uz": "Siz ...mi?",
+              "example": "Do you like tea?",
+              "example_uz": "Siz choyni yaxshi ko'rasizmi?"
+            },
+            {
+              "word": "Are you",
+              "translation_uz": "Siz ...misiz?",
+              "example": "Are you a student?",
+              "example_uz": "Siz talabamisiz?"
+            },
+            {
+              "word": "Is it",
+              "translation_uz": "Bu ...mi?",
+              "example": "Is it a cat?",
+              "example_uz": "Bu mushukmi?"
+            }
+          ]
+        },
+        {
+          "type": "mini_lesson",
+          "content": "Yes/no questions start with 'Do', 'Are', 'Is'. Answer with 'Yes' or 'No'. Example: 'Do you like milk?' → 'Yes, I do' or 'No, I don't'.",
+          "content_uz": "Ha/yo'q savollari 'Do', 'Are', 'Is' bilan boshlanadi. 'Yes' yoki 'No' bilan javob bering. Misol: 'Do you like milk?' → 'Yes, I do' yoki 'No, I don't'."
+        },
+        {
+          "type": "quiz",
+          "questions": [
+            {
+              "question": "How to ask 'Siz talabamisiz?'",
+              "question_uz": "'Siz talabamisiz?' savoli ingliz tilida?",
+              "options": [
+                "Do you student?",
+                "Are you a student?",
+                "Is you student?",
+                "You student?"
+              ],
+              "answer": "Are you a student?"
+            },
+            {
+              "question": "Answer 'Yes' to 'Do you like apples?'",
+              "question_uz": "'Do you like apples?' ga 'Yes' deb javob bering",
+              "options": [
+                "Yes, I like",
+                "Yes, I do",
+                "Yes, I am",
+                "Yes, it is"
+              ],
+              "answer": "Yes, I do"
+            },
+            {
+              "question": "What does 'No' mean?",
+              "question_uz": "'No' nimani anglatadi?",
+              "options": [
+                "Ha",
+                "Yo'q",
+                "Balki",
+                "Har doim"
+              ],
+              "answer": "Yo'q"
+            },
+            {
+              "question": "Translate: 'Bu qalammi?'",
+              "question_uz": "Tarjimasi: 'Is it a pen?'",
+              "options": [
+                "Is it a book?",
+                "Is it a desk?",
+                "Is it a pen?",
+                "Is it a chair?"
+              ],
+              "answer": "Is it a pen?"
+            },
+            {
+              "question": "Complete: '___ you like coffee?'",
+              "question_uz": "To'ldiring: '___ you like coffee?'",
+              "options": [
+                "Are",
+                "Is",
+                "Do",
+                "Where"
+              ],
+              "answer": "Do"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": 18,
+      "title": "Pronouns (I, You, He, She)",
+      "topics": [
+        {
+          "type": "vocabulary",
+          "items": [
+            {
+              "word": "I",
+              "translation_uz": "Men",
+              "example": "I am happy.",
+              "example_uz": "Men baxtliman."
+            },
+            {
+              "word": "You",
+              "translation_uz": "Siz/sen",
+              "example": "You are my friend.",
+              "example_uz": "Siz mening do'stim."
+            },
+            {
+              "word": "He",
+              "translation_uz": "U (erkak)",
+              "example": "He is a doctor.",
+              "example_uz": "U shifokor."
+            },
+            {
+              "word": "She",
+              "translation_uz": "U (ayol)",
+              "example": "She is a teacher.",
+              "example_uz": "U o'qituvchi."
+            },
+            {
+              "word": "It",
+              "translation_uz": "U (narsa)",
+              "example": "It is a cat.",
+              "example_uz": "Bu mushuk."
+            }
+          ]
+        },
+        {
+          "type": "mini_lesson",
+          "content": "I → for yourself. You → for the person you talk to. He → for a man/boy. She → for a woman/girl. It → for thing/animal.",
+          "content_uz": "I → o'zingiz uchun. You → gaplashayotgan odam uchun. He → erkak/o'gil bola uchun. She → ayol/qiz bola uchun. It → narsa/hayvon uchun."
+        },
+        {
+          "type": "quiz",
+          "questions": [
+            {
+              "question": "Which pronoun for yourself?",
+              "question_uz": "O'zingiz uchun qaysi olmosh?",
+              "options": [
+                "You",
+                "He",
+                "I",
+                "She"
+              ],
+              "answer": "I"
+            },
+            {
+              "question": "Ali is a boy. Use ___",
+              "question_uz": "Ali o'g'il bola. ___ ishlating",
+              "options": [
+                "She",
+                "He",
+                "It",
+                "You"
+              ],
+              "answer": "He"
+            },
+            {
+              "question": "Translate: 'U (ayol) o'qituvchi'",
+              "question_uz": "Tarjimasi: 'She is a teacher'",
+              "options": [
+                "He is a teacher",
+                "She is a teacher",
+                "I am a teacher",
+                "You are a teacher"
+              ],
+              "answer": "She is a teacher"
+            },
+            {
+              "question": "For a book, use ___",
+              "question_uz": "Kitob uchun ___ ishlating",
+              "options": [
+                "He",
+                "She",
+                "It",
+                "They"
+              ],
+              "answer": "It"
+            },
+            {
+              "question": "Complete: '___ are my friend.'",
+              "question_uz": "To'ldiring: '___ are my friend.'",
+              "options": [
+                "I",
+                "He",
+                "You",
+                "She"
+              ],
+              "answer": "You"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": 19,
+      "title": "Simple Sentences",
+      "topics": [
+        {
+          "type": "vocabulary",
+          "items": [
+            {
+              "word": "I like",
+              "translation_uz": "Menga yoqadi",
+              "example": "I like apples.",
+              "example_uz": "Menga olma yoqadi."
+            },
+            {
+              "word": "I have",
+              "translation_uz": "Menda bor",
+              "example": "I have a book.",
+              "example_uz": "Menda kitob bor."
+            },
+            {
+              "word": "I want",
+              "translation_uz": "Men xohlayman",
+              "example": "I want water.",
+              "example_uz": "Men suv xohlayman."
+            },
+            {
+              "word": "I see",
+              "translation_uz": "Men ko'raman",
+              "example": "I see a bird.",
+              "example_uz": "Men qushni ko'raman."
+            },
+            {
+              "word": "This is",
+              "translation_uz": "Bu ...",
+              "example": "This is my mother.",
+              "example_uz": "Bu mening onam."
+            }
+          ]
+        },
+        {
+          "type": "mini_lesson",
+          "content": "Simple sentence: Subject + verb + object. Example: I (subject) like (verb) apples (object). Always start with a capital letter, end with a dot.",
+          "content_uz": "Oddiy gap: Ega + fe'l + to'ldiruvchi. Misol: I (ega) like (fe'l) apples (to'ldiruvchi). Har doim bosh harf bilan boshlang, nuqta bilan tugating."
+        },
+        {
+          "type": "quiz",
+          "questions": [
+            {
+              "question": "Make a sentence: 'I like' + 'milk'",
+              "question_uz": "Gap tuzing: 'I like' + 'milk'",
+              "options": [
+                "I like milk",
+                "Milk like I",
+                "I milk like",
+                "Like I milk"
+              ],
+              "answer": "I like milk"
+            },
+            {
+              "question": "Translate: 'Menda ruchka bor'",
+              "question_uz": "Tarjimasi: 'I have a pen'",
+              "options": [
+                "I like a pen",
+                "I want a pen",
+                "I have a pen",
+                "I see a pen"
+              ],
+              "answer": "I have a pen"
+            },
+            {
+              "question": "What is the subject in 'I see a dog'?",
+              "question_uz": "'I see a dog' da ega qaysi?",
+              "options": [
+                "see",
+                "dog",
+                "I",
+                "a"
+              ],
+              "answer": "I"
+            },
+            {
+              "question": "Say 'Men suv xohlayman'",
+              "question_uz": "'Men suv xohlayman' ingliz tilida?",
+              "options": [
+                "I like water",
+                "I have water",
+                "I want water",
+                "I see water"
+              ],
+              "answer": "I want water"
+            },
+            {
+              "question": "Complete: '___ is my father.'",
+              "question_uz": "To'ldiring: '___ is my father.'",
+              "options": [
+                "These",
+                "Those",
+                "This",
+                "They"
+              ],
+              "answer": "This"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": 20,
+      "title": "Likes & Dislikes",
+      "topics": [
+        {
+          "type": "vocabulary",
+          "items": [
+            {
+              "word": "Like",
+              "translation_uz": "Yoqtirmoq",
+              "example": "I like coffee.",
+              "example_uz": "Men qahvani yaxshi ko'raman."
+            },
+            {
+              "word": "Don't like",
+              "translation_uz": "Yoqtirmaslik",
+              "example": "I don't like spiders.",
+              "example_uz": "Men o'rgimchaklarni yoqtirmayman."
+            },
+            {
+              "word": "Love",
+              "translation_uz": "Juda yaxshi ko'rmoq",
+              "example": "I love my family.",
+              "example_uz": "Men oilamni juda yaxshi ko'raman."
+            },
+            {
+              "word": "Hate",
+              "translation_uz": "Nafratlanmoq",
+              "example": "I hate waiting.",
+              "example_uz": "Men kutishni yomon ko'raman."
+            },
+            {
+              "word": "Favorite",
+              "translation_uz": "Sevimli",
+              "example": "My favorite color is blue.",
+              "example_uz": "Mening sevimli rangim ko'k."
+            }
+          ]
+        },
+        {
+          "type": "mini_lesson",
+          "content": "Use 'like' for positive, 'don't like' for negative. 'Love' is stronger than 'like'. 'Hate' is very strong negative. Ask: 'Do you like ___?'",
+          "content_uz": "Yoqtirish uchun 'like', yoqtirmaslik uchun 'don't like' ishlating. 'Love' – 'like'dan kuchliroq. 'Hate' – juda kuchli salbiy. So'rang: 'Do you like ___?'"
+        },
+        {
+          "type": "quiz",
+          "questions": [
+            {
+              "question": "How to say 'Men sutni yaxshi ko'raman'",
+              "question_uz": "'Men sutni yaxshi ko'raman' ingliz tilida?",
+              "options": [
+                "I like milk",
+                "I love milk",
+                "I hate milk",
+                "I don't like milk"
+              ],
+              "answer": "I love milk"
+            },
+            {
+              "question": "Negative of 'like' is ___",
+              "question_uz": "'Like'ning inkori ___",
+              "options": [
+                "not like",
+                "don't like",
+                "doesn't like",
+                "no like"
+              ],
+              "answer": "don't like"
+            },
+            {
+              "question": "Translate: 'Men sabzini yomon ko'raman'",
+              "question_uz": "Tarjimasi: 'I hate carrots'",
+              "options": [
+                "I like carrots",
+                "I love carrots",
+                "I hate carrots",
+                "I don't like carrots"
+              ],
+              "answer": "I hate carrots"
+            },
+            {
+              "question": "Ask about liking tea",
+              "question_uz": "Choyni yoqtirish haqida so'rang",
+              "options": [
+                "Do you like tea?",
+                "Are you like tea?",
+                "What you like tea?",
+                "You like tea?"
+              ],
+              "answer": "Do you like tea?"
+            },
+            {
+              "question": "My ___ color is green",
+              "question_uz": "Mening ___ rangim yashil",
+              "options": [
+                "like",
+                "love",
+                "favorite",
+                "hate"
+              ],
+              "answer": "favorite"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": 21,
+      "title": "Weather",
+      "topics": [
+        {
+          "type": "vocabulary",
+          "items": [
+            {
+              "word": "Sunny",
+              "translation_uz": "Quyoshli",
+              "example": "It is sunny today.",
+              "example_uz": "Bugun havo quyoshli."
+            },
+            {
+              "word": "Rainy",
+              "translation_uz": "Yomg'irli",
+              "example": "I don't like rainy days.",
+              "example_uz": "Men yomg'irli kunlarni yoqtirmayman."
+            },
+            {
+              "word": "Cloudy",
+              "translation_uz": "Bulutli",
+              "example": "It is cloudy in the morning.",
+              "example_uz": "Ertalab havo bulutli."
+            },
+            {
+              "word": "Hot",
+              "translation_uz": "Issiq",
+              "example": "Summer is hot.",
+              "example_uz": "Yoz issiq."
+            },
+            {
+              "word": "Cold",
+              "translation_uz": "Sovuq",
+              "example": "Winter is cold.",
+              "example_uz": "Qish sovuq."
+            },
+            {
+              "word": "Windy",
+              "translation_uz": "Shamolli",
+              "example": "It is windy outside.",
+              "example_uz": "Tashqarida shamolli."
+            }
+          ]
+        },
+        {
+          "type": "mini_lesson",
+          "content": "To describe weather: 'It is + weather word'. Example: It is sunny. Ask: 'What is the weather like?'",
+          "content_uz": "Ob-havoni tasvirlash: 'It is + ob-havo so'zi'. Misol: It is sunny. So'rang: 'What is the weather like?'"
+        },
+        {
+          "type": "quiz",
+          "questions": [
+            {
+              "question": "What is 'quyoshli' in English?",
+              "question_uz": "'Quyoshli' ingliz tilida?",
+              "options": [
+                "Rainy",
+                "Sunny",
+                "Cloudy",
+                "Windy"
+              ],
+              "answer": "Sunny"
+            },
+            {
+              "question": "It is ___ today (yomg'ir)",
+              "question_uz": "Bugun havo ___ (yomg'ir)",
+              "options": [
+                "sunny",
+                "rainy",
+                "hot",
+                "cold"
+              ],
+              "answer": "rainy"
+            },
+            {
+              "question": "How to ask about weather?",
+              "question_uz": "Ob-havo haqida qanday so'rayapsiz?",
+              "options": [
+                "What time is it?",
+                "What is the weather like?",
+                "How are you?",
+                "Where is the sun?"
+              ],
+              "answer": "What is the weather like?"
+            },
+            {
+              "question": "Translate: 'Yoz issiq'",
+              "question_uz": "Tarjimasi: 'Summer is hot'",
+              "options": [
+                "Winter is cold",
+                "Summer is hot",
+                "Spring is warm",
+                "Autumn is cool"
+              ],
+              "answer": "Summer is hot"
+            },
+            {
+              "question": "Which is cold?",
+              "question_uz": "Qaysi biri sovuq?",
+              "options": [
+                "Summer",
+                "Hot",
+                "Ice",
+                "Sunny"
+              ],
+              "answer": "Ice"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": 22,
+      "title": "Clothes",
+      "topics": [
+        {
+          "type": "vocabulary",
+          "items": [
+            {
+              "word": "Shirt",
+              "translation_uz": "Ko'ylak (erkak)",
+              "example": "I wear a white shirt.",
+              "example_uz": "Men oq ko'ylak kiyaman."
+            },
+            {
+              "word": "Dress",
+              "translation_uz": "Ko'ylak (ayol)",
+              "example": "She has a red dress.",
+              "example_uz": "Uning qizil ko'ylagi bor."
+            },
+            {
+              "word": "Pants",
+              "translation_uz": "Shim",
+              "example": "My pants are blue.",
+              "example_uz": "Mening shimim ko'k."
+            },
+            {
+              "word": "Shoes",
+              "translation_uz": "Poyabzal",
+              "example": "I need new shoes.",
+              "example_uz": "Menga yangi poyabzal kerak."
+            },
+            {
+              "word": "Hat",
+              "translation_uz": "Shapka",
+              "example": "Put on your hat.",
+              "example_uz": "Shapkangizni kiying."
+            },
+            {
+              "word": "Coat",
+              "translation_uz": "Palto",
+              "example": "It's cold, wear a coat.",
+              "example_uz": "Havo sovuq, palto kiying."
+            }
+          ]
+        },
+        {
+          "type": "mini_lesson",
+          "content": "Use 'wear' with clothes: I wear a shirt. Use 'put on' for action. Use 'take off' for removing.",
+          "content_uz": "Kiyimlar bilan 'wear' ishlating: I wear a shirt. Harakat uchun 'put on'. Yechish uchun 'take off'."
+        },
+        {
+          "type": "quiz",
+          "questions": [
+            {
+              "question": "What do you wear on your feet?",
+              "question_uz": "Oyog'ingizga nima kiyasiz?",
+              "options": [
+                "Hat",
+                "Shoes",
+                "Shirt",
+                "Coat"
+              ],
+              "answer": "Shoes"
+            },
+            {
+              "question": "How to say 'shapka'?",
+              "question_uz": "'Shapka' ingliz tilida?",
+              "options": [
+                "Coat",
+                "Hat",
+                "Dress",
+                "Pants"
+              ],
+              "answer": "Hat"
+            },
+            {
+              "question": "Translate: 'U qizil ko'ylak kiyadi'",
+              "question_uz": "Tarjimasi: 'She wears a red dress'",
+              "options": [
+                "She wears a red shirt",
+                "She wears a red dress",
+                "She wears red pants",
+                "She wears a red hat"
+              ],
+              "answer": "She wears a red dress"
+            },
+            {
+              "question": "Complete: 'It's cold, wear a ___'",
+              "question_uz": "To'ldiring: 'It's cold, wear a ___' (palto)",
+              "options": [
+                "shirt",
+                "dress",
+                "coat",
+                "shoes"
+              ],
+              "answer": "coat"
+            },
+            {
+              "question": "Opposite of 'put on' is ___",
+              "question_uz": "'Put on'ning aksi ___",
+              "options": [
+                "wear",
+                "take off",
+                "remove",
+                "both b and c"
+              ],
+              "answer": "both b and c"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": 23,
+      "title": "Directions (Left, Right)",
+      "topics": [
+        {
+          "type": "vocabulary",
+          "items": [
+            {
+              "word": "Left",
+              "translation_uz": "Chap",
+              "example": "Turn left at the corner.",
+              "example_uz": "Burchakda chapga buriling."
+            },
+            {
+              "word": "Right",
+              "translation_uz": "O'ng",
+              "example": "Turn right after the bridge.",
+              "example_uz": "Ko'prikdan keyin o'ngga buriling."
+            },
+            {
+              "word": "Straight",
+              "translation_uz": "To'g'ri",
+              "example": "Go straight for 2 blocks.",
+              "example_uz": "2 ko'cha to'g'ri boring."
+            },
+            {
+              "word": "Behind",
+              "translation_uz": "Orqasida",
+              "example": "The school is behind the park.",
+              "example_uz": "Maktab bog'ning orqasida."
+            },
+            {
+              "word": "Next to",
+              "translation_uz": "Yonida",
+              "example": "The shop is next to the bank.",
+              "example_uz": "Do'kon bankning yonida."
+            }
+          ]
+        },
+        {
+          "type": "mini_lesson",
+          "content": "To give directions: 'Turn left', 'Turn right', 'Go straight'. To describe location: 'behind', 'next to'.",
+          "content_uz": "Yo'nalish berish uchun: 'Turn left', 'Turn right', 'Go straight'. Joylashuvni tasvirlash: 'behind', 'next to'."
+        },
+        {
+          "type": "quiz",
+          "questions": [
+            {
+              "question": "Which direction is 'chap'?",
+              "question_uz": "Qaysi yo'nalish 'chap'?",
+              "options": [
+                "Right",
+                "Left",
+                "Straight",
+                "Behind"
+              ],
+              "answer": "Left"
+            },
+            {
+              "question": "Say 'to'g'ri boring'",
+              "question_uz": "'To'g'ri boring' ingliz tilida?",
+              "options": [
+                "Turn left",
+                "Turn right",
+                "Go straight",
+                "Go behind"
+              ],
+              "answer": "Go straight"
+            },
+            {
+              "question": "Translate: 'Do'kon bankning yonida'",
+              "question_uz": "Tarjimasi: 'The shop is next to the bank'",
+              "options": [
+                "The shop is behind the bank",
+                "The shop is next to the bank",
+                "The shop is left of the bank",
+                "The shop is right of the bank"
+              ],
+              "answer": "The shop is next to the bank"
+            },
+            {
+              "question": "Opposite of 'left' is ___",
+              "question_uz": "'Left'ning aksi ___",
+              "options": [
+                "Straight",
+                "Right",
+                "Behind",
+                "Next to"
+              ],
+              "answer": "Right"
+            },
+            {
+              "question": "Complete: 'Turn ___ at the traffic light' (o'ng)",
+              "question_uz": "To'ldiring: 'Turn ___ at the traffic light' (o'ng)",
+              "options": [
+                "left",
+                "right",
+                "straight",
+                "behind"
+              ],
+              "answer": "right"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": 24,
+      "title": "Shopping Basics",
+      "topics": [
+        {
+          "type": "vocabulary",
+          "items": [
+            {
+              "word": "How much",
+              "translation_uz": "Qancha",
+              "example": "How much is this shirt?",
+              "example_uz": "Bu ko'ylak qancha?"
+            },
+            {
+              "word": "Expensive",
+              "translation_uz": "Qimmat",
+              "example": "This is too expensive.",
+              "example_uz": "Bu juda qimmat."
+            },
+            {
+              "word": "Cheap",
+              "translation_uz": "Arzon",
+              "example": "I want a cheap bag.",
+              "example_uz": "Men arzon sumka xohlayman."
+            },
+            {
+              "word": "Buy",
+              "translation_uz": "Sotib olmoq",
+              "example": "I want to buy milk.",
+              "example_uz": "Men sut sotib olmoqchiman."
+            },
+            {
+              "word": "Sell",
+              "translation_uz": "Sotmoq",
+              "example": "This shop sells bread.",
+              "example_uz": "Bu do'kon non sotadi."
+            }
+          ]
+        },
+        {
+          "type": "mini_lesson",
+          "content": "Ask price: 'How much is it?' Say 'I want to buy ___'. To say it's too much: 'That's expensive.'",
+          "content_uz": "Narx so'rash: 'How much is it?' 'I want to buy ___' deb ayting. Juda qimmat bo'lsa: 'That's expensive.'"
+        },
+        {
+          "type": "quiz",
+          "questions": [
+            {
+              "question": "How to ask 'Bu qancha?'",
+              "question_uz": "'Bu qancha?' ingliz tilida?",
+              "options": [
+                "How many?",
+                "How much?",
+                "What price?",
+                "How cost?"
+              ],
+              "answer": "How much?"
+            },
+            {
+              "question": "What does 'expensive' mean?",
+              "question_uz": "'Expensive' nimani anglatadi?",
+              "options": [
+                "Arzon",
+                "Qimmat",
+                "Bepul",
+                "Yaxshi"
+              ],
+              "answer": "Qimmat"
+            },
+            {
+              "question": "Translate: 'Men sut sotib olmoqchiman'",
+              "question_uz": "Tarjimasi: 'I want to buy milk'",
+              "options": [
+                "I want to sell milk",
+                "I buy milk",
+                "I want to buy milk",
+                "I like milk"
+              ],
+              "answer": "I want to buy milk"
+            },
+            {
+              "question": "Opposite of 'cheap' is ___",
+              "question_uz": "'Cheap'ning aksi ___",
+              "options": [
+                "Good",
+                "Expensive",
+                "Big",
+                "Small"
+              ],
+              "answer": "Expensive"
+            },
+            {
+              "question": "Complete: 'This shop ___ bread' (sotadi)",
+              "question_uz": "To'ldiring: 'This shop ___ bread' (sotadi)",
+              "options": [
+                "buys",
+                "sells",
+                "gives",
+                "makes"
+              ],
+              "answer": "sells"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": 25,
+      "title": "Numbers in Real Life",
+      "topics": [
+        {
+          "type": "vocabulary",
+          "items": [
+            {
+              "word": "Phone number",
+              "translation_uz": "Telefon raqami",
+              "example": "My phone number is 123-4567.",
+              "example_uz": "Mening telefon raqamim 123-4567."
+            },
+            {
+              "word": "Address",
+              "translation_uz": "Manzil",
+              "example": "What is your address?",
+              "example_uz": "Manzilingiz nima?"
+            },
+            {
+              "word": "Age",
+              "translation_uz": "Yosh",
+              "example": "I am 25 years old.",
+              "example_uz": "Men 25 yoshdaman."
+            },
+            {
+              "word": "Price",
+              "translation_uz": "Narx",
+              "example": "The price is 10 dollars.",
+              "example_uz": "Narxi 10 dollar."
+            },
+            {
+              "word": "Room number",
+              "translation_uz": "Xona raqami",
+              "example": "Room 203 is ready.",
+              "example_uz": "203-xona tayyor."
+            }
+          ]
+        },
+        {
+          "type": "mini_lesson",
+          "content": "Numbers are everywhere: age, price, phone number. Say numbers one by one for phone numbers. Use 'years old' for age.",
+          "content_uz": "Raqamlar hamma joyda: yosh, narx, telefon raqami. Telefon raqamlarini birma-bir ayting. Yosh uchun 'years old' ishlating."
+        },
+        {
+          "type": "quiz",
+          "questions": [
+            {
+              "question": "How to say 'Men 30 yoshdaman'?",
+              "question_uz": "'Men 30 yoshdaman' ingliz tilida?",
+              "options": [
+                "I am 30 year",
+                "I am 30 years old",
+                "I have 30 years",
+                "My age 30"
+              ],
+              "answer": "I am 30 years old"
+            },
+            {
+              "question": "What is a phone number?",
+              "question_uz": "Telefon raqami nima?",
+              "options": [
+                "Your name",
+                "Your address",
+                "Digits to call you",
+                "Your age"
+              ],
+              "answer": "Digits to call you"
+            },
+            {
+              "question": "Translate: 'Narx qancha?'",
+              "question_uz": "Tarjimasi: 'What is the price?'",
+              "options": [
+                "How much?",
+                "What price?",
+                "Both A and B",
+                "How many?"
+              ],
+              "answer": "Both A and B"
+            },
+            {
+              "question": "Say '123' as phone number",
+              "question_uz": "Telefon raqami sifatida '123' ni ayting",
+              "options": [
+                "one hundred twenty three",
+                "one two three",
+                "twelve three",
+                "one twenty three"
+              ],
+              "answer": "one two three"
+            },
+            {
+              "question": "Complete: 'Room ___ is on floor 5' (501)",
+              "question_uz": "To'ldiring: 'Room ___ is on floor 5' (501)",
+              "options": [
+                "five hundred one",
+                "five zero one",
+                "five hundred and one",
+                "five zero one"
+              ],
+              "answer": "five zero one"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": 26,
+      "title": "Talking About Age",
+      "topics": [
+        {
+          "type": "vocabulary",
+          "items": [
+            {
+              "word": "How old",
+              "translation_uz": "Necha yoshda",
+              "example": "How old are you?",
+              "example_uz": "Siz necha yoshdasiz?"
+            },
+            {
+              "word": "I am ... years old",
+              "translation_uz": "Men ... yoshdaman",
+              "example": "I am 18 years old.",
+              "example_uz": "Men 18 yoshdaman."
+            },
+            {
+              "word": "Young",
+              "translation_uz": "Yosh",
+              "example": "My brother is young.",
+              "example_uz": "Akam yosh."
+            },
+            {
+              "word": "Old",
+              "translation_uz": "Keksa",
+              "example": "My grandfather is old.",
+              "example_uz": "Bobom keksa."
+            },
+            {
+              "word": "Same age",
+              "translation_uz": "Teng yosh",
+              "example": "We are the same age.",
+              "example_uz": "Biz teng yoshdamiz."
+            }
+          ]
+        },
+        {
+          "type": "mini_lesson",
+          "content": "To ask age: 'How old are you?' Answer: 'I am ___ years old.' For one year old, say 'I am one year old' (no 's' on year).",
+          "content_uz": "Yoshni so'rash: 'How old are you?' Javob: 'I am ___ years old.' Bir yosh uchun 'I am one year old' ('year'ga 's' qo'shilmaydi)."
+        },
+        {
+          "type": "quiz",
+          "questions": [
+            {
+              "question": "How to ask 'Siz necha yoshdasiz?'",
+              "question_uz": "'Siz necha yoshdasiz?' ingliz tilida?",
+              "options": [
+                "How many years?",
+                "How old are you?",
+                "What age are you?",
+                "Both B and C"
+              ],
+              "answer": "Both B and C"
+            },
+            {
+              "question": "Say 'Men 7 yoshdaman'",
+              "question_uz": "'Men 7 yoshdaman' ingliz tilida?",
+              "options": [
+                "I am 7 year old",
+                "I am 7 years old",
+                "I have 7 years",
+                "My age 7"
+              ],
+              "answer": "I am 7 years old"
+            },
+            {
+              "question": "What does 'young' mean?",
+              "question_uz": "'Young' nimani anglatadi?",
+              "options": [
+                "Keksa",
+                "Yosh",
+                "Katta",
+                "Kichik"
+              ],
+              "answer": "Yosh"
+            },
+            {
+              "question": "Translate: 'U mening teng yoshimda'",
+              "question_uz": "Tarjimasi: 'He is the same age as me'",
+              "options": [
+                "He is old",
+                "He is young",
+                "He is the same age as me",
+                "He is different age"
+              ],
+              "answer": "He is the same age as me"
+            },
+            {
+              "question": "Complete: 'My sister is 1 ___ old'",
+              "question_uz": "To'ldiring: 'My sister is 1 ___ old'",
+              "options": [
+                "year",
+                "years",
+                "age",
+                "old"
+              ],
+              "answer": "year"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": 27,
+      "title": "Basic Adjectives",
+      "topics": [
+        {
+          "type": "vocabulary",
+          "items": [
+            {
+              "word": "Big",
+              "translation_uz": "Katta",
+              "example": "This house is big.",
+              "example_uz": "Bu uy katta."
+            },
+            {
+              "word": "Small",
+              "translation_uz": "Kichik",
+              "example": "I have a small car.",
+              "example_uz": "Mening kichik mashinam bor."
+            },
+            {
+              "word": "Happy",
+              "translation_uz": "Baxtli",
+              "example": "She is happy today.",
+              "example_uz": "U bugun baxtli."
+            },
+            {
+              "word": "Sad",
+              "translation_uz": "G'amgin",
+              "example": "He looks sad.",
+              "example_uz": "U g'amgin ko'rinadi."
+            },
+            {
+              "word": "Fast",
+              "translation_uz": "Tez",
+              "example": "The train is fast.",
+              "example_uz": "Poyezd tez."
+            },
+            {
+              "word": "Slow",
+              "translation_uz": "Sekin",
+              "example": "The turtle is slow.",
+              "example_uz": "Toshbaqa sekin."
+            }
+          ]
+        },
+        {
+          "type": "mini_lesson",
+          "content": "Adjectives describe nouns. Put adjective before noun: 'big house', or after 'is': 'The house is big'.",
+          "content_uz": "Sifatlar otlarni tasvirlaydi. Sifatni ot oldidan qo'ying: 'big house', yoki 'is' dan keyin: 'The house is big'."
+        },
+        {
+          "type": "quiz",
+          "questions": [
+            {
+              "question": "What is the opposite of 'big'?",
+              "question_uz": "'Big'ning aksi?",
+              "options": [
+                "Large",
+                "Small",
+                "Happy",
+                "Fast"
+              ],
+              "answer": "Small"
+            },
+            {
+              "question": "Say 'Men baxtliman'",
+              "question_uz": "'Men baxtliman' ingliz tilida?",
+              "options": [
+                "I am sad",
+                "I am happy",
+                "I am fast",
+                "I am big"
+              ],
+              "answer": "I am happy"
+            },
+            {
+              "question": "Translate: 'Tez mashina'",
+              "question_uz": "Tarjimasi: 'fast car'",
+              "options": [
+                "Slow car",
+                "Big car",
+                "Fast car",
+                "Small car"
+              ],
+              "answer": "Fast car"
+            },
+            {
+              "question": "Complete: 'The ___ dog is barking' (katta)",
+              "question_uz": "To'ldiring: 'The ___ dog is barking' (katta)",
+              "options": [
+                "small",
+                "big",
+                "happy",
+                "sad"
+              ],
+              "answer": "big"
+            },
+            {
+              "question": "Which is correct?",
+              "question_uz": "Qaysi biri to'g'ri?",
+              "options": [
+                "She is a girl happy",
+                "She is happy girl",
+                "She is a happy girl",
+                "Happy she is a girl"
+              ],
+              "answer": "She is a happy girl"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": 28,
+      "title": "Simple Conversations",
+      "topics": [
+        {
+          "type": "vocabulary",
+          "items": [
+            {
+              "word": "Hello, how are you?",
+              "translation_uz": "Salom, qalaysiz?",
+              "example": "Hello, how are you? - I'm fine, thanks.",
+              "example_uz": "Salom, qalaysiz? - Yaxshi, rahmat."
+            },
+            {
+              "word": "What is this?",
+              "translation_uz": "Bu nima?",
+              "example": "What is this? - It's a phone.",
+              "example_uz": "Bu nima? - Bu telefon."
+            },
+            {
+              "word": "Where is the bathroom?",
+              "translation_uz": "Hojatxona qayerda?",
+              "example": "Where is the bathroom? - Over there.",
+              "example_uz": "Hojatxona qayerda? - U erda."
+            },
+            {
+              "word": "How much is it?",
+              "translation_uz": "Bu qancha?",
+              "example": "How much is it? - 5 dollars.",
+              "example_uz": "Bu qancha? - 5 dollar."
+            }
+          ]
+        },
+        {
+          "type": "mini_lesson",
+          "content": "Simple conversation: Greeting → Question → Answer. Practice with a friend. Keep sentences short.",
+          "content_uz": "Oddiy suhbat: Salomlashish → Savol → Javob. Do'stingiz bilan mashq qiling. Gaplarni qisqa qiling."
+        },
+        {
+          "type": "quiz",
+          "questions": [
+            {
+              "question": "How to greet and ask 'Qalaysiz?'",
+              "question_uz": "Salomlashib, 'Qalaysiz?' deb so'rash?",
+              "options": [
+                "Hello, what's up?",
+                "Hi, how are you?",
+                "Hey, good morning",
+                "Hello, where are you?"
+              ],
+              "answer": "Hi, how are you?"
+            },
+            {
+              "question": "Answer to 'How are you?'",
+              "question_uz": "'How are you?' ga javob",
+              "options": [
+                "I am fine",
+                "I am 20",
+                "My name is",
+                "I like it"
+              ],
+              "answer": "I am fine"
+            },
+            {
+              "question": "Translate: 'Hojatxona qayerda?'",
+              "question_uz": "Tarjimasi: 'Where is the bathroom?'",
+              "options": [
+                "Where is the kitchen?",
+                "Where is the bathroom?",
+                "Where is the bedroom?",
+                "Where is the door?"
+              ],
+              "answer": "Where is the bathroom?"
+            },
+            {
+              "question": "Ask price",
+              "question_uz": "Narxni so'rang",
+              "options": [
+                "How old?",
+                "How much?",
+                "How many?",
+                "How far?"
+              ],
+              "answer": "How much?"
+            },
+            {
+              "question": "Complete dialog: A: 'What is this?' B: '___'",
+              "question_uz": "Dialog: A: 'What is this?' B: '___'",
+              "options": [
+                "Yes",
+                "It is a pen",
+                "No",
+                "Thank you"
+              ],
+              "answer": "It is a pen"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": 29,
+      "title": "Review Lesson 1-10",
+      "topics": [
+        {
+          "type": "vocabulary",
+          "items": [
+            {
+              "word": "Hello",
+              "translation_uz": "Salom",
+              "example": "Hello, my name is Ali.",
+              "example_uz": "Salom, mening ismim Ali."
+            },
+            {
+              "word": "Mother",
+              "translation_uz": "Ona",
+              "example": "My mother is kind.",
+              "example_uz": "Onam mehribon."
+            },
+            {
+              "word": "Red",
+              "translation_uz": "Qizil",
+              "example": "The apple is red.",
+              "example_uz": "Olma qizil."
+            },
+            {
+              "word": "Monday",
+              "translation_uz": "Dushanba",
+              "example": "Monday is the first day.",
+              "example_uz": "Dushanba birinchi kun."
+            },
+            {
+              "word": "January",
+              "translation_uz": "Yanvar",
+              "example": "January is cold.",
+              "example_uz": "Yanvar sovuq."
+            }
+          ]
+        },
+        {
+          "type": "mini_lesson",
+          "content": "Review: Greetings, family, colors, days, months, numbers 1-20, and simple verbs.",
+          "content_uz": "Takror: Salomlashish, oila, ranglar, kunlar, oylar, 1-20 raqamlari va oddiy fe'llar."
+        },
+        {
+          "type": "quiz",
+          "questions": [
+            {
+              "question": "How do you say 'Ona'?",
+              "question_uz": "'Ona' ingliz tilida?",
+              "options": [
+                "Father",
+                "Mother",
+                "Sister",
+                "Brother"
+              ],
+              "answer": "Mother"
+            },
+            {
+              "question": "What color is the sky?",
+              "question_uz": "Osmon qanday rang?",
+              "options": [
+                "Red",
+                "Green",
+                "Blue",
+                "Yellow"
+              ],
+              "answer": "Blue"
+            },
+            {
+              "question": "Which day is after Tuesday?",
+              "question_uz": "Seshanbadan keyingi kun?",
+              "options": [
+                "Monday",
+                "Wednesday",
+                "Thursday",
+                "Friday"
+              ],
+              "answer": "Wednesday"
+            },
+            {
+              "question": "What number is 'seven'?",
+              "question_uz": "'Seven' qaysi raqam?",
+              "options": [
+                "6",
+                "7",
+                "8",
+                "9"
+              ],
+              "answer": "7"
+            },
+            {
+              "question": "Say 'Men olma yeyman'",
+              "question_uz": "'Men olma yeyman' ingliz tilida?",
+              "options": [
+                "I drink an apple",
+                "I eat an apple",
+                "I like an apple",
+                "I see an apple"
+              ],
+              "answer": "I eat an apple"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": 30,
+      "title": "Review Lesson 11-20",
+      "topics": [
+        {
+          "type": "vocabulary",
+          "items": [
+            {
+              "word": "What time is it?",
+              "translation_uz": "Soat necha?",
+              "example": "What time is it? - 3 o'clock.",
+              "example_uz": "Soat necha? - Soat 3."
+            },
+            {
+              "word": "Teacher",
+              "translation_uz": "O'qituvchi",
+              "example": "She is a teacher.",
+              "example_uz": "U o'qituvchi."
+            },
+            {
+              "word": "Like",
+              "translation_uz": "Yoqtirmoq",
+              "example": "I like pizza.",
+              "example_uz": "Menga pizza yoqadi."
+            },
+            {
+              "word": "Pen",
+              "translation_uz": "Ruchka",
+              "example": "I have a pen.",
+              "example_uz": "Menda ruchka bor."
+            },
+            {
+              "word": "Sunny",
+              "translation_uz": "Quyoshli",
+              "example": "Today is sunny.",
+              "example_uz": "Bugun havo quyoshli."
+            }
+          ]
+        },
+        {
+          "type": "mini_lesson",
+          "content": "Review: Time, jobs, likes/dislikes, classroom objects, weather, clothes, directions, shopping, age, adjectives.",
+          "content_uz": "Takror: Vaqt, kasblar, yoqtirish/yoqtirmaslik, sinf jihozlari, ob-havo, kiyimlar, yo'nalishlar, xarid qilish, yosh, sifatlar."
+        },
+        {
+          "type": "quiz",
+          "questions": [
+            {
+              "question": "What is 'Soat necha?' in English?",
+              "question_uz": "'Soat necha?' ingliz tilida?",
+              "options": [
+                "How old?",
+                "What time is it?",
+                "How much?",
+                "Where is it?"
+              ],
+              "answer": "What time is it?"
+            },
+            {
+              "question": "Who works in a hospital?",
+              "question_uz": "Kasalxonada kim ishlaydi?",
+              "options": [
+                "Teacher",
+                "Doctor",
+                "Driver",
+                "Cook"
+              ],
+              "answer": "Doctor"
+            },
+            {
+              "question": "Say 'Men sutni yaxshi ko'rmayman'",
+              "question_uz": "'Men sutni yaxshi ko'rmayman' ingliz tilida?",
+              "options": [
+                "I like milk",
+                "I love milk",
+                "I don't like milk",
+                "I hate milk"
+              ],
+              "answer": "I don't like milk"
+            },
+            {
+              "question": "What do you write with?",
+              "question_uz": "Nima bilan yozasiz?",
+              "options": [
+                "Book",
+                "Pen",
+                "Desk",
+                "Chair"
+              ],
+              "answer": "Pen"
+            },
+            {
+              "question": "Describe rainy day: 'It is ___'",
+              "question_uz": "Yomg'irli kunni tasvirlang: 'It is ___'",
+              "options": [
+                "sunny",
+                "rainy",
+                "cloudy",
+                "windy"
+              ],
+              "answer": "rainy"
+            }
+          ]
+        }
+      ]
+    },
+    {

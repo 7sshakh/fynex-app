@@ -1,4 +1,12 @@
 import { Course, LeaderboardEntry, User, DailyChallenge } from '../types';
+import englishData from './english_beginner.json';
+
+const englishBeginnerLessons = (englishData.lessons || []).map((lesson: any) => ({
+  id: `1-${lesson.lesson_id}`,
+  title: lesson.title || 'Mavzu',
+  duration: Math.max(10, (lesson.topics?.length || 1) * 5),
+  completed: false,
+}));
 
 export const mockCourses: Course[] = [
   {
@@ -9,13 +17,7 @@ export const mockCourses: Course[] = [
     color: 'from-blue-500 to-cyan-400',
     isPro: false,
     totalXp: 500,
-    lessons: [
-      { id: '1-1', title: 'Salomlashish', duration: 15, completed: false },
-      { id: '1-2', title: 'Raqamlar 1-10', duration: 20, completed: false },
-      { id: '1-3', title: 'Range va ranglar', duration: 25, completed: false },
-      { id: '1-4', title: 'Oilaviy munosabatlar', duration: 30, completed: false },
-      { id: '1-5', title: 'Ovqatlanish', duration: 25, completed: false },
-    ]
+    lessons: englishBeginnerLessons
   },
   {
     id: '2',

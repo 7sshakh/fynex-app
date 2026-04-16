@@ -26,45 +26,8 @@ export interface FlashcardStep {
 export type LessonStep = QuizStep | FillBlankStep | FlashcardStep;
 
 export const lessonSteps: Record<string, LessonStep[]> = {
-  // Course 1: Ingliz Tili Beginner
-  '1-1': [
-    { type: 'flashcard', word: 'Hello', pronunciation: '[həˈloʊ]', translation: 'Salom', definition: 'Uchrashganda ishlatiladigan so\'z' },
-    { type: 'flashcard', word: 'Good morning', pronunciation: '[ɡʊd ˈmɔːrnɪŋ]', translation: 'Xayrli tong', definition: 'Ertalab salomlashish' },
-    { type: 'flashcard', word: 'Goodbye', pronunciation: '[ɡʊdˈbaɪ]', translation: 'Xayr', definition: 'Xayrlashish so\'zi' },
-    { type: 'quiz', question: '"Salom" so\'zining inglizcha tarjimasi qaysi?', options: ['Goodbye', 'Hello', 'Thanks', 'Sorry'], correctIndex: 1, explanation: '"Hello" — ingliz tilida eng ko\'p ishlatiladigan salomlashish so\'zi.' },
-    { type: 'fill_blank', before: 'Good', after: '! How are you?', correctWord: 'morning', options: ['morning', 'night', 'hello', 'bye'], hint: 'Ertalab aytiladi' },
-    { type: 'quiz', question: '"Xayr" inglizcha nima?', options: ['Hello', 'Sorry', 'Goodbye', 'Please'], correctIndex: 2, explanation: '"Goodbye" — xayrlashishda ishlatiladi.' },
-  ],
-  '1-2': [
-    { type: 'flashcard', word: 'One', pronunciation: '[wʌn]', translation: 'Bir' },
-    { type: 'flashcard', word: 'Five', pronunciation: '[faɪv]', translation: 'Besh' },
-    { type: 'flashcard', word: 'Ten', pronunciation: '[ten]', translation: 'O\'n' },
-    { type: 'quiz', question: '"Seven" raqami nechaga teng?', options: ['6', '7', '8', '9'], correctIndex: 1, explanation: 'Seven = 7' },
-    { type: 'fill_blank', before: 'I have', after: 'apples.', correctWord: 'three', options: ['three', 'tree', 'free', 'thee'], hint: '3 ta olma' },
-    { type: 'quiz', question: '"O\'n" inglizcha nima?', options: ['Tin', 'Ten', 'Tan', 'Ton'], correctIndex: 1 },
-  ],
-  '1-3': [
-    { type: 'flashcard', word: 'Red', pronunciation: '[red]', translation: 'Qizil' },
-    { type: 'flashcard', word: 'Blue', pronunciation: '[bluː]', translation: 'Ko\'k' },
-    { type: 'flashcard', word: 'Green', pronunciation: '[ɡriːn]', translation: 'Yashil' },
-    { type: 'quiz', question: '"Ko\'k" rangi inglizcha nima?', options: ['Red', 'Green', 'Blue', 'Yellow'], correctIndex: 2, explanation: 'Blue = Ko\'k rang' },
-    { type: 'fill_blank', before: 'The sky is', after: '.', correctWord: 'blue', options: ['red', 'blue', 'green', 'black'], hint: 'Osmon rangi' },
-    { type: 'quiz', question: '"Green" qanday rang?', options: ['Qizil', 'Sariq', 'Yashil', 'Oq'], correctIndex: 2 },
-  ],
-  '1-4': [
-    { type: 'flashcard', word: 'Mother', pronunciation: '[ˈmʌðər]', translation: 'Ona' },
-    { type: 'flashcard', word: 'Father', pronunciation: '[ˈfɑːðər]', translation: 'Ota' },
-    { type: 'flashcard', word: 'Brother', pronunciation: '[ˈbrʌðər]', translation: 'Aka/Uka' },
-    { type: 'quiz', question: '"Ona" inglizcha nima?', options: ['Father', 'Mother', 'Sister', 'Brother'], correctIndex: 1 },
-    { type: 'fill_blank', before: 'My', after: 'is a doctor.', correctWord: 'father', options: ['father', 'feather', 'further', 'faster'], hint: 'Otangiz haqida' },
-  ],
-  '1-5': [
-    { type: 'flashcard', word: 'Water', pronunciation: '[ˈwɔːtər]', translation: 'Suv' },
-    { type: 'flashcard', word: 'Bread', pronunciation: '[bred]', translation: 'Non' },
-    { type: 'flashcard', word: 'Apple', pronunciation: '[ˈæp.əl]', translation: 'Olma' },
-    { type: 'quiz', question: '"Non" inglizcha nima?', options: ['Bread', 'Butter', 'Milk', 'Rice'], correctIndex: 0, explanation: 'Bread = Non. Kundalik ovqatlanishda ishlatiladi.' },
-    { type: 'fill_blank', before: 'I drink', after: 'every day.', correctWord: 'water', options: ['water', 'stone', 'paper', 'wood'], hint: 'Suv ichish' },
-  ],
+  // Course 1: Ingliz Tili Beginner will be injected dynamically
+
 
   // Course 3: Rus Tili Beginner
   '3-1': [
@@ -187,6 +150,47 @@ export const lessonSteps: Record<string, LessonStep[]> = {
     { type: 'fill_blank', before: 'sin 30° =', after: '', correctWord: '1/2', options: ['1/2', '1', '0', '√3'], hint: 'Asosiy trigonometrik qiymat' },
   ],
 };
+
+import englishData from './english_beginner.json';
+
+englishData.lessons?.forEach((lesson: any) => {
+  const steps: LessonStep[] = [];
+  lesson.topics?.forEach((topic: any) => {
+    if (topic.type === 'vocabulary' && topic.items) {
+      topic.items.forEach((item: any) => {
+        steps.push({
+          type: 'flashcard',
+          word: item.word,
+          pronunciation: `[${item.word}]`,
+          translation: item.translation_uz,
+          definition: item.example_uz,
+        });
+      });
+    } else if (topic.type === 'mini_lesson') {
+      steps.push({
+        type: 'flashcard',
+        word: 'Mini Dars',
+        pronunciation: '[nazariya]',
+        translation: lesson.title,
+        definition: topic.content_uz,
+      });
+    } else if (topic.type === 'quiz' && topic.questions) {
+      topic.questions.forEach((q: any) => {
+        const correctIndex = q.options?.indexOf(q.answer);
+        steps.push({
+          type: 'quiz',
+          question: q.question_uz || q.question,
+          options: q.options || [],
+          correctIndex: correctIndex >= 0 ? correctIndex : 0,
+        });
+      });
+    }
+  });
+  if (steps.length > 0) {
+    lessonSteps[`1-${lesson.lesson_id}`] = steps;
+  }
+});
+
 
 export function getLessonSteps(lessonId: string, lessonTitle?: string): LessonStep[] {
   const direct = lessonSteps[lessonId];
