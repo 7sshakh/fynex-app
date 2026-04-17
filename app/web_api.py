@@ -795,36 +795,24 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
     @app.post("/api/auth/request-otp")
     async def request_otp(payload: OTPRequestPayload) -> dict:
         import os
+        import logging
         phone = payload.phone_number.strip()
+        logging.info(f"OTP request for phone: {phone}")
         if not _validate_phone(phone):
             raise HTTPException(status_code=400, detail="Invalid phone number format")
         code = f"{int.from_bytes(os.urandom(2), 'big') % 900000 + 100000:06d}"
+        logging.info(f"Generated code: {code} for phone: {phone}")
         await db.save_otp_code(phone, code, payload.telegram_id, ttl_seconds=300)
         return {"ok": True, "sent": True, "expires_in_sec": 300, "mode": "app_direct"}
 
     @app.post("/api/auth/verify-otp")
     async def verify_otp(payload: OTPVerifyPayload) -> dict:
+        import logging
         phone = payload.phone_number.strip()
         code = payload.code.strip()
-        if code == "123456":
-            return {"ok": True, "demo": True}
+        logging.info(f"OTP verify attempt - phone: {phone}, code: {code}")
         ok, reason = await db.verify_otp_code(phone, code)
-        if not ok:
-            for prefix in ["+998", "+7", "+996"]:
-                if phone.startswith(prefix):
-                    alt_phone = phone.replace(prefix, "")
-                    if prefix == "+7":
-                        alt_phone = "+996" + alt_phone[-9:] if len(alt_phone) >= 9 else None
-                        if alt_phone:
-                            ok2, reason2 = await db.verify_otp_code(alt_phone, code)
-                            if ok2:
-                                return {"ok": True, "reason": None, "demo": False}
-                    elif prefix == "+998":
-                        alt_phone = "+7" + phone[-10:] if len(phone) == 13 else None
-                        if alt_phone:
-                            ok2, reason2 = await db.verify_otp_code(alt_phone, code)
-                            if ok2:
-                                return {"ok": True, "reason": None, "demo": False}
+        logging.info(f"OTP verify result - ok: {ok}, reason: {reason}")
         return {"ok": ok, "reason": reason, "demo": False}
 
     @app.get("/api/app/bootstrap")
