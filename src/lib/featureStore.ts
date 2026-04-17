@@ -245,3 +245,54 @@ export const DAILY_FACTS = [
   { emoji: '🎮', fact: "Dopamin — o'rganish gormoni. Har bir mashq singari kichik g'alabalar uni ko'paytiradi!" },
   { emoji: '🌿', fact: "Yashil rangdagi xona o'qish samaradorligini 15% oshiradi. Tabiat yaqinida o'qing!" },
 ];
+
+const DAILY_FACTS_EN = [
+  { emoji: '🧠', fact: 'The brain is about 75% water. Drinking water can improve learning efficiency.' },
+  { emoji: '⏰', fact: 'Many learners focus best in the morning and late afternoon.' },
+  { emoji: '🔁', fact: 'Reviewing new information within 24 hours helps memory stay stronger.' },
+  { emoji: '🎵', fact: 'Calm background music can help focus, but lyrics may distract you.' },
+  { emoji: '📝', fact: 'Writing by hand often helps memory more than typing.' },
+  { emoji: '😴', fact: 'A short review before sleep can help your brain keep information longer.' },
+  { emoji: '🏃', fact: 'Light movement before study can increase alertness.' },
+  { emoji: '🍎', fact: 'A light snack and water can help you stay steady during study.' },
+  { emoji: '🎯', fact: 'Small study goals are easier to finish and keep motivation high.' },
+  { emoji: '📱', fact: 'Keeping your phone away can noticeably improve concentration.' },
+  { emoji: '💡', fact: 'Teaching a topic to someone else is one of the strongest ways to learn it.' },
+  { emoji: '🌙', fact: 'Good sleep helps memory and recall.' },
+  { emoji: '🧩', fact: 'Interactive learning often keeps attention longer than passive reading.' },
+  { emoji: '☕', fact: 'If you drink coffee, timing it before study may help focus.' },
+  { emoji: '🌈', fact: 'Color and structure can make notes easier to remember.' },
+  { emoji: '🤝', fact: 'Study discussions often strengthen understanding.' },
+  { emoji: '🧘', fact: 'A short pause can reset focus before the next lesson.' },
+  { emoji: '📊', fact: 'Visual information is often processed faster than dense text.' },
+  { emoji: '🎮', fact: 'Small wins increase motivation during learning.' },
+  { emoji: '🌿', fact: 'A calm environment can make studying feel lighter and easier.' },
+];
+
+const DAILY_FACTS_RU = [
+  { emoji: '🧠', fact: 'Мозгу помогает вода: даже небольшой перерыв и стакан воды могут улучшить внимание.' },
+  { emoji: '⏰', fact: 'Многим легче учиться утром и ближе к вечеру.' },
+  { emoji: '🔁', fact: 'Если повторить новое в течение суток, материал запоминается лучше.' },
+  { emoji: '🎵', fact: 'Спокойная музыка иногда помогает сосредоточиться, а песни со словами могут мешать.' },
+  { emoji: '📝', fact: 'Записи от руки часто запоминаются лучше, чем печать.' },
+  { emoji: '😴', fact: 'Небольшое повторение перед сном помогает памяти.' },
+  { emoji: '🏃', fact: 'Немного движения перед учебой помогает проснуться.' },
+  { emoji: '🍎', fact: 'Легкий перекус и вода помогают дольше держать темп.' },
+  { emoji: '🎯', fact: 'Маленькие цели поддерживают мотивацию лучше, чем слишком большие планы.' },
+  { emoji: '📱', fact: 'Если убрать телефон подальше, сосредоточиться обычно легче.' },
+  { emoji: '💡', fact: 'Объяснение темы другому человеку отлично укрепляет знания.' },
+  { emoji: '🌙', fact: 'Качественный сон помогает памяти и восстановлению.' },
+  { emoji: '🧩', fact: 'Интерактивное обучение часто удерживает внимание лучше.' },
+  { emoji: '☕', fact: 'Если вы пьете кофе, его время тоже влияет на фокус.' },
+  { emoji: '🌈', fact: 'Цвет и структура делают конспекты понятнее.' },
+  { emoji: '🤝', fact: 'Обсуждение темы с другим человеком усиливает понимание.' },
+  { emoji: '🧘', fact: 'Короткая пауза помогает вернуться к уроку с более чистой головой.' },
+  { emoji: '📊', fact: 'Визуальные материалы часто воспринимаются быстрее, чем длинный текст.' },
+  { emoji: '🎮', fact: 'Небольшие победы поддерживают интерес к учебе.' },
+  { emoji: '🌿', fact: 'Спокойная обстановка делает учебу легче.' },
+];
+
+export function getLocalizedDailyFact(index: number, lang: 'uz' | 'en' | 'ru') {
+  const list = lang === 'ru' ? DAILY_FACTS_RU : lang === 'en' ? DAILY_FACTS_EN : DAILY_FACTS;
+  return list[index % list.length];
+}
