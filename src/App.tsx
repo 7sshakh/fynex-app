@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { UserProvider, useUser } from './context/UserContext';
 import { getPalette } from './theme';
+import WelcomePage from './components/WelcomePage';
 import LoginPage from './components/LoginPage';
 import BottomNav from './components/BottomNav';
 import HomePage from './components/HomePage';
@@ -27,6 +28,7 @@ function AppContent() {
   const [activeTab, setActiveTab] = useState<TabType>('home');
   const [showMockTests, setShowMockTests] = useState(false);
   const [showPracticeLab, setShowPracticeLab] = useState(false);
+  const [welcomed, setWelcomed] = useState(() => localStorage.getItem('fynex_welcomed') === 'true');
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -56,6 +58,18 @@ function AppContent() {
       window.removeEventListener('fynex:openPractice', handleOpenPractice);
     };
   }, []);
+
+  if (!welcomed) {
+    return (
+      <WelcomePage
+        onComplete={(lang) => {
+          localStorage.setItem('fynex_welcomed', 'true');
+          localStorage.setItem('fynex_lang', lang);
+          setWelcomed(true);
+        }}
+      />
+    );
+  }
 
   if (!isAuthenticated) return <LoginPage />;
   const ActivePage = tabComponents[activeTab];
