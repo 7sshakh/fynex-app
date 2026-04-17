@@ -9,7 +9,7 @@ import {
 import { useUser } from '../context/UserContext';
 import { type Lang, type Translations } from '../lib/i18n';
 
-type Step = 'intro' | 'phone' | 'otp' | 'name' | 'userType' | 'grade' | 'subject' | 'offlineCourse' | 'centerPicker' | 'centerDuration' | 'level' | 'advice' | 'summary' | 'loading';
+type Step = 'intro' | 'phone' | 'otp_sent' | 'otp' | 'name' | 'userType' | 'grade' | 'subject' | 'offlineCourse' | 'centerPicker' | 'centerDuration' | 'level' | 'advice' | 'summary' | 'loading';
 
 interface OnboardingData {
   userType: 'school' | 'university' | 'applicant' | 'other' | '';
@@ -174,7 +174,7 @@ export default function LoginPage() {
 
   /* ── dynamic step list ── */
   const allSteps = useMemo<Step[]>(() => {
-    const s: Step[] = ['intro', 'phone', 'otp', 'name', 'userType'];
+    const s: Step[] = ['phone', 'otp_sent', 'otp', 'name', 'userType'];
     if (ob.userType === 'school') s.push('grade');
     s.push('subject');
     
@@ -230,6 +230,7 @@ export default function LoginPage() {
     switch (step) {
       case 'phone': return phone.length === selectedCountry.digitCount;
       case 'intro': return true;
+      case 'otp_sent': return true;
       case 'otp': return false;
       case 'name': return name.trim().length >= 2;
       case 'userType': return !!ob.userType;
@@ -250,23 +251,7 @@ export default function LoginPage() {
     if (phone.length !== selectedCountry.digitCount) return;
     (document.activeElement as HTMLElement | null)?.blur?.();
     setPhoneError('');
-    try {
-      const telegramId = (window as any)?.Telegram?.WebApp?.initDataUnsafe?.user?.id ?? null;
-      const resp = await fetch('/api/auth/request-otp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone_number: fullPhone, telegram_id: telegramId }),
-      });
-      if (!resp.ok) {
-        setPhoneError(copy.phoneCheckError);
-        return;
-      }
-    } catch {
-      setPhoneError(copy.phoneCheckError);
-      return;
-    }
-    setResendSec(45);
-    setTimeout(() => setStep('otp'), 180);
+    setStep('otp_sent');
   };
 
   const goOtp = async () => {
@@ -298,6 +283,7 @@ export default function LoginPage() {
     if (!canNext) return;
     if (step === 'intro') { setStep('phone'); return; }
     if (step === 'phone') { goPhone(); return; }
+    if (step === 'otp_sent') { setStep('otp'); return; }
     if (step === 'name') { (document.activeElement as HTMLElement | null)?.blur?.(); }
     if (step === 'summary') { finish(); return; }
     const next = idx + 1;
@@ -306,7 +292,8 @@ export default function LoginPage() {
 
   const goBack = () => {
     if (idx <= 0) return;
-    if (step === 'otp') setOtpStatus('idle');
+    if (step === 'otp') { setOtpStatus('idle'); setStep('otp_sent'); return; }
+    if (step === 'otp_sent') { setStep('phone'); return; }
     setStep(allSteps[idx - 1]);
   };
 
@@ -506,6 +493,60 @@ export default function LoginPage() {
                   {phoneError && (
                     <p className="mt-4 text-sm font-medium text-red-400">{phoneError}</p>
                   )}
+                </div>
+              </motion.section>
+            )}
+
+            {/* ═══ OTP SENT - Shows how to get code ═══ */}
+            {step === 'otp_sent' && (
+              <motion.section key="otp_sent" {...slide} className="flex h-full flex-col">
+                <div className={cardStyle}>
+                  <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full mx-auto" style={{ background: 'linear-gradient(135deg, rgba(195,255,46,0.2), rgba(195,255,46,0.05))' }}>
+                    <svg className="h-10 w-10 text-lime-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <h2 className="mb-2 text-3xl font-black tracking-[-0.04em] text-center">{t.login_verify}</h2>
+                  <p className="mb-6 text-center text-sm text-white/68">
+                    {fullPhone}
+                  </p>
+                  
+                  <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 mb-6">
+                    <div className="text-center text-sm font-medium text-white/80 mb-3">Kodni qanday olishingiz mumkin:</div>
+                    
+                    <div className="flex items-start gap-3 mb-3">
+                      <div className="shrink-0 w-6 h-6 rounded-full bg-lime-300/20 flex items-center justify-center text-lime-300 text-xs font-bold">1</div>
+                      <div className="text-sm text-white/70">
+                        <span className="text-white font-medium">@FynexEduBot</span> ga kiring
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start gap-3 mb-3">
+                      <div className="shrink-0 w-6 h-6 rounded-full bg-lime-300/20 flex items-center justify-center text-lime-300 text-xs font-bold">2</div>
+                      <div className="text-sm text-white/70">
+                        <span className="text-white font-medium">Share Contact</span> tugmasini bosing
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start gap-3">
+                      <div className="shrink-0 w-6 h-6 rounded-full bg-lime-300/20 flex items-center justify-center text-lime-300 text-xs font-bold">3</div>
+                      <div className="text-sm text-white/70">
+                        Bot sizga <span className="text-lime-300 font-medium">6 xonali kod</span> yuboradi
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setResendSec(45);
+                      setStep('otp');
+                    }}
+                    className="w-full py-4 rounded-2xl text-sm font-black transition-all"
+                    style={{ background: 'linear-gradient(135deg, #d4ff5c 0%, #c3ff2e 55%, #b1ef1a 100%)', color: '#0a0d09', boxShadow: '0 8px 24px rgba(195,255,46,0.15)' }}
+                  >
+                    Kodni kiritish
+                  </button>
                 </div>
               </motion.section>
             )}
