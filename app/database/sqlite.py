@@ -1236,6 +1236,7 @@ class Database:
         return datetime.utcnow() < datetime.fromisoformat(expires_at)
 
     async def verify_otp_code(self, phone_number: str, code: str) -> tuple[bool, str]:
+        import logging
         assert self.connection is not None
         cursor = await self.connection.execute(
             """
@@ -1248,8 +1249,11 @@ class Database:
             (phone_number,),
         )
         row = await cursor.fetchone()
+        logging.info(f"DB lookup for {phone_number}: row={row}")
         if row is None:
+            logging.info(f"No OTP code found for {phone_number}")
             return False, "not_found"
+        logging.info(f"Found code in DB: '{row['code']}', user submitted: '{code}', is_used: {row['is_used']}")
         if int(row["is_used"] or 0) == 1:
             return False, "used"
         try:
@@ -1258,7 +1262,8 @@ class Database:
             return False, "expired"
         if datetime.utcnow() > expires_at:
             return False, "expired"
-        if str(row["code"]) != code:
+        if str(row["code"]).strip() != code.strip():
+            logging.info(f"Code mismatch: DB='{row['code']}' vs input='{code}'")
             return False, "invalid"
         await self.connection.execute(
             "UPDATE otp_codes SET is_used = 1 WHERE id = ?",
