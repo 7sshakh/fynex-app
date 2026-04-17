@@ -37,9 +37,26 @@ const dark = {
 };
 
 export default function LessonPlayer({ isOpen, onClose, lessonTitle, steps, xpReward, onComplete }: LessonPlayerProps) {
-  const { theme } = useUser();
+  const { theme, lang } = useUser();
   const t = theme === 'dark' ? dark : light;
   const primaryTextOnGrad = theme === 'dark' ? '#0a0d09' : '#ffffff';
+  const copy = {
+    done: lang === 'ru' ? 'Урок завершен!' : lang === 'en' ? 'Lesson completed!' : 'Dars tugadi!',
+    correct: lang === 'ru' ? 'Верно' : lang === 'en' ? 'Correct' : "To'g'ri",
+    time: lang === 'ru' ? 'Время' : lang === 'en' ? 'Time' : 'Vaqt',
+    question: lang === 'ru' ? 'Вопрос' : lang === 'en' ? 'Question' : 'Savol',
+    explanation: lang === 'ru' ? 'Пояснение' : lang === 'en' ? 'Explanation' : 'Tushuntirish',
+    exercise: lang === 'ru' ? 'Практика' : lang === 'en' ? 'Practice' : 'Mashq',
+    fillBlank: lang === 'ru' ? 'Заполните пропуск' : lang === 'en' ? 'Fill in the blank' : "Bo'sh joyni to'ldiring",
+    chooseWord: lang === 'ru' ? 'Выберите подходящее слово по смыслу.' : lang === 'en' ? 'Choose the word that fits the meaning.' : "Gapning ma'nosiga qarab mos so'zni tanlang.",
+    hint: lang === 'ru' ? 'Подсказка' : lang === 'en' ? 'Hint' : 'Maslahat',
+    vocab: lang === 'ru' ? 'Словарь' : lang === 'en' ? 'Vocabulary' : "Lug'at",
+    tapForTranslation: lang === 'ru' ? 'Нажмите, чтобы увидеть перевод' : lang === 'en' ? 'Tap to see the translation' : "Tarjimani ko'rish uchun bosing",
+    pronunciation: 'Pronunciation',
+    back: lang === 'ru' ? 'Назад' : lang === 'en' ? 'Back' : 'Ortga',
+    nextLesson: lang === 'ru' ? 'К следующему уроку' : lang === 'en' ? 'Next lesson' : 'Keyingi darsga',
+    next: lang === 'ru' ? 'Далее' : lang === 'en' ? 'Next' : 'Keyingisi',
+  };
 
   const [currentStep, setCurrentStep] = useState(0);
   const [completed, setCompleted] = useState(false);
@@ -94,15 +111,15 @@ export default function LessonPlayer({ isOpen, onClose, lessonTitle, steps, xpRe
     return (
       <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex-1 flex flex-col items-center justify-center px-6 text-center">
         <div className="text-[100px] leading-none mb-4">🏆</div>
-        <h2 style={{ color: t.text }} className="text-3xl font-extrabold tracking-tight mb-2">Dars tugadi!</h2>
+        <h2 style={{ color: t.text }} className="text-3xl font-extrabold tracking-tight mb-2">{copy.done}</h2>
         <div className="flex items-center gap-2 px-6 py-3 rounded-2xl mb-3" style={{ background: t.primaryBg }}>
           <Zap className="w-5 h-5" style={{ color: t.accent }} />
           <span className="text-2xl font-bold" style={{ color: t.accent }}>+{xpReward} XP</span>
         </div>
         <div className="grid grid-cols-3 gap-3 w-full max-w-xs mt-6">
           {[
-            { label: "To'g'ri", value: `${correctCount}/${steps.length}` },
-            { label: 'Vaqt', value: `${mins}:${secs}` },
+            { label: copy.correct, value: `${correctCount}/${steps.length}` },
+            { label: copy.time, value: `${mins}:${secs}` },
             { label: 'XP', value: `+${xpReward}` },
           ].map((s) => (
             <div key={s.label} className="p-4 rounded-2xl text-center" style={{ background: t.surface }}>
@@ -125,7 +142,7 @@ export default function LessonPlayer({ isOpen, onClose, lessonTitle, steps, xpRe
     };
     return (
       <motion.div key={`quiz-${currentStep}`} initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }} className="flex-1 overflow-y-auto px-6 pt-6 pb-32" style={{ overscrollBehavior: 'contain' }}>
-        <span className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full inline-block mb-4" style={{ background: t.primaryBg, color: t.primary }}>Savol</span>
+        <span className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full inline-block mb-4" style={{ background: t.primaryBg, color: t.primary }}>{copy.question}</span>
         <h2 className="text-2xl font-extrabold tracking-tight leading-tight mb-8" style={{ color: t.text }}>{q.question}</h2>
         <div className="space-y-3">
           {q.options.map((opt, idx) => {
@@ -147,7 +164,7 @@ export default function LessonPlayer({ isOpen, onClose, lessonTitle, steps, xpRe
         </div>
         {answered && q.explanation && (
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-6 p-5 rounded-2xl" style={{ background: t.primaryBg, borderLeft: `4px solid ${t.primary}` }}>
-            <p className="font-bold text-sm mb-1" style={{ color: t.primary }}>Tushuntirish</p>
+            <p className="font-bold text-sm mb-1" style={{ color: t.primary }}>{copy.explanation}</p>
             <p className="text-sm leading-relaxed" style={{ color: t.sub }}>{q.explanation}</p>
           </motion.div>
         )}
@@ -166,9 +183,9 @@ export default function LessonPlayer({ isOpen, onClose, lessonTitle, steps, xpRe
     const isCorrect = selectedWord === fb.correctWord;
     return (
       <motion.div key={`fb-${currentStep}`} initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }} className="flex-1 overflow-y-auto px-6 pt-6 pb-32" style={{ overscrollBehavior: 'contain' }}>
-        <span className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full inline-block mb-4" style={{ background: t.primaryBg, color: t.primary }}>Mashq</span>
-        <h2 className="text-2xl font-extrabold tracking-tight mb-2" style={{ color: t.text }}>Bo'sh joyni to'ldiring</h2>
-        <p className="text-sm mb-8" style={{ color: t.sub }}>Gapning ma'nosiga qarab mos so'zni tanlang.</p>
+        <span className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full inline-block mb-4" style={{ background: t.primaryBg, color: t.primary }}>{copy.exercise}</span>
+        <h2 className="text-2xl font-extrabold tracking-tight mb-2" style={{ color: t.text }}>{copy.fillBlank}</h2>
+        <p className="text-sm mb-8" style={{ color: t.sub }}>{copy.chooseWord}</p>
         <div className="p-8 rounded-2xl mb-8 text-center" style={{ background: t.surface }}>
           <p className="text-xl font-bold leading-relaxed" style={{ color: t.text }}>
             {fb.before}{' '}
@@ -197,7 +214,7 @@ export default function LessonPlayer({ isOpen, onClose, lessonTitle, steps, xpRe
           <div className="mt-6 p-4 rounded-2xl flex items-start gap-3" style={{ background: t.accentBg }}>
             <span className="text-lg">💡</span>
             <div>
-              <p className="font-bold text-xs uppercase mb-1" style={{ color: t.accent }}>Maslahat</p>
+              <p className="font-bold text-xs uppercase mb-1" style={{ color: t.accent }}>{copy.hint}</p>
               <p className="text-sm" style={{ color: t.sub }}>{fb.hint}</p>
             </div>
           </div>
@@ -209,7 +226,7 @@ export default function LessonPlayer({ isOpen, onClose, lessonTitle, steps, xpRe
   /* ───── Flashcard View ───── */
   const renderFlashcard = (fc: FlashcardStep) => (
     <motion.div key={`fc-${currentStep}`} initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }} className="flex-1 flex flex-col items-center px-6 pt-6 pb-32 overflow-y-auto" style={{ overscrollBehavior: 'contain' }}>
-      <span className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full inline-block mb-6 self-start" style={{ background: t.primaryBg, color: t.primary }}>Lug'at</span>
+      <span className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full inline-block mb-6 self-start" style={{ background: t.primaryBg, color: t.primary }}>{copy.vocab}</span>
       <motion.div
         whileTap={{ scale: 0.98 }}
         onClick={() => { setFlipped(f => !f); if (!flipped) setCorrectCount(c => c + 1); }}
@@ -221,12 +238,12 @@ export default function LessonPlayer({ isOpen, onClose, lessonTitle, steps, xpRe
             <motion.div key="front" initial={{ rotateY: 90 }} animate={{ rotateY: 0 }} exit={{ rotateY: -90 }} transition={{ duration: 0.3 }} className="text-center p-8">
               <div className="flex items-center gap-2 mb-8 mx-auto px-3 py-1.5 rounded-full w-fit" style={{ background: t.surface }}>
                 <Volume2 className="w-4 h-4" style={{ color: t.primary }} />
-                <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: t.primary }}>Pronunciation</span>
+                <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: t.primary }}>{copy.pronunciation}</span>
               </div>
               <h2 className="text-5xl font-extrabold tracking-tight mb-4" style={{ color: t.primary }}>{fc.word}</h2>
               <p className="text-xl" style={{ color: t.sub }}>{fc.pronunciation}</p>
               <p className="mt-10 text-xs flex items-center gap-2 justify-center" style={{ color: `${t.sub}80` }}>
-                <RotateCcw className="w-4 h-4" /> Tarjimani ko'rish uchun bosing
+                <RotateCcw className="w-4 h-4" /> {copy.tapForTranslation}
               </p>
             </motion.div>
           ) : (
@@ -282,10 +299,10 @@ export default function LessonPlayer({ isOpen, onClose, lessonTitle, steps, xpRe
         {completed ? (
           <div className="flex gap-3">
             <button onClick={onClose} className="flex-1 py-4 rounded-full font-bold text-sm flex items-center justify-center gap-2 active:scale-95" style={{ border: `2px solid ${t.border}`, color: t.primary, background: 'transparent' }}>
-              <Home className="w-4 h-4" /> Ortga
+              <Home className="w-4 h-4" /> {copy.back}
             </button>
             <button onClick={onClose} className="flex-[2] py-4 rounded-full font-bold text-sm flex items-center justify-center gap-2 active:scale-95" style={{ background: t.primaryGrad, color: primaryTextOnGrad }}>
-              Keyingi darsga <ChevronRight className="w-4 h-4" />
+              {copy.nextLesson} <ChevronRight className="w-4 h-4" />
             </button>
           </div>
         ) : (
@@ -300,7 +317,7 @@ export default function LessonPlayer({ isOpen, onClose, lessonTitle, steps, xpRe
               className="px-8 py-3 rounded-full font-bold text-sm flex items-center gap-2"
               style={{ background: canGoNext ? t.primaryGrad : t.progressTrack, color: canGoNext ? primaryTextOnGrad : t.sub, opacity: canGoNext ? 1 : 0.5 }}
             >
-              Keyingisi <ChevronRight className="w-4 h-4" />
+              {copy.next} <ChevronRight className="w-4 h-4" />
             </motion.button>
           </div>
         )}

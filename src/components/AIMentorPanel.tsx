@@ -110,7 +110,7 @@ export default function AIMentorPanel({ isOpen, onClose }: Props) {
         {
           id: crypto.randomUUID(),
           role: 'assistant',
-          text: "Hozir aloqa sekin. Shu savolni qayta yuboring, darhol davom etamiz.",
+          text: t.ai_mentor_fallback,
           ts: Date.now(),
         },
       ]);

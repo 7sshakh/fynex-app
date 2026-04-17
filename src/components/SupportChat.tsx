@@ -72,6 +72,15 @@ export default function SupportChat({ isOpen, onClose }: SupportChatProps) {
   }, [messages]);
 
   useEffect(() => {
+    if (!isOpen) return;
+    setMessages((prev) => {
+      if (prev.length === 0) return [getWelcomeMsg(T)];
+      if (prev.length === 1 && prev[0]?.id === '1') return [getWelcomeMsg(T)];
+      return prev;
+    });
+  }, [T, isOpen]);
+
+  useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
@@ -186,7 +195,7 @@ export default function SupportChat({ isOpen, onClose }: SupportChatProps) {
       <div className="flex-1 min-h-0 overflow-y-auto px-4 py-4 space-y-3" style={{ backgroundColor: t.msgBg, overscrollBehavior: 'contain' }}>
         {messages.map((msg) => (
           <div key={msg.id} className={`flex flex-col ${msg.isBot ? 'items-start' : 'items-end'}`}>
-            {msg.isSupport && <span className="text-[10px] font-bold uppercase tracking-wider mb-1 ml-1" style={{ color: t.accent }}>SUPPORT</span>}
+            {msg.isSupport && <span className="text-[10px] font-bold uppercase tracking-wider mb-1 ml-1" style={{ color: t.accent }}>{T.support_title}</span>}
             <div
               className="max-w-[80%] px-4 py-2.5 rounded-2xl"
               style={msg.isBot

@@ -13,7 +13,6 @@ import {
   AchievementPopup,
   MoodSensor,
   SleepGuard,
-  SmartBreakOverlay,
   WeeklyReport,
   YesterdayRecap,
 } from './features/HomeWidgets';
@@ -33,7 +32,6 @@ export default function HomePage() {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showAiMentor, setShowAiMentor] = useState(false);
   const [showMood, setShowMood] = useState(false);
-  const [showBreak, setShowBreak] = useState(false);
   const [showSleepGuard, setShowSleepGuard] = useState(false);
   const [hideWeeklyReport, setHideWeeklyReport] = useState(false);
   const [hideYesterdayRecap, setHideYesterdayRecap] = useState(false);
@@ -65,7 +63,6 @@ export default function HomePage() {
   useEffect(() => {
     const hasOverlayOpen =
       showMood ||
-      showBreak ||
       showSleepGuard ||
       showNotifications ||
       showAiMentor;
@@ -82,7 +79,7 @@ export default function HomePage() {
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
     };
-  }, [showMood, showBreak, showSleepGuard, showNotifications, showAiMentor]);
+  }, [showMood, showSleepGuard, showNotifications, showAiMentor]);
 
   useEffect(() => {
     const ach = checkTimeBasedAchievements();
@@ -96,10 +93,6 @@ export default function HomePage() {
       const now = new Date();
       if (now.getHours() >= 23 && now.getMinutes() >= 35) {
         setShowSleepGuard(true);
-      }
-      const lastBreak = loadFeatures().lastBreakTime;
-      if (Date.now() - lastBreak > 35 * 60 * 1000) {
-        setShowBreak(true);
       }
     }, 15000);
     return () => window.clearInterval(tick);
@@ -186,7 +179,7 @@ export default function HomePage() {
             style={{ background: `${colors.primary}20`, color: colors.primary }}
           >
             <Brain className="h-4 w-4" />
-            <span className="text-[11px] font-black uppercase">AI Mentor</span>
+            <span className="text-[11px] font-black uppercase">{t.ai_mentor_title}</span>
           </button>
           <button
             type="button"
@@ -598,14 +591,6 @@ export default function HomePage() {
 
       <AnimatePresence>
         {showMood && <MoodSensor onClose={() => setShowMood(false)} />}
-        {showBreak && (
-          <SmartBreakOverlay
-            onClose={() => {
-              setShowBreak(false);
-              updateFeatures((s) => ({ ...s, lastBreakTime: Date.now() }));
-            }}
-          />
-        )}
         {showSleepGuard && (
           <SleepGuard
             onContinue={() => setShowSleepGuard(false)}

@@ -37,7 +37,7 @@ const CENTERS = [
 ];
 
 export default function LoginPage() {
-  const { login, t } = useUser();
+  const { login, t, lang } = useUser();
 
   const USER_TYPES = useMemo(() => [
     { id: 'school' as const, label: t.login_school, icon: BookOpen, desc: t.login_school_desc },
@@ -75,13 +75,52 @@ export default function LoginPage() {
   ], [t]);
 
   const LEVELS = useMemo(() => [
-    { id: 'Beginner', label: 'Beginner (Noldan)' },
+    { id: 'Beginner', label: lang === 'ru' ? 'Beginner (с нуля)' : lang === 'en' ? 'Beginner (from zero)' : 'Beginner (noldan)' },
     { id: 'Elementary', label: 'Elementary (A1-A2)' },
     { id: 'Pre-Intermediate', label: 'Pre-Intermediate (B1)' },
     { id: 'Intermediate', label: 'Intermediate (B1+)' },
-    { id: 'Upper-Intermediate', label: 'Upper-Inter (B2)' },
+    { id: 'Upper-Intermediate', label: lang === 'ru' ? 'Upper-Intermediate (B2)' : 'Upper-Intermediate (B2)' },
     { id: 'Advanced', label: 'Advanced / IELTS (C1+)' },
-  ], [t]);
+  ], [lang]);
+
+  const copy = useMemo(() => ({
+    phoneTitle: t.login_welcome,
+    phoneDesc: t.login_enter_phone,
+    phoneLabel: t.login_phone,
+    otpAttempts: lang === 'ru' ? 'Попытка' : lang === 'en' ? 'Attempt' : 'Urinish',
+    otpViaTelegram: lang === 'ru' ? 'Получить код в Telegram' : lang === 'en' ? 'Get code from Telegram' : 'Kodni Telegramdan oling',
+    addCenter: lang === 'ru' ? 'добавить' : lang === 'en' ? 'add' : "qo'shish",
+    adviceNoFynex: lang === 'ru'
+      ? 'Для вас это хороший старт. Можно спокойно начать с уровня Beginner и бесплатно пройти базу внутри Fynex.'
+      : lang === 'en'
+        ? 'This is a good start for you. You can begin from Beginner and build your foundation inside Fynex for free.'
+        : "Siz uchun bu yaxshi start. Beginner darajasidan boshlab, Fynex ichida asoslarni bepul mustahkamlashingiz mumkin.",
+    advicePlan: lang === 'ru'
+      ? 'Если вы еще выбираете учебный центр, Fynex поможет не терять темп. Пока выбираете, закрепляйте темы через Practice Lab и короткие уроки.'
+      : lang === 'en'
+        ? 'If you are still choosing a learning center, Fynex can keep your pace moving. While deciding, strengthen topics through Practice Lab and short lessons.'
+        : "Agar hali markaz tanlayotgan bo'lsangiz, Fynex sizga tempni yo'qotmaslikka yordam beradi. Tanlov paytida Practice Lab va qisqa darslar bilan mavzularni mustahkamlang.",
+    advicePlanLead: lang === 'ru'
+      ? 'Хороший офлайн-центр вместе с приложением обычно дает результат быстрее.'
+      : lang === 'en'
+        ? 'A strong offline learning center together with the app usually gives faster results.'
+        : "Sifatli oflayn markaz va ilova birga bo'lsa, natija odatda tezroq bo'ladi.",
+    adviceCurrentPrefix: lang === 'ru'
+      ? 'Сейчас вы учитесь в'
+      : lang === 'en'
+        ? 'You are currently studying at'
+        : "Hozir siz",
+    adviceCurrentSuffix: lang === 'ru'
+      ? 'Fynex будет полезен для qo‘shimcha practice va muntazam mustahkamlash.'
+      : lang === 'en'
+        ? 'Fynex will help with extra practice and steady reinforcement.'
+        : "Fynex sizga qo'shimcha practice va muntazam mustahkamlashda yordam beradi.",
+    summaryUserType: t.login_user_type,
+    summaryClass: t.login_class,
+    summarySubject: t.login_subject_label,
+    summaryCenter: t.login_center_label,
+    summaryPlan: t.login_plan_note,
+  }), [lang, t]);
 
   const LOADING_STEPS = useMemo(() => [
     t.login_loading_1,
@@ -365,9 +404,9 @@ export default function LoginPage() {
             {step === 'phone' && (
               <motion.section key="phone" {...slide} className="flex h-full flex-col">
                 <div className={cardStyle}>
-                  <h2 className="mb-2 text-4xl font-black tracking-[-0.06em]">Xush kelibsiz</h2>
-                  <p className="mb-8 text-sm text-white/68">Telefon raqamingizni kiriting</p>
-                  <div className="mb-3 text-xs font-black uppercase tracking-[0.22em] text-lime-300/90">Telefon</div>
+                  <h2 className="mb-2 text-4xl font-black tracking-[-0.06em]">{copy.phoneTitle}</h2>
+                  <p className="mb-8 text-sm text-white/68">{copy.phoneDesc}</p>
+                  <div className="mb-3 text-xs font-black uppercase tracking-[0.22em] text-lime-300/90">{copy.phoneLabel}</div>
                   <div className="flex items-center gap-3 rounded-[22px] border border-white/10 bg-black/25 px-4 py-4 focus-within:border-lime-300/35">
                     <span className="shrink-0 text-lg font-black tracking-wide text-lime-300">+998</span>
                     <input ref={phoneRef} type="tel" inputMode="numeric" pattern="[0-9]*" autoComplete="tel-national" value={phone} onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 9))} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); goPhone(); } }} className="w-full bg-transparent text-lg font-bold tracking-[0.16em] text-white placeholder:text-white/25 focus:outline-none" placeholder="90 123 45 67" />
@@ -405,7 +444,7 @@ export default function LoginPage() {
                     <motion.div className="h-full rounded-full" style={{ background: otpStatus === 'success' ? '#4ade80' : otpStatus === 'error' ? '#f87171' : 'linear-gradient(90deg, #c3ff2e, #b2ed12)' }} initial={false} animate={{ width: `${(otpCode.length / 6) * 100}%` }} transition={{ duration: 0.2 }} />
                   </div>
                   <div className="mt-3 flex items-center justify-between">
-                    <p className="text-xs" style={{ color: 'rgba(255,255,255,0.52)' }}>Urinish: {otpAttempt}</p>
+                    <p className="text-xs" style={{ color: 'rgba(255,255,255,0.52)' }}>{copy.otpAttempts}: {otpAttempt}</p>
                     <button
                       type="button"
                       onClick={resendCode}
@@ -429,7 +468,7 @@ export default function LoginPage() {
                       <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                         <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0h-.056zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
                       </svg>
-                      Kodni Telegramdan oling
+                      {copy.otpViaTelegram}
                     </a>
                   </div>
                 </div>
@@ -575,7 +614,7 @@ export default function LoginPage() {
                       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl font-bold bg-white/10 text-white">
                         +
                       </div>
-                      <span className="text-[15px] font-bold">"{searchCenter}" qo'shish</span>
+                      <span className="text-[15px] font-bold">"{searchCenter}" {copy.addCenter}</span>
                     </motion.button>
                   )}
                 </div>
@@ -630,22 +669,21 @@ export default function LoginPage() {
                 
                 {ob.offlineCourse === 'no_fynex' && (
                   <div className="rounded-[24px] border border-white/10 bg-white/[0.04] p-5 text-sm leading-relaxed text-white/80">
-                    Siz uchun to'g'ri tanlov! Ingliz tilini mutlaqo bepul, interaktiv usulda Fynex orqali <b>Beginner</b> darajasidan boshlashni tavsiya qilamiz. Noldan o'rganish uchun ilovamizda barchasi yetarli.
+                    {copy.adviceNoFynex}
                   </div>
                 )}
                 
                 {ob.offlineCourse === 'plan_to_go' && (
                   <div className="rounded-[24px] border border-lime-300/20 bg-lime-300/[0.04] p-5 text-sm leading-relaxed text-white/80">
-                    Faqatgina ilovadan foydalangandan ko'ra sifatli oflayn ta'lim markazini ham tanlash 2 barobar tez natija beradi!<br/><br/>
-                    <b>Tavsiyamiz:</b> Tez yechim va ishonchli natija qidirayotgan bo'lsangiz <b>Master IELTS</b> (oylik narxi ~1.5 mln so'm gacha) markazini yoki <b>Inter Nation</b> ni tavsiya etamiz.<br/><br/>
-                    Darslaringizdan tashqari Fynexning interaktiv darsliklarida xotirani charxlab borishingiz mumkin!
+                    {copy.advicePlanLead}<br/><br/>
+                    {copy.advicePlan}
                   </div>
                 )}
 
                 {ob.offlineCourse === 'currently_going' && (
                   <div className="rounded-[24px] border border-white/10 bg-white/[0.04] p-5 text-sm leading-relaxed text-white/80">
-                    Siz hozirda <b>{ob.centerName}</b> o'quv markazida <b>{ob.currentLevel}</b> darajasida ta'lim olmoqdasiz ({ob.centerDuration} vaqt mobaynida).<br/><br/>
-                    Zo'r! Sizga qo'shimcha o'sish uchun <b>Fynexdagi Practice Lab</b> va <b>Mock Testlarni</b> qamrab oluvchi yuqori level darslarini tavsiya qilamiz. Hozir o'tayotgan mavzularingizni ilovada mashq qilib mustahkamlang!
+                    {copy.adviceCurrentPrefix} <b>{ob.centerName}</b> <b>{ob.currentLevel}</b> ({ob.centerDuration}).<br/><br/>
+                    {copy.adviceCurrentSuffix}
                   </div>
                 )}
               </motion.section>
@@ -665,10 +703,10 @@ export default function LoginPage() {
                 </div>
                 <div className="rounded-[24px] border border-white/10 bg-white/[0.04] p-5">
                   {[
-                    { icon: User, label: 'Foydalanuvchi turi', value: LABELS.userType[ob.userType] || '—' },
-                    ...(ob.grade ? [{ icon: BookOpen, label: 'Sinf', value: LABELS.grade[ob.grade] || '—' }] : []),
-                    { icon: Target, label: 'Tanlangan fan', value: LABELS.subject[ob.subject] || '—' },
-                    ...(ob.centerName ? [{ icon: Building2, label: 'Markaz', value: ob.centerName }] : []),
+                    { icon: User, label: copy.summaryUserType, value: LABELS.userType[ob.userType] || '—' },
+                    ...(ob.grade ? [{ icon: BookOpen, label: copy.summaryClass, value: LABELS.grade[ob.grade] || '—' }] : []),
+                    { icon: Target, label: copy.summarySubject, value: LABELS.subject[ob.subject] || '—' },
+                    ...(ob.centerName ? [{ icon: Building2, label: copy.summaryCenter, value: ob.centerName }] : []),
                   ].map((item, i, arr) => {
                     const Icon = item.icon;
                     return (
@@ -683,7 +721,7 @@ export default function LoginPage() {
                   })}
                 </div>
                 <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="mt-5 text-center text-xs text-white/35">
-                  Bu ma'lumotlar asosida sizga shaxsiy o'quv reja tuziladi ✨
+                  {copy.summaryPlan}
                 </motion.p>
               </motion.section>
             )}

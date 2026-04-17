@@ -173,7 +173,7 @@ export default function ProfilePage() {
 
         <div className="min-w-0 flex-1">
           <h2 className="truncate text-xl font-extrabold tracking-[-0.04em]" style={{ color: colors.onSurface }}>
-            {user?.name || 'Foydalanuvchi'}
+            {user?.name || t.profile_user}
           </h2>
           <p className="text-sm font-medium" style={{ color: colors.onSurfaceVariant }}>
             {user?.phone || '+998'}
@@ -359,7 +359,7 @@ export default function ProfilePage() {
                   <Shield className="h-5 w-5" style={{ color: colors.primary }} />
                 </div>
                 <span className="text-sm font-semibold" style={{ color: colors.onSurface }}>
-                  Admin panel
+                  {t.admin_panel}
                 </span>
               </div>
               <ChevronRight className="h-4 w-4" style={{ color: colors.onSurfaceVariant }} />
@@ -387,19 +387,14 @@ export default function ProfilePage() {
             <div className="min-h-full overflow-y-auto p-6" style={{ background: colors.background, paddingTop: 'max(48px, calc(env(safe-area-inset-top) + 24px))' }}>
               <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} className="mb-5">
                 <h2 className="text-2xl font-black tracking-[-0.04em]" style={{ color: colors.onSurface }}>
-                  Maxfiylik siyosati
+                  {t.profile_privacy}
                 </h2>
                 <p className="mt-2 text-sm" style={{ color: colors.onSurfaceVariant }}>
-                  Fynex sizning ma’lumotlaringizni ehtiyotkorlik bilan himoya qiladi.
+                  {t.profile_privacy_desc}
                 </p>
               </motion.div>
               <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 }} className="space-y-3">
-                {[
-                  "Ism va telefon raqamingiz faqat akkauntingizni himoya qilish va kirishni tasdiqlash uchun ishlatiladi.",
-                  "O‘qishdagi natijalar darslarni shaxsiylashtirish va sizga mos tavsiyalar berish uchun saqlanadi.",
-                  "Ma’lumotlar uchinchi tomonlarga ruxsatsiz uzatilmaydi.",
-                  "Istalgan vaqtda qo‘llab-quvvatlash bo‘limi orqali savol berishingiz mumkin.",
-                ].map((item) => (
+                {[t.privacy_1, t.privacy_2, t.privacy_3, t.privacy_4].map((item) => (
                   <div key={item} className="rounded-[18px] p-4" style={{ background: colors.surfaceContainerLow }}>
                     <p className="text-sm leading-6" style={{ color: colors.onSurface }}>
                       {item}
@@ -431,15 +426,15 @@ export default function ProfilePage() {
               </div>
 
               <h2 className="mb-2 text-center text-2xl font-black tracking-[-0.05em]" style={{ color: colors.onSurface }}>
-                Fynex PRO
+                {t.profile_fynex_pro}
               </h2>
               <p className="mb-6 text-center text-sm" style={{ color: colors.onSurfaceVariant }}>
-                Barcha premium kurslar va qo‘shimcha imkoniyatlar ochiladi.
+                {t.profile_pro_features_desc}
               </p>
 
               <div className="mb-6 rounded-[24px] p-5 text-center" style={{ background: colors.surfaceContainerLow }}>
                 <p className="text-sm" style={{ color: colors.onSurfaceVariant }}>
-                  Bir oylik obuna
+                  {t.profile_monthly_sub}
                 </p>
                 <p className="text-4xl font-black" style={{ color: colors.primary }}>
                   9,999 <span className="text-2xl">UZS</span>
@@ -447,7 +442,7 @@ export default function ProfilePage() {
               </div>
 
               <div className="mb-6 space-y-3">
-                {['Barcha kurslar ochiq', 'Reklamasiz tajriba', 'Priority qo‘llab-quvvatlash', 'Offline imkoniyatlar'].map((item) => (
+                {[t.profile_all_courses, t.profile_no_ads, t.profile_priority_support, t.profile_offline].map((item) => (
                   <div key={item} className="flex items-center gap-3 rounded-[20px] px-4 py-3" style={{ background: colors.surfaceContainerLow }}>
                     <div className="flex h-8 w-8 items-center justify-center rounded-full" style={{ background: `${colors.primary}18` }}>
                       <Check className="h-4 w-4" style={{ color: colors.primary }} />
@@ -495,29 +490,29 @@ export default function ProfilePage() {
                 </div>
                 <div>
                   <h2 className="text-xl font-black tracking-[-0.04em]" style={{ color: colors.onSurface }}>
-                    Akkaunt sozlamalari
+                    {t.profile_account_settings}
                   </h2>
                   <p className="text-xs" style={{ color: colors.onSurfaceVariant }}>
-                    Profil ma'lumotlarini yangilang
+                    {t.profile_update_info}
                   </p>
                 </div>
               </div>
 
               <div className="space-y-4">
                 <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}>
-                  <Field label="Ism" icon={User} primaryColor={colors.primary} textColor={colors.onSurface}>
+                  <Field label={t.profile_name} icon={User} primaryColor={colors.primary} textColor={colors.onSurface}>
                     <input
                       value={editName}
                       onChange={(event) => setEditName(event.target.value)}
                       className="w-full rounded-[20px] px-5 py-4 text-sm font-bold focus:outline-none focus:ring-2"
                       style={{ background: colors.surfaceContainerLow, color: colors.onSurface, '--tw-ring-color': colors.primary } as any}
-                      placeholder="Ismingiz"
+                      placeholder={t.profile_name}
                     />
                   </Field>
                 </motion.div>
 
                 <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }}>
-                  <Field label="Telefon" icon={Phone} primaryColor={colors.primary} textColor={colors.onSurface}>
+                  <Field label={t.profile_phone} icon={Phone} primaryColor={colors.primary} textColor={colors.onSurface}>
                     <input
                       value={editPhone}
                       onChange={(event) => setEditPhone(event.target.value)}
@@ -529,7 +524,7 @@ export default function ProfilePage() {
                 </motion.div>
 
                 <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>
-                  <Field label="Email" icon={Mail} primaryColor={colors.primary} textColor={colors.onSurface}>
+                  <Field label={t.profile_email} icon={Mail} primaryColor={colors.primary} textColor={colors.onSurface}>
                     <input
                       value={editEmail}
                       onChange={(event) => setEditEmail(event.target.value)}

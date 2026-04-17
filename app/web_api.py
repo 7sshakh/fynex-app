@@ -774,18 +774,7 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
         phone = payload.phone_number.strip()
         if not re.fullmatch(r"\+998\d{9}", phone):
             raise HTTPException(status_code=400, detail="Phone must match +998XXXXXXXXX")
-        code = f"{int.from_bytes(os.urandom(2), 'big') % 900000 + 100000:06d}"
-        await db.save_otp_code(phone, code, payload.telegram_id, ttl_seconds=120)
-
-        token = os.getenv("DATA_BOT_TOKEN", "").strip() or os.getenv("BOT_TOKEN", "").strip()
-        sent = False
-        if token and payload.telegram_id:
-            sent = _telegram_send_message(
-                token,
-                payload.telegram_id,
-                f"🔐 Fynex OTP kodi: <code>{code}</code>\n\nKod 2 daqiqa amal qiladi.",
-            )
-        return {"ok": True, "sent": sent, "expires_in_sec": 120}
+        return {"ok": True, "sent": False, "expires_in_sec": 120, "mode": "telegram_bot"}
 
     @app.post("/api/auth/verify-otp")
     async def verify_otp(payload: OTPVerifyPayload) -> dict:
@@ -1225,18 +1214,47 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
     @app.post("/api/mentor/respond")
     async def mentor_respond(payload: ChatAIPayload) -> dict:
         openrouter_key = os.getenv("OPENROUTER_API_KEY", "").strip()
-        system_prompt = (
-            "Sen Fynex ilovasidagi AI Mentor'san. "
-            "Foydalanuvchiga ta'lim bo'yicha qisqa, aniq, amaliy javob ber. "
-            "Mavzudan chiqma, 18+ yoki zararli kontentni rad et. "
-            "Javoblar doim muloyim va foydali bo'lsin."
-        )
-
         text = (payload.message or "").strip()
+        lang_match = re.search(r"\[Language:\s*(uz|ru|en)\]", text, re.I)
+        lang = (lang_match.group(1).lower() if lang_match else "uz")
+        clean_text = re.sub(r"\[Language:\s*(uz|ru|en)\]\s*", "", text, flags=re.I).strip()
+
+        mentor_prompts = {
+            "uz": (
+                "Sen Fynex ilovasidagi AI Mentor'san. "
+                "Foydalanuvchiga faqat ta'lim bo'yicha qisqa, aniq va amaliy javob ber. "
+                "Mavzudan chiqma, 18+ yoki zararli kontentni rad et. "
+                "Javoblaring doim o'zbek tilida, muloyim va foydali bo'lsin."
+            ),
+            "ru": (
+                "Ты AI Mentor приложения Fynex. "
+                "Отвечай только по учебе: кратко, ясно и практично. "
+                "Не уходи в сторону, отклоняй 18+ и вредный контент. "
+                "Всегда отвечай на русском языке, спокойно и полезно."
+            ),
+            "en": (
+                "You are the AI Mentor inside the Fynex app. "
+                "Reply only about learning in a short, clear, practical way. "
+                "Stay on topic, refuse 18+ and harmful content. "
+                "Always answer in English, warmly and usefully."
+            ),
+        }
+        fallback_answers = {
+            "uz": "Savolingiz bo‘yicha mini yo‘riqnoma: mavzuni 3 qismga bo‘ling, har qismdan bitta misol qiling va oxirida 2 daqiqalik takrorlash qiling.",
+            "ru": "Короткий план: разделите тему на 3 части, выполните по одному примеру для каждой и в конце сделайте 2 минуты повторения.",
+            "en": "Quick plan: split the topic into 3 parts, do one example for each part, then finish with a 2-minute review.",
+        }
+        blocked_answers = {
+            "uz": "Bu mavzuda yordam bera olmayman. Dars va o‘qish bo‘yicha savol bersangiz, aniq yordam beraman.",
+            "ru": "Я не помогаю с этой темой. Напишите вопрос по учебе, и я помогу точно и по делу.",
+            "en": "I can’t help with that topic. Ask me something about learning and I’ll help clearly.",
+        }
+        system_prompt = mentor_prompts.get(lang, mentor_prompts["uz"])
+
         if re.search(r"\b(sex|porn|xxx|nude|erotik|эрот|18\+|onlyfans|intim)\b", text, re.I):
             return {
                 "ok": True,
-                "ai_response": "Bu mavzuda yordam bera olmayman. Dars va o‘qish bo‘yicha savol bersangiz, aniq yordam beraman.",
+                "ai_response": blocked_answers.get(lang, blocked_answers["uz"]),
             }
 
         ai_text: str | None = None
@@ -1245,7 +1263,7 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
             for h in (payload.history or [])[-8:]:
                 role = "assistant" if h.get("isBot") else "user"
                 messages.append({"role": role, "content": h.get("text", "")})
-            messages.append({"role": "user", "content": text})
+            messages.append({"role": "user", "content": clean_text})
 
             req_body = json.dumps(
                 {"model": "openai/gpt-4.1-nano", "messages": messages, "max_tokens": 700}
@@ -1263,10 +1281,7 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
                 ai_text = None
 
         if not ai_text:
-            ai_text = (
-                "Savolingiz bo‘yicha mini yo‘riqnoma: mavzuni 3 qismga bo‘ling, "
-                "har qismdan bitta misol qiling va oxirida 2 daqiqalik qayta takrorlash qiling."
-            )
+            ai_text = fallback_answers.get(lang, fallback_answers["uz"])
 
         return {"ok": True, "ai_response": ai_text}
 
@@ -1275,34 +1290,76 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
         openrouter_key = os.getenv("OPENROUTER_API_KEY", "").strip()
         bot_token = _support_bot_token()
         admin_id_str = os.getenv("ADMIN_ID", "").strip()
+        raw_text = (payload.message or "").strip()
+        lang_match = re.search(r"\[Language:\s*(uz|ru|en)\]", raw_text, re.I)
+        lang = (lang_match.group(1).lower() if lang_match else "uz")
+        user_text = re.sub(r"\[Language:\s*(uz|ru|en)\]\s*", "", raw_text, flags=re.I).strip()
 
-        system_prompt = (
-            "Sen Fynex ta'lim platformasining rasmiy AI yordamchisisan. Sening isminging Fynex AI.\n\n"
-
-            "## Fynex haqida:\n"
-            "- Fynex — O'zbekiston uchun bepul ta'lim platformasi (ilova).\n"
-            "- Fanlar: Ingliz tili (Beginner-Advanced), Rus tili, Matematika, Fizika, Dasturlash, Mantiqiy fikrlash.\n"
-            "- Har bir kursda darslar, flashcard, quiz va fill-blank mashqlari bor.\n"
-            "- Streak tizimi: har kuni dars tugatsangiz streak oshadi.\n"
-            "- XP tizimi: har dars uchun 10 XP beriladi.\n"
-            "- Reyting tizimi: boshqa foydalanuvchilar bilan XP bo'yicha raqobatlashing.\n"
-            "- PRO obuna: oyiga 9,999 UZS. PRO barcha kurslarni ochadi, reklamasiz tajriba va priority qo'llab-quvvatlash beradi.\n"
-            "- Ilova iOS va Android uchun mavjud (brauzer orqali).\n"
-            "- Bosh sahifada: kunlik streak, davom etish bo'limi, haftalik progress, kunlik vazifalar.\n"
-            "- Profil bo'limida: akkaunt sozlamalari, bildirishnomalar, tungi rejim, yordam markazi.\n\n"
-
-            "## Qoidalar:\n"
-            "1. Faqat Fynex platformasi va ta'lim bilan bog'liq savollarga javob ber.\n"
-            "2. Agar foydalanuvchi Fynex bilan UMUMAN bog'liq bo'lmagan savol bersa (masalan: ob-havo, siyosat, shaxsiy maslahat, boshqa ilovalar), "
-            "JAVOB BERMA. Buning o'rniga muloyimlik bilan ayt: 'Men faqat Fynex platformasi bo'yicha yordam bera olaman. Fynex bilan bog'liq savolingiz bo'lsa, bemalol yozing!'\n"
-            "2.1. 18+ yoki erotik mazmundagi savollarga umuman javob bermagin. "
-            "Qisqa va muloyim rad javobi berib, suhbatni ta'lim mavzusiga qaytar.\n"
-            "3. 'Javob bera olmayman' kabi salbiy iboralarni ishlatma.\n"
-            "4. Javoblar qisqa, aniq va do'stona bo'lsin. O'zbek tilida javob ber.\n"
-            "5. Foydalanuvchi operator/admin bilan bog'lanishni xohlasa, 'Qo'shimcha yordam kerak bo'lsa, Telegram orqali murojaat qiling yoki xabar qoldiring' de. HECH QACHON konkret username yoki akkaunt nomi aytma.\n"
-            "6. Texnik muammolarda (login, kurs ochilmayapti, XP ko'rinmayapti): internetni tekshirish, ilovani qayta ochish tavsiya qil.\n"
-            "7. Foydalanuvchiga doim yordam berishga tayyor ekanligingni his ettir.\n"
-        )
+        system_prompts = {
+            "uz": (
+                "Sen Fynex ta'lim platformasining rasmiy AI yordamchisisan.\n"
+                "Faqat Fynex va ta'lim bilan bog'liq savollarga javob ber.\n"
+                "Mavzudan chiqma, 18+ savollarni rad et.\n"
+                "Javoblar qisqa, aniq, foydali va o'zbek tilida bo'lsin.\n"
+                "Operator so'ralsa, Telegram orqali murojaat qilish mumkinligini ayt, lekin noaniq va yumshoq tarzda yoz."
+            ),
+            "ru": (
+                "Ты официальный AI-помощник образовательной платформы Fynex.\n"
+                "Отвечай только по Fynex и учебе.\n"
+                "Не уходи в сторону, отклоняй 18+ вопросы.\n"
+                "Пиши кратко, понятно, полезно и только на русском языке.\n"
+                "Если нужен оператор, мягко предложи обратиться через Telegram, без лишних деталей."
+            ),
+            "en": (
+                "You are the official AI assistant for the Fynex learning platform.\n"
+                "Answer only about Fynex and learning.\n"
+                "Stay on topic and refuse 18+ requests.\n"
+                "Keep replies short, clear, useful, and fully in English.\n"
+                "If the user wants a human, gently suggest contacting support via Telegram."
+            ),
+        }
+        handoff_lines = {
+            "uz": "Qo'shimcha yordam kerak bo'lsa, Telegram orqali murojaat qilishingiz mumkin.",
+            "ru": "Если нужна дополнительная помощь, можно обратиться через Telegram.",
+            "en": "If you need extra help, you can contact support through Telegram.",
+        }
+        off_topic = {
+            "uz": "Men asosan Fynex va ta'lim bo'yicha yordam beraman. Fynex bilan bog'liq savolingiz bo'lsa, yozing.",
+            "ru": "Я в основном помогаю по Fynex и учебе. Если у вас вопрос по Fynex, напишите его.",
+            "en": "I mainly help with Fynex and learning. If you have a Fynex-related question, send it here.",
+        }
+        blocked = {
+            "uz": "Bu mavzuda yordam bera olmayman. Ta'lim va ilova bo'yicha savol bering, mamnuniyat bilan yordam beraman.",
+            "ru": "Я не помогаю с этой темой. Напишите вопрос об учебе или приложении, и я помогу.",
+            "en": "I can’t help with that topic. Ask me about learning or the app, and I’ll help.",
+        }
+        faq = {
+            "uz": {
+                "otp": "Telegram bot orqali kelgan OTP kodini kiriting. Kod kechiksa, ilovani qayta ochib yana urinib ko'ring.",
+                "login": "Kirishda muammo bo'lsa, raqamni +998 formati bilan tekshiring va kodni botdan qayta oling.",
+                "course": "Kurs yoki dars ochilmasa, internetni tekshiring va ilovani qayta yuklang.",
+                "progress": "XP, streak va reyting haqiqiy darslar bajarilganda yangilanadi. Kechiksa, ilovani qayta ochib ko'ring.",
+                "payment": "To'lov muammosida tranzaksiyani tekshirib, birozdan keyin yana urinib ko'ring.",
+                "default": "Savolingizni biroz aniqroq yozsangiz, sizga tezroq va foydaliroq yo'l ko'rsataman.",
+            },
+            "ru": {
+                "otp": "Введите OTP-код, который пришел через Telegram-бота. Если код задерживается, откройте приложение заново и попробуйте еще раз.",
+                "login": "Если вход не проходит, проверьте номер в формате +998 и заново получите код через бота.",
+                "course": "Если курс или урок не открывается, проверьте интернет и перезапустите приложение.",
+                "progress": "XP, streak и рейтинг обновляются после реальных уроков. Если есть задержка, откройте приложение заново.",
+                "payment": "Если есть проблема с оплатой, проверьте транзакцию и попробуйте снова чуть позже.",
+                "default": "Напишите вопрос чуть точнее, и я подскажу быстрее и полезнее.",
+            },
+            "en": {
+                "otp": "Enter the OTP code sent through the Telegram bot. If it is delayed, reopen the app and try again.",
+                "login": "If login fails, check the phone number in +998 format and request a new code from the bot.",
+                "course": "If a course or lesson does not open, check your internet connection and reopen the app.",
+                "progress": "XP, streak, and ranking update after real lesson activity. If it lags, reopen the app.",
+                "payment": "If payment has an issue, review the transaction and try again a bit later.",
+                "default": "Write your question a bit more clearly and I’ll guide you more precisely.",
+            },
+        }
+        system_prompt = system_prompts.get(lang, system_prompts["uz"])
 
         def wants_handoff(text: str) -> bool:
             return bool(re.search(r"\b(admin|operator|odam|support|qo'llab|yordam|telegram)\b", text, re.I))
@@ -1310,28 +1367,28 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
         def fallback_answer(text: str) -> str:
             text_l = text.lower()
             if re.search(r"\b(sex|porn|xxx|nude|erotik|эрот|18\+|onlyfans|intim)\b", text_l, re.I):
-                return "Bu mavzuda yordam bera olmayman. Ta'lim va dars bo'yicha savol bering, mamnuniyat bilan yordam beraman."
+                return blocked.get(lang, blocked["uz"])
             if "kod" in text_l or "sms" in text_l:
-                return "SMS kodi kechiksa, ilovani yopib qayta oching, internetni tekshiring va 1-2 daqiqa kuting. Baribir kelmasa, qayta yuborish tugmasini bosing."
+                return faq[lang]["otp"]
             if "login" in text_l or "kirish" in text_l or "ro'yxat" in text_l:
-                return "Kirishda muammo bo'lsa, raqamni to'g'ri formatda kiriting va ilovani qayta ochib ko'ring."
+                return faq[lang]["login"]
             if "kurs" in text_l or "dars" in text_l:
-                return "Kurslar ochilmasa, internetni tekshiring va ilovani yangilang. Agar PRO bo'lim bo'lsa, obuna kerak bo'lishi mumkin."
+                return faq[lang]["course"]
             if "xp" in text_l or "streak" in text_l or "reyting" in text_l:
-                return "XP va Streak real darslar bajarilganda oshadi. Kechikish bo'lsa, ilovani qayta oching."
+                return faq[lang]["progress"]
             if "to'lov" in text_l or "pro" in text_l:
-                return "To'lovda muammo bo'lsa, bank ilovasidan tranzaksiyani tekshiring va qayta urinib ko'ring."
-            return "Savolingiz bo'yicha qisqa yordam: ilovani yangilang, internetni tekshiring va qayta urining. Aniqroq yozsangiz, tezroq yo'naltiraman."
+                return faq[lang]["payment"]
+            return faq[lang]["default"]
 
         ai_text = None
-        want_handoff = wants_handoff(payload.message or "")
+        want_handoff = wants_handoff(user_text)
 
         if openrouter_key:
             messages = [{"role": "system", "content": system_prompt}]
             for h in (payload.history or [])[-10:]:
                 role = "assistant" if h.get("isBot") else "user"
                 messages.append({"role": role, "content": h.get("text", "")})
-            messages.append({"role": "user", "content": payload.message})
+            messages.append({"role": "user", "content": user_text})
 
             req_body = json.dumps({"model": "openai/gpt-4.1-nano", "messages": messages, "max_tokens": 800}).encode()
             try:
@@ -1347,16 +1404,16 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
                 ai_text = None
 
         if not ai_text:
-            ai_text = fallback_answer(payload.message or "")
+            ai_text = fallback_answer(user_text)
 
         if want_handoff:
-            ai_text = f"{ai_text}\n\nQo'shimcha yordam kerak bo'lsa, Telegram orqali murojaat qiling yoki xabar qoldiring."
+            ai_text = f"{ai_text}\n\n{handoff_lines.get(lang, handoff_lines['uz'])}"
 
         if bot_token and admin_id_str:
             tg_text = (
                 f"\U0001f4e9 SUPPORT\n"
                 f"\U0001f464 <b>{payload.user_name}</b> | \U0001f4f1 <code>{payload.user_phone}</code>\n\n"
-                f"\U0001f4ac {payload.message}\n\n"
+                f"\U0001f4ac {user_text}\n\n"
                 f"\U0001f916 AI: {ai_text}\n\n"
                 f"\U0001f4a1 <i>REPLY qilsangiz foydalanuvchiga javob yuboriladi</i>"
             )

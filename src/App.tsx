@@ -23,7 +23,7 @@ import MockTestSystem from './components/mock-tests/MockTestSystem';
 import PracticeSystem from './components/practice-lab/PracticeSystem';
 
 function AppContent() {
-  const { isAuthenticated, theme } = useUser();
+  const { isAuthenticated, theme, setLang } = useUser();
   const colors = getPalette(theme);
   const [activeTab, setActiveTab] = useState<TabType>('home');
   const [showMockTests, setShowMockTests] = useState(false);
@@ -65,6 +65,7 @@ function AppContent() {
         onComplete={(lang) => {
           localStorage.setItem('fynex_welcomed', 'true');
           localStorage.setItem('fynex_lang', lang);
+          setLang(lang);
           setWelcomed(true);
         }}
       />

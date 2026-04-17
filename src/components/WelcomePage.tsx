@@ -98,7 +98,7 @@ export default function WelcomePage({ onComplete }: { onComplete: (lang: Lang) =
 
   const selectLang = (l: Lang) => {
     setLang(l);
-    setTimeout(() => setShowButton(true), 300);
+    setTimeout(() => setShowButton(true), 220);
   };
 
   const slideVariants = {
@@ -114,7 +114,7 @@ export default function WelcomePage({ onComplete }: { onComplete: (lang: Lang) =
         key={current}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
+        transition={{ duration: 0.65 }}
         className="absolute inset-0"
         style={{ background: slide.gradient }}
       />
@@ -200,7 +200,7 @@ export default function WelcomePage({ onComplete }: { onComplete: (lang: Lang) =
               initial="enter"
               animate="center"
               exit="exit"
-              transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+              transition={{ duration: 0.24, ease: [0.25, 0.1, 0.25, 1] }}
               className="flex flex-col"
             >
               {/* Icon */}

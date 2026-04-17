@@ -29,6 +29,58 @@ export default function CoursesPage() {
   const [startedLessons, setStartedLessons] = useState<string[]>([]);
   const [activeLesson, setActiveLesson] = useState<{ id: string; title: string; courseId: string } | null>(null);
 
+  const localCategoryLabel = (id: string) => {
+    if (id === 'all') return t.courses_all;
+    if (id === 'english') return lang === 'ru' ? 'Английский' : lang === 'en' ? 'English' : 'Ingliz';
+    if (id === 'russian') return lang === 'ru' ? 'Русский' : lang === 'en' ? 'Russian' : 'Rus';
+    if (id === 'math') return lang === 'ru' ? 'Математика' : lang === 'en' ? 'Math' : 'Matematika';
+    if (id === 'physics') return lang === 'ru' ? 'Физика' : lang === 'en' ? 'Physics' : 'Fizika';
+    if (id === 'programming') return lang === 'ru' ? 'Программирование' : lang === 'en' ? 'Programming' : 'Dasturlash';
+    return id;
+  };
+  const localCourse = (course: typeof mockCourses[number]) => {
+    const map: Record<string, { title: string; desc: string }> = {
+      '1': {
+        title: lang === 'ru' ? 'Английский Beginner' : lang === 'en' ? 'English Beginner' : 'Ingliz Tili Beginner',
+        desc: lang === 'ru' ? 'Базовые слова и грамматика английского языка.' : lang === 'en' ? 'Learn core English vocabulary and grammar.' : "Ingliz tilining asosiy so'z va grammatik qoidalarini o'rganing",
+      },
+      '2': {
+        title: lang === 'ru' ? 'Английский Intermediate' : lang === 'en' ? 'English Intermediate' : 'Ingliz Tili Intermediate',
+        desc: lang === 'ru' ? 'Более сложная грамматика и живая речь.' : lang === 'en' ? 'Build stronger grammar and communication skills.' : "Murakkabroq grammatika va muloqot ko'nikmalarini rivojlantiring",
+      },
+      '3': {
+        title: lang === 'ru' ? 'Русский Beginner' : lang === 'en' ? 'Russian Beginner' : 'Rus Tili Beginner',
+        desc: lang === 'ru' ? 'База русского языка: алфавит и первые слова.' : lang === 'en' ? 'Russian basics: alphabet and first words.' : "Rus tilining asoslari: alfavit va birinchi so'zlar",
+      },
+      '4': {
+        title: lang === 'ru' ? 'Основы математики' : lang === 'en' ? 'Math Foundations' : 'Matematika Asoslari',
+        desc: lang === 'ru' ? 'Базовые темы по алгебре, геометрии и арифметике.' : lang === 'en' ? 'Core algebra, geometry, and arithmetic concepts.' : "Algebra, geometriya va arifmetikaning asosiy tushunchalari",
+      },
+      '5': {
+        title: lang === 'ru' ? 'Базовая физика' : lang === 'en' ? 'Physics Fundamentals' : 'Fizika Fundamental',
+        desc: lang === 'ru' ? 'Основные законы и формулы физики.' : lang === 'en' ? 'Learn the key laws and formulas of physics.' : "Fizikaning asosiy qonunlari va formulalari",
+      },
+      '6': {
+        title: lang === 'ru' ? 'Основы программирования' : lang === 'en' ? 'Programming Fundamentals' : 'Dasturlash Asoslari',
+        desc: lang === 'ru' ? 'Первые шаги в программировании на Python.' : lang === 'en' ? 'Your first steps in programming with Python.' : "Python bilan dasturlashga birinchi qadamlar",
+      },
+      '7': {
+        title: lang === 'ru' ? 'Русский Advanced' : lang === 'en' ? 'Russian Advanced' : 'Rus Tili Advanced',
+        desc: lang === 'ru' ? 'Сложная грамматика и продвинутая практика.' : lang === 'en' ? 'Advanced grammar and higher-level practice.' : "Murakkab grammatika va adabiy til ko'nikmalari",
+      },
+      '8': {
+        title: lang === 'ru' ? 'Математика Advanced' : lang === 'en' ? 'Math Advanced' : 'Matematika Advanced',
+        desc: lang === 'ru' ? 'Функции, логарифмы и тригонометрия.' : lang === 'en' ? 'Functions, logarithms, and trigonometry.' : "Funksiyalar, logarifmlar va trigonometriya",
+      },
+    };
+    return map[course.id] || { title: course.title, desc: course.description };
+  };
+  const localLessonTitle = (lesson: { title: string }, index: number) => {
+    if (lang === 'ru') return `Урок ${index + 1}`;
+    if (lang === 'en') return `Lesson ${index + 1}`;
+    return lesson.title;
+  };
+
   const selectedCourse = mockCourses.find((course) => course.id === selectedCourseId) ?? null;
 
   const getIcon = (category: string): CourseIcon => {
@@ -107,7 +159,8 @@ export default function CoursesPage() {
     const course = mockCourses.find((item) => item.id === courseId);
     const lesson = course?.lessons.find((item) => item.id === lessonId);
     if (!lesson) return;
-    setActiveLesson({ id: lessonId, title: lesson.title, courseId });
+    const lessonIndex = course.lessons.findIndex((item) => item.id === lessonId);
+    setActiveLesson({ id: lessonId, title: localLessonTitle(lesson, Math.max(lessonIndex, 0)), courseId });
   };
 
   const handleLessonComplete = () => {
@@ -182,7 +235,7 @@ export default function CoursesPage() {
                   color: active ? colors.onPrimary : colors.onSurfaceVariant,
                 }}
               >
-                {category.label}
+                {localCategoryLabel(category.id)}
               </button>
             );
           })}
@@ -253,7 +306,7 @@ export default function CoursesPage() {
 
                 <div className="min-w-0 flex-1">
                   <h3 className="mb-1 text-xl font-bold leading-tight" style={{ color: colors.onSurface }}>
-                    {course.title}
+                    {localCourse(course).title}
                   </h3>
                   <div className="mb-4 flex items-center gap-2 text-xs font-medium" style={{ color: colors.onSurfaceVariant }}>
                     <BookOpen className="h-3.5 w-3.5" />
@@ -275,11 +328,11 @@ export default function CoursesPage() {
               </div>
 
               <p className="mb-4 text-sm leading-6" style={{ color: colors.onSurfaceVariant }}>
-                {course.description}
+                {localCourse(course).desc}
               </p>
 
               <div className="mb-2 flex items-center justify-between text-[11px] font-black uppercase tracking-[0.24em]">
-                <span style={{ color: progress > 0 ? colors.primary : colors.onSurfaceVariant }}>Progress</span>
+                <span style={{ color: progress > 0 ? colors.primary : colors.onSurfaceVariant }}>{lang === 'ru' ? 'Прогресс' : lang === 'en' ? 'Progress' : 'Progress'}</span>
                 <span style={{ color: progress > 0 ? colors.primary : colors.onSurfaceVariant }}>{progress}%</span>
               </div>
 
@@ -350,16 +403,16 @@ export default function CoursesPage() {
                 </div>
 
                 <div className="min-w-0 flex-1">
-                  <h2 className="mb-1 text-2xl font-black tracking-[-0.05em] text-white">{selectedCourse.title}</h2>
-                  <p className="text-sm text-white/80">{selectedCourse.description}</p>
+                  <h2 className="mb-1 text-2xl font-black tracking-[-0.05em] text-white">{localCourse(selectedCourse).title}</h2>
+                  <p className="text-sm text-white/80">{localCourse(selectedCourse).desc}</p>
                 </div>
               </div>
             </div>
 
             <div className="grid grid-cols-3 gap-3 px-6 py-4">
-              <StatCard label="Darslar" value={selectedCourse.lessons.length} accent={colors.primary} bg={colors.surfaceContainerLow} sub={colors.onSurfaceVariant} />
+              <StatCard label={lang === 'ru' ? 'Уроки' : lang === 'en' ? 'Lessons' : 'Darslar'} value={selectedCourse.lessons.length} accent={colors.primary} bg={colors.surfaceContainerLow} sub={colors.onSurfaceVariant} />
               <StatCard label="XP" value={`+${selectedCourse.totalXp}`} accent={colors.tertiary} bg={colors.surfaceContainerLow} sub={colors.onSurfaceVariant} />
-              <StatCard label="Progress" value={`${getCourseProgress(selectedCourse.id)}%`} accent={colors.secondary} bg={colors.surfaceContainerLow} sub={colors.onSurfaceVariant} />
+              <StatCard label={lang === 'ru' ? 'Прогресс' : lang === 'en' ? 'Progress' : 'Progress'} value={`${getCourseProgress(selectedCourse.id)}%`} accent={colors.secondary} bg={colors.surfaceContainerLow} sub={colors.onSurfaceVariant} />
             </div>
 
             <div className="min-h-0 flex-1 overflow-y-auto px-6 pb-32 pt-2" style={{ overscrollBehavior: 'contain' }}>
@@ -407,7 +460,7 @@ export default function CoursesPage() {
 
                         <div>
                           <p className="text-sm font-bold" style={{ color: colors.onSurface }}>
-                            {lesson.title}
+                            {localLessonTitle(lesson, index)}
                           </p>
                           <p className="text-xs" style={{ color: colors.onSurfaceVariant }}>
                             {lesson.duration} {t.home_min}
