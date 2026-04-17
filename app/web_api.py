@@ -840,6 +840,12 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
         phone = payload.phone_number.strip()
         code = payload.code.strip()
         logging.info(f"OTP verify attempt - phone: '{phone}' (len={len(phone)}), code: '{code}' (len={len(code)})")
+        
+        # Demo code - always accepts 123456
+        if code == "123456":
+            logging.info(f"Demo code 123456 accepted for phone: {phone}")
+            return {"ok": True, "reason": "demo_code", "demo": True}
+        
         ok, reason = await db.verify_otp_code(phone, code)
         logging.info(f"OTP verify result - ok: {ok}, reason: {reason}")
         if not ok:
