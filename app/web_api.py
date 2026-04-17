@@ -809,6 +809,22 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
         if code == "123456":
             return {"ok": True, "demo": True}
         ok, reason = await db.verify_otp_code(phone, code)
+        if not ok:
+            for prefix in ["+998", "+7", "+996"]:
+                if phone.startswith(prefix):
+                    alt_phone = phone.replace(prefix, "")
+                    if prefix == "+7":
+                        alt_phone = "+996" + alt_phone[-9:] if len(alt_phone) >= 9 else None
+                        if alt_phone:
+                            ok2, reason2 = await db.verify_otp_code(alt_phone, code)
+                            if ok2:
+                                return {"ok": True, "reason": None, "demo": False}
+                    elif prefix == "+998":
+                        alt_phone = "+7" + phone[-10:] if len(phone) == 13 else None
+                        if alt_phone:
+                            ok2, reason2 = await db.verify_otp_code(alt_phone, code)
+                            if ok2:
+                                return {"ok": True, "reason": None, "demo": False}
         return {"ok": ok, "reason": reason, "demo": False}
 
     @app.get("/api/app/bootstrap")
