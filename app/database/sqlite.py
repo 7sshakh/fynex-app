@@ -1261,6 +1261,8 @@ class Database:
         except ValueError:
             return False, "expired"
         if datetime.utcnow() > expires_at:
+            import logging
+            logging.info(f"Code expired: now={datetime.utcnow()}, expires_at={expires_at}")
             return False, "expired"
         if str(row["code"]).strip() != code.strip():
             logging.info(f"Code mismatch: DB='{row['code']}' vs input='{code}'")
