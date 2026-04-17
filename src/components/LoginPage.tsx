@@ -157,11 +157,20 @@ export default function LoginPage() {
   const [searchCenter, setSearchCenter] = useState('');
   const [loadingStep, setLoadingStep] = useState(0);
   const [ob, setOb] = useState<OnboardingData>({ userType: '', grade: '', subject: '', offlineCourse: '', centerName: '', centerDuration: '', currentLevel: '' });
+  const [selectedCountry, setSelectedCountry] = useState<{code: string, name: string, flag: string, digitCount: number}>({ code: '+998', name: "O'zbekiston", flag: '🇺🇿', digitCount: 9 });
+  const [showCountryDropdown, setShowCountryDropdown] = useState(false);
+
+  const COUNTRIES = [
+    { code: '+998', name: "O'zbekiston", flag: '🇺🇿', digitCount: 9 },
+    { code: '+7', name: 'Rossiya', flag: '🇷🇺', digitCount: 10 },
+    { code: '+996', name: "Qirg'iziston", flag: '🇰🇬', digitCount: 9 },
+    { code: '+7', name: "Qozog'iston", flag: '🇰🇿', digitCount: 10 },
+  ];
 
   const phoneRef = useRef<HTMLInputElement | null>(null);
   const nameRef = useRef<HTMLInputElement | null>(null);
   const otpRef = useRef<HTMLInputElement | null>(null);
-  const fullPhone = `+998${phone}`;
+  const fullPhone = `${selectedCountry.code}${phone}`;
 
   /* ── dynamic step list ── */
   const allSteps = useMemo<Step[]>(() => {
@@ -219,7 +228,7 @@ export default function LoginPage() {
   /* ── can proceed? ── */
   const canNext = useMemo(() => {
     switch (step) {
-      case 'phone': return phone.length === 9;
+      case 'phone': return phone.length === selectedCountry.digitCount;
       case 'intro': return true;
       case 'otp': return false;
       case 'name': return name.trim().length >= 2;
@@ -234,11 +243,11 @@ export default function LoginPage() {
       case 'summary': return true;
       default: return false;
     }
-  }, [step, phone, name, ob]);
+  }, [step, phone, name, ob, selectedCountry]);
 
   /* ── navigation ── */
   const goPhone = async () => {
-    if (phone.length !== 9) return;
+    if (phone.length !== selectedCountry.digitCount) return;
     (document.activeElement as HTMLElement | null)?.blur?.();
     setPhoneError('');
     try {
@@ -440,8 +449,34 @@ export default function LoginPage() {
                   <p className="mb-8 text-sm text-white/68">{copy.phoneDesc}</p>
                   <div className="mb-3 text-xs font-black uppercase tracking-[0.22em] text-lime-300/90">{copy.phoneLabel}</div>
                   <div className="flex items-center gap-3 rounded-[22px] border border-white/10 bg-black/25 px-4 py-4 focus-within:border-lime-300/35">
-                    <span className="shrink-0 text-lg font-black tracking-wide text-lime-300">+998</span>
-                    <input ref={phoneRef} type="tel" inputMode="numeric" pattern="[0-9]*" autoComplete="tel-national" value={phone} onChange={(e) => { setPhone(e.target.value.replace(/\D/g, '').slice(0, 9)); if (phoneError) setPhoneError(''); }} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); goPhone(); } }} className="w-full bg-transparent text-lg font-bold tracking-[0.16em] text-white placeholder:text-white/25 focus:outline-none" placeholder="90 123 45 67" />
+                    <button
+                      type="button"
+                      onClick={() => setShowCountryDropdown(!showCountryDropdown)}
+                      className="shrink-0 flex items-center gap-1.5 text-lg font-black tracking-wide text-lime-300 hover:text-lime-200 transition-colors"
+                    >
+                      <span>{selectedCountry.flag}</span>
+                      <span>{selectedCountry.code}</span>
+                      <svg className="w-4 h-4 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                    {showCountryDropdown && (
+                      <div className="absolute z-50 mt-2 w-64 rounded-2xl border border-white/10 bg-black/95 p-2 shadow-2xl backdrop-blur-xl">
+                        {COUNTRIES.filter(c => c.code !== selectedCountry.code || c.name !== selectedCountry.name).map((c) => (
+                          <button
+                            key={c.code + c.name}
+                            type="button"
+                            onClick={() => { setSelectedCountry(c); setPhone(''); setShowCountryDropdown(false); }}
+                            className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left hover:bg-white/10 transition-colors"
+                          >
+                            <span className="text-xl">{c.flag}</span>
+                            <span className="text-sm font-bold text-white">{c.name}</span>
+                            <span className="ml-auto text-xs text-white/50">{c.code}</span>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                    <input ref={phoneRef} type="tel" inputMode="numeric" pattern="[0-9]*" autoComplete="tel-national" value={phone} onChange={(e) => { setPhone(e.target.value.replace(/\D/g, '').slice(0, selectedCountry.digitCount)); if (phoneError) setPhoneError(''); }} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); goPhone(); } }} className="w-full bg-transparent text-lg font-bold tracking-[0.16em] text-white placeholder:text-white/25 focus:outline-none" placeholder={selectedCountry.digitCount === 9 ? "90 123 45 67" : "912 345 67 89"} />
                   </div>
                   {phoneError && (
                     <p className="mt-4 text-sm font-medium text-red-400">{phoneError}</p>

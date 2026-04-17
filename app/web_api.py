@@ -40,6 +40,29 @@ ENGLISH_LEVELS = {"beginner", "elementary", "intermediate", "upper_intermediate"
 SUBJECT_ORDER = ["english", "math", "programming", "russian", "logic", "physics"]
 VERIFICATION_MESSAGE = "Ushbu foydalanuvchi 1 oy davomida faol va intizomli bo'lgani uchun tasdiqlangan."
 
+SUPPORTED_COUNTRIES = {
+    "+998": r"^\+998\d{9}$",
+    "+7": r"^\+7\d{10}$",
+    "+996": r"^\+996\d{9}$",
+}
+
+
+def _validate_phone(phone: str) -> bool:
+    for prefix, pattern in SUPPORTED_COUNTRIES.items():
+        if phone.startswith(prefix) and re.fullmatch(pattern, phone):
+            return True
+    return False
+
+
+def _phone_country(phone: str) -> str:
+    if phone.startswith("+998"):
+        return "uz"
+    elif phone.startswith("+7"):
+        return "ru" if len(phone) == 12 else "kz"
+    elif phone.startswith("+996"):
+        return "kg"
+    return "uz"
+
 LESSON_LIBRARY = {
     ("english", "beginner"): (
         "Start with 5 simple greetings and read them aloud with confidence.",
@@ -772,8 +795,8 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
     @app.post("/api/auth/request-otp")
     async def request_otp(payload: OTPRequestPayload) -> dict:
         phone = payload.phone_number.strip()
-        if not re.fullmatch(r"\+998\d{9}", phone):
-            raise HTTPException(status_code=400, detail="Phone must match +998XXXXXXXXX")
+        if not _validate_phone(phone):
+            raise HTTPException(status_code=400, detail="Invalid phone number format")
         active = await db.has_active_otp_code(phone)
         if not active:
             raise HTTPException(status_code=400, detail="otp_not_requested")
@@ -798,8 +821,8 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
 
     @app.post("/api/app/register")
     async def app_register(payload: AppRegisterPayload) -> dict:
-        if not re.fullmatch(r"\+998\d{9}", payload.phone_number.strip()):
-            raise HTTPException(status_code=400, detail="Phone must match +998XXXXXXXXX")
+        if not _validate_phone(payload.phone_number.strip()):
+            raise HTTPException(status_code=400, detail="Invalid phone number format")
         await db.ensure_user_exists(payload.user_id, name=payload.name.strip(), language=payload.language)
         await db.upsert_user_profile(
             {

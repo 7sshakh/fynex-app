@@ -1,12 +1,13 @@
 import asyncio
 import logging
 import os
+import re
 
 from aiogram import Bot, Dispatcher, F
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.filters import Command
-from aiogram.types import KeyboardButton, Message, ReplyKeyboardMarkup, ReplyKeyboardRemove
+from aiogram.types import KeyboardButton, Message, ReplyKeyboardMarkup, ReplyKeyboardRemove, InlineKeyboardMarkup, InlineKeyboardButton
 from dotenv import load_dotenv
 
 from app.database.sqlite import Database
@@ -17,6 +18,36 @@ load_dotenv()
 
 def _generate_otp() -> str:
     return f"{int.from_bytes(os.urandom(2), 'big') % 900000 + 100000:06d}"
+
+
+COUNTRIES = {
+    "uz": {"code": "+998", "name": "O'zbekiston", "flag": "🇺🇿"},
+    "ru": {"code": "+7", "name": "Rossiya", "flag": "🇷🇺"),
+    "kg": {"code": "+996", "name": "Qirg'iziston", "flag": "🇰🇬"},
+    "kz": {"code": "+7", "name": "Qozog'iston", "flag": "🇰🇿"},
+}
+
+
+def _normalize_phone(phone: str, country_code: str) -> str:
+    digits = "".join(ch for ch in phone if ch.isdigit())
+    if country_code == "+998":
+        if digits.startswith("998"):
+            return f"+{digits}"
+        elif len(digits) == 9:
+            return f"+998{digits}"
+    elif country_code == "+7":
+        if digits.startswith("7"):
+            return f"+7{digits[1:]}" if len(digits) > 1 else f"+7"
+        elif len(digits) == 10:
+            return f"+7{digits}"
+        elif len(digits) == 9:
+            return f"+7{digits}"
+    elif country_code == "+996":
+        if digits.startswith("996"):
+            return f"+{digits}"
+        elif len(digits) == 9:
+            return f"+996{digits}"
+    return f"{country_code}{digits}"
 
 
 async def run_otp_bot() -> None:
@@ -40,13 +71,53 @@ async def run_otp_bot() -> None:
         input_field_placeholder="Telefon raqamingizni yuboring",
     )
 
+    country_keyboard = InlineKeyboardMarkup(
+        inline_keyboard=[
+            [InlineKeyboardButton(text="🇺🇿 O'zbekiston (+998)", callback_data="country_uz")],
+            [InlineKeyboardButton(text="🇷🇺 Rossiya (+7)", callback_data="country_ru")],
+            [InlineKeyboardButton(text="🇰🇬 Qirg'iziston (+996)", callback_data="country_kg")],
+            [InlineKeyboardButton(text="🇰🇿 Qozog'iston (+7)", callback_data="country_kz")],
+        ]
+    )
+
+    selected_country = {"code": "+998", "name": "O'zbekiston", "flag": "🇺🇿"}
+
     @dp.message(Command("start"))
     async def start_plain(message: Message) -> None:
+        selected_country["code"] = "+998"
+        selected_country["name"] = "O'zbekiston"
+        selected_country["flag"] = "🇺🇿"
         await message.answer(
-            "Salom. Fynex ilovasiga kirish uchun telefon raqamingizni <b>Share Contact</b> orqali yuboring.\n\n"
-            "Bot sizga 5 daqiqa amal qiladigan 6 xonali OTP kod beradi.",
+            f"Salom! Fynex ilovasiga kirish uchun davlatingizni tanlang, so'ngra telefon raqamingizni <b>Share Contact</b> orqali yuboring.\n\n"
+            f"Bot sizga 5 daqiqa amal qiladigan 6 xonali OTP kod beradi.",
+            reply_markup=country_keyboard,
+        )
+
+    @dp.callback_query(F.data.startswith("country_"))
+    async def country_callback(callback: Message) -> None:
+        country_code = callback.data.replace("country_", "")
+        if country_code == "uz":
+            selected_country["code"] = "+998"
+            selected_country["name"] = "O'zbekiston"
+            selected_country["flag"] = "🇺🇿"
+        elif country_code == "ru":
+            selected_country["code"] = "+7"
+            selected_country["name"] = "Rossiya"
+            selected_country["flag"] = "🇷🇺"
+        elif country_code == "kg":
+            selected_country["code"] = "+996"
+            selected_country["name"] = "Qirg'iziston"
+            selected_country["flag"] = "🇰🇬"
+        elif country_code == "kz":
+            selected_country["code"] = "+7"
+            selected_country["name"] = "Qozog'iston"
+            selected_country["flag"] = "🇰🇿"
+        await callback.message.edit_text(
+            f"{selected_country['flag']} <b>{selected_country['name']}</b> tanlandi.\n\n"
+            f"Endi telefon raqamingizni <b>Share Contact</b> orqali yuboring.",
             reply_markup=contact_keyboard,
         )
+        await callback.answer()
 
     @dp.message(Command("help"))
     async def help_handler(message: Message) -> None:
@@ -71,20 +142,22 @@ async def run_otp_bot() -> None:
             return
 
         digits = "".join(ch for ch in (contact.phone_number or "") if ch.isdigit())
-        if digits.startswith("998"):
-            phone = f"+{digits}"
-        elif len(digits) == 9:
-            phone = f"+998{digits}"
-        else:
-            await message.answer(
-                "Faqat O'zbekiston raqami (+998) bilan kirish mumkin.",
-                reply_markup=contact_keyboard,
-            )
-            return
+        country_code = selected_country.get("code", "+998")
 
-        if not phone.startswith("+998") or len(phone) != 13:
+        phone = _normalize_phone(contact.phone_number or "", country_code)
+
+        is_valid = False
+        if country_code == "+998" and phone.startswith("+998") and len(phone) == 13:
+            is_valid = True
+        elif country_code == "+7":
+            if (phone.startswith("+7") and len(phone) == 12 and phone[2:].isdigit()) or (phone.startswith("+7") and len(phone) == 12):
+                is_valid = True
+        elif country_code == "+996" and phone.startswith("+996") and len(phone) == 13:
+            is_valid = True
+
+        if not is_valid:
             await message.answer(
-                "Raqam formati noto'g'ri. Iltimos, qaytadan yuboring.",
+                f"Raqam formati noto'g'ri. Iltimos, {selected_country.get('name', 'O\'zbekiston')} raqamini qaytadan yuboring.",
                 reply_markup=contact_keyboard,
             )
             return
