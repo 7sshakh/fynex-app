@@ -10,18 +10,18 @@ import { useUser } from '../../context/UserContext';
 import { hideNav, showNav } from '../BottomNav';
 import {
   loadFeatures, saveFeatures, updateFeatures, todayKey,
-  DAILY_FACTS, type Mood, type FeatureState
+  DAILY_FACTS, type Mood, type FeatureState, getLocalizedDailyFact
 } from '../../lib/featureStore';
 
 // ═══════════════════════════════════════════════════════════
 // 1. MOOD SENSOR — "Bugun qanday kayfiyatdasiz?"
 // ═══════════════════════════════════════════════════════════
-const MOODS: { id: Mood; emoji: string; label: string; color: string }[] = [
-  { id: 'great', emoji: '🔥', label: 'Zo\'r!', color: '#4ade80' },
-  { id: 'good', emoji: '😊', label: 'Yaxshi', color: '#60a5fa' },
-  { id: 'neutral', emoji: '😐', label: 'Normal', color: '#fbbf24' },
-  { id: 'tired', emoji: '😴', label: 'Charchagan', color: '#f97316' },
-  { id: 'stressed', emoji: '😰', label: 'Stress', color: '#ef4444' },
+const getMoods = (t: any): { id: Mood; emoji: string; label: string; color: string }[] => [
+  { id: 'great', emoji: '🔥', label: t.mood_great, color: '#4ade80' },
+  { id: 'good', emoji: '😊', label: t.mood_good, color: '#60a5fa' },
+  { id: 'neutral', emoji: '😐', label: t.mood_neutral, color: '#fbbf24' },
+  { id: 'tired', emoji: '😴', label: t.mood_tired, color: '#f97316' },
+  { id: 'stressed', emoji: '😰', label: t.mood_stressed, color: '#ef4444' },
 ];
 
 export function MoodSensor({ onClose }: { onClose: () => void }) {
@@ -53,13 +53,13 @@ export function MoodSensor({ onClose }: { onClose: () => void }) {
           <div className="h-1 w-10 rounded-full bg-white/20" />
         </div>
         <h3 className="mb-1 mt-4 text-xl font-black tracking-tight" style={{ color: colors.onSurface }}>
-          Bugun qanday kayfiyatdasiz? 
+          {t.mood_title} 
         </h3>
         <p className="mb-6 text-sm" style={{ color: colors.onSurfaceVariant }}>
-          Darslarni sizning holatgingizga moslashtiramiz
+          {t.mood_desc}
         </p>
         <div className="flex justify-between gap-2">
-          {MOODS.map((m) => {
+          {getMoods(t).map((m) => {
             const sel = selected === m.id;
             return (
               <motion.button
@@ -80,8 +80,8 @@ export function MoodSensor({ onClose }: { onClose: () => void }) {
           })}
         </div>
         {selected && (
-          <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-4 text-center text-sm font-medium" style={{ color: MOODS.find(m => m.id === selected)?.color }}>
-            {selected === 'tired' || selected === 'stressed' ? "Tushundik! Bugun osonroq mashqlar beramiz 💪" : "Ajoyib! Bugun ko'proq narsaga tayyormiz 🚀"}
+          <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-4 text-center text-sm font-medium" style={{ color: getMoods(t).find(m => m.id === selected)?.color }}>
+            {selected === 'tired' || selected === 'stressed' ? t.mood_tired_resp : t.mood_great_resp}
           </motion.p>
         )}
       </motion.div>
@@ -93,7 +93,7 @@ export function MoodSensor({ onClose }: { onClose: () => void }) {
 // 2. YESTERDAY RECAP — "Kecha nima o'rgandingiz?"
 // ═══════════════════════════════════════════════════════════
 export function YesterdayRecap({ onDismiss }: { onDismiss: () => void }) {
-  const { theme } = useUser();
+  const { theme, t, lang } = useUser();
   const colors = getPalette(theme);
 
   const yesterday = new Date();
@@ -120,11 +120,11 @@ export function YesterdayRecap({ onDismiss }: { onDismiss: () => void }) {
           <RotateCcw className="h-5 w-5 text-white" />
         </div>
         <div>
-          <h3 className="text-[14px] font-black text-indigo-300">Kecha o'rgandingiz 📖</h3>
+          <h3 className="text-[14px] font-black text-indigo-300">{t.recap_title} 📖</h3>
           <p className="mt-1 text-[12px] font-medium text-white/60">
-            {session.minutes} daqiqa • {session.xpEarned} XP • {session.lessonsCompleted} dars
+            {session.minutes} {t.home_min} • {session.xpEarned} {t.leaderboard_xp} • {session.lessonsCompleted} {t.courses_lessons_count}
           </p>
-          <p className="mt-2 text-[12px] text-white/50">Davom eting — bugun yanada yaxshiroq!</p>
+          <p className="mt-2 text-[12px] text-white/50">{t.recap_desc}</p>
         </div>
       </div>
     </motion.div>
@@ -135,7 +135,7 @@ export function YesterdayRecap({ onDismiss }: { onDismiss: () => void }) {
 // 3. DAILY FACT — "Kunlik bilim donam"
 // ═══════════════════════════════════════════════════════════
 export function DailyFact() {
-  const { theme } = useUser();
+  const { theme, lang, t } = useUser();
   const colors = getPalette(theme);
   const state = loadFeatures();
   const today = todayKey();
@@ -146,7 +146,7 @@ export function DailyFact() {
     updateFeatures(s => ({ ...s, dailyFactIndex: factIdx, dailyFactDate: today }));
   }
 
-  const fact = DAILY_FACTS[factIdx];
+  const fact = getLocalizedDailyFact(factIdx, lang);
 
   return (
     <motion.div
@@ -158,7 +158,7 @@ export function DailyFact() {
       <div className="flex items-start gap-3">
         <span className="text-2xl shrink-0">{fact.emoji}</span>
         <div>
-          <span className="text-[10px] font-black uppercase tracking-widest text-amber-400/80">Kunlik fakt</span>
+          <span className="text-[10px] font-black uppercase tracking-widest text-amber-400/80">{t.fact_label}</span>
           <p className="mt-1 text-[13px] leading-relaxed font-medium text-white/75">{fact.fact}</p>
         </div>
       </div>
@@ -169,17 +169,18 @@ export function DailyFact() {
 // ═══════════════════════════════════════════════════════════
 // 4. QUICK FLASH — 60 soniyali tezkor mashq
 // ═══════════════════════════════════════════════════════════
-const QUICK_WORDS = [
-  { en: 'Accomplish', uz: "Erishmoq" }, { en: 'Crucial', uz: "Muhim" },
-  { en: 'Enhance', uz: "Yaxshilamoq" }, { en: 'Determine', uz: "Aniqlash" },
-  { en: 'Significant', uz: "Sezilarli" }, { en: 'Abandon', uz: "Tashlab ketmoq" },
-  { en: 'Acquire', uz: "Qo'lga kiritmoq" }, { en: 'Beneficial', uz: "Foydali" },
-  { en: 'Comprehensive', uz: "Keng qamrovli" }, { en: 'Demonstrate', uz: "Namoyish qilmoq" },
-  { en: 'Elaborate', uz: "Batafsil" }, { en: 'Fundamental', uz: "Asosiy" },
+const getQuickWords = (t: any) => [
+  { en: 'Accomplish', tr: t.word_accomplish }, { en: 'Crucial', tr: t.word_crucial },
+  { en: 'Enhance', tr: t.word_enhance }, { en: 'Determine', tr: t.word_determine },
+  { en: 'Significant', tr: t.word_significant }, { en: 'Abandon', tr: t.word_abandon },
+  { en: 'Acquire', tr: t.word_acquire }, { en: 'Beneficial', tr: t.word_beneficial },
+  { en: 'Comprehensive', tr: t.word_comprehensive }, { en: 'Demonstrate', tr: t.word_demonstrate },
+  { en: 'Elaborate', tr: t.word_elaborate }, { en: 'Fundamental', tr: t.word_fundamental },
 ];
 
 export function QuickFlashButton({ onOpenChange }: { onOpenChange?: (open: boolean) => void }) {
-  const { theme } = useUser();
+  const { theme, t } = useUser();
+  const QUICK_WORDS = getQuickWords(t);
   const colors = getPalette(theme);
   const [isOpen, setIsOpen] = useState(false);
   const [current, setCurrent] = useState(0);
@@ -233,8 +234,8 @@ export function QuickFlashButton({ onOpenChange }: { onOpenChange?: (open: boole
           <Zap className="h-5 w-5 text-white" />
         </div>
         <div>
-          <h3 className="text-[14px] font-black text-fuchsia-300">Tez Mashq ⚡</h3>
-          <p className="mt-0.5 text-[12px] text-white/50">60 soniyada so'z o'rganing</p>
+          <h3 className="text-[14px] font-black text-fuchsia-300">{t.quick_title} ⚡</h3>
+          <p className="mt-0.5 text-[12px] text-white/50">{t.quick_desc}</p>
         </div>
         <ChevronRight className="ml-auto h-5 w-5 text-fuchsia-400/40" />
       </motion.button>
@@ -253,7 +254,7 @@ export function QuickFlashButton({ onOpenChange }: { onOpenChange?: (open: boole
             {!finished ? (
               <div className="flex w-full max-w-sm flex-col items-center px-6">
                 <div className="mb-6 flex w-full items-center justify-between">
-                  <span className="text-sm font-bold" style={{ color: colors.primary }}>Bilganlar: {score}</span>
+                  <span className="text-sm font-bold" style={{ color: colors.primary }}>{t.quick_learned}: {score}</span>
                   <div className="flex items-center gap-2">
                     <Timer className="h-4 w-4" style={{ color: timer < 10 ? '#ef4444' : colors.onSurfaceVariant }} />
                     <span className="text-2xl font-black tabular-nums" style={{ color: timer < 10 ? '#ef4444' : colors.onSurface }}>{timer}s</span>
@@ -270,13 +271,13 @@ export function QuickFlashButton({ onOpenChange }: { onOpenChange?: (open: boole
                   style={{ background: colors.surfaceContainer, borderColor: `${colors.primary}33`, perspective: 1000, transformStyle: 'preserve-3d' }}
                 >
                   <div style={{ backfaceVisibility: 'hidden', transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)' }} className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="text-xs font-bold uppercase tracking-widest" style={{ color: colors.onSurfaceVariant }}>Inglizcha</span>
+                    <span className="text-xs font-bold uppercase tracking-widest" style={{ color: colors.onSurfaceVariant }}>{t.quick_lang_en}</span>
                     <span className="mt-2 text-3xl font-black" style={{ color: colors.onSurface }}>{QUICK_WORDS[current].en}</span>
-                    <span className="mt-4 text-xs" style={{ color: colors.onSurfaceVariant }}>Bosib tarjimasini ko'ring</span>
+                    <span className="mt-4 text-xs" style={{ color: colors.onSurfaceVariant }}>{t.quick_flip}</span>
                   </div>
                   <div style={{ backfaceVisibility: 'hidden', transform: flipped ? 'rotateY(0deg)' : 'rotateY(180deg)' }} className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="text-xs font-bold uppercase tracking-widest" style={{ color: colors.primary }}>Tarjima</span>
-                    <span className="mt-2 text-3xl font-black" style={{ color: colors.primary }}>{QUICK_WORDS[current].uz}</span>
+                    <span className="text-xs font-bold uppercase tracking-widest" style={{ color: colors.primary }}>{t.quick_lang_tr}</span>
+                    <span className="mt-2 text-3xl font-black" style={{ color: colors.primary }}>{QUICK_WORDS[current].tr}</span>
                   </div>
                 </motion.div>
 
@@ -288,18 +289,18 @@ export function QuickFlashButton({ onOpenChange }: { onOpenChange?: (open: boole
                     className="mt-6 w-full rounded-full py-4 text-center text-base font-black"
                     style={{ background: colors.primary, color: colors.onPrimary }}
                   >
-                    Bildim! Keyingisi →
+                    {t.quick_known} →
                   </motion.button>
                 )}
               </div>
             ) : (
               <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="flex flex-col items-center px-8">
                 <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ repeat: 2, duration: 0.5 }} className="mb-4 text-6xl">🎉</motion.div>
-                <h2 className="text-3xl font-black" style={{ color: colors.onSurface }}>Ajoyib!</h2>
-                <p className="mt-2 text-lg font-bold" style={{ color: colors.primary }}>{score} ta so'z o'rgandingiz</p>
-                <p className="mt-1 text-sm" style={{ color: colors.onSurfaceVariant }}>60 soniyada</p>
+                <h2 className="text-3xl font-black" style={{ color: colors.onSurface }}>{t.quick_awesome}</h2>
+                <p className="mt-2 text-lg font-bold" style={{ color: colors.primary }}>{score} {t.quick_words_learned}</p>
+                <p className="mt-1 text-sm" style={{ color: colors.onSurfaceVariant }}>60 {t.home_min}</p>
                 <button onClick={() => setIsOpen(false)} className="mt-8 rounded-full px-8 py-3 font-black" style={{ background: colors.primary, color: colors.onPrimary }}>
-                  Yopish
+                  {t.profile_cancel}
                 </button>
               </motion.div>
             )}
@@ -314,7 +315,7 @@ export function QuickFlashButton({ onOpenChange }: { onOpenChange?: (open: boole
 // 5. EXAM COUNTDOWN — "Imtihon kunigacha"
 // ═══════════════════════════════════════════════════════════
 export function ExamCountdown() {
-  const { theme } = useUser();
+  const { theme, t } = useUser();
   const colors = getPalette(theme);
   const state = loadFeatures();
   const [showSetup, setShowSetup] = useState(false);
@@ -335,8 +336,8 @@ export function ExamCountdown() {
           <CalendarDays className="h-5 w-5" style={{ color: colors.onSurfaceVariant }} />
         </div>
         <div>
-          <h3 className="text-[14px] font-bold" style={{ color: colors.onSurface }}>Imtihon sanasi bormi?</h3>
-          <p className="mt-0.5 text-[12px]" style={{ color: colors.onSurfaceVariant }}>Belgilang — kunlik reja moslashadi</p>
+          <h3 className="text-[14px] font-bold" style={{ color: colors.onSurface }}>{t.exam_setup_title}</h3>
+          <p className="mt-0.5 text-[12px]" style={{ color: colors.onSurfaceVariant }}>{t.exam_setup_desc}</p>
         </div>
         <ChevronRight className="ml-auto h-5 w-5" style={{ color: colors.onSurfaceVariant }} />
       </motion.button>
@@ -346,11 +347,11 @@ export function ExamCountdown() {
   if (showSetup) {
     return (
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="mb-6 rounded-[24px] border p-5" style={{ background: colors.surfaceContainer, borderColor: `${colors.primary}33` }}>
-        <h3 className="mb-4 text-lg font-black" style={{ color: colors.onSurface }}>Imtihon maqsadi 🎯</h3>
-        <input value={goalName} onChange={e => setGoalName(e.target.value)} placeholder="Masalan: IELTS imtihon" className="mb-3 w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-medium text-white placeholder:text-white/25 focus:border-lime-300/40 focus:outline-none" />
+        <h3 className="mb-4 text-lg font-black" style={{ color: colors.onSurface }}>{t.exam_goal_title} 🎯</h3>
+        <input value={goalName} onChange={e => setGoalName(e.target.value)} placeholder={t.exam_placeholder} className="mb-3 w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-medium text-white placeholder:text-white/25 focus:border-lime-300/40 focus:outline-none" />
         <input type="date" value={goalDate} onChange={e => setGoalDate(e.target.value)} className="mb-4 w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-medium text-white focus:border-lime-300/40 focus:outline-none" />
         <div className="flex gap-2">
-          <button onClick={() => setShowSetup(false)} className="flex-1 rounded-full py-3 text-sm font-bold text-white/60">Bekor</button>
+          <button onClick={() => setShowSetup(false)} className="flex-1 rounded-full py-3 text-sm font-bold text-white/60">{t.profile_cancel}</button>
           <button
             onClick={() => {
               if (goalName && goalDate) {
@@ -362,7 +363,7 @@ export function ExamCountdown() {
             className="flex-1 rounded-full py-3 text-sm font-black disabled:opacity-30"
             style={{ background: colors.primary, color: colors.onPrimary }}
           >
-            Saqlash
+            {t.profile_save}
           </button>
         </div>
       </motion.div>
@@ -384,7 +385,7 @@ export function ExamCountdown() {
           <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: urgency }}>{exam.name}</span>
           <div className="mt-1 flex items-baseline gap-2">
             <span className="text-3xl font-black tabular-nums" style={{ color: urgency }}>{daysLeft}</span>
-            <span className="text-sm font-bold text-white/60">kun qoldi</span>
+            <span className="text-sm font-bold text-white/60">{t.exam_days_left}</span>
           </div>
         </div>
         <motion.div animate={{ rotate: [0, 10, -10, 0] }} transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }} className="text-3xl">
@@ -402,7 +403,7 @@ export function ExamCountdown() {
 // 6. FOCUS TIMER — Pomodoro
 // ═══════════════════════════════════════════════════════════
 export function FocusTimerWidget({ onOpenChange }: { onOpenChange?: (open: boolean) => void }) {
-  const { theme } = useUser();
+  const { theme, t } = useUser();
   const colors = getPalette(theme);
   const [isActive, setIsActive] = useState(false);
   const [minutes, setMinutes] = useState(25);
@@ -458,8 +459,8 @@ export function FocusTimerWidget({ onOpenChange }: { onOpenChange?: (open: boole
           {isBreak ? <Coffee className="h-5 w-5 text-emerald-400" /> : <Timer className="h-5 w-5" style={{ color: colors.primary }} />}
         </div>
         <div>
-          <h3 className="text-[14px] font-black" style={{ color: colors.onSurface }}>Focus Mode</h3>
-          <p className="mt-0.5 text-[12px]" style={{ color: colors.onSurfaceVariant }}>To'liq ekran fokus taymeri</p>
+          <h3 className="text-[14px] font-black" style={{ color: colors.onSurface }}>{t.focus_mode}</h3>
+          <p className="mt-0.5 text-[12px]" style={{ color: colors.onSurfaceVariant }}>{t.focus_mode_desc}</p>
         </div>
         <ChevronRight className="ml-auto h-5 w-5" style={{ color: colors.onSurfaceVariant }} />
       </motion.button>
@@ -482,9 +483,9 @@ export function FocusTimerWidget({ onOpenChange }: { onOpenChange?: (open: boole
               }}
             >
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-black" style={{ color: colors.onSurface }}>Focus Mode</h3>
+                <h3 className="text-lg font-black" style={{ color: colors.onSurface }}>{t.focus_mode}</h3>
                 <button onClick={() => setOpen(false)} className="rounded-full px-3 py-1 text-sm font-bold" style={{ background: colors.surfaceContainer, color: colors.onSurfaceVariant }}>
-                  Yopish
+                  {t.profile_cancel}
                 </button>
               </div>
             </div>
@@ -492,7 +493,7 @@ export function FocusTimerWidget({ onOpenChange }: { onOpenChange?: (open: boole
             <div className="flex flex-1 flex-col items-center justify-center px-8">
               <motion.div animate={{ scale: isActive ? [1, 1.04, 1] : 1 }} transition={{ repeat: isActive ? Infinity : 0, duration: 1.4 }} className="mb-8 flex h-52 w-52 items-center justify-center rounded-full border-2" style={{ borderColor: `${colors.primary}55`, background: `${colors.primary}10` }}>
                 <div className="text-center">
-                  <p className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: colors.onSurfaceVariant }}>{isBreak ? 'Tanaffus' : 'Fokus'}</p>
+                  <p className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: colors.onSurfaceVariant }}>{isBreak ? t.focus_break : t.focus_work}</p>
                   <p className="mt-2 text-5xl font-black tabular-nums" style={{ color: colors.onSurface }}>
                     {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
                   </p>
@@ -511,7 +512,7 @@ export function FocusTimerWidget({ onOpenChange }: { onOpenChange?: (open: boole
                   className="flex-1 rounded-full py-4 text-base font-black"
                   style={{ background: colors.primary, color: colors.onPrimary }}
                 >
-                  {isActive ? "To'xtatish" : 'Boshlash'}
+                  {isActive ? t.focus_stop : t.focus_start}
                 </button>
                 <button
                   onClick={() => {
@@ -538,7 +539,7 @@ export function FocusTimerWidget({ onOpenChange }: { onOpenChange?: (open: boole
 // 7. WEEKLY REPORT CARD
 // ═══════════════════════════════════════════════════════════
 export function WeeklyReport({ onDismiss }: { onDismiss: () => void }) {
-  const { theme } = useUser();
+  const { theme, t } = useUser();
   const colors = getPalette(theme);
   const state = loadFeatures();
 
@@ -569,19 +570,19 @@ export function WeeklyReport({ onDismiss }: { onDismiss: () => void }) {
       </button>
       <div className="flex items-center gap-3 mb-4">
         <Trophy className="h-5 w-5 text-emerald-400" />
-        <span className="text-sm font-black text-emerald-300">Haftalik natijalar</span>
+        <span className="text-sm font-black text-emerald-300">{t.weekly_results}</span>
       </div>
       <div className="grid grid-cols-4 gap-3">
         {[
-          { label: 'Daqiqa', value: totalMin, icon: '⏱️' },
-          { label: 'XP', value: totalXp, icon: '⚡' },
-          { label: 'Darslar', value: totalLessons, icon: '📚' },
-          { label: 'Faol kun', value: activeDays, icon: '🔥' },
+          { label: 'Daqiqa', key: 'home_min' as const, value: totalMin, icon: '⏱️' },
+          { label: 'XP', key: 'leaderboard_xp' as const, value: totalXp, icon: '⚡' },
+          { label: 'Darslar', key: 'courses_lessons_count' as const, value: totalLessons, icon: '📚' },
+          { label: 'Faol kun', key: 'active_days' as const, value: activeDays, icon: '🔥' },
         ].map((s) => (
           <div key={s.label} className="rounded-2xl p-3 text-center" style={{ background: 'rgba(255,255,255,0.04)' }}>
             <div className="text-lg">{s.icon}</div>
             <div className="text-lg font-black" style={{ color: colors.onSurface }}>{s.value}</div>
-            <div className="text-[10px] font-bold text-white/40">{s.label}</div>
+            <div className="text-[10px] font-bold text-white/40">{t[s.key]}</div>
           </div>
         ))}
       </div>
@@ -590,73 +591,14 @@ export function WeeklyReport({ onDismiss }: { onDismiss: () => void }) {
 }
 
 // ═══════════════════════════════════════════════════════════
-// 8. SMART BREAK REMINDER
+// 8. (REMOVED) SMART BREAK OVERLAY
 // ═══════════════════════════════════════════════════════════
-export function SmartBreakOverlay({ onClose }: { onClose: () => void }) {
-  const [phase, setPhase] = useState<'inhale' | 'hold' | 'exhale'>('inhale');
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    const cycle = setInterval(() => {
-      setCount(c => {
-        const next = c + 1;
-        if (next % 12 < 4) setPhase('inhale');
-        else if (next % 12 < 7) setPhase('hold');
-        else setPhase('exhale');
-        return next;
-      });
-    }, 1000);
-    return () => clearInterval(cycle);
-  }, []);
-
-  const circleScale = phase === 'inhale' ? 1.4 : phase === 'hold' ? 1.4 : 1;
-
-  return (
-    <motion.div
-      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center"
-      style={{ background: 'linear-gradient(180deg, #0a1628, #0d0d1a)' }}
-    >
-      <button onClick={onClose} className="absolute right-5 top-12 rounded-full bg-white/10 p-2">
-        <X className="h-5 w-5 text-white/60" />
-      </button>
-
-      <p className="mb-2 text-sm font-bold text-white/40">Tanaffus vaqti</p>
-      <h2 className="mb-12 text-2xl font-black text-white">Nafas oling ☁️</h2>
-
-      <div className="relative flex h-48 w-48 items-center justify-center">
-        <motion.div
-          className="absolute inset-0 rounded-full"
-          style={{ background: 'radial-gradient(circle, rgba(99,102,241,0.3), rgba(99,102,241,0.05))' }}
-          animate={{ scale: circleScale }}
-          transition={{ duration: phase === 'inhale' ? 4 : phase === 'hold' ? 0.1 : 5, ease: 'easeInOut' }}
-        />
-        <motion.div
-          className="absolute inset-4 rounded-full border-2"
-          style={{ borderColor: 'rgba(99,102,241,0.3)' }}
-          animate={{ scale: circleScale * 0.9 }}
-          transition={{ duration: phase === 'inhale' ? 4 : phase === 'hold' ? 0.1 : 5, ease: 'easeInOut' }}
-        />
-        <span className="relative z-10 text-xl font-black text-indigo-300">
-          {phase === 'inhale' ? 'Nafas oling...' : phase === 'hold' ? 'Ushlab turing...' : 'Chiqaring...'}
-        </span>
-      </div>
-
-      <motion.button
-        whileTap={{ scale: 0.95 }}
-        onClick={onClose}
-        className="mt-12 rounded-full bg-indigo-500 px-8 py-3 text-sm font-black text-white"
-      >
-        Darsga qaytish
-      </motion.button>
-    </motion.div>
-  );
-}
 
 // ═══════════════════════════════════════════════════════════
 // 9. SLEEP GUARD — "Ertaga davom etamiz?"
 // ═══════════════════════════════════════════════════════════
 export function SleepGuard({ onContinue, onSleep }: { onContinue: () => void; onSleep: () => void }) {
+  const { t } = useUser();
   return (
     <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -665,16 +607,16 @@ export function SleepGuard({ onContinue, onSleep }: { onContinue: () => void; on
     >
       <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="mx-6 w-full max-w-sm rounded-[32px] border border-white/10 bg-white/[0.06] p-8 text-center backdrop-blur-2xl">
         <motion.div animate={{ y: [0, -8, 0] }} transition={{ repeat: Infinity, duration: 2 }} className="mb-4 text-5xl">🌙</motion.div>
-        <h2 className="mb-2 text-2xl font-black text-white">Kech bo'ldi...</h2>
+        <h2 className="mb-2 text-2xl font-black text-white">{t.sleep_title}</h2>
         <p className="mb-6 text-sm text-white/60 leading-relaxed">
-          Yaxshi uxlash — yaxshi o'qishning kaliti.<br/>Ertaga yangi kuch bilan davom etamiz!
+          {t.sleep_desc}
         </p>
         <div className="flex flex-col gap-3">
           <motion.button whileTap={{ scale: 0.97 }} onClick={onSleep} className="w-full rounded-full bg-indigo-500 py-4 text-base font-black text-white">
-            Ha, uxlayman 😴
+            {t.sleep_confirm}
           </motion.button>
           <button onClick={onContinue} className="w-full rounded-full py-3 text-sm font-bold text-white/40">
-            Davom etaman
+            {t.home_continue}
           </button>
         </div>
       </motion.div>
@@ -700,7 +642,7 @@ export function AchievementPopup({ title, icon, onClose }: { title: string; icon
       <div className="flex items-center gap-4">
         <motion.span animate={{ rotate: [0, 15, -15, 0], scale: [1, 1.2, 1] }} transition={{ duration: 0.6 }} className="text-3xl">{icon}</motion.span>
         <div>
-          <span className="text-[10px] font-black uppercase tracking-widest text-amber-400">Yangi yutuq!</span>
+          <span className="text-[10px] font-black uppercase tracking-widest text-amber-400">{getTranslations(getCurrentLang()).ach_new}</span>
           <p className="mt-0.5 text-sm font-bold text-white">{title}</p>
         </div>
         <Sparkles className="ml-auto h-5 w-5 text-amber-400" />

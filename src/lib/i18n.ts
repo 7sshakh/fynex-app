@@ -1,17 +1,11 @@
-/**
- * Fynex i18n — Full internationalization for uz, en, ru
- */
-
 export type Lang = 'uz' | 'en' | 'ru';
 
 export interface Translations {
-  // ── BottomNav ──
   nav_home: string;
   nav_courses: string;
   nav_leaderboard: string;
   nav_profile: string;
 
-  // ── HomePage ──
   home_daily_streak: string;
   home_total_xp: string;
   home_start: string;
@@ -37,7 +31,6 @@ export interface Translations {
   home_mode: string;
   home_days: string;
 
-  // ── Profile ──
   profile_title: string;
   profile_user: string;
   profile_pro_user: string;
@@ -78,7 +71,6 @@ export interface Translations {
   profile_privacy_title: string;
   profile_privacy_desc: string;
 
-  // ── LoginPage ──
   login_welcome: string;
   login_enter_phone: string;
   login_phone: string;
@@ -138,21 +130,12 @@ export interface Translations {
   login_loading_4: string;
   login_plan_creating: string;
 
-  // ── Courses ──
   courses_title: string;
-  courses_subtitle: string;
   courses_search: string;
   courses_all: string;
   courses_lessons: string;
   courses_lesson: string;
-  courses_recommended: string;
-  courses_shortest: string;
-  courses_xp_sort: string;
-  courses_lesson_list: string;
-  courses_start_lesson: string;
-  courses_lessons_count: string;
 
-  // ── Leaderboard ──
   leaderboard_title: string;
   leaderboard_xp: string;
   leaderboard_week: string;
@@ -163,7 +146,14 @@ export interface Translations {
   leaderboard_total_xp: string;
   leaderboard_you: string;
 
-  // ── Achievements ──
+  courses_subtitle: string;
+  courses_recommended: string;
+  courses_shortest: string;
+  courses_xp_sort: string;
+  courses_lesson_list: string;
+  courses_start_lesson: string;
+  courses_lessons_count: string;
+
   ach_first_step: string;
   ach_first_step_desc: string;
   ach_fast_learner: string;
@@ -186,6 +176,85 @@ export interface Translations {
   notif_today: string;
   notif_yesterday: string;
   notif_days_ago: string;
+  ach_new: string;
+
+  // ── AI & Support ──
+  ai_mentor_title: string;
+  ai_mentor_desc: string;
+  ai_mentor_intro: string;
+  ai_mentor_fallback: string;
+  ai_mentor_placeholder: string;
+  ai_mentor_typing: string;
+  ai_prompt_1: string;
+  ai_prompt_2: string;
+  ai_prompt_3: string;
+  ai_blocked: string;
+
+  support_title: string;
+  support_online: string;
+  support_intro: string;
+  support_placeholder: string;
+  support_typing: string;
+  support_error: string;
+  support_no_internet: string;
+
+  // ── Widgets ──
+  mood_title: string;
+  mood_desc: string;
+  mood_great: string;
+  mood_good: string;
+  mood_neutral: string;
+  mood_tired: string;
+  mood_stressed: string;
+  mood_tired_resp: string;
+  mood_great_resp: string;
+
+  recap_title: string;
+  recap_desc: string;
+  fact_label: string;
+
+  quick_title: string;
+  quick_desc: string;
+  quick_learned: string;
+  quick_lang_en: string;
+  quick_lang_tr: string;
+  quick_flip: string;
+  quick_known: string;
+  quick_awesome: string;
+  quick_words_learned: string;
+
+  word_accomplish: string;
+  word_crucial: string;
+  word_enhance: string;
+  word_determine: string;
+  word_significant: string;
+  word_abandon: string;
+  word_acquire: string;
+  word_beneficial: string;
+  word_comprehensive: string;
+  word_demonstrate: string;
+  word_elaborate: string;
+  word_fundamental: string;
+
+  exam_setup_title: string;
+  exam_setup_desc: string;
+  exam_goal_title: string;
+  exam_placeholder: string;
+  exam_days_left: string;
+
+  focus_mode: string;
+  focus_mode_desc: string;
+  focus_break: string;
+  focus_work: string;
+  focus_start: string;
+  focus_stop: string;
+
+  weekly_results: string;
+  active_days: string;
+
+  sleep_title: string;
+  sleep_desc: string;
+  sleep_confirm: string;
 
   // ── Privacy ──
   privacy_1: string;
@@ -216,71 +285,69 @@ export interface Translations {
   login_subject_math: string;
   login_subject_math_desc: string;
 
-  // ── Durations ──
   dur_less_1: string;
   dur_1_3: string;
   dur_3_6: string;
   dur_6_plus: string;
 
-  // ── Generic ──
   admin_panel: string;
 }
 
-// ═══ O'ZBEK TILI ═══
+// ═══ O'ZBEKCHA ═══
 const uz: Translations = {
-  nav_home: 'Bosh sahifa',
+  nav_home: 'Asosiy',
   nav_courses: 'Kurslar',
   nav_leaderboard: 'Reyting',
   nav_profile: 'Profil',
 
-  home_daily_streak: 'Kunlik streak',
+  home_daily_streak: 'Kunlik seriya',
   home_total_xp: 'Jami XP',
-  home_start: 'START',
+  home_start: 'BOSHLASH',
   home_continue: 'Davom etish',
-  home_continue_label: 'Davom etish',
+  home_continue_label: 'Davom ettirish',
   home_new_lessons: 'Yangi darslar tayyor',
-  home_completed_courses: 'Yakunlangan kurslar',
+  home_completed_courses: 'Tugallangan kurslar',
   home_rating: 'Reyting',
   home_xp: 'XP',
-  home_weekly_progress: 'Haftalik progress',
+  home_weekly_progress: 'Haftalik natija',
   home_today: 'bugun',
-  home_personal_plan: "Shaxsiy o'quv rejangiz",
+  home_personal_plan: 'Shaxsiy o‘quv rejangiz',
   home_daily_tasks: 'Kunlik vazifalar',
-  home_min: 'daqiqa',
-  home_practice_lab: 'Practice Lab',
-  home_micro_learning: 'Micro-Learning',
-  home_practice_desc: '5-minute daily smart drills',
-  home_mock_tests: 'Mock Tests',
-  home_ielts_sat: 'IELTS & SAT Testlar',
-  home_mock_desc: 'Haqiqiy imtihon muhitini his eting',
-  home_hot: 'Hot',
+  home_min: 'daq',
+  home_practice_lab: 'Amaliyot',
+  home_micro_learning: 'Mikro-o‘rganish',
+  home_practice_desc: 'Kunlik 5 daqiqalik darslar',
+  home_mock_tests: 'Mock testlar',
+  home_ielts_sat: 'IELTS va SAT testlari',
+  home_mock_desc: 'Haqiqiy imtihon muhiti',
+  home_hot: 'Issiq',
   home_new: 'Yangi',
-  home_mode: 'mode',
+  home_mode: 'rejim',
   home_days: 'kun',
 
   profile_title: 'Profil',
   profile_user: 'Foydalanuvchi',
   profile_pro_user: 'PRO foydalanuvchi',
-  profile_active: 'Aktiv',
-  profile_total_xp: 'Umumiy XP',
+  profile_active: 'Faol',
+  profile_total_xp: 'Jami XP',
   profile_completed: 'Tugallangan',
   profile_streak: 'Streak',
-  profile_go_pro: "PRO ga o'tish",
-  profile_pro_desc: "Barcha kurslar va qo'shimcha imkoniyatlar siz uchun ochiladi.",
+  profile_go_pro: 'PRO ga o‘tish',
+  profile_pro_desc: 'Barcha kurslar va imkoniyatlar siz uchun ochiladi.',
   profile_per_month: '/oy',
-  profile_subscribe: "Obuna bo'lish",
-  profile_achievements: 'Sizning Yutuqlaringiz',
+  profile_subscribe: 'Obuna bo‘lish',
+  profile_achievements: 'Yutuqlaringiz',
   profile_settings: 'Sozlamalar',
   profile_notifications: 'Bildirishnomalar',
   profile_night_mode: 'Tungi rejim',
-  profile_language: 'Interfeys tili',
+  profile_language: 'Ilova tili',
   profile_help: 'Yordam markazi',
   profile_help_value: 'Online chat',
   profile_privacy: 'Maxfiylik siyosati',
-  profile_privacy_view: "Ko'rish",
+  profile_privacy_view: 'Ko‘rish',
   profile_logout: 'Chiqish',
-  profile_account_settings: 'Akkaunt sozlamalari',
-  profile_update_info: "Profil ma'lumotlarini yangilang",
+  profile_account_settings: 'Hisob sozlamalari',
+  profile_update_info: 'Profil ma’lumotlarini yangilang',
   profile_name: 'Ism',
   profile_phone: 'Telefon',
   profile_email: 'Email',
@@ -289,84 +356,84 @@ const uz: Translations = {
   profile_later: 'Keyinroq',
   profile_understood: 'Tushunarli',
   profile_fynex_pro: 'Fynex PRO',
-  profile_pro_features_desc: "Barcha premium kurslar va qo'shimcha imkoniyatlar ochiladi.",
-  profile_monthly_sub: 'Bir oylik obuna',
+  profile_pro_features_desc: 'Barcha premium kurslar va funksiyalar ochiladi.',
+  profile_monthly_sub: 'Oylik obuna',
   profile_all_courses: 'Barcha kurslar ochiq',
-  profile_no_ads: 'Reklamasiz tajriba',
-  profile_priority_support: "Priority qo'llab-quvvatlash",
-  profile_offline: 'Offline imkoniyatlar',
-  profile_privacy_title: 'Maxfiylik siyosati',
-  profile_privacy_desc: "Fynex sizning ma'lumotlaringizni ehtiyotkorlik bilan himoya qiladi.",
+  profile_no_ads: 'Reklamasiz',
+  profile_priority_support: 'Ustuvor yordam',
+  profile_offline: 'Offline kirish',
+  profile_privacy_title: 'Maxfiylik',
+  profile_privacy_desc: 'Fynex sizning ma’lumotlaringizni himoya qiladi.',
 
   login_welcome: 'Xush kelibsiz',
   login_enter_phone: 'Telefon raqamingizni kiriting',
   login_phone: 'Telefon',
   login_verify: 'Tasdiqlash',
-  login_code_sent: 'raqamiga yuborilgan kodni kiriting',
+  login_code_sent: 'Kodni kiriting, yuborilgan raqam:',
   login_checking: 'Kod tekshirilmoqda...',
   login_confirmed: 'Kod tasdiqlandi ✓',
-  login_wrong_code: 'Kod xato, qayta kiriting',
-  login_meet: 'Tanishaylik',
-  login_enter_name: 'Ismingizni kiriting va boshlaymiz',
+  login_wrong_code: 'Xato kod, qayta urinib ko‘ring',
+  login_meet: 'Tanishib olamiz',
+  login_enter_name: 'Boshlash uchun ismingizni kiriting',
   login_name: 'Ism',
   login_your_name: 'Ismingiz',
-  login_who_are_you: 'siz kimsiz? 🤔',
-  login_select_option: "O'zingizga mos variantni tanlang",
-  login_school: "Maktab o'quvchisi",
-  login_school_desc: "Maktabda o'qiyapman",
+  login_who_are_you: 'kim siz? 🤔',
+  login_select_option: 'O‘zingizga mosini tanlang',
+  login_school: 'Maktab o‘quvchisi',
+  login_school_desc: 'Maktabda o‘qiyman',
   login_student: 'Talaba',
-  login_student_desc: "Universitetda o'qiyapman",
+  login_student_desc: 'Universitetda o‘qiyman',
   login_applicant: 'Abituriyent',
-  login_applicant_desc: 'Universitetga tayyorlanmoqdaman',
+  login_applicant_desc: 'O‘qishga topshiryapman',
   login_other: 'Boshqa',
-  login_other_desc: "Mustaqil o'rganmoqdaman",
-  login_grade: "nechanchi sinfda o'qiysiz? 📚",
-  login_grade_desc: 'Sinf darajangizni tanlang',
-  login_subject: "nimani o'rganmoqchisiz? 🎯",
+  login_other_desc: 'O‘zim o‘rganyapman',
+  login_grade: 'nechanchi sinfsiz? 📚',
+  login_grade_desc: 'Sinfingizni ko‘rsating',
+  login_subject: 'nimani o‘rganamiz? 🎯',
   login_subject_desc: 'Fynex orqali qaysi fanni kuchaytiramiz?',
-  login_offline_course: 'ingliz tili kursiga borasizmi? 🏫',
-  login_offline_desc: "Ofline ta'lim markaziga borishingizni belgilang",
-  login_no_fynex: "Yo'q, faqat Fynex",
-  login_no_fynex_desc: "Noldan Fynex yordamida o'rganaman",
-  login_plan_to_go: 'Endi boraman',
+  login_offline_course: 'kurslarga qatnashasizmi? 🏫',
+  login_offline_desc: 'O‘quv markaziga borasizmi?',
+  login_no_fynex: 'Yo‘q, faqat Fynex',
+  login_no_fynex_desc: 'Faqat ilova orqali noldan o‘rganaman',
+  login_plan_to_go: 'Borishni rejalashtiryapman',
   login_plan_to_go_desc: 'Yaxshi joy qidiryapman',
-  login_currently_going: 'Hozirda boraman',
-  login_currently_going_desc: "O'quv markazida o'qiyman",
-  login_center: "Qaysi o'quv markazida? 📍",
-  login_center_desc: "O'quv markazingizni tanlang yoki qidiring",
+  login_currently_going: 'Hozir qatnashyapman',
+  login_currently_going_desc: 'O‘quv markazida o‘qiyman',
+  login_center: 'Qaysi o‘quv markazi? 📍',
+  login_center_desc: 'Markazni tanlang yoki qidiring',
   login_center_search: 'Markaz nomini yozing...',
-  login_center_add: "qo'shish",
-  login_duration: 'ga qanchadan beri borasiz? ⏳',
-  login_duration_desc: "Taxminiy o'qiyotgan vaqtingizni belgilang",
-  login_level: 'Ingliz tilini qaysi darajada bilasiz? 📈',
-  login_level_desc: "Boshlash nuqtani aniqlab olamiz",
-  login_advice: 'Siz uchun maslahat ✨',
-  login_summary: 'hammasi tayyor! 🎉',
-  login_summary_desc: "Sizning ma'lumotlaringiz",
+  login_center_add: 'qo‘shish',
+  login_duration: 'Qancha vaqtdan beri? ⏳',
+  login_duration_desc: 'Taxminiy vaqt',
+  login_level: 'Ingliz tili darajangiz? 📈',
+  login_level_desc: 'Boshlang‘ich nuqtani aniqlaymiz',
+  login_advice: 'Sizga maslahatimiz ✨',
+  login_summary: 'tayyor! 🎉',
+  login_summary_desc: 'Sizning ma’lumotlaringiz',
   login_user_type: 'Foydalanuvchi turi',
-  login_class: 'Sinf',
+  login_class: 'Sinf/Bosqich',
   login_subject_label: 'Tanlangan fan',
-  login_center_label: 'Markaz',
-  login_plan_note: "Bu ma'lumotlar asosida sizga shaxsiy o'quv reja tuziladi ✨",
-  login_start_learning: "O'qishni boshlash",
+  login_center_label: 'O‘quv markazi',
+  login_plan_note: 'Shu asosida shaxsiy o‘quv rejangiz tuziladi ✨',
+  login_start_learning: 'O‘rganishni boshlash',
   login_next: 'Davom etish',
   login_back: 'Orqaga',
-  login_loading_1: "Ma'lumotlaringiz tahlil qilinmoqda...",
-  login_loading_2: 'Sizga mos darslar tanlanmoqda...',
-  login_loading_3: 'Shaxsiy reja tuzilmoqda...',
+  login_loading_1: 'Ma’lumotlar tahlil qilinmoqda...',
+  login_loading_2: 'Sizga mos darslar saralanmoqda...',
+  login_loading_3: 'Sizning rejangiz tuzilmoqda...',
   login_loading_4: 'Deyarli tayyor...',
-  login_plan_creating: "siz uchun\nshaxsiy reja tuzilmoqda",
+  login_plan_creating: "shaxsiy rejangiz\ntuzilmoqda",
 
   courses_title: 'Kurslar',
-  courses_search: 'Kurs qidirish',
-  courses_all: 'Barchasi',
-  courses_lessons: 'ta dars',
+  courses_search: 'Kurslarni qidirish',
+  courses_all: 'Barcha',
+  courses_lessons: 'darslar',
   courses_lesson: 'Dars',
 
   leaderboard_title: 'Reyting',
   leaderboard_xp: 'XP',
-  leaderboard_week: 'Bu hafta',
-  leaderboard_month: 'Bu oy',
+  leaderboard_week: 'Shu hafta',
+  leaderboard_month: 'Shu oy',
   leaderboard_all: 'Barcha davr',
   leaderboard_streak_label: 'kunlik streak',
   leaderboard_your_rank: "Sizning o'rningiz",
@@ -392,16 +459,95 @@ const uz: Translations = {
 
   notif_updated: 'Fynex 3.0 yangilandi!',
   notif_updated_desc: 'Yangi kurslar va yaxshilangan dizayn sizni kutmoqda.',
-  notif_streak: 'Streak 3 kunga yetdi!',
+  notif_streak: 'Streak davom etmoqda! 🔥',
   notif_streak_desc: "Ajoyib! O'qishni davom eting va streak'ni yo'qotmang.",
   notif_pro_discount: 'PRO obuna chegirmasi',
   notif_pro_discount_desc: "Hozir PRO ga obuna bo'ling va 30% chegirma oling.",
-  notif_course_done: 'Ingliz Tili Beginner tugallandi',
+  notif_course_done: 'Kurs tugallandi!',
   notif_course_done_desc: 'Tabriklaymiz! Keyingi kursni boshlang.',
   notif_notifications: 'Bildirishnomalar',
   notif_today: 'Bugun',
   notif_yesterday: 'Kecha',
   notif_days_ago: 'kun oldin',
+  ach_new: 'Yangi yutuq!',
+
+  // ── AI & Support ──
+  ai_mentor_title: 'AI Mentor',
+  ai_mentor_desc: "Faqat dars va o'qish bo'yicha aniq yordam",
+  ai_mentor_intro: "Salom! Men Fynex AI Mentor. Siz tanlagan yo'nalishda aniq va qisqa yordam beraman.",
+  ai_mentor_fallback: "Savolni qabul qildim. Shu fan bo'yicha yana aniqroq savol bersangiz, yanada foydali javob beraman.",
+  ai_mentor_placeholder: "Dars bo'yicha savolingizni yozing...",
+  ai_mentor_typing: 'AI javob yozmoqda...',
+  ai_prompt_1: 'Present Perfect ni tushuntir',
+  ai_prompt_2: 'Speaking uchun 5 ta ibora',
+  ai_prompt_3: 'Bugungi o‘qish rejasi',
+  ai_blocked: "Bu mavzuda yordam bera olmayman. Ta'lim bo'yicha savol bering.",
+
+  support_title: 'Fynex Support',
+  support_online: 'Online',
+  support_intro: "Salom. Fynex yordam markaziga xush kelibsiz. Ilova bo'yicha savolingizni yozing.",
+  support_placeholder: 'Xabar yozing...',
+  support_typing: '⏳ AI javob yozmoqda...',
+  support_error: 'Hozir javob qayta ishlanmoqda. Iltimos, yana yozib ko‘ring.',
+  support_no_internet: 'Internet aloqasi yo‘q.',
+
+  // ── Widgets ──
+  mood_title: 'Bugun qanday kayfiyatdasiz?',
+  mood_desc: 'Darslarni sizning holatgingizga moslashtiramiz',
+  mood_great: "Zo'r!",
+  mood_good: 'Yaxshi',
+  mood_neutral: 'Normal',
+  mood_tired: 'Charchagan',
+  mood_stressed: 'Stress',
+  mood_tired_resp: 'Tushundik! Bugun osonroq mashqlar beramiz 💪',
+  mood_great_resp: "Ajoyib! Bugun ko'proq narsaga tayyormiz 🚀",
+
+  recap_title: "Kecha o'rgandingiz",
+  recap_desc: 'Davom eting — bugun yanada yaxshiroq!',
+  fact_label: 'Kunlik fakt',
+
+  quick_title: 'Tez Mashq',
+  quick_desc: "60 soniyada so'z o'rganing",
+  quick_learned: 'Bilganlar',
+  quick_lang_en: 'Inglizcha',
+  quick_lang_tr: 'Tarjima',
+  quick_flip: "Bosib tarjimasini ko'ring",
+  quick_known: 'Bildim! Keyingisi',
+  quick_awesome: 'Ajoyib!',
+  quick_words_learned: "ta so'z o'rgandingiz",
+
+  word_accomplish: 'Erishmoq',
+  word_crucial: 'Muhim',
+  word_enhance: 'Yaxshilamoq',
+  word_determine: 'Aniqlash',
+  word_significant: 'Sezilarli',
+  word_abandon: 'Tashlab ketmoq',
+  word_acquire: "Qo'lga kiritmoq",
+  word_beneficial: 'Foydali',
+  word_comprehensive: 'Keng qamrovli',
+  word_demonstrate: 'Namoyish qilmoq',
+  word_elaborate: 'Batafsil',
+  word_fundamental: 'Asosiy',
+
+  exam_setup_title: 'Imtihon sanasi bormi?',
+  exam_setup_desc: 'Belgilang — kunlik reja moslashadi',
+  exam_goal_title: 'Imtihon maqsadi',
+  exam_placeholder: 'Masalan: IELTS imtihon',
+  exam_days_left: 'kun qoldi',
+
+  focus_mode: 'Fokus Rejimi',
+  focus_mode_desc: "To'liq ekran fokus taymeri",
+  focus_break: 'Tanaffus',
+  focus_work: 'Fokus',
+  focus_start: 'Boshlash',
+  focus_stop: "To'xtatish",
+
+  weekly_results: 'Haftalik natijalar',
+  active_days: 'Faol kun',
+
+  sleep_title: "Kech bo'ldi...",
+  sleep_desc: "Yaxshi uxlash — yaxshi o'qishning kaliti.\nErtaga yangi kuch bilan davom etamiz!",
+  sleep_confirm: 'Ha, uxlayman 😴',
 
   privacy_1: "Ism va telefon raqamingiz faqat akkauntingizni himoya qilish va kirishni tasdiqlash uchun ishlatiladi.",
   privacy_2: "O'qishdagi natijalar darslarni shaxsiylashtirish va sizga mos tavsiyalar berish uchun saqlanadi.",
@@ -477,20 +623,20 @@ const en: Translations = {
   profile_completed: 'Completed',
   profile_streak: 'Streak',
   profile_go_pro: 'Upgrade to PRO',
-  profile_pro_desc: 'Unlock all courses and premium features.',
+  profile_pro_desc: 'All courses and features will be unlocked.',
   profile_per_month: '/month',
   profile_subscribe: 'Subscribe',
-  profile_achievements: 'Your Achievements',
+  profile_achievements: 'Achievements',
   profile_settings: 'Settings',
   profile_notifications: 'Notifications',
-  profile_night_mode: 'Dark mode',
-  profile_language: 'Interface language',
-  profile_help: 'Help center',
-  profile_help_value: 'Online chat',
-  profile_privacy: 'Privacy policy',
+  profile_night_mode: 'Night Mode',
+  profile_language: 'Language',
+  profile_help: 'Help Center',
+  profile_help_value: 'Online Chat',
+  profile_privacy: 'Privacy Policy',
   profile_privacy_view: 'View',
-  profile_logout: 'Log out',
-  profile_account_settings: 'Account settings',
+  profile_logout: 'Logout',
+  profile_account_settings: 'Account Settings',
   profile_update_info: 'Update your profile information',
   profile_name: 'Name',
   profile_phone: 'Phone',
@@ -498,73 +644,73 @@ const en: Translations = {
   profile_cancel: 'Cancel',
   profile_save: 'Save',
   profile_later: 'Later',
-  profile_understood: 'Got it',
+  profile_understood: 'Understood',
   profile_fynex_pro: 'Fynex PRO',
   profile_pro_features_desc: 'Unlock all premium courses and features.',
   profile_monthly_sub: 'Monthly subscription',
-  profile_all_courses: 'All courses unlocked',
-  profile_no_ads: 'Ad-free experience',
+  profile_all_courses: 'All courses open',
+  profile_no_ads: 'No ads',
   profile_priority_support: 'Priority support',
   profile_offline: 'Offline access',
-  profile_privacy_title: 'Privacy Policy',
-  profile_privacy_desc: 'Fynex carefully protects your data.',
+  profile_privacy_title: 'Privacy',
+  profile_privacy_desc: 'Fynex protects your information.',
 
   login_welcome: 'Welcome',
   login_enter_phone: 'Enter your phone number',
   login_phone: 'Phone',
-  login_verify: 'Verify',
-  login_code_sent: 'Enter the code sent to',
+  login_verify: 'Verification',
+  login_code_sent: 'Enter code sent to',
   login_checking: 'Checking code...',
-  login_confirmed: 'Code confirmed ✓',
+  login_confirmed: 'Confirmed ✓',
   login_wrong_code: 'Wrong code, try again',
-  login_meet: "Let's meet",
-  login_enter_name: 'Enter your name to get started',
+  login_meet: 'Let\'s get to know you',
+  login_enter_name: 'Enter your name to start',
   login_name: 'Name',
   login_your_name: 'Your name',
   login_who_are_you: 'who are you? 🤔',
-  login_select_option: 'Choose the option that fits you',
-  login_school: 'School student',
-  login_school_desc: "I'm in school",
-  login_student: 'University student',
-  login_student_desc: "I'm in university",
+  login_select_option: 'Select the best option',
+  login_school: 'School Student',
+  login_school_desc: 'I study at school',
+  login_student: 'Student',
+  login_student_desc: 'I study at university',
   login_applicant: 'Applicant',
-  login_applicant_desc: "I'm preparing for university",
+  login_applicant_desc: 'Preparing for uni',
   login_other: 'Other',
-  login_other_desc: 'Self-learner',
+  login_other_desc: 'Self-studying',
   login_grade: 'what grade are you in? 📚',
-  login_grade_desc: 'Select your grade level',
-  login_subject: 'what do you want to learn? 🎯',
-  login_subject_desc: 'Which subject shall we strengthen?',
-  login_offline_course: 'do you attend English courses? 🏫',
-  login_offline_desc: 'Do you attend an offline learning center?',
-  login_no_fynex: 'No, just Fynex',
-  login_no_fynex_desc: "I'll learn with Fynex from scratch",
-  login_plan_to_go: "I'm planning to go",
-  login_plan_to_go_desc: "I'm looking for a good place",
-  login_currently_going: "I'm currently attending",
-  login_currently_going_desc: 'I study at a learning center',
-  login_center: 'Which learning center? 📍',
-  login_center_desc: 'Select or search for your center',
+  login_grade_desc: 'Specify your grade',
+  login_subject: 'what to study? 🎯',
+  login_subject_desc: 'Which subject to boost?',
+  login_offline_course: 'attending English classes? 🏫',
+  login_offline_desc: 'Do you attend a learning center?',
+  login_no_fynex: 'No, only Fynex',
+  login_no_fynex_desc: 'Starting from zero with Fynex',
+  login_plan_to_go: 'Planning to join',
+  login_plan_to_go_desc: 'Looking for a good place',
+  login_currently_going: 'Currently attending',
+  login_currently_going_desc: 'Studying at a learning center',
+  login_center: 'Which center? 📍',
+  login_center_desc: 'Select or search for center',
   login_center_search: 'Type center name...',
   login_center_add: 'add',
-  login_duration: 'How long have you been attending? ⏳',
+  login_duration: 'How long attending? ⏳',
   login_duration_desc: 'Approximate duration',
-  login_level: 'What is your English level? 📈',
-  login_level_desc: "Let's determine your starting point",
-  login_advice: 'Our advice for you ✨',
-  login_summary: 'all set! 🎉',
+  login_level: 'English level? 📈',
+  login_level_desc: 'Determining starting point',
+  login_advice: 'Our advice ✨',
+  login_summary: 'ready! 🎉',
   login_summary_desc: 'Your information',
   login_user_type: 'User type',
-  login_class: 'Grade',
+  login_class: 'Grade/Level',
   login_subject_label: 'Selected subject',
-  login_center_label: 'Center',
-  login_plan_note: 'A personalized study plan will be created based on this ✨',
+  login_center_label: 'Learning Center',
+  login_plan_note: 'A personal plan will be built based on this ✨',
   login_start_learning: 'Start learning',
   login_next: 'Continue',
   login_back: 'Back',
-  login_loading_1: 'Analyzing your data...',
-  login_loading_2: 'Finding the right lessons...',
-  login_loading_3: 'Creating your plan...',
+  login_loading_1: 'Analyzing data...',
+  login_loading_2: 'Filtering lessons...',
+  login_loading_3: 'Building your plan...',
   login_loading_4: 'Almost ready...',
   login_plan_creating: "creating your\npersonal plan",
 
@@ -603,16 +749,95 @@ const en: Translations = {
 
   notif_updated: 'Fynex 3.0 updated!',
   notif_updated_desc: 'New courses and improved design await you.',
-  notif_streak: 'Streak reached 3 days!',
+  notif_streak: 'Streak is active! 🔥',
   notif_streak_desc: "Great! Keep learning and don't lose your streak.",
   notif_pro_discount: 'PRO subscription discount',
   notif_pro_discount_desc: 'Subscribe to PRO now and get 30% off.',
-  notif_course_done: 'English Beginner completed',
+  notif_course_done: 'Course completed!',
   notif_course_done_desc: 'Congratulations! Start the next course.',
   notif_notifications: 'Notifications',
   notif_today: 'Today',
   notif_yesterday: 'Yesterday',
   notif_days_ago: 'days ago',
+  ach_new: 'New Achievement!',
+
+  // ── AI & Support ──
+  ai_mentor_title: 'AI Mentor',
+  ai_mentor_desc: 'Precise help only for lessons and study',
+  ai_mentor_intro: 'Hi! I am Fynex AI Mentor. I will provide precise and concise help in your chosen field.',
+  ai_mentor_fallback: 'I received the question. If you ask more specifically, I will provide a more helpful answer.',
+  ai_mentor_placeholder: 'Type your study question...',
+  ai_mentor_typing: 'AI is typing...',
+  ai_prompt_1: 'Explain Present Perfect',
+  ai_prompt_2: '5 phrases for Speaking',
+  ai_prompt_3: 'Study plan for today',
+  ai_blocked: 'I cannot help with this topic. Please ask about education.',
+
+  support_title: 'Fynex Support',
+  support_online: 'Online',
+  support_intro: 'Hello. Welcome to Fynex support. Type your application-related questions here.',
+  support_placeholder: 'Type a message...',
+  support_typing: '⏳ AI is typing...',
+  support_error: 'Response is being processed. Please try again.',
+  support_no_internet: 'No internet connection.',
+
+  // ── Widgets ──
+  mood_title: 'How are you feeling today?',
+  mood_desc: 'We will adapt the lessons to your state',
+  mood_great: 'Great!',
+  mood_good: 'Good',
+  mood_neutral: 'Neutral',
+  mood_tired: 'Tired',
+  mood_stressed: 'Stressed',
+  mood_tired_resp: 'Got it! We will give you lighter exercises today 💪',
+  mood_great_resp: "Awesome! We are ready for more today 🚀",
+
+  recap_title: 'Yesterday you learned',
+  recap_desc: 'Keep going — today is even better!',
+  fact_label: 'Daily Fact',
+
+  quick_title: 'Quick Flash',
+  quick_desc: 'Learn words in 60 seconds',
+  quick_learned: 'Learned',
+  quick_lang_en: 'English',
+  quick_lang_tr: 'Translation',
+  quick_flip: 'Tap to see translation',
+  quick_known: 'I knew it! Next',
+  quick_awesome: 'Awesome!',
+  quick_words_learned: 'words learned',
+
+  word_accomplish: 'Accomplish',
+  word_crucial: 'Crucial',
+  word_enhance: 'Enhance',
+  word_determine: 'Determine',
+  word_significant: 'Significant',
+  word_abandon: 'Abandon',
+  word_acquire: 'Acquire',
+  word_beneficial: 'Beneficial',
+  word_comprehensive: 'Comprehensive',
+  word_demonstrate: 'Demonstrate',
+  word_elaborate: 'Elaborate',
+  word_fundamental: 'Fundamental',
+
+  exam_setup_title: 'Have an exam date?',
+  exam_setup_desc: 'Set it — the daily plan will adapt',
+  exam_goal_title: 'Exam Goal',
+  exam_placeholder: 'e.g.: IELTS Exam',
+  exam_days_left: 'days left',
+
+  focus_mode: 'Focus Mode',
+  focus_mode_desc: 'Full-screen focus timer',
+  focus_break: 'Break',
+  focus_work: 'Focus',
+  focus_start: 'Start',
+  focus_stop: 'Stop',
+
+  weekly_results: 'Weekly Results',
+  active_days: 'Active Day',
+
+  sleep_title: "It's getting late...",
+  sleep_desc: "Good sleep is the key to good learning.\nWe'll continue tomorrow with fresh energy!",
+  sleep_confirm: "Yes, I'll sleep 😴",
 
   privacy_1: 'Your name and phone number are used only to protect your account and verify login.',
   privacy_2: 'Study results are saved to personalize lessons and provide relevant recommendations.',
@@ -761,23 +986,23 @@ const ru: Translations = {
   login_duration: 'Как давно посещаете? ⏳',
   login_duration_desc: 'Примерная продолжительность',
   login_level: 'Какой ваш уровень английского? 📈',
-  login_level_desc: 'Определим начальную точку',
+  login_level_desc: 'Давайте определим вашу точку старта',
   login_advice: 'Наш совет для вас ✨',
   login_summary: 'всё готово! 🎉',
-  login_summary_desc: 'Ваши данные',
+  login_summary_desc: 'Ваша информация',
   login_user_type: 'Тип пользователя',
   login_class: 'Класс',
   login_subject_label: 'Выбранный предмет',
   login_center_label: 'Центр',
-  login_plan_note: 'На основе этих данных будет создан персональный учебный план ✨',
-  login_start_learning: 'Начать учёбу',
+  login_plan_note: 'На основе этого будет создан ваш личный план обучения ✨',
+  login_start_learning: 'Начать обучение',
   login_next: 'Продолжить',
   login_back: 'Назад',
   login_loading_1: 'Анализируем ваши данные...',
   login_loading_2: 'Подбираем подходящие уроки...',
-  login_loading_3: 'Составляем персональный план...',
+  login_loading_3: 'Создаем ваш план...',
   login_loading_4: 'Почти готово...',
-  login_plan_creating: "создаём вашу\nличную программу",
+  login_plan_creating: "создаем ваш\nличный план",
 
   courses_title: 'Курсы',
   courses_search: 'Поиск курсов',
@@ -789,67 +1014,146 @@ const ru: Translations = {
   leaderboard_xp: 'XP',
   leaderboard_week: 'На этой неделе',
   leaderboard_month: 'В этом месяце',
-  leaderboard_all: 'За всё время',
+  leaderboard_all: 'За все время',
   leaderboard_streak_label: 'дн. серия',
   leaderboard_your_rank: 'Ваше место',
   leaderboard_total_xp: 'Всего XP',
   leaderboard_you: '(Вы)',
 
-  courses_subtitle: 'Начните учиться',
-  courses_recommended: 'Рекомендуем',
+  courses_subtitle: 'Начните обучение',
+  courses_recommended: 'Рекомендуемые',
   courses_shortest: 'Быстрый старт',
-  courses_xp_sort: 'Больше XP',
+  courses_xp_sort: 'Много XP',
   courses_lesson_list: 'Список уроков',
   courses_start_lesson: 'Начать урок',
   courses_lessons_count: 'уроков',
 
-  ach_first_step: 'Первый шаг',
-  ach_first_step_desc: 'Первый урок',
-  ach_fast_learner: 'Быстрый ученик',
-  ach_fast_learner_desc: '1000 XP заработано',
+  ach_first_step: 'Первый Шаг',
+  ach_first_step_desc: 'Дали старт обучению',
+  ach_fast_learner: 'Быстрый Ученик',
+  ach_fast_learner_desc: 'Заработано 1000 XP',
   ach_bookworm: 'Книголюб',
-  ach_bookworm_desc: '1 курс завершён',
+  ach_bookworm_desc: 'Пройден 1 курс',
   ach_champion: 'Чемпион',
-  ach_champion_desc: 'Топ 1 рейтинг',
+  ach_champion_desc: 'Топ 1 в рейтинге',
 
   notif_updated: 'Fynex 3.0 обновлён!',
-  notif_updated_desc: 'Новые курсы и улучшенный дизайн ждут вас.',
-  notif_streak: 'Серия достигла 3 дней!',
+  notif_updated_desc: 'Вас ждут новые курсы и улучшенный дизайн.',
+  notif_streak: 'Серия активна! 🔥',
   notif_streak_desc: 'Отлично! Продолжайте учиться и не теряйте серию.',
   notif_pro_discount: 'Скидка на PRO подписку',
-  notif_pro_discount_desc: 'Подпишитесь на PRO и получите скидку 30%.',
-  notif_course_done: 'English Beginner завершён',
+  notif_pro_discount_desc: 'Подпишитесь на PRO сейчас и получите скидку 30%.',
+  notif_course_done: 'Курс завершён!',
   notif_course_done_desc: 'Поздравляем! Начните следующий курс.',
   notif_notifications: 'Уведомления',
   notif_today: 'Сегодня',
   notif_yesterday: 'Вчера',
-  notif_days_ago: 'дней назад',
+  notif_days_ago: 'дн. назад',
+  ach_new: 'Новое Достижение!',
 
-  privacy_1: 'Имя и номер телефона используются только для защиты аккаунта и подтверждения входа.',
-  privacy_2: 'Результаты обучения сохраняются для персонализации уроков и рекомендаций.',
+  // ── AI & Support ──
+  ai_mentor_title: 'AI Ментор',
+  ai_mentor_desc: 'Точная помощь только по урокам и учебе',
+  ai_mentor_intro: 'Привет! Я AI Ментор Fynex. Я помогу тебе быстро и четко в выбранном направлении.',
+  ai_mentor_fallback: 'Вопрос принят. Если спросишь точнее, я дам более полезный ответ.',
+  ai_mentor_placeholder: 'Напиши свой вопрос по учебе...',
+  ai_mentor_typing: 'AI пишет ответ...',
+  ai_prompt_1: 'Объясни Present Perfect',
+  ai_prompt_2: '5 фраз для Speaking',
+  ai_prompt_3: 'План учебы на сегодня',
+  ai_blocked: 'Я не могу помочь с этой темой. Пожалуйста, спрашивай про образование.',
+
+  support_title: 'Поддержка Fynex',
+  support_online: 'Онлайн',
+  support_intro: 'Привет. Добро пожаловать в центр поддержки Fynex. Напиши свой вопрос по приложению.',
+  support_placeholder: 'Напишите сообщение...',
+  support_typing: '⏳ AI пишет ответ...',
+  support_error: 'Ответ обрабатывается. Пожалуйста, попробуйте еще раз.',
+  support_no_internet: 'Нет интернет-соединения.',
+
+  // ── Widgets ──
+  mood_title: 'Как вы себя чувствуете сегодня?',
+  mood_desc: 'Мы адаптируем уроки под ваше состояние',
+  mood_great: 'Отлично!',
+  mood_good: 'Хорошо',
+  mood_neutral: 'Нормально',
+  mood_tired: 'Устал(а)',
+  mood_stressed: 'Стресс',
+  mood_tired_resp: 'Поняли! Сегодня дадим упражнения полегче 💪',
+  mood_great_resp: 'Супер! Сегодня мы готовы к большему 🚀',
+
+  recap_title: 'Вчера вы выучили',
+  recap_desc: 'Продолжайте — сегодня будет еще лучше!',
+  fact_label: 'Факт дня',
+
+  quick_title: 'Блиц-опрос',
+  quick_desc: 'Учите слова за 60 секунд',
+  quick_learned: 'Выучено',
+  quick_lang_en: 'Английский',
+  quick_lang_tr: 'Перевод',
+  quick_flip: 'Нажмите, чтобы увидеть перевод',
+  quick_known: 'Знал(а)! Дальше',
+  quick_awesome: 'Супер!',
+  quick_words_learned: 'слов выучено',
+
+  word_accomplish: 'Достигать',
+  word_crucial: 'Критический',
+  word_enhance: 'Улучшать',
+  word_determine: 'Определять',
+  word_significant: 'Значительный',
+  word_abandon: 'Покидать',
+  word_acquire: 'Приобретать',
+  word_beneficial: 'Полезный',
+  word_comprehensive: 'Комплексный',
+  word_demonstrate: 'Демонстрировать',
+  word_elaborate: 'Разрабатывать',
+  word_fundamental: 'Фундаментальный',
+
+  exam_setup_title: 'Есть дата экзамена?',
+  exam_setup_desc: 'Установите её — план адаптируется',
+  exam_goal_title: 'Цель экзамена',
+  exam_placeholder: 'Напр.: Экзамен IELTS',
+  exam_days_left: 'дн. осталось',
+
+  focus_mode: 'Режим Фокуса',
+  focus_mode_desc: 'Полноэкранный таймер фокуса',
+  focus_break: 'Перерыв',
+  focus_work: 'Фокус',
+  focus_start: 'Начать',
+  focus_stop: 'Стоп',
+
+  weekly_results: 'Результаты недели',
+  active_days: 'Активный день',
+
+  sleep_title: 'Уже поздно...',
+  sleep_desc: 'Хороший сон — залог успешной учебы.\nЗавтра продолжим с новыми силами!',
+  sleep_confirm: 'Да, спать 😴',
+
+  privacy_1: 'Ваше имя и номер телефона используются только для защиты аккаунта и входа.',
+  privacy_2: 'Результаты учебы сохраняются для персонализации уроков и рекомендаций.',
   privacy_3: 'Данные не передаются третьим лицам без разрешения.',
-  privacy_4: 'Вы можете обратиться в службу поддержки в любое время.',
+  privacy_4: 'Вы можете связаться с поддержкой в любое время.',
 
   welcome_tag_1: 'FYNEX',
-  welcome_title_1: "Обучение теперь\nв ваших руках",
-  welcome_subtitle_1: "Fynex — ваш карманный репетитор. Учитесь в любое время, в любом месте, всего за 5 минут.",
+  welcome_title_1: 'Обучение теперь\nв ваших руках',
+  welcome_subtitle_1: 'Fynex — это ваш карманный учитель. Учитесь в любое время и в любом месте всего за 5 минут.',
   welcome_tag_2: 'ПОЧЕМУ?',
-  welcome_title_2: "Не 2 часа,\nа 5 минут",
-  welcome_subtitle_2: "Вместо долгих скучных занятий — короткие, эффективные упражнения в формате игры. Мозг запоминает их в 3 раза лучше.",
-  welcome_tag_3: 'НАЧАТЬ',
-  welcome_title_3: "Выберите язык\nи начинайте",
-  welcome_subtitle_3: "Fynex работает на вашем языке. Выберите удобный язык и начните путешествие!",
+  welcome_title_2: 'Не 2 часа,\nа 5 минут',
+  welcome_subtitle_2: 'Вместо долгих скучных уроков — короткие, эффективные упражнения в игровой форме. Мозг запоминает их в 3 раза лучше.',
+  welcome_tag_3: 'СТАРТ',
+  welcome_title_3: 'Выберите язык\nи начните',
+  welcome_subtitle_3: 'Fynex работает на вашем языке. Выберите удобный и начните свое путешествие!',
   welcome_next: 'Далее',
   welcome_start: 'Начать',
 
-  login_subject_en: "Английский (IELTS / General)",
-  login_subject_en_desc: "Иностранный язык, переезд",
-  login_subject_ru: "Русский язык",
-  login_subject_ru_desc: "Для общения и бизнеса",
-  login_subject_it: "Программирование (IT)",
-  login_subject_it_desc: "IT и технологии",
-  login_subject_math: "Математика",
-  login_subject_math_desc: "Точные науки и экзамены",
+  login_subject_en: 'Английский (IELTS / General)',
+  login_subject_en_desc: 'Иностранный язык, переезд',
+  login_subject_ru: 'Русский язык',
+  login_subject_ru_desc: 'Для общения и бизнеса',
+  login_subject_it: 'Программирование (IT)',
+  login_subject_it_desc: 'IT и технологии',
+  login_subject_math: 'Математика',
+  login_subject_math_desc: 'Точные науки и экзамены',
 
   dur_less_1: 'Менее 1 месяца',
   dur_1_3: '1—3 месяца',

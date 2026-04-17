@@ -11,7 +11,7 @@ import { getPalette } from '../theme';
 type CourseIcon = typeof Globe;
 
 export default function CoursesPage() {
-  const { user, updateXp, completeCourse, theme, t } = useUser();
+  const { user, updateXp, completeCourse, theme, t, lang } = useUser();
   const colors = getPalette(theme);
   const [activeCategory, setActiveCategory] = useState('all');
   const [sortMode, setSortMode] = useState<'recommended' | 'shortest' | 'xp'>('recommended');
@@ -457,7 +457,7 @@ export default function CoursesPage() {
         isOpen={!!activeLesson}
         onClose={() => setActiveLesson(null)}
         lessonTitle={activeLesson?.title || ''}
-        steps={activeLesson ? getLessonSteps(activeLesson.id, activeLesson.title) : []}
+        steps={activeLesson ? getLessonSteps(activeLesson.id, lang, activeLesson.title) : []}
         xpReward={10}
         onComplete={handleLessonComplete}
       />

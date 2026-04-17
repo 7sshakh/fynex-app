@@ -22,14 +22,14 @@ interface SupportChatProps {
 }
 
 const STORAGE_KEY = 'fynex_chat_messages';
-const DEFAULT_MSG: Message = { id: '1', text: "Salom. Fynex yordam markaziga xush kelibsiz. Ilova bo'yicha savolingizni yozing, men imkon qadar tez va aniq yordam beraman.", isBot: true, time: getTime() };
+const getWelcomeMsg = (t: any) => ({ id: '1', text: t.support_intro, isBot: true, time: getTime() });
 
-function loadMessages(): Message[] {
+function loadMessages(t: any): Message[] {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) { const arr = JSON.parse(saved); if (arr.length) return arr; }
   } catch { /* ignore */ }
-  return [DEFAULT_MSG];
+  return [getWelcomeMsg(t)];
 }
 
 const darkTheme = {
@@ -58,9 +58,9 @@ const lightTheme = {
 };
 
 export default function SupportChat({ isOpen, onClose }: SupportChatProps) {
-  const { user, theme } = useUser();
+  const { user, theme, t: T, lang } = useUser();
   const t = theme === 'dark' ? darkTheme : lightTheme;
-  const [messages, setMessages] = useState<Message[]>(loadMessages);
+  const [messages, setMessages] = useState<Message[]>(() => loadMessages(T));
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -120,7 +120,7 @@ export default function SupportChat({ isOpen, onClose }: SupportChatProps) {
     setInput('');
     setSending(true);
 
-    const typingMsg: Message = { id: `typing-${Date.now()}`, text: '⏳ AI javob yozmoqda...', isBot: true, time: getTime() };
+    const typingMsg: Message = { id: `typing-${Date.now()}`, text: T.support_typing, isBot: true, time: getTime() };
     setMessages(prev => [...prev, typingMsg]);
 
     try {
@@ -131,7 +131,7 @@ export default function SupportChat({ isOpen, onClose }: SupportChatProps) {
           user_name: user?.name || 'Noma\'lum',
           user_phone: user?.phone || '',
           user_telegram_id: user?.telegramId ?? null,
-          message: text,
+          message: `[Language: ${lang}] ${text}`,
           history: messages.filter(m => m.id !== '1').slice(-10).map(m => ({ text: m.text, isBot: m.isBot })),
         }),
       });
@@ -142,11 +142,11 @@ export default function SupportChat({ isOpen, onClose }: SupportChatProps) {
       if (data.ok && data.ai_response) {
         setMessages(prev => [...prev, { id: `ai-${Date.now()}`, text: data.ai_response, isBot: true, time: getTime() }]);
       } else {
-        setMessages(prev => [...prev, { id: `e-${Date.now()}`, text: "Hozir javob qayta ishlanmoqda. Iltimos, yana bir bor yozib ko'ring.", isBot: true, time: getTime() }]);
+        setMessages(prev => [...prev, { id: `e-${Date.now()}`, text: T.support_error, isBot: true, time: getTime() }]);
       }
     } catch {
       setMessages(prev => prev.filter(m => m.id !== typingMsg.id));
-      setMessages(prev => [...prev, { id: `e-${Date.now()}`, text: "Internet aloqasi yo'q.", isBot: true, time: getTime() }]);
+      setMessages(prev => [...prev, { id: `e-${Date.now()}`, text: T.support_no_internet, isBot: true, time: getTime() }]);
     } finally {
       setSending(false);
     }
@@ -172,8 +172,8 @@ export default function SupportChat({ isOpen, onClose }: SupportChatProps) {
           <MessageCircle className="w-5 h-5" style={{ color: t.iconColor }} />
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className="font-bold text-sm" style={{ color: t.text }}>Fynex Support</h3>
-          <p className="text-xs font-medium" style={{ color: t.subtext }}>Online</p>
+          <h3 className="font-bold text-sm" style={{ color: t.text }}>{T.support_title}</h3>
+          <p className="text-xs font-medium" style={{ color: t.subtext }}>{T.support_online}</p>
         </div>
         <button onClick={() => window.open('https://t.me/fynex-_assist', '_blank')} className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center active:scale-95" style={{ backgroundColor: t.tgBg }}>
           <svg className="w-5 h-5" style={{ color: t.tgColor }} viewBox="0 0 24 24" fill="currentColor">
@@ -186,7 +186,7 @@ export default function SupportChat({ isOpen, onClose }: SupportChatProps) {
       <div className="flex-1 min-h-0 overflow-y-auto px-4 py-4 space-y-3" style={{ backgroundColor: t.msgBg, overscrollBehavior: 'contain' }}>
         {messages.map((msg) => (
           <div key={msg.id} className={`flex flex-col ${msg.isBot ? 'items-start' : 'items-end'}`}>
-            {msg.isSupport && <span className="text-[10px] font-bold uppercase tracking-wider mb-1 ml-1" style={{ color: t.accent }}>Support</span>}
+            {msg.isSupport && <span className="text-[10px] font-bold uppercase tracking-wider mb-1 ml-1" style={{ color: t.accent }}>SUPPORT</span>}
             <div
               className="max-w-[80%] px-4 py-2.5 rounded-2xl"
               style={msg.isBot
@@ -207,7 +207,7 @@ export default function SupportChat({ isOpen, onClose }: SupportChatProps) {
         <div className="flex items-center gap-2">
           <input
             type="text" value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={handleKeyDown}
-            placeholder="Xabar yozing..."
+            placeholder={T.support_placeholder}
             className="flex-1 rounded-2xl px-4 py-3 text-sm outline-none"
             style={{ backgroundColor: t.inputBg, color: t.inputText, border: `1px solid ${t.inputBorder}` }}
           />

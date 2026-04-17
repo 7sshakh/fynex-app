@@ -12,10 +12,10 @@ type AiMessage = {
   ts: number;
 };
 
-const QUICK_PROMPTS = [
-  "Present Perfect ni oddiy tilda tushuntir",
-  "Speaking uchun 5 ta kuchli ibora ber",
-  "Bugun 10 daqiqalik English plan tuz",
+const getQuickPrompts = (t: any) => [
+  t.ai_prompt_1,
+  t.ai_prompt_2,
+  t.ai_prompt_3,
 ];
 
 const E18_BLOCK = /\b(sex|porn|xxx|nude|erotik|эрот|18\+|onlyfans|intim)\b/i;
@@ -26,8 +26,7 @@ interface Props {
 }
 
 export default function AIMentorPanel({ isOpen, onClose }: Props) {
-  const { user } = useUser();
-  const { theme } = useUser();
+  const { user, theme, t, lang } = useUser();
   const colors = getPalette(theme);
 
   const [input, setInput] = useState('');
@@ -49,7 +48,7 @@ export default function AIMentorPanel({ isOpen, onClose }: Props) {
           {
             id: 'intro',
             role: 'assistant',
-            text: "Salom! Men Fynex AI Mentor. Siz tanlagan yo'nalishda aniq va qisqa yordam beraman.",
+            text: t.ai_mentor_intro,
             ts: Date.now(),
           },
         ]);
@@ -75,7 +74,7 @@ export default function AIMentorPanel({ isOpen, onClose }: Props) {
     if (E18_BLOCK.test(text)) {
       setMessages((prev) => [
         ...prev,
-        { id: crypto.randomUUID(), role: 'assistant', text: "Bu mavzuda yordam bera olmayman. Ta'lim va dars bo'yicha savol bering, mamnuniyat bilan yordam beraman.", ts: Date.now() },
+        { id: crypto.randomUUID(), role: 'assistant', text: t.ai_blocked, ts: Date.now() },
       ]);
       if (!textRaw) setInput('');
       return;
@@ -86,7 +85,7 @@ export default function AIMentorPanel({ isOpen, onClose }: Props) {
     setSending(true);
     if (!textRaw) setInput('');
 
-    const combinedPrompt = `[Fan: Learning]\n[Uslub: aniq, foydali, qisqa]\n${text}`;
+    const combinedPrompt = `[Language: ${lang}]\n[Fan: Learning]\n[Uslub: aniq, foydali, qisqa]\n${text}`;
 
     try {
       const response = await fetch('/api/mentor/respond', {
@@ -103,7 +102,7 @@ export default function AIMentorPanel({ isOpen, onClose }: Props) {
       const data = await response.json();
       const answer = typeof data?.ai_response === 'string' && data.ai_response.trim()
         ? data.ai_response.trim()
-        : "Savolni qabul qildim. Shu fan bo'yicha yana aniqroq savol bersangiz, yanada foydali javob beraman.";
+        : t.ai_mentor_fallback;
       setMessages((prev) => [...prev, { id: crypto.randomUUID(), role: 'assistant', text: answer, ts: Date.now() }]);
     } catch {
       setMessages((prev) => [
@@ -150,10 +149,10 @@ export default function AIMentorPanel({ isOpen, onClose }: Props) {
               </div>
               <div className="min-w-0">
                 <h3 className="truncate text-sm font-black" style={{ color: colors.onSurface }}>
-                  AI Mentor
+                  {t.ai_mentor_title}
                 </h3>
                 <p className="truncate text-xs" style={{ color: colors.onSurfaceVariant }}>
-                  Faqat dars va o'qish bo'yicha aniq yordam
+                  {t.ai_mentor_desc}
                 </p>
               </div>
             </div>
@@ -185,7 +184,7 @@ export default function AIMentorPanel({ isOpen, onClose }: Props) {
             {sending && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-2 rounded-2xl px-4 py-3 w-fit" style={{ background: colors.surfaceContainer }}>
                 <Sparkles className="h-4 w-4" style={{ color: colors.primary }} />
-                <span className="text-sm" style={{ color: colors.onSurfaceVariant }}>AI javob yozmoqda...</span>
+                <span className="text-sm" style={{ color: colors.onSurfaceVariant }}>{t.ai_mentor_typing}</span>
               </motion.div>
             )}
           </div>
@@ -193,7 +192,7 @@ export default function AIMentorPanel({ isOpen, onClose }: Props) {
 
         <div className="px-4 pb-safe py-3" style={{ background: theme === 'dark' ? 'rgba(14,14,14,0.94)' : 'rgba(255,255,255,0.96)', borderTop: `1px solid ${colors.outlineVariant}33` }}>
           <div className="mb-2 flex gap-2 overflow-x-auto scrollbar-hide">
-            {QUICK_PROMPTS.map((prompt) => (
+            {getQuickPrompts(t).map((prompt) => (
               <button
                 key={prompt}
                 onClick={() => sendMessage(prompt)}
@@ -214,7 +213,7 @@ export default function AIMentorPanel({ isOpen, onClose }: Props) {
                   sendMessage();
                 }
               }}
-              placeholder="Dars bo'yicha savolingizni yozing..."
+              placeholder={t.ai_mentor_placeholder}
               className="flex-1 rounded-2xl px-4 py-3 text-sm outline-none"
               style={{ background: colors.surfaceContainer, color: colors.onSurface, border: `1px solid ${colors.outlineVariant}33` }}
             />

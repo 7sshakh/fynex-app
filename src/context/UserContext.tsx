@@ -140,7 +140,12 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const setLang = (newLang: Lang) => {
     setLangState(newLang);
     setCurrentLang(newLang);
+    import('../data/lessonContent').then(({ syncLessonsWithData }) => syncLessonsWithData(newLang));
   };
+
+  useEffect(() => {
+    import('../data/lessonContent').then(({ syncLessonsWithData }) => syncLessonsWithData(lang));
+  }, [lang]);
 
 
   return (

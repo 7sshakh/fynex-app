@@ -151,73 +151,73 @@ export const lessonSteps: Record<string, LessonStep[]> = {
   ],
 };
 
-import englishData from './english_beginner.json';
+const getLocalizedValue = (obj: any, key: string, lang: string) => {
+  if (lang === 'ru') return obj[`${key}_ru`] || obj[`${key}_uz`] || obj[key];
+  if (lang === 'en') return obj[`${key}_en`] || obj[`${key}_uz`] || obj[key];
+  return obj[`${key}_uz`] || obj[key];
+};
 
-englishData.lessons?.forEach((lesson: any) => {
-  const steps: LessonStep[] = [];
-  lesson.topics?.forEach((topic: any) => {
-    if (topic.type === 'vocabulary' && topic.items) {
-      topic.items.forEach((item: any) => {
-        steps.push({
-          type: 'flashcard',
-          word: item.word,
-          pronunciation: `[${item.word}]`,
-          translation: item.translation_uz,
-          definition: item.example_uz,
-        });
+export function syncLessonsWithData(lang: string) {
+  import('./english_beginner.json').then((data: any) => {
+    data.default.lessons?.forEach((lesson: any) => {
+      const steps: LessonStep[] = [];
+      lesson.topics?.forEach((topic: any) => {
+        if (topic.type === 'vocabulary' && topic.items) {
+          topic.items.forEach((item: any) => {
+            steps.push({
+              type: 'flashcard',
+              word: item.word,
+              pronunciation: `[${item.word}]`,
+              translation: getLocalizedValue(item, 'translation', lang),
+              definition: getLocalizedValue(item, 'example', lang),
+            });
+          });
+        } else if (topic.type === 'mini_lesson') {
+          steps.push({
+            type: 'flashcard',
+            word: lang === 'uz' ? 'Mini Dars' : lang === 'ru' ? 'Мини Урок' : 'Mini Lesson',
+            pronunciation: '[nazariya]',
+            translation: getLocalizedValue(lesson, 'title', lang),
+            definition: getLocalizedValue(topic, 'content', lang),
+          });
+        } else if (topic.type === 'quiz' && topic.questions) {
+          topic.questions.forEach((q: any) => {
+            const correctIndex = q.options?.indexOf(q.answer);
+            steps.push({
+              type: 'quiz',
+              question: getLocalizedValue(q, 'question', lang),
+              options: q.options || [],
+              correctIndex: correctIndex >= 0 ? correctIndex : 0,
+            });
+          });
+        }
       });
-    } else if (topic.type === 'mini_lesson') {
-      steps.push({
-        type: 'flashcard',
-        word: 'Mini Dars',
-        pronunciation: '[nazariya]',
-        translation: lesson.title,
-        definition: topic.content_uz,
-      });
-    } else if (topic.type === 'quiz' && topic.questions) {
-      topic.questions.forEach((q: any) => {
-        const correctIndex = q.options?.indexOf(q.answer);
-        steps.push({
-          type: 'quiz',
-          question: q.question_uz || q.question,
-          options: q.options || [],
-          correctIndex: correctIndex >= 0 ? correctIndex : 0,
-        });
-      });
-    }
+      if (steps.length > 0) {
+        lessonSteps[`1-${lesson.lesson_id}`] = steps;
+      }
+    });
   });
-  if (steps.length > 0) {
-    lessonSteps[`1-${lesson.lesson_id}`] = steps;
-  }
-});
+}
 
-
-export function getLessonSteps(lessonId: string, lessonTitle?: string): LessonStep[] {
+export function getLessonSteps(lessonId: string, lang: string, lessonTitle?: string): LessonStep[] {
   const direct = lessonSteps[lessonId];
   if (direct && direct.length > 0) return direct;
+
+  const fallbackTitle = lessonTitle || (lang === 'uz' ? 'Yangi dars' : lang === 'ru' ? 'Новый урок' : 'New Lesson');
 
   return [
     {
       type: 'flashcard',
-      word: lessonTitle || 'Yangi dars',
+      word: fallbackTitle,
       pronunciation: '[lesson]',
-      translation: 'Asosiy tushuncha',
-      definition: 'Bu dars uchun demo kontent tayyorlandi.',
+      translation: lang === 'uz' ? 'Asosiy tushuncha' : lang === 'ru' ? 'Основное понятие' : 'Main Concept',
+      definition: lang === 'uz' ? 'Bu dars uchun demo kontent tayyorlandi.' : lang === 'ru' ? 'Для этого урока подготовлен демо-контент.' : 'Demo content prepared for this lesson.',
     },
     {
       type: 'quiz',
-      question: `${lessonTitle || 'Ushbu dars'} bo‘yicha asosiy maqsad nima?`,
-      options: ['Tushunchani anglash', 'Shunchaki o‘tib ketish', 'Tasodifiy belgilash', 'Bekor qilish'],
+      question: lang === 'uz' ? `${fallbackTitle} bo'yicha maqsad nima?` : lang === 'ru' ? `В чем цель ${fallbackTitle}?` : `What is the goal for ${fallbackTitle}?`,
+      options: lang === 'uz' ? ['Tushunchani anglash', 'O‘tib ketish', 'Tasodifiy', 'Bekor'] : lang === 'ru' ? ['Понять суть', 'Просто пройти', 'Случайно', 'Отмена'] : ['Understand concept', 'Just pass', 'Random', 'Cancel'],
       correctIndex: 0,
-      explanation: 'Avval mazmunni tushunish, keyin amaliyot qilish muhim.',
-    },
-    {
-      type: 'fill_blank',
-      before: 'Yaxshi natija uchun darsni',
-      after: 'yakunlash kerak.',
-      correctWord: 'oxirigacha',
-      options: ['tezda', 'oxirigacha', 'bekorga', 'yarimta'],
-      hint: 'To‘liq yakunlash progressni oshiradi.',
     },
   ];
 }
