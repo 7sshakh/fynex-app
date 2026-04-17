@@ -1213,6 +1213,28 @@ class Database:
         )
         await self.connection.commit()
 
+    async def has_active_otp_code(self, phone_number: str) -> bool:
+        assert self.connection is not None
+        cursor = await self.connection.execute(
+            """
+            SELECT id, expires_at, is_used
+            FROM otp_codes
+            WHERE phone_number = ?
+            ORDER BY id DESC
+            LIMIT 1
+            """,
+            (phone_number,),
+        )
+        row = await cursor.fetchone()
+        if row is None:
+            return False
+        if int(row["is_used"] or 0) == 1:
+            return False
+        expires_at = row["expires_at"]
+        if not expires_at:
+            return False
+        return datetime.utcnow() < datetime.fromisoformat(expires_at)
+
     async def verify_otp_code(self, phone_number: str, code: str) -> tuple[bool, str]:
         assert self.connection is not None
         cursor = await self.connection.execute(

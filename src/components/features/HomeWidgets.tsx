@@ -25,7 +25,7 @@ const getMoods = (t: any): { id: Mood; emoji: string; label: string; color: stri
 ];
 
 export function MoodSensor({ onClose }: { onClose: () => void }) {
-  const { theme } = useUser();
+  const { theme, t } = useUser();
   const colors = getPalette(theme);
   const [selected, setSelected] = useState<Mood | null>(null);
 

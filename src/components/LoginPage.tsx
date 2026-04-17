@@ -9,7 +9,7 @@ import {
 import { useUser } from '../context/UserContext';
 import { type Lang, type Translations } from '../lib/i18n';
 
-type Step = 'phone' | 'otp' | 'name' | 'userType' | 'grade' | 'subject' | 'offlineCourse' | 'centerPicker' | 'centerDuration' | 'level' | 'advice' | 'summary' | 'loading';
+type Step = 'intro' | 'phone' | 'otp' | 'name' | 'userType' | 'grade' | 'subject' | 'offlineCourse' | 'centerPicker' | 'centerDuration' | 'level' | 'advice' | 'summary' | 'loading';
 
 interface OnboardingData {
   userType: 'school' | 'university' | 'applicant' | 'other' | '';
@@ -87,8 +87,20 @@ export default function LoginPage() {
     phoneTitle: t.login_welcome,
     phoneDesc: t.login_enter_phone,
     phoneLabel: t.login_phone,
+    introTitle: lang === 'ru' ? 'Kodni Telegram bot orqali oling' : lang === 'en' ? 'Get your code from the Telegram bot' : 'Kodni Telegram bot orqali oling',
+    introDesc: lang === 'ru'
+      ? '@FynexEduBot ichiga kiring, telefon raqamingizni share contact orqali yuboring va 6 xonali kodni oling. Keyin shu yerga qaytib davom eting.'
+      : lang === 'en'
+        ? 'Open @FynexEduBot, send your phone number with share contact, get the 6-digit code, then return here and continue.'
+        : "@FynexEduBot ichiga kiring, telefon raqamingizni share contact orqali yuboring va 6 xonali kodni oling. Keyin shu yerga qaytib davom eting.",
+    introButton: lang === 'ru' ? 'Davom etish' : lang === 'en' ? 'Continue' : 'Davom etish',
     otpAttempts: lang === 'ru' ? 'Попытка' : lang === 'en' ? 'Attempt' : 'Urinish',
     otpViaTelegram: lang === 'ru' ? 'Получить код в Telegram' : lang === 'en' ? 'Get code from Telegram' : 'Kodni Telegramdan oling',
+    phoneCheckError: lang === 'ru'
+      ? 'Avval @FynexEduBot orqali shu raqam uchun kod oling.'
+      : lang === 'en'
+        ? 'First get a code for this number from @FynexEduBot.'
+        : "Avval @FynexEduBot orqali shu raqam uchun kod oling.",
     addCenter: lang === 'ru' ? 'добавить' : lang === 'en' ? 'add' : "qo'shish",
     adviceNoFynex: lang === 'ru'
       ? 'Для вас это хороший старт. Можно спокойно начать с уровня Beginner и бесплатно пройти базу внутри Fynex.'
@@ -134,10 +146,11 @@ export default function LoginPage() {
     grade: { '1-4': `1–4 ${t.login_class}`, '5-8': `5–8 ${t.login_class}`, '9': `9-${t.login_class}`, '10': `10-${t.login_class}`, '11': `11-${t.login_class}` },
     subject: { english: t.login_subject_en, programming: t.login_subject_it, russian: t.login_subject_ru, math: t.login_subject_math },
   }), [t]);
-  const [step, setStep] = useState<Step>('phone');
+  const [step, setStep] = useState<Step>('intro');
   const [phone, setPhone] = useState('');
   const [otpCode, setOtpCode] = useState('');
   const [name, setName] = useState('');
+  const [phoneError, setPhoneError] = useState('');
   const [otpStatus, setOtpStatus] = useState<'idle' | 'checking' | 'success' | 'error'>('idle');
   const [otpAttempt, setOtpAttempt] = useState(0);
   const [resendSec, setResendSec] = useState(45);
@@ -152,7 +165,7 @@ export default function LoginPage() {
 
   /* ── dynamic step list ── */
   const allSteps = useMemo<Step[]>(() => {
-    const s: Step[] = ['phone', 'otp', 'name', 'userType'];
+    const s: Step[] = ['intro', 'phone', 'otp', 'name', 'userType'];
     if (ob.userType === 'school') s.push('grade');
     s.push('subject');
     
@@ -171,10 +184,10 @@ export default function LoginPage() {
   }, [ob]);
 
   const idx = allSteps.indexOf(step);
-  const isOnboarding = idx >= 3;
-  const obIdx = idx - 3; // 0-based onboarding step
-  const obTotal = allSteps.length - 3;
-  const loginIdx = Math.min(idx, 2); // 0,1,2 for login dots
+  const isOnboarding = idx >= 4;
+  const obIdx = idx - 4; // 0-based onboarding step
+  const obTotal = allSteps.length - 4;
+  const loginIdx = Math.min(idx, 3);
 
   /* ── auto-focus ── */
   useEffect(() => {
@@ -207,6 +220,7 @@ export default function LoginPage() {
   const canNext = useMemo(() => {
     switch (step) {
       case 'phone': return phone.length === 9;
+      case 'intro': return true;
       case 'otp': return false;
       case 'name': return name.trim().length >= 2;
       case 'userType': return !!ob.userType;
@@ -226,15 +240,21 @@ export default function LoginPage() {
   const goPhone = async () => {
     if (phone.length !== 9) return;
     (document.activeElement as HTMLElement | null)?.blur?.();
+    setPhoneError('');
     try {
       const telegramId = (window as any)?.Telegram?.WebApp?.initDataUnsafe?.user?.id ?? null;
-      await fetch('/api/auth/request-otp', {
+      const resp = await fetch('/api/auth/request-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phone_number: fullPhone, telegram_id: telegramId }),
       });
+      if (!resp.ok) {
+        setPhoneError(copy.phoneCheckError);
+        return;
+      }
     } catch {
-      // demo OTP fallback will still work
+      setPhoneError(copy.phoneCheckError);
+      return;
     }
     setResendSec(45);
     setTimeout(() => setStep('otp'), 180);
@@ -267,6 +287,7 @@ export default function LoginPage() {
 
   const goNext = () => {
     if (!canNext) return;
+    if (step === 'intro') { setStep('phone'); return; }
     if (step === 'phone') { goPhone(); return; }
     if (step === 'name') { (document.activeElement as HTMLElement | null)?.blur?.(); }
     if (step === 'summary') { finish(); return; }
@@ -284,24 +305,13 @@ export default function LoginPage() {
     if (resendSec > 0) return;
     setOtpCode('');
     setOtpStatus('idle');
-    try {
-      const telegramId = (window as any)?.Telegram?.WebApp?.initDataUnsafe?.user?.id ?? null;
-      await fetch('/api/auth/request-otp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone_number: fullPhone, telegram_id: telegramId }),
-      });
-    } catch {
-      // demo OTP fallback will still work
-    }
+    setPhoneError(copy.phoneCheckError);
     setResendSec(45);
     otpRef.current?.focus();
   };
 
   const getOtpBotLink = () => {
-    const digits = phone.replace(/\D/g, '');
-    const payload = digits ? `otp_998${digits}` : 'start';
-    return `https://t.me/FynexEduBot?start=${encodeURIComponent(payload)}`;
+    return 'https://t.me/FynexEduBot';
   };
 
   const finish = async () => {
@@ -400,6 +410,28 @@ export default function LoginPage() {
         <div className="mx-auto flex w-full max-w-md flex-1 flex-col">
           <AnimatePresence mode="wait">
 
+            {/* ═══ INTRO ═══ */}
+            {step === 'intro' && (
+              <motion.section key="intro" {...slide} className="flex h-full flex-col">
+                <div className={cardStyle}>
+                  <h2 className="mb-3 text-4xl font-black tracking-[-0.06em]">{copy.introTitle}</h2>
+                  <p className="mb-8 text-sm leading-7 text-white/68">{copy.introDesc}</p>
+                  <a
+                    href={getOtpBotLink()}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex w-full items-center justify-center gap-2 rounded-2xl px-5 py-4 text-sm font-black"
+                    style={{ background: 'rgba(59,130,246,0.2)', color: '#60a5fa' }}
+                  >
+                    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0h-.056zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
+                    </svg>
+                    @FynexEduBot
+                  </a>
+                </div>
+              </motion.section>
+            )}
+
             {/* ═══ PHONE ═══ */}
             {step === 'phone' && (
               <motion.section key="phone" {...slide} className="flex h-full flex-col">
@@ -409,8 +441,11 @@ export default function LoginPage() {
                   <div className="mb-3 text-xs font-black uppercase tracking-[0.22em] text-lime-300/90">{copy.phoneLabel}</div>
                   <div className="flex items-center gap-3 rounded-[22px] border border-white/10 bg-black/25 px-4 py-4 focus-within:border-lime-300/35">
                     <span className="shrink-0 text-lg font-black tracking-wide text-lime-300">+998</span>
-                    <input ref={phoneRef} type="tel" inputMode="numeric" pattern="[0-9]*" autoComplete="tel-national" value={phone} onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 9))} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); goPhone(); } }} className="w-full bg-transparent text-lg font-bold tracking-[0.16em] text-white placeholder:text-white/25 focus:outline-none" placeholder="90 123 45 67" />
+                    <input ref={phoneRef} type="tel" inputMode="numeric" pattern="[0-9]*" autoComplete="tel-national" value={phone} onChange={(e) => { setPhone(e.target.value.replace(/\D/g, '').slice(0, 9)); if (phoneError) setPhoneError(''); }} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); goPhone(); } }} className="w-full bg-transparent text-lg font-bold tracking-[0.16em] text-white placeholder:text-white/25 focus:outline-none" placeholder="90 123 45 67" />
                   </div>
+                  {phoneError && (
+                    <p className="mt-4 text-sm font-medium text-red-400">{phoneError}</p>
+                  )}
                 </div>
               </motion.section>
             )}
@@ -826,7 +861,11 @@ export default function LoginPage() {
         {(step !== 'otp' && step !== 'loading') && (
           <div className="mx-auto mt-auto w-full max-w-md pt-6">
             <motion.button whileTap={{ scale: 0.985 }} onClick={goNext} disabled={!canNext} className="flex h-16 w-full items-center justify-center gap-2 rounded-full text-lg font-black transition-all disabled:opacity-40" style={btnGradient}>
-              {step === 'summary' ? (<><span>{t.login_start_learning}</span><Rocket className="h-5 w-5" /></>) : (<><span>{t.login_next}</span><ArrowRight className="h-5 w-5" /></>)}
+              {step === 'summary'
+                ? (<><span>{t.login_start_learning}</span><Rocket className="h-5 w-5" /></>)
+                : step === 'intro'
+                  ? (<><span>{copy.introButton}</span><ArrowRight className="h-5 w-5" /></>)
+                  : (<><span>{t.login_next}</span><ArrowRight className="h-5 w-5" /></>)}
             </motion.button>
           </div>
         )}
@@ -834,7 +873,7 @@ export default function LoginPage() {
         {/* ── DOTS (login) / nothing (onboarding has progress bar) ── */}
         {!isOnboarding && step !== 'otp' && (
           <footer className="mt-5 flex justify-center gap-2">
-            {[0, 1, 2].map((i) => {
+            {[0, 1, 2, 3].map((i) => {
               const active = i === loginIdx;
               return <motion.div key={i} animate={{ width: active ? 32 : 10, opacity: active ? 1 : 0.4 }} className="h-1.5 rounded-full" style={{ background: active ? '#c3ff2e' : 'rgba(255,255,255,0.18)' }} />;
             })}

@@ -774,7 +774,10 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
         phone = payload.phone_number.strip()
         if not re.fullmatch(r"\+998\d{9}", phone):
             raise HTTPException(status_code=400, detail="Phone must match +998XXXXXXXXX")
-        return {"ok": True, "sent": False, "expires_in_sec": 120, "mode": "telegram_bot"}
+        active = await db.has_active_otp_code(phone)
+        if not active:
+            raise HTTPException(status_code=400, detail="otp_not_requested")
+        return {"ok": True, "sent": False, "expires_in_sec": 300, "mode": "telegram_bot"}
 
     @app.post("/api/auth/verify-otp")
     async def verify_otp(payload: OTPVerifyPayload) -> dict:
