@@ -78,6 +78,7 @@ async def run_otp_bot() -> None:
             return
 
         phone_raw = contact.phone_number or ""
+        # Normalize phone number to international format
         digits = "".join(ch for ch in phone_raw if ch.isdigit())
 
         if digits.startswith("998"):
@@ -116,6 +117,7 @@ async def run_otp_bot() -> None:
 
         code = _generate_otp()
         telegram_id = user.id if user else None
+        logging.info(f"OTP Bot - Phone: {phone}, Code: {code}, Telegram ID: {telegram_id}")
         await db.save_otp_code(phone, code, telegram_id, ttl_seconds=300)
         await message.answer(
             f"🔐 <b>Fynex OTP kodi</b>\n\n"

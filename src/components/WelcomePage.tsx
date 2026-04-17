@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, ChevronLeft, Sparkles, BookOpen, Globe, Rocket } from 'lucide-react';
+import { ArrowRight, ChevronLeft, Sparkles, BookOpen, Globe, Rocket, MessageCircle, Smartphone, KeyRound } from 'lucide-react';
 import { getTranslations } from '../lib/i18n';
 
 type Lang = 'en' | 'uz' | 'ru';
@@ -64,6 +64,33 @@ const getSlideData = (lang: Lang): SlideData[] => {
         { x: '8%', y: '25%', size: 7, delay: 0.9, emoji: '🇺🇿' },
         { x: '88%', y: '55%', size: 5, delay: 0.6, emoji: '🇬🇧' },
         { x: '15%', y: '65%', size: 6, delay: 1.1, emoji: '🇷🇺' },
+      ],
+    },
+    {
+      tag: lang === 'uz' ? "KIRISH" : lang === 'ru' ? "ВХОД" : "LOGIN",
+      title: lang === 'uz' 
+        ? "Telegram orqali\nkirish"
+        : lang === 'ru'
+        ? "Вход через\nTelegram"
+        : "Login via\nTelegram",
+      subtitle: lang === 'uz'
+        ? "1️⃣ @FynexEduBot ni oching\n2️⃣ Telefon raqamingizni yuboring\n3️⃣ 6 xonali kodni oling\n4️⃣ Ilovada kodni kiriting"
+        : lang === 'ru'
+        ? "1️⃣ Откройте @FynexEduBot\n2️⃣ Отправьте номер телефона\n3️⃣ Получите 6-значный код\n4️⃣ Введите код в приложении"
+        : "1️⃣ Open @FynexEduBot\n2️⃣ Send your phone number\n3️⃣ Get 6-digit code\n4️⃣ Enter code in the app",
+      gradient: 'linear-gradient(160deg, #0a1a1a 0%, #0d2020 30%, #0e0e0e 100%)',
+      iconBg: 'linear-gradient(135deg, #06b6d4, #0891b2)',
+      icon: (
+        <div className="flex flex-col items-center gap-1">
+          <MessageCircle className="h-6 w-6 text-white" />
+          <Smartphone className="h-4 w-4 text-white/80" />
+        </div>
+      ),
+      particles: [
+        { x: '75%', y: '20%', size: 7, delay: 0.2, emoji: '📱' },
+        { x: '10%', y: '30%', size: 6, delay: 0.6, emoji: '🔐' },
+        { x: '85%', y: '65%', size: 5, delay: 0.9, emoji: '✉️' },
+        { x: '18%', y: '75%', size: 6, delay: 1.3, emoji: '✅' },
       ],
     },
   ];
@@ -143,13 +170,13 @@ export default function WelcomePage({ onComplete }: { onComplete: (lang: Lang) =
           animate={{ opacity: [0.15, 0.3, 0.15], scale: [0.9, 1.1, 0.9] }}
           transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
           className="absolute -left-20 top-1/4 h-72 w-72 rounded-full blur-[100px]"
-          style={{ background: current === 0 ? '#c3ff2e' : current === 1 ? '#6366f1' : '#f97316' }}
+          style={{ background: current === 0 ? '#c3ff2e' : current === 1 ? '#6366f1' : current === 2 ? '#f97316' : '#06b6d4' }}
         />
         <motion.div
           animate={{ opacity: [0.08, 0.18, 0.08] }}
           transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut' }}
           className="absolute -right-16 bottom-1/3 h-60 w-60 rounded-full blur-[90px]"
-          style={{ background: current === 0 ? '#b2ed12' : current === 1 ? '#818cf8' : '#fb923c' }}
+          style={{ background: current === 0 ? '#b2ed12' : current === 1 ? '#818cf8' : current === 2 ? '#fb923c' : '#0891b2' }}
         />
       </div>
 
@@ -182,7 +209,7 @@ export default function WelcomePage({ onComplete }: { onComplete: (lang: Lang) =
                   opacity: i === current ? 1 : 0.3,
                 }}
                 className="h-2 rounded-full"
-                style={{ background: i === current ? (current === 0 ? '#c3ff2e' : current === 1 ? '#818cf8' : '#fb923c') : 'rgba(255,255,255,0.3)' }}
+                style={{ background: i === current ? (current === 0 ? '#c3ff2e' : current === 1 ? '#818cf8' : current === 2 ? '#fb923c' : '#06b6d4') : 'rgba(255,255,255,0.3)' }}
               />
             ))}
           </div>
@@ -212,7 +239,7 @@ export default function WelcomePage({ onComplete }: { onComplete: (lang: Lang) =
               >
                 <div
                   className="flex h-20 w-20 items-center justify-center rounded-[26px] shadow-xl"
-                  style={{ background: slide.iconBg, boxShadow: `0 16px 48px ${current === 0 ? 'rgba(195,255,46,0.25)' : current === 1 ? 'rgba(99,102,241,0.3)' : 'rgba(249,115,22,0.3)'}` }}
+                  style={{ background: slide.iconBg, boxShadow: `0 16px 48px ${current === 0 ? 'rgba(195,255,46,0.25)' : current === 1 ? 'rgba(99,102,241,0.3)' : current === 2 ? 'rgba(249,115,22,0.3)' : 'rgba(6,182,212,0.3)'}` }}
                 >
                   {slide.icon}
                 </div>
@@ -224,7 +251,7 @@ export default function WelcomePage({ onComplete }: { onComplete: (lang: Lang) =
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
                 className="mb-3 text-[11px] font-black uppercase tracking-[0.3em]"
-                style={{ color: current === 0 ? '#c3ff2e' : current === 1 ? '#818cf8' : '#fb923c' }}
+                style={{ color: current === 0 ? '#c3ff2e' : current === 1 ? '#818cf8' : current === 2 ? '#fb923c' : '#06b6d4' }}
               >
                 {slide.tag}
               </motion.span>
@@ -327,9 +354,11 @@ export default function WelcomePage({ onComplete }: { onComplete: (lang: Lang) =
               style={{
                 background: current === 0
                   ? 'linear-gradient(135deg, #c3ff2e 0%, #b2ed12 50%, #a8e600 100%)'
-                  : 'linear-gradient(135deg, #818cf8 0%, #6366f1 50%, #4f46e5 100%)',
+                  : current === 1
+                  ? 'linear-gradient(135deg, #818cf8 0%, #6366f1 50%, #4f46e5 100%)'
+                  : 'linear-gradient(135deg, #06b6d4 0%, #0891b2 50%, #0e7490 100%)',
                 color: current === 0 ? '#0a0d09' : '#ffffff',
-                boxShadow: current === 0 ? '0 12px 40px rgba(195,255,46,0.2)' : '0 12px 40px rgba(99,102,241,0.25)',
+                boxShadow: current === 0 ? '0 12px 40px rgba(195,255,46,0.2)' : current === 1 ? '0 12px 40px rgba(99,102,241,0.25)' : '0 12px 40px rgba(6,182,212,0.25)',
               }}
             >
               <span>{t.welcome_next}</span>

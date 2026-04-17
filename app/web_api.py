@@ -839,9 +839,25 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
         import logging
         phone = payload.phone_number.strip()
         code = payload.code.strip()
-        logging.info(f"OTP verify attempt - phone: {phone}, code: {code}")
+        logging.info(f"OTP verify attempt - phone: '{phone}' (len={len(phone)}), code: '{code}' (len={len(code)})")
         ok, reason = await db.verify_otp_code(phone, code)
         logging.info(f"OTP verify result - ok: {ok}, reason: {reason}")
+        if not ok:
+            # Debug: show all OTP codes for this phone
+            try:
+                cursor = await db.connection.execute(
+                    "SELECT id, code, expires_at, is_used, created_at FROM otp_codes WHERE phone_number = ? ORDER BY id DESC LIMIT 5",
+                    (phone,)
+                )
+                rows = await cursor.fetchall()
+                if rows:
+                    logging.info(f"Recent OTP codes for {phone}:")
+                    for row in rows:
+                        logging.info(f"  - ID: {row['id']}, Code: '{row['code']}', Used: {row['is_used']}, Expires: {row['expires_at']}")
+                else:
+                    logging.info(f"No OTP codes found in database for phone: {phone}")
+            except Exception as e:
+                logging.error(f"Error debugging OTP codes: {e}")
         return {"ok": ok, "reason": reason, "demo": False}
 
     @app.get("/api/app/bootstrap")
