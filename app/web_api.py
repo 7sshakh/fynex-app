@@ -796,14 +796,43 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
     async def request_otp(payload: OTPRequestPayload) -> dict:
         import os
         import logging
+        import urllib.request
+        import json
         phone = payload.phone_number.strip()
         logging.info(f"OTP request for phone: {phone}")
         if not _validate_phone(phone):
             raise HTTPException(status_code=400, detail="Invalid phone number format")
+        
         code = f"{int.from_bytes(os.urandom(2), 'big') % 900000 + 100000:06d}"
         logging.info(f"Generated code: {code} for phone: {phone}")
         await db.save_otp_code(phone, code, payload.telegram_id, ttl_seconds=300)
-        return {"ok": True, "sent": True, "expires_in_sec": 300, "mode": "app_direct"}
+        
+        bot_token = os.getenv("DATA_BOT_TOKEN", "").strip()
+        if not bot_token:
+            return {"ok": True, "sent": True, "expires_in_sec": 300, "mode": "app_direct"}
+        
+        cursor = await db.connection.execute(
+            "SELECT telegram_id FROM otp_codes WHERE phone_number = ? ORDER BY id DESC LIMIT 1",
+            (phone,)
+        )
+        row = await cursor.fetchone()
+        
+        if row and row["telegram_id"]:
+            tg_id = row["telegram_id"]
+            try:
+                url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+                data = urllib.parse.urlencode({
+                    "chat_id": str(tg_id),
+                    "text": f"🔐 <b>Fynex ilovasidan kod so'rovi</b>\n\nRaqamingiz: <code>{phone}</code>\nKod: <code>{code}</code>\n\nKod 5 daqiqa davomida amal qiladi.",
+                    "parse_mode": "HTML"
+                }).encode()
+                req = urllib.request.Request(url, data=data)
+                urllib.request.urlopen(req, timeout=10)
+                logging.info(f"Sent OTP to telegram user {tg_id}")
+            except Exception as e:
+                logging.error(f"Failed to send OTP to telegram: {e}")
+        
+        return {"ok": True, "sent": True, "expires_in_sec": 300, "mode": "app_to_bot"}
 
     @app.post("/api/auth/verify-otp")
     async def verify_otp(payload: OTPVerifyPayload) -> dict:

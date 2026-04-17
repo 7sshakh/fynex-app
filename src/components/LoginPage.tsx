@@ -312,9 +312,25 @@ export default function LoginPage() {
 
   const resendCode = async () => {
     if (resendSec > 0) return;
+    setOtpStatus('checking');
+    try {
+      const telegramId = (window as any)?.Telegram?.WebApp?.initDataUnsafe?.user?.id ?? null;
+      const resp = await fetch('/api/auth/request-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone_number: fullPhone, telegram_id: telegramId }),
+      });
+      if (!resp.ok) {
+        setPhoneError(copy.phoneCheckError);
+        return;
+      }
+    } catch {
+      setPhoneError(copy.phoneCheckError);
+      return;
+    }
     setOtpCode('');
     setOtpStatus('idle');
-    setPhoneError(copy.phoneCheckError);
+    setOtpAttempt(0);
     setResendSec(45);
     otpRef.current?.focus();
   };
@@ -527,28 +543,30 @@ export default function LoginPage() {
                     <button
                       type="button"
                       onClick={resendCode}
-                      className="rounded-full px-3 py-1 text-xs font-black"
+                      disabled={resendSec > 0}
+                      className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-black transition-all"
                       style={{
-                        background: resendSec > 0 ? 'rgba(255,255,255,0.06)' : 'rgba(195,255,46,0.2)',
-                        color: resendSec > 0 ? 'rgba(255,255,255,0.48)' : '#c3ff2e',
+                        background: resendSec > 0 ? 'rgba(255,255,255,0.06)' : 'rgba(195,255,46,0.15)',
+                        color: resendSec > 0 ? 'rgba(255,255,255,0.35)' : 'rgba(195,255,46,0.9)',
+                        opacity: resendSec > 0 ? 0.5 : 1,
                       }}
                     >
-                      {resendSec > 0 ? `${t.login_next} ${resendSec}s` : t.login_next}
+                      {resendSec > 0 ? (
+                        <>
+                          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          <span>{resendSec}s</span>
+                        </>
+                      ) : (
+                        <>
+                          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                          </svg>
+                          <span>{t.login_next}</span>
+                        </>
+                      )}
                     </button>
-                  </div>
-                  <div className="mt-4">
-                    <a
-                      href={getOtpBotLink()}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="flex w-full items-center justify-center gap-2 rounded-2xl px-5 py-4 text-sm font-black"
-                      style={{ background: 'rgba(59,130,246,0.2)', color: '#60a5fa' }}
-                    >
-                      <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                        <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0h-.056zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
-                      </svg>
-                      {copy.otpViaTelegram}
-                    </a>
                   </div>
                 </div>
                 <motion.div initial={false} animate={{ opacity: otpStatus === 'idle' ? 0 : 1, y: otpStatus === 'idle' ? 8 : 0 }} className="mt-auto pt-8 text-center text-sm font-medium text-white/65 min-h-6">
