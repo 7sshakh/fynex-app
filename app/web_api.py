@@ -794,13 +794,13 @@ def create_app(*, title: str = "Fynex API") -> FastAPI:
 
     @app.post("/api/auth/request-otp")
     async def request_otp(payload: OTPRequestPayload) -> dict:
+        import os
         phone = payload.phone_number.strip()
         if not _validate_phone(phone):
             raise HTTPException(status_code=400, detail="Invalid phone number format")
-        active = await db.has_active_otp_code(phone)
-        if not active:
-            raise HTTPException(status_code=400, detail="otp_not_requested")
-        return {"ok": True, "sent": False, "expires_in_sec": 300, "mode": "telegram_bot"}
+        code = f"{int.from_bytes(os.urandom(2), 'big') % 900000 + 100000:06d}"
+        await db.save_otp_code(phone, code, payload.telegram_id, ttl_seconds=300)
+        return {"ok": True, "sent": True, "expires_in_sec": 300, "mode": "app_direct"}
 
     @app.post("/api/auth/verify-otp")
     async def verify_otp(payload: OTPVerifyPayload) -> dict:

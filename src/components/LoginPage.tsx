@@ -146,7 +146,7 @@ export default function LoginPage() {
     grade: { '1-4': `1–4 ${t.login_class}`, '5-8': `5–8 ${t.login_class}`, '9': `9-${t.login_class}`, '10': `10-${t.login_class}`, '11': `11-${t.login_class}` },
     subject: { english: t.login_subject_en, programming: t.login_subject_it, russian: t.login_subject_ru, math: t.login_subject_math },
   }), [t]);
-  const [step, setStep] = useState<Step>('intro');
+  const [step, setStep] = useState<Step>('phone');
   const [phone, setPhone] = useState('');
   const [otpCode, setOtpCode] = useState('');
   const [name, setName] = useState('');

@@ -1,7 +1,6 @@
 import asyncio
 import logging
 import os
-import re
 
 from aiogram import Bot, Dispatcher, F
 from aiogram.client.default import DefaultBotProperties
@@ -18,36 +17,6 @@ load_dotenv()
 
 def _generate_otp() -> str:
     return f"{int.from_bytes(os.urandom(2), 'big') % 900000 + 100000:06d}"
-
-
-COUNTRIES = {
-    "uz": {"code": "+998", "name": "O'zbekiston", "flag": "🇺🇿"},
-    "ru": {"code": "+7", "name": "Rossiya", "flag": "🇷🇺"),
-    "kg": {"code": "+996", "name": "Qirg'iziston", "flag": "🇰🇬"},
-    "kz": {"code": "+7", "name": "Qozog'iston", "flag": "🇰🇿"},
-}
-
-
-def _normalize_phone(phone: str, country_code: str) -> str:
-    digits = "".join(ch for ch in phone if ch.isdigit())
-    if country_code == "+998":
-        if digits.startswith("998"):
-            return f"+{digits}"
-        elif len(digits) == 9:
-            return f"+998{digits}"
-    elif country_code == "+7":
-        if digits.startswith("7"):
-            return f"+7{digits[1:]}" if len(digits) > 1 else f"+7"
-        elif len(digits) == 10:
-            return f"+7{digits}"
-        elif len(digits) == 9:
-            return f"+7{digits}"
-    elif country_code == "+996":
-        if digits.startswith("996"):
-            return f"+{digits}"
-        elif len(digits) == 9:
-            return f"+996{digits}"
-    return f"{country_code}{digits}"
 
 
 async def run_otp_bot() -> None:
@@ -112,7 +81,7 @@ async def run_otp_bot() -> None:
             selected_country["code"] = "+7"
             selected_country["name"] = "Qozog'iston"
             selected_country["flag"] = "🇰🇿"
-        await callback.message.edit_text(
+        await callback.message.answer(
             f"{selected_country['flag']} <b>{selected_country['name']}</b> tanlandi.\n\n"
             f"Endi telefon raqamingizni <b>Share Contact</b> orqali yuboring.",
             reply_markup=contact_keyboard,
@@ -125,7 +94,7 @@ async def run_otp_bot() -> None:
             "1) Bu botda telefon raqamingizni yuboring\n"
             "2) 6 xonali OTP kodni oling\n"
             "3) Fynex ilovasida raqam va kodni kiriting",
-            reply_markup=contact_keyboard,
+            reply_markup=country_keyboard,
         )
 
     @dp.message(F.contact)
@@ -141,23 +110,22 @@ async def run_otp_bot() -> None:
             )
             return
 
-        digits = "".join(ch for ch in (contact.phone_number or "") if ch.isdigit())
         country_code = selected_country.get("code", "+998")
+        digits = "".join(ch for ch in (contact.phone_number or "") if ch.isdigit())
 
-        phone = _normalize_phone(contact.phone_number or "", country_code)
+        phone = f"{country_code}{digits[-9:]}" if country_code == "+998" or country_code == "+996" else f"{country_code}{digits[-10:]}"
 
         is_valid = False
-        if country_code == "+998" and phone.startswith("+998") and len(phone) == 13:
+        if country_code == "+998" and len(phone) == 13:
             is_valid = True
-        elif country_code == "+7":
-            if (phone.startswith("+7") and len(phone) == 12 and phone[2:].isdigit()) or (phone.startswith("+7") and len(phone) == 12):
-                is_valid = True
-        elif country_code == "+996" and phone.startswith("+996") and len(phone) == 13:
+        elif country_code == "+7" and len(phone) == 12:
+            is_valid = True
+        elif country_code == "+996" and len(phone) == 13:
             is_valid = True
 
         if not is_valid:
             await message.answer(
-                f"Raqam formati noto'g'ri. Iltimos, {selected_country.get('name', 'O\'zbekiston')} raqamini qaytadan yuboring.",
+                f"Raqam formati noto'g'ri. Iltimos, {selected_country.get('name', 'Ozbekiston')} raqamini qaytadan yuboring.",
                 reply_markup=contact_keyboard,
             )
             return
@@ -176,8 +144,8 @@ async def run_otp_bot() -> None:
     @dp.message(F.text)
     async def fallback(message: Message) -> None:
         await message.answer(
-            "OTP olish uchun pastdagi tugma orqali telefon raqamingizni yuboring.",
-            reply_markup=contact_keyboard,
+            "OTP olish uchun pastdagi tugma orqali telefon raqamingizni yuboring yoki /start bosib davom eting.",
+            reply_markup=country_keyboard,
         )
 
     try:
