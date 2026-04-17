@@ -6,7 +6,7 @@ from aiogram import Bot, Dispatcher, F
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.filters import Command
-from aiogram.types import KeyboardButton, Message, ReplyKeyboardMarkup, ReplyKeyboardRemove, InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import KeyboardButton, Message, ReplyKeyboardMarkup, ReplyKeyboardRemove
 from dotenv import load_dotenv
 
 from app.database.sqlite import Database
@@ -40,53 +40,20 @@ async def run_otp_bot() -> None:
         input_field_placeholder="Telefon raqamingizni yuboring",
     )
 
-    country_keyboard = InlineKeyboardMarkup(
-        inline_keyboard=[
-            [InlineKeyboardButton(text="🇺🇿 O'zbekiston (+998)", callback_data="country_uz")],
-            [InlineKeyboardButton(text="🇷🇺 Rossiya (+7)", callback_data="country_ru")],
-            [InlineKeyboardButton(text="🇰🇬 Qirg'iziston (+996)", callback_data="country_kg")],
-            [InlineKeyboardButton(text="🇰🇿 Qozog'iston (+7)", callback_data="country_kz")],
-        ]
-    )
-
-    selected_country = {"code": "+998", "name": "O'zbekiston", "flag": "🇺🇿"}
-
     @dp.message(Command("start"))
     async def start_plain(message: Message) -> None:
-        selected_country["code"] = "+998"
-        selected_country["name"] = "O'zbekiston"
-        selected_country["flag"] = "🇺🇿"
         await message.answer(
-            f"Salom! Fynex ilovasiga kirish uchun davlatingizni tanlang, so'ngra telefon raqamingizni <b>Share Contact</b> orqali yuboring.\n\n"
-            f"Bot sizga 5 daqiqa amal qiladigan 6 xonali OTP kod beradi.",
-            reply_markup=country_keyboard,
-        )
-
-    @dp.callback_query(F.data.startswith("country_"))
-    async def country_callback(callback: Message) -> None:
-        country_code = callback.data.replace("country_", "")
-        if country_code == "uz":
-            selected_country["code"] = "+998"
-            selected_country["name"] = "O'zbekiston"
-            selected_country["flag"] = "🇺🇿"
-        elif country_code == "ru":
-            selected_country["code"] = "+7"
-            selected_country["name"] = "Rossiya"
-            selected_country["flag"] = "🇷🇺"
-        elif country_code == "kg":
-            selected_country["code"] = "+996"
-            selected_country["name"] = "Qirg'iziston"
-            selected_country["flag"] = "🇰🇬"
-        elif country_code == "kz":
-            selected_country["code"] = "+7"
-            selected_country["name"] = "Qozog'iston"
-            selected_country["flag"] = "🇰🇿"
-        await callback.message.answer(
-            f"{selected_country['flag']} <b>{selected_country['name']}</b> tanlandi.\n\n"
-            f"Endi telefon raqamingizni <b>Share Contact</b> orqali yuboring.",
+            "Salom! Fynex ilovasiga kirish uchun telefon raqamingizni <b>Share Contact</b> orqali yuboring.\n\n"
+            "Bot sizga 5 daqiqa amal qiladigan 6 xonali OTP kod beradi.",
             reply_markup=contact_keyboard,
         )
-        await callback.answer()
+
+    @dp.message(Command("code"))
+    async def new_code(message: Message) -> None:
+        await message.answer(
+            "Yangi OTP kod olish uchun pastdagi tugma orqali telefon raqamingizni yuboring.",
+            reply_markup=contact_keyboard,
+        )
 
     @dp.message(Command("help"))
     async def help_handler(message: Message) -> None:
@@ -94,7 +61,7 @@ async def run_otp_bot() -> None:
             "1) Bu botda telefon raqamingizni yuboring\n"
             "2) 6 xonali OTP kodni oling\n"
             "3) Fynex ilovasida raqam va kodni kiriting",
-            reply_markup=country_keyboard,
+            reply_markup=contact_keyboard,
         )
 
     @dp.message(F.contact)
@@ -110,22 +77,39 @@ async def run_otp_bot() -> None:
             )
             return
 
-        country_code = selected_country.get("code", "+998")
-        digits = "".join(ch for ch in (contact.phone_number or "") if ch.isdigit())
+        phone_raw = contact.phone_number or ""
+        digits = "".join(ch for ch in phone_raw if ch.isdigit())
 
-        phone = f"{country_code}{digits[-9:]}" if country_code == "+998" or country_code == "+996" else f"{country_code}{digits[-10:]}"
+        if digits.startswith("998"):
+            phone = f"+{digits}"
+            country_flag = "🇺🇿"
+        elif digits.startswith("7"):
+            phone = f"+7{digits[1:]}" if len(digits) > 1 else "+7"
+            country_flag = "🇷🇺"
+        elif digits.startswith("996"):
+            phone = f"+{digits}"
+            country_flag = "🇰🇬"
+        elif len(digits) == 9:
+            phone = f"+998{digits}"
+            country_flag = "🇺🇿"
+        elif len(digits) == 10 and digits.startswith("9"):
+            phone = f"+998{digits}"
+            country_flag = "🇺🇿"
+        else:
+            phone = f"+998{digits}" if len(digits) == 9 else f"+{digits}"
+            country_flag = "🌏"
 
         is_valid = False
-        if country_code == "+998" and len(phone) == 13:
+        if phone.startswith("+998") and len(phone) == 13:
             is_valid = True
-        elif country_code == "+7" and len(phone) == 12:
+        elif phone.startswith("+7") and len(phone) == 12:
             is_valid = True
-        elif country_code == "+996" and len(phone) == 13:
+        elif phone.startswith("+996") and len(phone) == 13:
             is_valid = True
 
         if not is_valid:
             await message.answer(
-                f"Raqam formati noto'g'ri. Iltimos, {selected_country.get('name', 'Ozbekiston')} raqamini qaytadan yuboring.",
+                "Raqam formati noto'g'ri. Iltimos, qaytadan yuboring.",
                 reply_markup=contact_keyboard,
             )
             return
@@ -135,7 +119,7 @@ async def run_otp_bot() -> None:
         await db.save_otp_code(phone, code, telegram_id, ttl_seconds=300)
         await message.answer(
             f"🔐 <b>Fynex OTP kodi</b>\n\n"
-            f"📱 Raqam: <code>{phone}</code>\n"
+            f"{country_flag} Raqam: <code>{phone}</code>\n"
             f"🔢 Kod: <code>{code}</code>\n\n"
             f"Kod 5 daqiqa davomida amal qiladi.",
             reply_markup=ReplyKeyboardRemove(),
@@ -145,7 +129,7 @@ async def run_otp_bot() -> None:
     async def fallback(message: Message) -> None:
         await message.answer(
             "OTP olish uchun pastdagi tugma orqali telefon raqamingizni yuboring yoki /start bosib davom eting.",
-            reply_markup=country_keyboard,
+            reply_markup=contact_keyboard,
         )
 
     try:

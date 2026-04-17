@@ -446,38 +446,47 @@ export default function LoginPage() {
               <motion.section key="phone" {...slide} className="flex h-full flex-col">
                 <div className={cardStyle}>
                   <h2 className="mb-2 text-4xl font-black tracking-[-0.06em]">{copy.phoneTitle}</h2>
-                  <p className="mb-8 text-sm text-white/68">{copy.phoneDesc}</p>
+                  <p className="mb-6 text-sm text-white/68">{copy.phoneDesc}</p>
                   <div className="mb-3 text-xs font-black uppercase tracking-[0.22em] text-lime-300/90">{copy.phoneLabel}</div>
                   <div className="flex items-center gap-3 rounded-[22px] border border-white/10 bg-black/25 px-4 py-4 focus-within:border-lime-300/35">
-                    <button
-                      type="button"
-                      onClick={() => setShowCountryDropdown(!showCountryDropdown)}
-                      className="shrink-0 flex items-center gap-1.5 text-lg font-black tracking-wide text-lime-300 hover:text-lime-200 transition-colors"
-                    >
-                      <span>{selectedCountry.flag}</span>
-                      <span>{selectedCountry.code}</span>
-                      <svg className="w-4 h-4 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </button>
-                    {showCountryDropdown && (
-                      <div className="absolute z-50 mt-2 w-64 rounded-2xl border border-white/10 bg-black/95 p-2 shadow-2xl backdrop-blur-xl">
-                        {COUNTRIES.filter(c => c.code !== selectedCountry.code || c.name !== selectedCountry.name).map((c) => (
-                          <button
-                            key={c.code + c.name}
-                            type="button"
-                            onClick={() => { setSelectedCountry(c); setPhone(''); setShowCountryDropdown(false); }}
-                            className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left hover:bg-white/10 transition-colors"
-                          >
-                            <span className="text-xl">{c.flag}</span>
-                            <span className="text-sm font-bold text-white">{c.name}</span>
-                            <span className="ml-auto text-xs text-white/50">{c.code}</span>
-                          </button>
-                        ))}
-                      </div>
-                    )}
+                    <span className="shrink-0 text-lg font-black tracking-wide text-lime-300">{selectedCountry.flag} {selectedCountry.code}</span>
                     <input ref={phoneRef} type="tel" inputMode="numeric" pattern="[0-9]*" autoComplete="tel-national" value={phone} onChange={(e) => { setPhone(e.target.value.replace(/\D/g, '').slice(0, selectedCountry.digitCount)); if (phoneError) setPhoneError(''); }} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); goPhone(); } }} className="w-full bg-transparent text-lg font-bold tracking-[0.16em] text-white placeholder:text-white/25 focus:outline-none" placeholder={selectedCountry.digitCount === 9 ? "90 123 45 67" : "912 345 67 89"} />
                   </div>
+                  <button
+                    type="button"
+                    onClick={() => setShowCountryDropdown(!showCountryDropdown)}
+                    className="mt-3 flex items-center justify-center gap-2 text-sm font-medium text-white/50 hover:text-lime-300 transition-colors"
+                  >
+                    <span>{selectedCountry.flag}</span>
+                    <span>{selectedCountry.code}</span>
+                    <svg className={`w-4 h-4 transition-transform ${showCountryDropdown ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  <AnimatePresence>
+                    {showCountryDropdown && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="mt-2 overflow-hidden"
+                      >
+                        <div className="flex justify-center gap-3">
+                          {COUNTRIES.map((c) => (
+                            <button
+                              key={c.code + c.name}
+                              type="button"
+                              onClick={() => { setSelectedCountry(c); setPhone(''); setShowCountryDropdown(false); }}
+                              className={`flex flex-col items-center gap-1 rounded-xl px-3 py-2 transition-all ${selectedCountry.code === c.code ? 'bg-lime-300/20 border border-lime-300/30' : 'bg-white/5 border border-white/10 hover:bg-white/10'}`}
+                            >
+                              <span className="text-2xl">{c.flag}</span>
+                              <span className="text-xs font-bold text-white/80">{c.code}</span>
+                            </button>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                   {phoneError && (
                     <p className="mt-4 text-sm font-medium text-red-400">{phoneError}</p>
                   )}
