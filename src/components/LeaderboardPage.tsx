@@ -42,14 +42,14 @@ const seededEntries: LeaderboardEntry[] = [
 ];
 
 export default function LeaderboardPage() {
-  const { user, theme } = useUser();
+  const { user, theme, t } = useUser();
   const colors = getPalette(theme);
   const [timeFilter, setTimeFilter] = useState<TimeFilter>('week');
 
   const filters: { key: TimeFilter; label: string }[] = [
-    { key: 'week', label: 'Bu hafta' },
-    { key: 'month', label: 'Bu oy' },
-    { key: 'all', label: 'Barcha davr' },
+    { key: 'week', label: t.leaderboard_week },
+    { key: 'month', label: t.leaderboard_month },
+    { key: 'all', label: t.leaderboard_all },
   ];
 
   const leaderboardData = useMemo(() => {
@@ -96,7 +96,7 @@ export default function LeaderboardPage() {
             <Trophy className="h-5 w-5" style={{ color: colors.primary }} />
           </div>
           <h1 className="text-lg font-black tracking-[-0.04em]" style={{ color: colors.primary }}>
-            Reyting
+            {t.leaderboard_title}
           </h1>
         </div>
       </motion.header>
@@ -168,13 +168,13 @@ export default function LeaderboardPage() {
                   {entry.user.name}
                   {isCurrentUser && (
                     <span className="ml-2 text-[11px]" style={{ color: 'inherit', opacity: 0.75 }}>
-                      (Siz)
+                      {t.leaderboard_you}
                     </span>
                   )}
                 </p>
                 <div className="flex items-center gap-2 text-[10px]" style={{ color: isCurrentUser ? 'inherit' : colors.onSurfaceVariant }}>
                   <Flame className="h-3 w-3" style={{ color: colors.tertiary }} />
-                  <span>{entry.streak} kunlik streak</span>
+                  <span>{entry.streak} {t.leaderboard_streak_label}</span>
                 </div>
               </div>
 
@@ -203,7 +203,7 @@ export default function LeaderboardPage() {
             </div>
             <div>
               <p className="text-[10px] uppercase tracking-[0.18em]" style={{ color: colors.onSurfaceVariant }}>
-                Sizning o'rningiz
+                {t.leaderboard_your_rank}
               </p>
               <p className="text-base font-black" style={{ color: colors.onSurface }}>
                 #{currentUserRank ?? '-'}
@@ -213,7 +213,7 @@ export default function LeaderboardPage() {
 
           <div className="text-right">
             <p className="text-[10px] uppercase tracking-[0.18em]" style={{ color: colors.onSurfaceVariant }}>
-              Jami XP
+              {t.leaderboard_total_xp}
             </p>
             <p className="text-base font-black" style={{ color: colors.primary }}>
               {user?.xp || 0}

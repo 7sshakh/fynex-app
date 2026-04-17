@@ -19,15 +19,16 @@ import {
 } from './features/HomeWidgets';
 import { checkTimeBasedAchievements, loadFeatures, updateFeatures, weekKey } from '../lib/featureStore';
 
-const mockNotifications = [
-  { id: '1', icon: Gift, title: 'Fynex 3.0 yangilandi!', desc: 'Yangi kurslar va yaxshilangan dizayn sizni kutmoqda.', time: 'Bugun', accent: '#c3ff2e' },
-  { id: '2', icon: TrendingUp, title: 'Streak 3 kunga yetdi!', desc: "Ajoyib! O'qishni davom eting va streak'ni yo'qotmang.", time: 'Bugun', accent: '#34d399' },
-  { id: '3', icon: Megaphone, title: 'PRO obuna chegirmasi', desc: 'Hozir PRO ga obuna bo\'ling va 30% chegirma oling.', time: 'Kecha', accent: '#fbbf24' },
-  { id: '4', icon: CheckCircle2, title: 'Ingliz Tili Beginner tugallandi', desc: 'Tabriklaymiz! Keyingi kursni boshlang.', time: '2 kun oldin', accent: '#60a5fa' },
+// These will be translated inside the component
+const getMockNotifications = (t: any) => [
+  { id: '1', icon: Gift, title: t.notif_updated, desc: t.notif_updated_desc, time: t.notif_today, accent: '#c3ff2e' },
+  { id: '2', icon: TrendingUp, title: t.notif_streak, desc: t.notif_streak_desc, time: t.notif_today, accent: '#34d399' },
+  { id: '3', icon: Megaphone, title: t.notif_pro_discount, desc: t.notif_pro_discount_desc, time: t.notif_yesterday, accent: '#fbbf24' },
+  { id: '4', icon: CheckCircle2, title: t.notif_course_done, desc: t.notif_course_done_desc, time: `2 ${t.notif_days_ago}`, accent: '#60a5fa' },
 ];
 
 export default function HomePage() {
-  const { user, theme } = useUser();
+  const { user, theme, t } = useUser();
   const colors = getPalette(theme);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showAiMentor, setShowAiMentor] = useState(false);
@@ -144,9 +145,9 @@ export default function HomePage() {
   };
 
   const stats = [
-    { label: 'Bajarilgan', value: user?.completedCourses.length || 0, icon: BookOpen, tone: colors.primary },
-    { label: 'Reyting', value: '#0', icon: Trophy, tone: colors.tertiary },
-    { label: 'XP', value: user?.xp || 0, icon: Zap, tone: colors.secondary },
+    { label: t.home_completed_courses, value: user?.completedCourses.length || 0, icon: BookOpen, tone: colors.primary },
+    { label: t.home_rating, value: '#0', icon: Trophy, tone: colors.tertiary },
+    { label: t.home_xp, value: user?.xp || 0, icon: Zap, tone: colors.secondary },
   ];
 
   const weeklyBars = [42, 58, 34, 78, 45, 53, 100];
@@ -209,15 +210,15 @@ export default function HomePage() {
         <div className="relative z-10 flex items-start justify-between">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <p className="text-sm font-bold" style={{ color: '#fff3eb' }}>Kunlik streak</p>
+              <p className="text-sm font-bold" style={{ color: '#fff3eb' }}>{t.home_daily_streak}</p>
               {roadmap && (
                 <span className="rounded-full px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-white" style={{ background: roadmap.mode === 'strict' ? colors.error : colors.secondary }}>
-                  {roadmap.mode} mode
+                  {roadmap.mode} {t.home_mode}
                 </span>
               )}
             </div>
             <h2 className="text-4xl font-black tracking-[-0.06em]" style={{ color: '#ffffff' }}>
-              {progress?.streak || user?.streak || 0} kun
+              {progress?.streak || user?.streak || 0} {t.home_days}
             </h2>
           </div>
 
@@ -229,7 +230,7 @@ export default function HomePage() {
         <div className="relative z-10 mt-6 flex items-center justify-between border-t border-white/10 pt-4">
           <div>
             <span className="block text-[11px] font-semibold" style={{ color: 'rgba(255,255,255,0.72)' }}>
-              Jami XP
+              {t.home_total_xp}
             </span>
             <span className="text-lg font-black text-white">{user?.xp || 0}</span>
           </div>
@@ -239,7 +240,7 @@ export default function HomePage() {
             className="rounded-full bg-white px-4 py-1.5 text-[11px] font-black uppercase tracking-[0.24em] transition-transform active:scale-95"
             style={{ color: theme === 'dark' ? colors.tertiary : colors.primary }}
           >
-            START
+            {t.home_start}
           </button>
         </div>
 
@@ -258,7 +259,7 @@ export default function HomePage() {
         <div className="mb-4 flex items-end justify-between">
           <div>
             <span className="text-[10px] font-bold uppercase tracking-[0.28em]" style={{ color: colors.primary }}>
-              Davom etish
+              {t.home_continue_label}
             </span>
             <h3 className="mt-1 text-xl font-extrabold tracking-[-0.04em]" style={{ color: colors.onSurface }}>
               {featuredCourse.title}
@@ -281,7 +282,7 @@ export default function HomePage() {
 
         <div className="mt-4 flex items-center justify-between">
           <p className="max-w-[70%] text-xs font-medium" style={{ color: colors.onSurfaceVariant }}>
-            {featuredCourse.lessons[0]?.title || "Yangi darslar tayyor"}
+            {featuredCourse.lessons[0]?.title || t.home_new_lessons}
           </p>
           <button
             type="button"
@@ -289,7 +290,7 @@ export default function HomePage() {
             className="rounded-full px-4 py-2 text-xs font-black uppercase transition-transform active:scale-95"
             style={{ background: colors.primary, color: colors.onPrimary }}
           >
-            Davom etish
+            {t.home_continue}
           </button>
         </div>
       </motion.section>
@@ -326,12 +327,12 @@ export default function HomePage() {
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="rounded-full bg-yellow-400 px-2 py-0.5 text-[8px] font-black uppercase tracking-wider text-black">
-                Hot 
+                {t.home_hot} 
               </span>
-              <p className="text-xs font-bold text-white/70 uppercase tracking-widest">Micro-Learning</p>
+              <p className="text-xs font-bold text-white/70 uppercase tracking-widest">{t.home_micro_learning}</p>
             </div>
-            <h3 className="text-xl font-black tracking-tight" style={{ color: '#ffffff' }}>Practice Lab</h3>
-            <p className="mt-1 text-xs text-white/80 font-medium">5-minute daily smart drills</p>
+            <h3 className="text-xl font-black tracking-tight" style={{ color: '#ffffff' }}>{t.home_practice_lab}</h3>
+            <p className="mt-1 text-xs text-white/80 font-medium">{t.home_practice_desc}</p>
           </div>
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm">
             <Flame className="h-6 w-6 text-white" />
@@ -354,12 +355,12 @@ export default function HomePage() {
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="rounded-full bg-red-500 px-2 py-0.5 text-[8px] font-black uppercase tracking-wider text-white">
-                Yangi
+                {t.home_new}
               </span>
-              <p className="text-xs font-bold text-white/70 uppercase tracking-widest">Mock Tests</p>
+              <p className="text-xs font-bold text-white/70 uppercase tracking-widest">{t.home_mock_tests}</p>
             </div>
-            <h3 className="text-xl font-black tracking-tight" style={{ color: '#ffffff' }}>IELTS & SAT Testlar</h3>
-            <p className="mt-1 text-xs text-white/50 font-medium">Haqiqiy imtihon muhitini his eting</p>
+            <h3 className="text-xl font-black tracking-tight" style={{ color: '#ffffff' }}>{t.home_ielts_sat}</h3>
+            <p className="mt-1 text-xs text-white/50 font-medium">{t.home_mock_desc}</p>
           </div>
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 backdrop-blur-sm">
             <GraduationCap className="h-6 w-6 text-white" />
@@ -383,7 +384,7 @@ export default function HomePage() {
               {user?.completedCourses.length || 0}
             </div>
             <div className="text-[11px] font-bold uppercase leading-tight tracking-[0.16em]" style={{ color: colors.onSurfaceVariant }}>
-              Yakunlangan kurslar
+              {t.home_completed_courses}
             </div>
           </div>
         </div>
@@ -425,10 +426,10 @@ export default function HomePage() {
       >
         <div className="mb-6 flex items-center justify-between">
           <h3 className="text-sm font-black uppercase tracking-[0.24em]" style={{ color: colors.onSurfaceVariant }}>
-            Haftalik progress
+            {t.home_weekly_progress}
           </h3>
           <span className="text-xs font-bold" style={{ color: colors.primary }}>
-            +24% bugun
+            +24% {t.home_today}
           </span>
         </div>
 
@@ -455,7 +456,7 @@ export default function HomePage() {
       >
         <div className="flex items-center justify-between">
           <h3 className="text-xl font-black tracking-[-0.04em]" style={{ color: colors.onSurface }}>
-            {roadmap ? "Shaxsiy o'quv rejangiz" : "Kunlik vazifalar"}
+            {roadmap ? t.home_personal_plan : t.home_daily_tasks}
           </h3>
         </div>
 
@@ -482,7 +483,7 @@ export default function HomePage() {
                   {task.title}
                 </h4>
                 <p className="text-xs font-semibold" style={{ color: colors.onSurfaceVariant }}>
-                  {task.duration} daqiqa • {task.type}
+                  {task.duration} {t.home_min} • {task.type}
                 </p>
               </div>
 
@@ -564,7 +565,7 @@ export default function HomePage() {
 
                 <div className="flex-1 min-h-0 overflow-y-auto px-6 pb-8" style={{ overscrollBehavior: 'contain' }}>
                   <div className="space-y-3">
-                    {mockNotifications.map((n, i) => {
+                    {getMockNotifications(t).map((n: any, i: number) => {
                       const Icon = n.icon;
                       return (
                         <motion.div

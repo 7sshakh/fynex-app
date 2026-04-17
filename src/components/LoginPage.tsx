@@ -7,6 +7,7 @@ import {
   MapPin, User, CheckCircle2, Building2
 } from 'lucide-react';
 import { useUser } from '../context/UserContext';
+import { type Lang, type Translations } from '../lib/i18n';
 
 type Step = 'phone' | 'otp' | 'name' | 'userType' | 'grade' | 'subject' | 'offlineCourse' | 'centerPicker' | 'centerDuration' | 'level' | 'advice' | 'summary' | 'loading';
 
@@ -19,34 +20,6 @@ interface OnboardingData {
   centerDuration: string;
   currentLevel: string;
 }
-
-const USER_TYPES = [
-  { id: 'school' as const, label: "Maktab o'quvchisi", icon: BookOpen, desc: "Maktabda o'qiyapman" },
-  { id: 'university' as const, label: 'Talaba', icon: GraduationCap, desc: "Universitetda o'qiyapman" },
-  { id: 'applicant' as const, label: 'Abituriyent', icon: Target, desc: 'Universitetga tayyorlanmoqdaman' },
-  { id: 'other' as const, label: 'Boshqa', icon: Users, desc: "Mustaqil o'rganmoqdaman" },
-];
-
-const GRADES = [
-  { id: '1-4' as const, label: '1–4 sinf' },
-  { id: '5-8' as const, label: '5–8 sinf' },
-  { id: '9' as const, label: '9-sinf' },
-  { id: '10' as const, label: '10-sinf' },
-  { id: '11' as const, label: '11-sinf' },
-];
-
-const SUBJECTS = [
-  { id: 'english', label: "Ingliz tili (IELTS / General)", icon: Languages, desc: "Chet tili, xorijga ketish" },
-  { id: 'russian', label: "Rus tili", icon: Languages, desc: "Muloqot va biznes uchun" },
-  { id: 'programming', label: "Dasturlash (IT)", icon: Code2, desc: "IT va texnologiyalar" },
-  { id: 'math', label: "Matematika", icon: TrendingUp, desc: "Aniq fanlar va imtihonlar" },
-];
-
-const OFFLINE_CHOICES = [
-  { id: 'no_fynex' as const, label: "Yo'q, faqat Fynex", icon: Rocket, desc: "Noldan Fynex yordamida o'rganaman" },
-  { id: 'plan_to_go' as const, label: "Endi boraman", icon: MapPin, desc: "Yaxshi joy qidiryapman" },
-  { id: 'currently_going' as const, label: "Hozirda boraman", icon: Building2, desc: "O'quv markazida o'qiyman" },
-];
 
 const CENTERS = [
   { id: 'Inter Nation', name: 'Inter Nation', colors: ['#D60000', '#FF3B30'] },
@@ -63,37 +36,65 @@ const CENTERS = [
   { id: 'British Council', name: 'British Council', colors: ['#1E3A8A', '#1E40AF'] },
 ];
 
-const DURATIONS = [
-  { id: '<1', label: "1 oydan kam" },
-  { id: '1-3', label: "1—3 oy" },
-  { id: '3-6', label: "3—6 oy" },
-  { id: '6+', label: "6 oydan ko'p" },
-];
-
-const LEVELS = [
-  { id: 'Beginner', label: 'Beginner (Noldan)' },
-  { id: 'Elementary', label: 'Elementary (A1-A2)' },
-  { id: 'Pre-Intermediate', label: 'Pre-Intermediate (B1)' },
-  { id: 'Intermediate', label: 'Intermediate (B1+)' },
-  { id: 'Upper-Intermediate', label: 'Upper-Inter (B2)' },
-  { id: 'Advanced', label: 'Advanced / IELTS (C1+)' },
-];
-
-const LABELS: Record<string, Record<string, string>> = {
-  userType: { school: "Maktab o'quvchisi", university: 'Talaba', applicant: 'Abituriyent', other: 'Boshqa' },
-  grade: { '1-4': '1–4 sinf', '5-8': '5–8 sinf', '9': '9-sinf', '10': '10-sinf', '11': '11-sinf' },
-  subject: { english: "Ingliz tili", programming: "Dasturlash", russian: "Rus tili", math: "Matematika", physics: "Fizika", chemistry: "Kimyo", biology: "Biologiya", history: "Tarix" },
-};
-
-const LOADING_STEPS = [
-  "Ma'lumotlaringiz tahlil qilinmoqda...",
-  "Sizga mos darslar tanlanmoqda...",
-  "Shaxsiy reja tuzilmoqda...",
-  "Deyarli tayyor...",
-];
-
 export default function LoginPage() {
-  const { login } = useUser();
+  const { login, t } = useUser();
+
+  const USER_TYPES = useMemo(() => [
+    { id: 'school' as const, label: t.login_school, icon: BookOpen, desc: t.login_school_desc },
+    { id: 'university' as const, label: t.login_student, icon: GraduationCap, desc: t.login_student_desc },
+    { id: 'applicant' as const, label: t.login_applicant, icon: Target, desc: t.login_applicant_desc },
+    { id: 'other' as const, label: t.login_other, icon: Users, desc: t.login_other_desc },
+  ], [t]);
+
+  const GRADES = useMemo(() => [
+    { id: '1-4' as const, label: `1–4 ${t.login_class}` },
+    { id: '5-8' as const, label: `5–8 ${t.login_class}` },
+    { id: '9' as const, label: `9-${t.login_class}` },
+    { id: '10' as const, label: `10-${t.login_class}` },
+    { id: '11' as const, label: `11-${t.login_class}` },
+  ], [t]);
+
+  const SUBJECTS = useMemo(() => [
+    { id: 'english', label: t.login_subject_en, icon: Languages, desc: t.login_subject_en_desc },
+    { id: 'russian', label: t.login_subject_ru, icon: Languages, desc: t.login_subject_ru_desc },
+    { id: 'programming', label: t.login_subject_it, icon: Code2, desc: t.login_subject_it_desc },
+    { id: 'math', label: t.login_subject_math, icon: TrendingUp, desc: t.login_subject_math_desc },
+  ], [t]);
+
+  const OFFLINE_CHOICES = useMemo(() => [
+    { id: 'no_fynex' as const, label: t.login_no_fynex, icon: Rocket, desc: t.login_no_fynex_desc },
+    { id: 'plan_to_go' as const, label: t.login_plan_to_go, icon: MapPin, desc: t.login_plan_to_go_desc },
+    { id: 'currently_going' as const, label: t.login_currently_going, icon: Building2, desc: t.login_currently_going_desc },
+  ], [t]);
+
+  const DURATIONS = useMemo(() => [
+    { id: '<1', label: t.dur_less_1 },
+    { id: '1-3', label: t.dur_1_3 },
+    { id: '3-6', label: t.dur_3_6 },
+    { id: '6+', label: t.dur_6_plus },
+  ], [t]);
+
+  const LEVELS = useMemo(() => [
+    { id: 'Beginner', label: 'Beginner (Noldan)' },
+    { id: 'Elementary', label: 'Elementary (A1-A2)' },
+    { id: 'Pre-Intermediate', label: 'Pre-Intermediate (B1)' },
+    { id: 'Intermediate', label: 'Intermediate (B1+)' },
+    { id: 'Upper-Intermediate', label: 'Upper-Inter (B2)' },
+    { id: 'Advanced', label: 'Advanced / IELTS (C1+)' },
+  ], [t]);
+
+  const LOADING_STEPS = useMemo(() => [
+    t.login_loading_1,
+    t.login_loading_2,
+    t.login_loading_3,
+    t.login_loading_4,
+  ], [t]);
+
+  const LABELS: Record<string, Record<string, string>> = useMemo(() => ({
+    userType: { school: t.login_school, university: t.login_student, applicant: t.login_applicant, other: t.login_other },
+    grade: { '1-4': `1–4 ${t.login_class}`, '5-8': `5–8 ${t.login_class}`, '9': `9-${t.login_class}`, '10': `10-${t.login_class}`, '11': `11-${t.login_class}` },
+    subject: { english: t.login_subject_en, programming: t.login_subject_it, russian: t.login_subject_ru, math: t.login_subject_math },
+  }), [t]);
   const [step, setStep] = useState<Step>('phone');
   const [phone, setPhone] = useState('');
   const [otpCode, setOtpCode] = useState('');
@@ -308,7 +309,7 @@ export default function LoginPage() {
     boxShadow: sel ? '0 0 20px rgba(195,255,46,0.1)' : 'none',
   });
 
-  const displayName = name.trim() || 'Do\'stim';
+  const displayName = name.trim() || t.login_meet.split(' ')[0]; // Fallback if name is empty
   const slide = { initial: { opacity: 0, x: 28 }, animate: { opacity: 1, x: 0 }, exit: { opacity: 0, x: -28 }, transition: { duration: 0.28, ease: 'easeOut' as const } };
 
   /* ════════════════════ RENDER ════════════════════ */
@@ -333,7 +334,7 @@ export default function LoginPage() {
               </div>
             </div>
             <h1 className="text-3xl font-black tracking-[-0.06em] text-lime-300">Fynex</h1>
-            <p className="mt-2 text-center text-sm text-white/65">Ta'limni chiroyli va qulay boshlaymiz</p>
+            <p className="mt-2 text-center text-sm text-white/65">{t.login_welcome}</p>
           </motion.header>
         )}
 
@@ -341,7 +342,7 @@ export default function LoginPage() {
         {isOnboarding && (
           <motion.header initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} className="mb-2 flex items-center justify-between pt-4">
             <motion.button whileTap={{ scale: 0.95 }} onClick={goBack} className="flex items-center gap-1.5 text-sm font-bold text-white/60 transition-colors hover:text-lime-300">
-              <ArrowLeft className="h-4 w-4" /> Orqaga
+              <ArrowLeft className="h-4 w-4" /> {t.login_back}
             </motion.button>
             <div className="rounded-full border border-white/10 bg-white/[0.06] px-4 py-1.5 text-xs font-bold text-white/50 backdrop-blur-xl">
               {obIdx + 1} / {obTotal}
@@ -379,9 +380,9 @@ export default function LoginPage() {
             {step === 'otp' && (
               <motion.section key="otp" {...slide} className="flex h-full flex-col">
                 <div className={cardStyle}>
-                  <button type="button" onClick={goBack} className="mb-6 flex items-center gap-2 text-sm font-bold text-white/65 transition-colors hover:text-lime-300"><ArrowLeft className="h-4 w-4" /> Orqaga</button>
-                  <h2 className="mb-2 text-4xl font-black tracking-[-0.06em]">Tasdiqlash</h2>
-                  <p className="mb-7 text-sm text-white/68">{fullPhone} raqamiga yuborilgan kodni kiriting</p>
+                  <button type="button" onClick={goBack} className="mb-6 flex items-center gap-2 text-sm font-bold text-white/65 transition-colors hover:text-lime-300"><ArrowLeft className="h-4 w-4" /> {t.login_back}</button>
+                  <h2 className="mb-2 text-4xl font-black tracking-[-0.06em]">{t.login_verify}</h2>
+                  <p className="mb-7 text-sm text-white/68">{fullPhone} {t.login_code_sent}</p>
                   <motion.div key={otpAttempt} animate={otpStatus === 'error' ? { x: [0, -10, 10, -8, 8, -4, 4, 0] } : otpStatus === 'success' ? { scale: [1, 1.04, 1] } : { x: 0, scale: 1 }} transition={{ duration: otpStatus === 'error' ? 0.46 : 0.34, ease: 'easeOut' }} className="mb-5">
                     <input
                       ref={otpRef}
@@ -414,7 +415,7 @@ export default function LoginPage() {
                         color: resendSec > 0 ? 'rgba(255,255,255,0.48)' : '#c3ff2e',
                       }}
                     >
-                      {resendSec > 0 ? `Qayta yuborish ${resendSec}s` : 'Kodni qayta yuborish'}
+                      {resendSec > 0 ? `${t.login_next} ${resendSec}s` : t.login_next}
                     </button>
                   </div>
                   <div className="mt-4">
@@ -433,9 +434,9 @@ export default function LoginPage() {
                   </div>
                 </div>
                 <motion.div initial={false} animate={{ opacity: otpStatus === 'idle' ? 0 : 1, y: otpStatus === 'idle' ? 8 : 0 }} className="mt-auto pt-8 text-center text-sm font-medium text-white/65 min-h-6">
-                  {otpStatus === 'checking' && <span className="text-lime-300">Kod tekshirilmoqda...</span>}
-                  {otpStatus === 'success' && <span className="text-green-400">Kod tasdiqlandi ✓</span>}
-                  {otpStatus === 'error' && <span className="text-red-400">Kod xato, qayta kiriting</span>}
+                  {otpStatus === 'checking' && <span className="text-lime-300">{t.login_checking}</span>}
+                  {otpStatus === 'success' && <span className="text-green-400">{t.login_confirmed}</span>}
+                  {otpStatus === 'error' && <span className="text-red-400">{t.login_wrong_code}</span>}
                 </motion.div>
               </motion.section>
             )}
@@ -444,11 +445,11 @@ export default function LoginPage() {
             {step === 'name' && (
               <motion.section key="name" {...slide} className="flex h-full flex-col">
                 <div className={cardStyle}>
-                  <button type="button" onClick={goBack} className="mb-6 flex items-center gap-2 text-sm font-bold text-white/65 transition-colors hover:text-lime-300"><ArrowLeft className="h-4 w-4" /> Orqaga</button>
-                  <h2 className="mb-2 text-4xl font-black tracking-[-0.06em]">Tanishaylik</h2>
-                  <p className="mb-8 text-sm text-white/68">Ismingizni kiriting va boshlaymiz</p>
-                  <div className="mb-3 text-xs font-black uppercase tracking-[0.22em] text-lime-300/90">Ism</div>
-                  <input ref={nameRef} type="text" inputMode="text" autoComplete="given-name" value={name} onChange={(e) => setName(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); goNext(); } }} className="w-full rounded-[22px] border border-white/10 bg-black/25 px-4 py-4 text-lg font-bold text-white placeholder:text-white/25 focus:border-lime-300/35 focus:outline-none" placeholder="Ismingiz" />
+                  <button type="button" onClick={goBack} className="mb-6 flex items-center gap-2 text-sm font-bold text-white/65 transition-colors hover:text-lime-300"><ArrowLeft className="h-4 w-4" /> {t.login_back}</button>
+                  <h2 className="mb-2 text-4xl font-black tracking-[-0.06em]">{t.login_meet}</h2>
+                  <p className="mb-8 text-sm text-white/68">{t.login_enter_name}</p>
+                  <div className="mb-3 text-xs font-black uppercase tracking-[0.22em] text-lime-300/90">{t.login_name}</div>
+                  <input ref={nameRef} type="text" inputMode="text" autoComplete="given-name" value={name} onChange={(e) => setName(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); goNext(); } }} className="w-full rounded-[22px] border border-white/10 bg-black/25 px-4 py-4 text-lg font-bold text-white placeholder:text-white/25 focus:border-lime-300/35 focus:outline-none" placeholder={t.login_your_name} />
                 </div>
               </motion.section>
             )}
@@ -456,8 +457,8 @@ export default function LoginPage() {
             {/* ═══ USER TYPE ═══ */}
             {step === 'userType' && (
               <motion.section key="userType" {...slide} className="flex flex-col">
-                <h2 className="mb-2 text-3xl font-black tracking-[-0.04em]">{displayName}, siz kimsiz? 🤔</h2>
-                <p className="mb-8 text-sm text-white/60">O'zingizga mos variantni tanlang</p>
+                <h2 className="mb-2 text-3xl font-black tracking-[-0.04em]">{displayName}, {t.login_who_are_you}</h2>
+                <p className="mb-8 text-sm text-white/60">{t.login_select_option}</p>
                 <div className="grid grid-cols-2 gap-3">
                   {USER_TYPES.map((t) => {
                     const Icon = t.icon;
@@ -481,8 +482,8 @@ export default function LoginPage() {
             {/* ═══ GRADE ═══ */}
             {step === 'grade' && (
               <motion.section key="grade" {...slide} className="flex flex-col">
-                <h2 className="mb-2 text-3xl font-black tracking-[-0.04em]">{displayName}, nechanchi sinfda o'qiysiz? 📚</h2>
-                <p className="mb-8 text-sm text-white/60">Sinf darajangizni tanlang</p>
+                <h2 className="mb-2 text-3xl font-black tracking-[-0.04em]">{displayName}, {t.login_grade}</h2>
+                <p className="mb-8 text-sm text-white/60">{t.login_grade_desc}</p>
                 <div className="flex flex-col gap-3">
                   {GRADES.map((g) => {
                     const sel = ob.grade === g.id;
@@ -500,8 +501,8 @@ export default function LoginPage() {
             {/* ═══ SUBJECT (formerly Goal) ═══ */}
             {step === 'subject' && (
               <motion.section key="subject" {...slide} className="flex flex-col">
-                <h2 className="mb-2 text-3xl font-black tracking-[-0.04em]">{displayName}, nimani o'rganmoqchisiz? 🎯</h2>
-                <p className="mb-8 text-sm text-white/60">Fynex orqali qaysi fanni kuchaytiramiz?</p>
+                <h2 className="mb-2 text-3xl font-black tracking-[-0.04em]">{displayName}, {t.login_subject}</h2>
+                <p className="mb-8 text-sm text-white/60">{t.login_subject_desc}</p>
                 <div className="flex flex-col gap-3">
                   {SUBJECTS.map((g) => {
                     const Icon = g.icon;
@@ -525,8 +526,8 @@ export default function LoginPage() {
             {/* ═══ OFFLINE COURSE ═══ */}
             {step === 'offlineCourse' && (
               <motion.section key="offlineCourse" {...slide} className="flex flex-col">
-                <h2 className="mb-2 text-3xl font-black tracking-[-0.04em]">{displayName}, ingliz tili kursiga borasizmi? 🏫</h2>
-                <p className="mb-8 text-sm text-white/60">Ofline ta'lim markaziga borishingizni belgilang</p>
+                <h2 className="mb-2 text-3xl font-black tracking-[-0.04em]">{displayName}, {t.login_offline_course}</h2>
+                <p className="mb-8 text-sm text-white/60">{t.login_offline_desc}</p>
                 <div className="flex flex-col gap-3">
                   {OFFLINE_CHOICES.map((c) => {
                     const Icon = c.icon;
@@ -550,11 +551,11 @@ export default function LoginPage() {
             {/* ═══ CENTER PICKER ═══ */}
             {step === 'centerPicker' && (
               <motion.section key="centerPicker" {...slide} className="flex flex-col flex-1 h-full min-h-0 overflow-hidden">
-                <h2 className="mb-2 text-3xl font-black tracking-[-0.04em]">Qaysi o'quv markazida? 📍</h2>
-                <p className="mb-4 text-sm text-white/60">O'quv markazingizni tanlang yoki qidiring</p>
+                <h2 className="mb-2 text-3xl font-black tracking-[-0.04em]">{t.login_center}</h2>
+                <p className="mb-4 text-sm text-white/60">{t.login_center_desc}</p>
                 
                 <div className="mb-4 shrink-0">
-                  <input type="text" value={searchCenter} onChange={(e) => setSearchCenter(e.target.value)} placeholder="Markaz nomini yozing..." className="w-full rounded-2xl border border-white/10 bg-white/[0.05] px-4 py-3.5 text-sm font-medium focus:border-lime-300/40 focus:outline-none" />
+                  <input type="text" value={searchCenter} onChange={(e) => setSearchCenter(e.target.value)} placeholder={t.login_center_search} className="w-full rounded-2xl border border-white/10 bg-white/[0.05] px-4 py-3.5 text-sm font-medium focus:border-lime-300/40 focus:outline-none" />
                 </div>
                 
                 <div className="flex-1 overflow-y-auto space-y-3 pb-4 scrollbar-hide">
@@ -584,8 +585,8 @@ export default function LoginPage() {
             {/* ═══ CENTER DURATION ═══ */}
             {step === 'centerDuration' && (
               <motion.section key="centerDuration" {...slide} className="flex flex-col">
-                <h2 className="mb-2 text-3xl font-black tracking-[-0.04em]">{ob.centerName} ga qanchadan beri borasiz? ⏳</h2>
-                <p className="mb-8 text-sm text-white/60">Taxminiy o'qiyotgan vaqtingizni belgilang</p>
+                <h2 className="mb-2 text-3xl font-black tracking-[-0.04em]">{ob.centerName} {t.login_duration}</h2>
+                <p className="mb-8 text-sm text-white/60">{t.login_duration_desc}</p>
                 <div className="grid grid-cols-2 gap-3">
                   {DURATIONS.map((dur) => {
                     const sel = ob.centerDuration === dur.id;
@@ -602,8 +603,8 @@ export default function LoginPage() {
             {/* ═══ LEVEL ═══ */}
             {step === 'level' && (
               <motion.section key="level" {...slide} className="flex flex-col flex-1 min-h-0">
-                <h2 className="mb-2 text-3xl font-black tracking-[-0.04em]">Ingliz tilini qaysi darajada bilasiz? 📈</h2>
-                <p className="mb-6 text-sm text-white/60">Boshlash nuqtani aniqlab olamiz</p>
+                <h2 className="mb-2 text-3xl font-black tracking-[-0.04em]">{t.login_level}</h2>
+                <p className="mb-6 text-sm text-white/60">{t.login_level_desc}</p>
                 <div className="flex flex-col gap-2.5 overflow-y-auto pb-4 scrollbar-hide">
                   {LEVELS.map((lvl) => {
                     const sel = ob.currentLevel === lvl.label;
@@ -625,7 +626,7 @@ export default function LoginPage() {
                     <BookOpen className="h-8 w-8 text-lime-300" />
                   </div>
                 </div>
-                <h2 className="mb-3 text-3xl font-black tracking-[-0.04em]">Siz uchun maslahat ✨</h2>
+                <h2 className="mb-3 text-3xl font-black tracking-[-0.04em]">{t.login_advice}</h2>
                 
                 {ob.offlineCourse === 'no_fynex' && (
                   <div className="rounded-[24px] border border-white/10 bg-white/[0.04] p-5 text-sm leading-relaxed text-white/80">
@@ -658,8 +659,8 @@ export default function LoginPage() {
                     <CheckCircle2 className="h-8 w-8 text-lime-300" />
                   </motion.div>
                   <div>
-                    <h2 className="text-3xl font-black tracking-[-0.04em]">{displayName}, hammasi tayyor! 🎉</h2>
-                    <p className="text-sm text-white/60">Sizning ma'lumotlaringiz</p>
+                    <h2 className="text-3xl font-black tracking-[-0.04em]">{displayName}, {t.login_summary}</h2>
+                    <p className="text-sm text-white/60">{t.login_summary_desc}</p>
                   </div>
                 </div>
                 <div className="rounded-[24px] border border-white/10 bg-white/[0.04] p-5">
@@ -747,7 +748,7 @@ export default function LoginPage() {
                 </div>
 
                 <h2 className="mb-3 text-center text-2xl font-black tracking-[-0.04em]">
-                  {displayName}, siz uchun<br/>shaxsiy reja tuzilmoqda
+                  {displayName}, {t.login_plan_creating}
                 </h2>
 
                 {/* Loading steps */}
@@ -787,7 +788,7 @@ export default function LoginPage() {
         {(step !== 'otp' && step !== 'loading') && (
           <div className="mx-auto mt-auto w-full max-w-md pt-6">
             <motion.button whileTap={{ scale: 0.985 }} onClick={goNext} disabled={!canNext} className="flex h-16 w-full items-center justify-center gap-2 rounded-full text-lg font-black transition-all disabled:opacity-40" style={btnGradient}>
-              {step === 'summary' ? (<><span>O'qishni boshlash</span><Rocket className="h-5 w-5" /></>) : (<><span>Davom etish</span><ArrowRight className="h-5 w-5" /></>)}
+              {step === 'summary' ? (<><span>{t.login_start_learning}</span><Rocket className="h-5 w-5" /></>) : (<><span>{t.login_next}</span><ArrowRight className="h-5 w-5" /></>)}
             </motion.button>
           </div>
         )}

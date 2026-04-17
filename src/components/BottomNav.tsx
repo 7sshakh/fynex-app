@@ -9,15 +9,15 @@ interface BottomNavProps {
   onTabChange: (tab: string) => void;
 }
 
-const tabs = [
-  { id: 'home', label: 'Bosh sahifa', icon: Home },
-  { id: 'courses', label: 'Kurslar', icon: GraduationCap },
-  { id: 'leaderboard', label: 'Reyting', icon: BarChart3 },
-  { id: 'profile', label: 'Profil', icon: User },
+const tabDefs = [
+  { id: 'home', icon: Home, key: 'nav_home' as const },
+  { id: 'courses', icon: GraduationCap, key: 'nav_courses' as const },
+  { id: 'leaderboard', icon: BarChart3, key: 'nav_leaderboard' as const },
+  { id: 'profile', icon: User, key: 'nav_profile' as const },
 ];
 
 export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
-  const { theme } = useUser();
+  const { theme, t } = useUser();
   const colors = getPalette(theme);
   const [visible, setVisible] = useState(true);
 
@@ -52,7 +52,7 @@ export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
             pointerEvents: 'auto',
           }}
         >
-          {tabs.map((tab) => {
+          {tabDefs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
 
@@ -73,7 +73,7 @@ export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
               >
                 <Icon className="w-5 h-5" strokeWidth={isActive ? 2.5 : 2} />
                 <span className="text-[10px] font-semibold tracking-tight mt-0.5">
-                  {tab.label}
+                  {t[tab.key]}
                 </span>
               </motion.button>
             );

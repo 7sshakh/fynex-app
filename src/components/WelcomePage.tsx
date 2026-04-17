@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ChevronLeft, Sparkles, BookOpen, Globe, Rocket } from 'lucide-react';
+import { getTranslations } from '../lib/i18n';
 
 type Lang = 'en' | 'uz' | 'ru';
 
@@ -20,50 +21,53 @@ interface SlideData {
   particles: { x: string; y: string; size: number; delay: number; emoji: string }[];
 }
 
-const SLIDES: SlideData[] = [
-  {
-    tag: 'FYNEX',
-    title: "O'rganish endi\nqo'lingizda",
-    subtitle: "Fynex — bu sizning cho'ntak o'qituvchingiz. Istalgan vaqt, istalgan joyda, atigi 5 daqiqada yangi bilim oling.",
-    gradient: 'linear-gradient(160deg, #0a1a0a 0%, #0d1f0d 30%, #0e0e0e 100%)',
-    iconBg: 'linear-gradient(135deg, #c3ff2e, #a8e600)',
-    icon: <Sparkles className="h-8 w-8 text-black" />,
-    particles: [
-      { x: '15%', y: '20%', size: 6, delay: 0, emoji: '✨' },
-      { x: '78%', y: '15%', size: 8, delay: 0.5, emoji: '⚡' },
-      { x: '85%', y: '60%', size: 5, delay: 1.2, emoji: '💡' },
-      { x: '10%', y: '70%', size: 7, delay: 0.8, emoji: '🎯' },
-    ],
-  },
-  {
-    tag: "NIMA UCHUN?",
-    title: "2 soat emas,\n5 daqiqa",
-    subtitle: "O'quv markazlaridagi uzoq, zerikarli darslar o'rniga — qisqa, samarali va o'yinga o'xshash mashqlar. Miya buni 3 barobar yaxshiroq eslaydi.",
-    gradient: 'linear-gradient(160deg, #0a0a1f 0%, #0d0d28 30%, #0e0e0e 100%)',
-    iconBg: 'linear-gradient(135deg, #818cf8, #6366f1)',
-    icon: <BookOpen className="h-8 w-8 text-white" />,
-    particles: [
-      { x: '80%', y: '22%', size: 8, delay: 0.3, emoji: '📚' },
-      { x: '12%', y: '35%', size: 6, delay: 0.7, emoji: '🧠' },
-      { x: '75%', y: '72%', size: 5, delay: 1, emoji: '🏆' },
-      { x: '20%', y: '80%', size: 7, delay: 0.2, emoji: '🔥' },
-    ],
-  },
-  {
-    tag: 'BOSHLASH',
-    title: 'Tilni tanlang\nva boshlang',
-    subtitle: "Fynex sizning tilingizda ishlaydi. O'zingizga qulay tilni tanlang va sayohatni boshlang!",
-    gradient: 'linear-gradient(160deg, #1a0a0a 0%, #200d0d 30%, #0e0e0e 100%)',
-    iconBg: 'linear-gradient(135deg, #fb923c, #f97316)',
-    icon: <Globe className="h-8 w-8 text-white" />,
-    particles: [
-      { x: '82%', y: '18%', size: 6, delay: 0.4, emoji: '🌍' },
-      { x: '8%', y: '25%', size: 7, delay: 0.9, emoji: '🇺🇿' },
-      { x: '88%', y: '55%', size: 5, delay: 0.6, emoji: '🇬🇧' },
-      { x: '15%', y: '65%', size: 6, delay: 1.1, emoji: '🇷🇺' },
-    ],
-  },
-];
+const getSlideData = (lang: Lang): SlideData[] => {
+  const t = getTranslations(lang);
+  return [
+    {
+      tag: 'FYNEX',
+      title: t.welcome_title_1,
+      subtitle: t.welcome_subtitle_1,
+      gradient: 'linear-gradient(160deg, #0a1a0a 0%, #0d1f0d 30%, #0e0e0e 100%)',
+      iconBg: 'linear-gradient(135deg, #c3ff2e, #a8e600)',
+      icon: <Sparkles className="h-8 w-8 text-black" />,
+      particles: [
+        { x: '15%', y: '20%', size: 6, delay: 0, emoji: '✨' },
+        { x: '78%', y: '15%', size: 8, delay: 0.5, emoji: '⚡' },
+        { x: '85%', y: '60%', size: 5, delay: 1.2, emoji: '💡' },
+        { x: '10%', y: '70%', size: 7, delay: 0.8, emoji: '🎯' },
+      ],
+    },
+    {
+      tag: t.welcome_tag_2,
+      title: t.welcome_title_2,
+      subtitle: t.welcome_subtitle_2,
+      gradient: 'linear-gradient(160deg, #0a0a1f 0%, #0d0d28 30%, #0e0e0e 100%)',
+      iconBg: 'linear-gradient(135deg, #818cf8, #6366f1)',
+      icon: <BookOpen className="h-8 w-8 text-white" />,
+      particles: [
+        { x: '80%', y: '22%', size: 8, delay: 0.3, emoji: '📚' },
+        { x: '12%', y: '35%', size: 6, delay: 0.7, emoji: '🧠' },
+        { x: '75%', y: '72%', size: 5, delay: 1, emoji: '🏆' },
+        { x: '20%', y: '80%', size: 7, delay: 0.2, emoji: '🔥' },
+      ],
+    },
+    {
+      tag: t.welcome_tag_3,
+      title: t.welcome_title_3,
+      subtitle: t.welcome_subtitle_3,
+      gradient: 'linear-gradient(160deg, #1a0a0a 0%, #200d0d 30%, #0e0e0e 100%)',
+      iconBg: 'linear-gradient(135deg, #fb923c, #f97316)',
+      icon: <Globe className="h-8 w-8 text-white" />,
+      particles: [
+        { x: '82%', y: '18%', size: 6, delay: 0.4, emoji: '🌍' },
+        { x: '8%', y: '25%', size: 7, delay: 0.9, emoji: '🇺🇿' },
+        { x: '88%', y: '55%', size: 5, delay: 0.6, emoji: '🇬🇧' },
+        { x: '15%', y: '65%', size: 6, delay: 1.1, emoji: '🇷🇺' },
+      ],
+    },
+  ];
+};
 
 export default function WelcomePage({ onComplete }: { onComplete: (lang: Lang) => void }) {
   const [current, setCurrent] = useState(0);
@@ -71,6 +75,9 @@ export default function WelcomePage({ onComplete }: { onComplete: (lang: Lang) =
   const [showButton, setShowButton] = useState(false);
   const [direction, setDirection] = useState(1);
 
+  const SLIDES = getSlideData(lang);
+  const t = getTranslations(lang);
+  
   const isLast = current === SLIDES.length - 1;
   const slide = SLIDES[current];
 
@@ -308,7 +315,7 @@ export default function WelcomePage({ onComplete }: { onComplete: (lang: Lang) =
                   }}
                 >
                   <Rocket className="h-5 w-5" />
-                  <span>Boshlash</span>
+                  <span>{t.welcome_start}</span>
                 </motion.button>
               )}
             </AnimatePresence>
@@ -325,7 +332,7 @@ export default function WelcomePage({ onComplete }: { onComplete: (lang: Lang) =
                 boxShadow: current === 0 ? '0 12px 40px rgba(195,255,46,0.2)' : '0 12px 40px rgba(99,102,241,0.25)',
               }}
             >
-              <span>Keyingisi</span>
+              <span>{t.welcome_next}</span>
               <ArrowRight className="h-5 w-5" />
             </motion.button>
           )}

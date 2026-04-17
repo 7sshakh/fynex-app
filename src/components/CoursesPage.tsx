@@ -11,7 +11,7 @@ import { getPalette } from '../theme';
 type CourseIcon = typeof Globe;
 
 export default function CoursesPage() {
-  const { user, updateXp, completeCourse, theme } = useUser();
+  const { user, updateXp, completeCourse, theme, t } = useUser();
   const colors = getPalette(theme);
   const [activeCategory, setActiveCategory] = useState('all');
   const [sortMode, setSortMode] = useState<'recommended' | 'shortest' | 'xp'>('recommended');
@@ -154,14 +154,14 @@ export default function CoursesPage() {
               <BookOpen className="h-5 w-5" style={{ color: colors.primary }} />
             </div>
             <h1 className="text-lg font-black tracking-[-0.04em]" style={{ color: colors.primary }}>
-              Kurslar
+              {t.courses_title}
             </h1>
           </div>
         </div>
 
         <div className="mb-5">
           <p className="mb-1 text-sm font-medium" style={{ color: colors.onSurfaceVariant }}>
-            O‘rganishni boshlang
+            {t.courses_subtitle}
           </p>
         </div>
 
@@ -191,9 +191,9 @@ export default function CoursesPage() {
 
       <section className="mb-6 flex gap-2 overflow-x-auto scrollbar-hide">
         {[
-          { id: 'recommended', label: 'Tavsiya', icon: Star },
-          { id: 'shortest', label: 'Tez boshlash', icon: Clock3 },
-          { id: 'xp', label: 'Ko‘p XP', icon: Zap },
+          { id: 'recommended', label: t.courses_recommended, icon: Star },
+          { id: 'shortest', label: t.courses_shortest, icon: Clock3 },
+          { id: 'xp', label: t.courses_xp_sort, icon: Zap },
         ].map((item) => {
           const Icon = item.icon;
           const active = sortMode === item.id;
@@ -258,7 +258,7 @@ export default function CoursesPage() {
                   <div className="mb-4 flex items-center gap-2 text-xs font-medium" style={{ color: colors.onSurfaceVariant }}>
                     <BookOpen className="h-3.5 w-3.5" />
                     <span>
-                      {completedLessons}/{course.lessons.length} dars
+                      {completedLessons}/{course.lessons.length} {t.courses_lessons_count}
                     </span>
                   </div>
                 </div>
@@ -314,7 +314,7 @@ export default function CoursesPage() {
                     color: progress > 0 ? colors.onPrimary : colors.onSurface,
                   }}
                 >
-                  {progress > 0 ? 'Davom etish' : 'Boshlash'}
+                  {progress > 0 ? t.home_continue : t.home_start}
                 </button>
               </div>
             </motion.div>
@@ -364,7 +364,7 @@ export default function CoursesPage() {
 
             <div className="min-h-0 flex-1 overflow-y-auto px-6 pb-32 pt-2" style={{ overscrollBehavior: 'contain' }}>
               <h3 className="mb-3 text-sm font-black uppercase tracking-[0.22em]" style={{ color: colors.onSurfaceVariant }}>
-                Darslar ro'yxati
+                {t.courses_lesson_list}
               </h3>
 
               <div className="space-y-3">
@@ -410,7 +410,7 @@ export default function CoursesPage() {
                             {lesson.title}
                           </p>
                           <p className="text-xs" style={{ color: colors.onSurfaceVariant }}>
-                            {lesson.duration} daqiqa
+                            {lesson.duration} {t.home_min}
                           </p>
                         </div>
                       </div>
@@ -446,7 +446,7 @@ export default function CoursesPage() {
                 style={{ background: colors.primary, color: colors.onPrimary }}
               >
                 <Play className="h-5 w-5" />
-                Darsni boshlash
+                {t.courses_start_lesson}
               </button>
             </div>
           </motion.div>

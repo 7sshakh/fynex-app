@@ -24,6 +24,8 @@ import SupportChat from './SupportChat';
 import { getPalette } from '../theme';
 import AdminPanel from './AdminPanel';
 
+const LANG_LABELS = { en: 'English', uz: "O'zbekcha", ru: 'Русский' } as const;
+
 export default function ProfilePage() {
   const {
     user,
@@ -36,6 +38,9 @@ export default function ProfilePage() {
     updateName,
     updatePhone,
     updateEmail,
+    lang,
+    setLang,
+    t,
   } = useUser();
   const colors = getPalette(theme);
 
@@ -71,36 +76,36 @@ export default function ProfilePage() {
   );
 
   const stats = [
-    { label: 'XP', value: user?.xp || 0, icon: Zap, accent: colors.primary },
-    { label: 'Tugallangan', value: user?.completedCourses.length || 0, icon: BookOpen, accent: colors.secondary },
-    { label: 'Streak', value: user?.streak || 0, icon: Flame, accent: colors.tertiary },
+    { label: t.profile_total_xp, value: user?.xp || 0, icon: Zap, accent: colors.primary },
+    { label: t.profile_completed, value: user?.completedCourses.length || 0, icon: BookOpen, accent: colors.secondary },
+    { label: t.profile_streak, value: user?.streak || 0, icon: Flame, accent: colors.tertiary },
   ];
 
   const settingsItems = [
     {
       icon: MessageCircle,
-      label: 'Bildirishnomalar',
+      label: t.profile_notifications,
       toggle: true,
       value: notificationsEnabled,
       onClick: toggleNotifications,
     },
     {
       icon: Moon,
-      label: 'Tungi rejim',
+      label: t.profile_night_mode,
       toggle: true,
       value: theme === 'dark',
       onClick: toggleTheme,
     },
     {
       icon: Headphones,
-      label: 'Yordam markazi',
-      value: 'Online chat',
+      label: t.profile_help,
+      value: t.profile_help_value,
       onClick: () => setShowSupportChat(true),
     },
     {
       icon: Shield,
-      label: 'Maxfiylik siyosati',
-      value: 'Ko‘rish',
+      label: t.profile_privacy,
+      value: t.profile_privacy_view,
       onClick: () => setShowPrivacyPolicy(true),
     },
   ];
@@ -129,7 +134,7 @@ export default function ProfilePage() {
         style={{ background: theme === 'dark' ? 'rgba(14,14,14,0.88)' : 'rgba(255,255,255,0.92)' }}
       >
         <h1 className="text-lg font-black italic tracking-[-0.04em]" style={{ color: colors.primary }}>
-          Profil
+          {t.profile_title}
         </h1>
 
         <div className="flex items-center gap-4">
@@ -176,7 +181,7 @@ export default function ProfilePage() {
           <div className="mt-2 inline-flex items-center gap-1.5 rounded-full px-3 py-1" style={{ background: colors.surfaceContainerHigh }}>
             <span className="h-2 w-2 rounded-full" style={{ background: colors.primary }} />
             <span className="text-[11px] font-bold" style={{ color: colors.primary }}>
-              {user?.isPro ? 'PRO foydalanuvchi' : 'Aktiv'}
+              {user?.isPro ? t.profile_pro_user : t.profile_active}
             </span>
           </div>
         </div>
@@ -204,7 +209,7 @@ export default function ProfilePage() {
               {user?.xp || 0}
             </div>
             <div className="text-[11px] font-bold uppercase tracking-[0.18em]" style={{ color: colors.onSurfaceVariant }}>
-              Umumiy XP
+              {t.profile_total_xp}
             </div>
           </div>
         </div>
@@ -239,13 +244,13 @@ export default function ProfilePage() {
         >
           <div className="relative z-10 flex items-end justify-between gap-4">
             <div>
-              <h3 className="text-2xl font-black italic tracking-[-0.05em] text-white">PRO ga o'tish</h3>
+              <h3 className="text-2xl font-black italic tracking-[-0.05em] text-white">{t.profile_go_pro}</h3>
               <p className="mt-1 max-w-[220px] text-xs font-semibold text-white/80">
-                Barcha kurslar va qo'shimcha imkoniyatlar siz uchun ochiladi.
+                {t.profile_pro_desc}
               </p>
               <div className="mt-4">
                 <span className="text-xl font-black text-white">9,999 UZS</span>
-                <span className="text-xs font-bold text-white/70"> /oy</span>
+                <span className="text-xs font-bold text-white/70"> {t.profile_per_month}</span>
               </div>
             </div>
 
@@ -255,7 +260,7 @@ export default function ProfilePage() {
               className="rounded-full bg-white px-5 py-2 text-sm font-black transition-transform active:scale-95"
               style={{ color: colors.tertiary }}
             >
-              Obuna bo'lish
+              {t.profile_subscribe}
             </button>
           </div>
         </motion.section>
@@ -268,14 +273,14 @@ export default function ProfilePage() {
         className="mb-8"
       >
         <h4 className="mb-4 px-1 text-xs font-black uppercase tracking-[0.22em]" style={{ color: colors.onSurfaceVariant }}>
-          Sizning Yutuqlaringiz
+          {t.profile_achievements}
         </h4>
         <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide px-1">
           {[
-            { id: 1, icon: Flame, title: "Birinchi Qadam", desc: "Dastlabki dars", done: true, color: colors.tertiary },
-            { id: 2, icon: Zap, title: "Tezkor O'quvchi", desc: "1000 XP topildi", done: (user?.xp || 0) >= 1000, color: colors.primary },
-            { id: 3, icon: BookOpen, title: "Kitobxon", desc: "1 ta kurs", done: (user?.completedCourses.length || 0) >= 1, color: colors.secondary },
-            { id: 4, icon: Crown, title: "Chempion", desc: "Top 1 reyting", done: false, color: '#fbbf24' },
+            { id: 1, icon: Flame, title: t.ach_first_step, desc: t.ach_first_step_desc, done: true, color: colors.tertiary },
+            { id: 2, icon: Zap, title: t.ach_fast_learner, desc: t.ach_fast_learner_desc, done: (user?.xp || 0) >= 1000, color: colors.primary },
+            { id: 3, icon: BookOpen, title: t.ach_bookworm, desc: t.ach_bookworm_desc, done: (user?.completedCourses.length || 0) >= 1, color: colors.secondary },
+            { id: 4, icon: Crown, title: t.ach_champion, desc: t.ach_champion_desc, done: false, color: '#fbbf24' },
           ].map((ach) => {
             const AchIcon = ach.icon;
             return (
@@ -295,7 +300,7 @@ export default function ProfilePage() {
 
       <section className="space-y-6">
         <h4 className="px-1 text-xs font-black uppercase tracking-[0.22em]" style={{ color: colors.onSurfaceVariant }}>
-          Sozlamalar
+          {t.profile_settings}
         </h4>
 
         <div className="space-y-2">
@@ -369,7 +374,7 @@ export default function ProfilePage() {
           style={{ background: 'rgba(255,115,81,0.12)', color: colors.error }}
         >
           <LogOut className="h-5 w-5" />
-          Chiqish
+          {t.profile_logout}
         </button>
       </section>
 
@@ -408,7 +413,7 @@ export default function ProfilePage() {
                 className="mt-6 w-full rounded-[22px] py-4 text-sm font-black uppercase"
                 style={{ background: colors.primary, color: colors.onPrimary }}
               >
-                Tushunarli
+                {t.profile_understood}
               </button>
             </div>
           </ModalBackdrop>
@@ -464,7 +469,7 @@ export default function ProfilePage() {
                 style={{ background: colors.primary, color: colors.onPrimary }}
               >
                 <Crown className="h-5 w-5" />
-                PRO ga o'tish
+                {t.profile_go_pro}
               </button>
 
               <button
@@ -473,7 +478,7 @@ export default function ProfilePage() {
                 className="w-full rounded-[22px] py-4 text-sm font-bold"
                 style={{ background: colors.surfaceContainerLow, color: colors.onSurfaceVariant }}
               >
-                Keyinroq
+                {t.profile_later}
               </button>
             </div>
           </ModalBackdrop>
@@ -536,9 +541,22 @@ export default function ProfilePage() {
                 </motion.div>
 
                 <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 }}>
-                  <Field label="Interfeys tili" icon={Globe} primaryColor={colors.primary} textColor={colors.onSurface}>
-                    <div className="rounded-[20px] px-5 py-4 text-sm font-bold" style={{ background: colors.surfaceContainerLow, color: colors.onSurfaceVariant }}>
-                      O'zbek tili
+                  <Field label={t.profile_language} icon={Globe} primaryColor={colors.primary} textColor={colors.onSurface}>
+                    <div className="flex gap-2">
+                      {(['uz', 'en', 'ru'] as const).map((l) => (
+                        <button
+                          key={l}
+                          onClick={() => setLang(l)}
+                          className="flex-1 rounded-[16px] py-3 text-center text-sm font-bold transition-all"
+                          style={{
+                            background: lang === l ? `${colors.primary}22` : colors.surfaceContainerLow,
+                            color: lang === l ? colors.primary : colors.onSurfaceVariant,
+                            border: `1.5px solid ${lang === l ? colors.primary : 'transparent'}`,
+                          }}
+                        >
+                          {LANG_LABELS[l]}
+                        </button>
+                      ))}
                     </div>
                   </Field>
                 </motion.div>
@@ -551,7 +569,7 @@ export default function ProfilePage() {
                   className="rounded-[24px] py-4 text-sm font-bold transition-transform active:scale-95"
                   style={{ background: colors.surfaceContainerLow, color: colors.onSurfaceVariant }}
                 >
-                  Bekor qilish
+                  {t.profile_cancel}
                 </button>
                 <button
                   type="button"
@@ -564,7 +582,7 @@ export default function ProfilePage() {
                   className="rounded-[24px] py-4 text-sm font-black uppercase transition-transform active:scale-95 shadow-lg shadow-black/5"
                   style={{ background: colors.primary, color: colors.onPrimary }}
                 >
-                  Saqlash
+                  {t.profile_save}
                 </button>
               </motion.div>
             </div>

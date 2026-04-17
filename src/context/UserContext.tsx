@@ -1,6 +1,7 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useMemo, ReactNode } from 'react';
 import { User } from '../types';
 import { currentUser as initialUser } from '../data/mockData';
+import { type Lang, type Translations, getTranslations, getCurrentLang, setCurrentLang } from '../lib/i18n';
 
 interface UserContextType {
   user: User | null;
@@ -18,6 +19,9 @@ interface UserContextType {
   toggleTheme: () => void;
   notificationsEnabled: boolean;
   toggleNotifications: () => void;
+  lang: Lang;
+  setLang: (lang: Lang) => void;
+  t: Translations;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -26,6 +30,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  const [lang, setLangState] = useState<Lang>(getCurrentLang);
+  const t = useMemo(() => getTranslations(lang), [lang]);
 
   useEffect(() => {
     const stored = localStorage.getItem('fynex_user');
@@ -131,6 +137,11 @@ export function UserProvider({ children }: { children: ReactNode }) {
     setNotificationsEnabled((current) => !current);
   };
 
+  const setLang = (newLang: Lang) => {
+    setLangState(newLang);
+    setCurrentLang(newLang);
+  };
+
 
   return (
     <UserContext.Provider
@@ -150,6 +161,9 @@ export function UserProvider({ children }: { children: ReactNode }) {
         toggleTheme,
         notificationsEnabled,
         toggleNotifications,
+        lang,
+        setLang,
+        t,
       }}
     >
       {children}
